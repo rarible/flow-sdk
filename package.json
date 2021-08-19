@@ -1,0 +1,31 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "bootstrap": "lerna bootstrap && lerna link",
+    "clean": "yarn workspaces run clean",
+    "build-all": "sh build-all.sh",
+    "build-sdk": "yarn workspace @rarible/flow-sdk run build",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx ./",
+    "release": "lerna publish from-package",
+    "prettify": "prettier --write **/src/**/*",
+    "test": "yarn workspaces run test",
+    "verify": "yarn workspaces run verify"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "yarn run prettify"
+    ]
+  },
+  "devDependencies": {
+    "@roborox/eslint-config-default": "2.2.0",
+    "eslint": "7.10.0",
+    "eslint-config-prettier": "6.11.0",
+    "lerna": "^3.22.1",
+    "lint-staged": "10.4.0",
+    "prettier": "2.1.2"
+  }
+}
