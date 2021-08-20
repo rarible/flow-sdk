@@ -1,0 +1,56 @@
+{
+  "emulators": {
+    "default": {
+      "port": 3569,
+      "serviceAccount": "emulator-account"
+    }
+  },
+  "contracts": {
+    "NFTPlus": "../../../flow-contracts/cadence/contracts/NFTPlus.cdc",
+    "CommonNFT": "../../../flow-contracts/cadence/contracts/CommonNFT.cdc",
+    "CommonFee": "../../../flow-contracts/cadence/contracts/CommonFee.cdc",
+    "NFTStorefront": "../../../flow-contracts/cadence/contracts/NFTStorefront.cdc",
+    "FlowToken": {
+      "source": "../../../flow-contracts/cadence/contracts/FlowToken.cdc",
+      "aliases": {
+        "emulator": "0x0ae53cb6e3f42a79",
+        "testnet": "0x7e60df042a9c0868"
+      }
+    },
+    "FungibleToken": {
+      "source": "../../../flow-contracts/cadence/contracts/FungibleToken.cdc",
+      "aliases": {
+        "emulator": "0xee82856bf20e2aa6",
+        "testnet": "0x9a0766d93b6608b7"
+      }
+    },
+    "NonFungibleToken": {
+      "source": "../../../flow-contracts/cadence/contracts/NonFungibleToken.cdc",
+      "aliases": {
+        "testnet": "0x631e88ae7f1d7c20"
+      }
+    }
+  },
+  "networks": {
+    "emulator": "127.0.0.1:3569",
+    "mainnet": "access.mainnet.nodes.onflow.org:9000",
+    "testnet": "access.devnet.nodes.onflow.org:9000"
+  },
+  "accounts": {
+    "emulator-account": {
+      "address": "f8d6e0586b0a20c7",
+      "key": "00496a4e1e6dd04246766ffe2e82ba79920e2353b128d32ebf1e1721a9fcb718"
+    }
+  },
+  "deployments": {
+    "emulator": {
+      "emulator-account": [
+        "CommonFee",
+        "CommonNFT",
+        "NFTPlus",
+        "NFTStorefront",
+        "NonFungibleToken"
+      ]
+    }
+  }
+}
