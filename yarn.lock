@@ -2251,6 +2251,11 @@
   resolved "https://registry.yarnpkg.com/@onflow/util-uid/-/util-uid-0.0.1.tgz#aae81c094bffffbca622854164a2cc5bca4df17a"
   integrity sha512-SzBscBdyn1Zoks0Wo/w7J/Ds9IZ/T+KM/wyWMwWla4PnxwBFviy1BytEQY+sM5q1UNOvaGWgGEoRmH/oOCcglA==
 
+"@rarible/types@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@rarible/types/-/types-0.1.3.tgz#c706ee0b1535b2d0d84dee54fb33c4aabacc72aa"
+  integrity sha512-cKZ6Pl8hP6IXvuIjBHi84IHd871M8dJRiSTgBNVgtht4ul0aFowAmHJCzj+Y8kTDvfFdgj5wDm6TNYM0C5KnGA==
+
 "@roborox/eslint-config-default@2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@roborox/eslint-config-default/-/eslint-config-default-2.2.0.tgz#697be781ce62a9f016952e8ee4f1b72f7ec53afb"
