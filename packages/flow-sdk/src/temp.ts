@@ -1,13 +1,13 @@
 import { Address, BigNumber } from "@rarible/types"
 
-type Part = {
+export type Part = {
 	account: Address,
-	value: number
+	value: string
 }
 
 type BlockchainType = "ETH" | "FLOW"
 
-type TokenId = number
+export type TokenId = number
 
 type FlowCollectionAddress = string //todo "A.${FlowAddress}.${string}"
 
@@ -26,19 +26,19 @@ type FlowAssetType = {
 /**
  * NFT
  */
-type MintRequest = {
+export type MintRequest = {
 	collection: FlowCollectionAddress
 	url: string
 	royalties: Part[]
 }
 
-type TransferRequest = {
+export type TransferRequest = {
 	blockchain: BlockchainType
 	tokenId: TokenId
 	to: FlowAddress
 }
 
-type RaribleNftSdk = {
+export type RaribleNftSdk = {
 	mint(data: MintRequest): Promise<TokenId>,
 	transfer(data: TransferRequest): Promise<string>
 	burn(tokenId: TokenId): Promise<string>

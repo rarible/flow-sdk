@@ -1,0 +1,27 @@
+{
+  "name": "@rarible/flow-sdk-scripts",
+  "version": "0.0.1",
+  "description": "",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "files": [
+    "build",
+    "typings.d.ts"
+  ],
+  "private": true,
+  "repository": "https://github.com/rarible/flow-sdk",
+  "scripts": {
+    "prepare": "install-peers",
+    "build": "tsc --project tsconfig.json",
+    "clean": "rimraf ./build",
+    "verify": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@onflow/fcl": "^0.0.76",
+    "@onflow/types": "^0.0.5"
+  },
+  "devDependencies": {
+    "install-peers-cli": "^2.2.0",
+    "typescript": "^4.4.2"
+  }
+}
