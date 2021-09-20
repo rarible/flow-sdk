@@ -1,3 +1,5 @@
 export { CommonNft, Royalty } from "./common-nft"
 export { CommonNftOrder } from "./common-nft-order"
+export { MotogpPackOrder } from "./motogp-pack-order"
+export { MotogpCardOrder } from "./motogp-card-order"
 export { runTransaction, runScript, waitForSeal } from "./common"
