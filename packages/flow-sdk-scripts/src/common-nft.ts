@@ -1,14 +1,14 @@
-import * as fcl from "@onflow/fcl"
 import * as t from "@onflow/types"
 import { commonNftScripts, commonNftTransactions } from "./scripts"
-import { contractAddressHex } from "./common"
+import { MethodArgs } from "./common"
+import { sansPrefix } from "./crypto"
 
 export interface Royalty {
 	account: string
 	value: string
 }
 
-const convertRoyalties = (royalties: Royalty[]) =>
+export const convertRoyalties = (royalties: Royalty[]) =>
 	royalties.map(royalty => ({
 		fields: [
 			{ name: "address", value: royalty.account },
@@ -17,52 +17,59 @@ const convertRoyalties = (royalties: Royalty[]) =>
 	}))
 
 export const CommonNft = {
-	borrowNft: (address: string, tokenId: number) => [
-		fcl.script(commonNftScripts.borrow_nft),
-		fcl.args([fcl.arg(address, t.Address), fcl.arg(tokenId, t.UInt64)]),
-	],
+	borrowNft: (address: string, tokenId: number): MethodArgs => ({
+		type: "script",
+		cadence: commonNftScripts.borrow_nft,
+		args: [[address, t.Address], [tokenId, t.UInt64]],
+	}),
 
-	check: (address: string) => [
-		fcl.script(commonNftScripts.check),
-		fcl.args([fcl.arg(address, t.Address)]),
-	],
+	check: (address: string): MethodArgs => ({
+		type: "script",
+		cadence: commonNftScripts.check,
+		args: [[address, t.Address]],
+	}),
 
-	getIds: (address: string) => [
-		fcl.script(commonNftScripts.get_ids),
-		fcl.args([fcl.arg(address, t.Address)]),
-	],
+	getIds: (address: string): MethodArgs => ({
+		type: "script",
+		cadence: commonNftScripts.get_ids,
+		args: [[address, t.Address]],
+	}),
 
-	burn: (tokenId: number) => [
-		fcl.transaction(commonNftTransactions.burn),
-		fcl.args([fcl.arg(tokenId, t.UInt64)]),
-	],
+	burn: (tokenId: number): MethodArgs => ({
+		type: "tx",
+		cadence: commonNftTransactions.burn,
+		args: [[tokenId, t.UInt64]],
+	}),
 
-	init: () => [
-		fcl.transaction(commonNftTransactions.init),
-	],
+	init: (): MethodArgs => ({
+		type: "tx",
+		cadence: commonNftTransactions.init,
+	}),
 
-	clean: () => [
-		fcl.transaction(commonNftTransactions.clean),
-	],
+	clean: (): MethodArgs => ({
+		type: "tx",
+		cadence: commonNftTransactions.clean,
+	}),
 
-	mint: async (metadata: string, royalties: Royalty[]) => {
-		const commonNftAddress = await contractAddressHex("0xCOMMONNFT")
+	mint: (collectionAddress: string, metadata: string, royalties: Royalty[]): MethodArgs => {
 		const RoyaltiesType = t.Array(t.Struct(
-			`A.${commonNftAddress}.CommonNFT.Royalties`,
+			`A.${sansPrefix(collectionAddress)}.CommonNFT.Royalties`,
 			[
 				{ value: t.Address },
 				{ value: t.UFix64 },
 			],
 		))
 
-		return [
-			fcl.transaction(commonNftTransactions.mint),
-			fcl.args([fcl.arg(metadata, t.String), fcl.arg(convertRoyalties(royalties), RoyaltiesType)]),
-		]
+		return {
+			type: "tx",
+			cadence: commonNftTransactions.mint,
+			args: [[metadata, t.String], [convertRoyalties(royalties), RoyaltiesType]],
+		}
 	},
 
-	transfer: (tokenId: number, to: string) => [
-		fcl.transaction(commonNftTransactions.transfer),
-		fcl.args([fcl.arg(tokenId, t.UInt64), fcl.arg(to, t.Address)]),
-	],
+	transfer: (tokenId: number, to: string): MethodArgs => ({
+		type: "tx",
+		cadence: commonNftTransactions.transfer,
+		args: [[tokenId, t.UInt64], [to, t.Address]],
+	}),
 }
