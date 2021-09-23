@@ -1,14 +1,19 @@
 {
   "name": "root",
   "private": true,
+  "license": "MIT",
   "workspaces": [
-    "packages/*"
+    "packages/flow-sdk",
+    "packages/flow-sdk-scripts",
+    "packages/flow-test-common"
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap && lerna link",
     "clean": "yarn workspaces run clean",
     "build-all": "sh build-all.sh",
     "build-sdk": "yarn workspace @rarible/flow-sdk run build",
+    "build-scripts": "yarn workspace @rarible/flow-sdk-scripts run build",
+    "build-test": "yarn workspace @rarible/flow-test-common run build",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./",
     "release": "lerna publish from-package",
     "prettify": "prettier --write **/src/**/*",
@@ -26,6 +31,7 @@
     "eslint-config-prettier": "6.11.0",
     "lerna": "^3.22.1",
     "lint-staged": "10.4.0",
-    "prettier": "2.1.2"
+    "prettier": "2.1.2",
+    "tslib": "2.3.1"
   }
 }

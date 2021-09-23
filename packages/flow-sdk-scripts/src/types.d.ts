@@ -1,3 +1,6 @@
 declare module "@onflow/fcl"
 declare module "@onflow/types"
+declare module "@onflow/config"
+declare module "flow-cadut"
 declare module "@testing-library/dom"
+declare module "elliptic"

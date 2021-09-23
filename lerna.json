@@ -1,6 +1,8 @@
 {
   "packages": [
-    "packages/*"
+    "packages/flow-test-common",
+    "packages/flow-sdk-scripts",
+    "packages/flow-sdk"
   ],
   "npmClient": "yarn",
   "useWorkspaces": true,
