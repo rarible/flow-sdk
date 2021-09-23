@@ -21,37 +21,37 @@ export const CommonNftOrder = {
 	}),
 
 	buyItem: (saleOfferResourceId: number, storefrontAddress: string): MethodArgs => ({
-		type: "script",
+		type: "tx",
 		cadence: nftStorefrontTransactions.buy_item,
 		args: [[saleOfferResourceId, t.UInt64], [storefrontAddress, t.Address]],
 	}),
 
 	cleanupItem: (saleOfferResourceId: number, storefrontAddress: string): MethodArgs => ({
-		type: "script",
+		type: "tx",
 		cadence: nftStorefrontTransactions.cleanup_item,
 		args: [[saleOfferResourceId, t.UInt64], [storefrontAddress, t.Address]],
 	}),
 
 	removeItem: (saleOfferResourceId: number): MethodArgs => ({
-		type: "script",
+		type: "tx",
 		cadence: nftStorefrontTransactions.remove_item,
 		args: [[saleOfferResourceId, t.UInt64]],
 	}),
 
 	sellItem: (saleItemId: number, saleItemPrice: string): MethodArgs => ({
-		type: "script",
+		type: "tx",
 		cadence: nftStorefrontTransactions.sell_item,
 		args: [[saleItemId, t.UInt64], [saleItemPrice, t.UFix64]],
 	}),
 
 	setFees: (sellerFee: string, buyerFee: string): MethodArgs => ({
-		type: "script",
+		type: "tx",
 		cadence: nftStorefrontTransactions.set_fees,
 		args: [[sellerFee, t.UFix64], [buyerFee, t.UFix64]],
 	}),
 
 	setupAccount: (): MethodArgs => ({
-		type: "script",
+		type: "tx",
 		cadence: nftStorefrontTransactions.setup_account,
 	}),
 }
