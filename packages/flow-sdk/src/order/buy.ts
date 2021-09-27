@@ -1,17 +1,8 @@
-import { CommonNftOrder, runTransaction, waitForSeal } from "@rarible/flow-sdk-scripts"
-import { CONFIGS, Networks } from "../config"
+import { getCollectionConfig, Networks, runTransaction, waitForSeal } from "@rarible/flow-sdk-scripts"
 
 export async function buy(network: Networks, collection: string, orderId: number, owner: string) {
-	const collectionAddress = CONFIGS[network].contracts.CommonNFT
-	const addressMap = CONFIGS[network].contracts
-	switch (collection) {
-		case `A.${collectionAddress}.CommonNFT.NFT`: {
-			const txId = await runTransaction(network, addressMap, CommonNftOrder.buyItem(orderId, owner))
-			await waitForSeal(txId)
-			return txId
-		}
-		default: {
-			throw Error("Wrong collection")
-		}
-	}
+	const { addressMap, collectionConfig } = getCollectionConfig(network, collection)
+	const txId = await runTransaction(network, addressMap, collectionConfig.transactions.order.buy(orderId, owner))
+	await waitForSeal(txId)
+	return txId
 }

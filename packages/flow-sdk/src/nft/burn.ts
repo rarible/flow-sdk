@@ -1,17 +1,12 @@
-import { CommonNft, runTransaction, waitForSeal } from "@rarible/flow-sdk-scripts"
-import { CONFIGS, Networks } from "../config"
+import { getCollectionConfig, Networks, runTransaction, waitForSeal } from "@rarible/flow-sdk-scripts"
 
 export async function burn(network: Networks, collection: string, tokenId: number): Promise<string> {
-	const collectionAddress = CONFIGS[network].contracts.CommonNFT
-	const addressMap = CONFIGS[network].contracts
-	switch (collection) {
-		case `A.${collectionAddress}.CommonNFT.NFT`: {
-			const txId = await runTransaction(network, addressMap, CommonNft.burn(tokenId))
-			await waitForSeal(txId)
-			return txId
-		}
-		default: {
-			throw Error("Wrong collection")
-		}
+	const { addressMap, collectionConfig } = getCollectionConfig(network, collection)
+	if (collectionConfig.mintable) {
+		const txId = await runTransaction(network, addressMap, collectionConfig.transactions.nft.burn(tokenId))
+		await waitForSeal(txId)
+		return txId
+	} else {
+		throw Error("This collection doesn't support 'burn'")
 	}
 }

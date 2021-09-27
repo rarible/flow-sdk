@@ -12,16 +12,16 @@
   "repository": "https://github.com/rarible/flow-sdk",
   "scripts": {
     "prepare": "install-peers",
-    "build": "tsc --project tsconfig-build.json",
+    "build": "rimraf ./build && tsc --project tsconfig-build.json",
     "clean": "rimraf ./build",
-    "verify": "tsc --noEmit"
+    "verify": "tsc --noEmit",
+    "test": "jest --passWithNoTests --maxWorkers=1"
   },
   "dependencies": {
   },
   "peerDependencies": {
     "@onflow/fcl": "0.0.77",
-    "@onflow/types": "0.0.5",
-    "flow-cadut": "^0.1.6"
+    "@onflow/types": "0.0.5"
   },
   "devDependencies": {
     "typescript": "^4.4.2",
@@ -31,6 +31,7 @@
     "ts-jest": "27.0.5",
     "elliptic": "^6.5.4",
     "@babel/core": "^7.15.5",
-    "@babel/preset-env": "^7.15.6"
+    "@babel/preset-env": "^7.15.6",
+    "flow-js-testing": "^0.1.13"
   }
 }

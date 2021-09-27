@@ -1,4 +1,4 @@
-import { Royalty } from "@rarible/flow-sdk-scripts"
+import { CONFIGS, Networks, Royalty } from "@rarible/flow-sdk-scripts"
 import { config } from "@onflow/fcl"
 import { mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
@@ -6,8 +6,7 @@ import { transfer as transferTemplate } from "./nft/transfer"
 import { sell as sellTemplate } from "./order/sell"
 import { buy as buyTemplate } from "./order/buy"
 import { cancelOrder as cancelOrderTmeplate } from "./order/cancel-order"
-import { CONFIGS, Networks } from "./config"
-import { signUserMessage } from "./utils/sign-user-message"
+import { signUserMessage } from "./signature/sign-user-message"
 
 export type FlowNftSdk = {
 	mint(collection: string, metadata: string, royalties: Royalty[]): Promise<string>
