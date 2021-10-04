@@ -3,6 +3,5 @@ import { getCollectionConfig, Networks, runTransaction, waitForSeal } from "@rar
 export async function buy(network: Networks, collection: string, orderId: number, owner: string) {
 	const { addressMap, collectionConfig } = getCollectionConfig(network, collection)
 	const txId = await runTransaction(network, addressMap, collectionConfig.transactions.order.buy(orderId, owner))
-	await waitForSeal(txId)
-	return txId
+	return await waitForSeal(txId)
 }

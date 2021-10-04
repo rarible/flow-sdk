@@ -36,14 +36,31 @@ export const runTransaction = async (network: Networks, addressMap: AddressMap, 
 	}
 
 	if (params.args) {
-		ix.push(...params.args)
+		ix.push(params.args)
 	}
 	ix.push(fcl.transaction(code))
 	return fcl.send(ix).then(fcl.decode)
 }
 
-export const waitForSeal = async (txId: string) =>
-	await fcl.tx(txId).onceSealed()
+export type TxResult = {
+	error: Error | null,
+	txId: string
+}
+
+export const waitForSeal = async (txId: string): Promise<TxResult> => {
+	try {
+		await fcl.tx(txId).onceSealed()
+		return { error: null, txId }
+	} catch (e: any) {
+		return {
+			error: {
+				message: `Transaction sent, but got error when wait for seal: ${e}`,
+				name: "Transaction processing error",
+			},
+			txId,
+		}
+	}
+}
 
 export const contractAddressHex = async (label: string) =>
 	fcl.sansPrefix(await fcl.config.get(label))

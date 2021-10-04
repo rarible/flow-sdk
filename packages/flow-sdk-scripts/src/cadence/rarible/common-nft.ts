@@ -46,7 +46,7 @@ export const CommonNft = {
 
 	mint: (collectionAddress: string, metadata: string, royalties: Royalty[]) => {
 		const RoyaltiesType = t.Array(t.Struct(
-			`A.${collectionAddress}.CommonNFT.Royalties`,
+			`A.${fcl.sansPrefix(collectionAddress)}.CommonNFT.Royalties`,
 			[
 				{ value: t.Address },
 				{ value: t.UFix64 },
