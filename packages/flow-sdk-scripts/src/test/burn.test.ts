@@ -1,11 +1,11 @@
 import { getAccountAddress, sendTransaction } from "flow-js-testing"
-import { createFlowEmulator } from "@rarible/flow-test-common/build"
+import { createFlowEmulator } from "@rarible/flow-test-common/src"
 import t from "@onflow/types"
-import { convertRoyalties } from "@rarible/flow-sdk-scripts/build/common-nft"
-import { commonNftTransactions } from "@rarible/flow-sdk-scripts/build/scripts"
-import { replaceImportAddresses } from "@rarible/flow-sdk-scripts/build/utils/replace-imports"
 import { sansPrefix } from "@onflow/fcl"
-import { getContractsAddressMap } from "../config"
+import { getCollectionConfig } from "../config"
+import { replaceImportAddresses } from "../utils/replace-imports"
+import { commonNftTransactions } from "../cadence/rarible/scripts"
+import { convertRoyalties } from "../cadence/rarible/common-nft"
 
 describe("test burn", () => {
 	const { accountName } = createFlowEmulator({})
@@ -16,7 +16,7 @@ describe("test burn", () => {
 	})
 
 	test("should burn minted item", async () => {
-		const addressMap = getContractsAddressMap("emulator", accountAddress)
+		const { addressMap } = getCollectionConfig("emulator", `A.${accountAddress}`)
 		const code = replaceImportAddresses(
 			commonNftTransactions.mint,
 			addressMap,

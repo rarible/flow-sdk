@@ -1,14 +1,16 @@
-import { CommonNftOrder, runTransaction, waitForSeal } from "@rarible/flow-sdk-scripts"
-import { CONFIGS, Networks } from "../config"
+import { getCollectionConfig, Networks, runTransaction, waitForSeal } from "@rarible/flow-sdk-scripts"
 
 export async function cancelOrder(network: Networks, collection: string, orderId: number) {
-	const collectionAddress = CONFIGS[network].contracts.CommonNFT
-	const addressMap = CONFIGS[network].contracts
+	const { addressMap, collectionConfig, collectionAddress } = getCollectionConfig(network, collection)
 	switch (collection) {
 		case `A.${collectionAddress}.CommonNFT.NFT`: {
-			const txId = await runTransaction(network, addressMap, CommonNftOrder.removeItem(orderId))
-			await waitForSeal(txId)
-			return txId
+			if (collectionConfig.mintable) {
+				const txId = await runTransaction(network, addressMap, collectionConfig.transactions.order.removeOrder(orderId))
+				await waitForSeal(txId)
+				return txId
+			} else {
+				throw Error("This collection doesn't support order canceling")
+			}
 		}
 		default: {
 			throw Error("Wrong collection")

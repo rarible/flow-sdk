@@ -1,16 +1,12 @@
 import { getAccountAddress, sendTransaction } from "flow-js-testing"
-import { createFlowEmulator } from "@rarible/flow-test-common/build"
-import { getContractsAddressMap } from "../config"
-import { replaceImportAddresses } from "@rarible/flow-sdk-scripts/build/utils/replace-imports"
-import {
-	commonNftTransactions,
-	nftStorefrontScripts,
-	nftStorefrontTransactions,
-} from "@rarible/flow-sdk-scripts/build/scripts"
-import { convertRoyalties } from "@rarible/flow-sdk-scripts/build/common-nft"
 import * as fcl from "@onflow/fcl"
 import { sansPrefix } from "@onflow/fcl"
 import * as t from "@onflow/types"
+import { createFlowEmulator } from "@rarible/flow-test-common/src"
+import { getCollectionConfig } from "../config"
+import { replaceImportAddresses } from "../utils/replace-imports"
+import { commonNftTransactions, nftStorefrontScripts, nftStorefrontTransactions } from "../cadence/rarible/scripts"
+import { convertRoyalties } from "../cadence/rarible/common-nft"
 
 describe("test sell", () => {
 	const { accountName } = createFlowEmulator({})
@@ -20,7 +16,7 @@ describe("test sell", () => {
 		accountAddress = await getAccountAddress(accountName)
 	})
 	test("should place sell order nft", async () => {
-		const addressMap = getContractsAddressMap("emulator", accountAddress)
+		const { addressMap } = getCollectionConfig("emulator", `A.${accountAddress}.`)
 
 		//mint nft
 		const code = replaceImportAddresses(
