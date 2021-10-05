@@ -8,21 +8,60 @@ import { buy as buyTemplate } from "./order/buy"
 import { cancelOrder as cancelOrderTmeplate } from "./order/cancel-order"
 import { signUserMessage } from "./signature/sign-user-message"
 
-export type FlowNftSdk = {
+export interface FlowNftSdk {
+	/**
+	 *
+	 * @param collection
+	 * @param metadata
+	 * @param royalties
+	 */
 	mint(collection: string, metadata: string, royalties: Royalty[]): Promise<string>
+
+	/**
+	 *
+	 * @param collection
+	 * @param tokenId
+	 * @param to
+	 */
 	transfer(collection: string, tokenId: number, to: string): Promise<string>
+
+	/**
+	 *
+	 * @param collection
+	 * @param tokenId
+	 */
 	burn(collection: string, tokenId: number): Promise<string>
 }
 
-export type FlowOrderSdk = {
+export interface FlowOrderSdk {
+	/**
+	 *
+	 * @param collection
+	 * @param sellItemId
+	 * @param sellItemPrice
+	 */
 	sell(collection: string, sellItemId: number, sellItemPrice: string): Promise<string>
+
+	/**
+	 *
+	 * @param collection
+	 * @param itemId
+	 * @param owner
+	 */
 	buy(collection: string, itemId: number, owner: string): Promise<string>
+
+	/**
+	 *
+	 * @param collection
+	 * @param orderId
+	 */
 	cancelOrder(collection: string, orderId: number): Promise<string>
 }
 
-type FlowSdk = {
+export interface FlowSdk {
 	nft: FlowNftSdk,
 	order: FlowOrderSdk,
+
 	signUserMessage(message: string): Promise<string>
 }
 

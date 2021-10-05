@@ -1,7 +1,8 @@
 import * as fcl from "@onflow/fcl"
 
-type CurrentUser = {
+interface CurrentUser {
 	snapshot(): Promise<any>
+
 	signUserMessage(message: string): Promise<Signature[]>
 }
 

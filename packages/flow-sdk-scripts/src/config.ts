@@ -8,7 +8,6 @@ export type AddressMap = { [key: string]: string }
 export type Networks = "emulator" | "testnet" | "mainnet"
 
 const blocktoWallet = "https://flow-wallet-testnet.blocto.app/authn"
-const fclWalletSelect = "https://fcl-discovery.onflow.org/testnet/authn"
 
 type ConfigData = RaribleConfigData | MotoGpConfigData
 type RaribleConfigData = {
@@ -62,9 +61,7 @@ const motoGPConfigData: ConfigData = {
 type Config = {
 	walletDiscovery: string,
 	accessNode: string,
-	collections: {
-		[key: FlowAddress]: ConfigData
-	},
+	collections: Record<FlowAddress, ConfigData>
 	mainAddressMap: { [key: string]: FlowAddress }
 }
 
