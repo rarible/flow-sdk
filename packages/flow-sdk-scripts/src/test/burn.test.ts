@@ -35,7 +35,7 @@ describe("test burn", () => {
 		})
 		expect(result.events[0].type).toBe(`A.${sansPrefix(accountAddress)}.CommonNFT.Mint`)
 		expect(result.events[1].type).toBe(`A.${sansPrefix(accountAddress)}.CommonNFT.Deposit`)
-		const { id: tokenId, to: recipient } = result.events[1].data
+		const { id: tokenId } = result.events[1].data
 		const burnCode = replaceImportAddresses(commonNftTransactions.burn, addressMap)
 		const burnResult = await sendTransaction({
 			code: burnCode,

@@ -1,7 +1,5 @@
 import * as fcl from "@onflow/fcl"
-import { authorization } from "./crypto"
 import { replaceImportAddresses } from "./utils/replace-imports"
-import { Networks } from "./config"
 
 export type MethodArgs = {
 	cadence: string
@@ -15,25 +13,10 @@ export const runScript = async (script: any[]) => {
 
 export type AddressMap = { [key: string]: string }
 
-export const runTransaction = async (network: Networks, addressMap: AddressMap, params: MethodArgs, signers?: any[]): Promise<string> => {
+export const runTransaction = async (addressMap: AddressMap, params: MethodArgs): Promise<string> => {
 	const code = replaceImportAddresses(params.cadence, addressMap)
 	const ix = [fcl.limit(999)]
-	switch (network) {
-		case "emulator": {
-			const serviceAuth = authorization()
-			ix.push(fcl.payer(serviceAuth), fcl.proposer(serviceAuth))
-			if (signers) {
-				const auths = signers.map((address) => authorization(address))
-				ix.push(fcl.authorizations(auths))
-			} else {
-				ix.push(fcl.authorizations([serviceAuth]))
-			}
-		}
-		case "testnet":
-		case "mainnet": {
-			ix.push(fcl.payer(fcl.authz), fcl.proposer(fcl.authz), fcl.authorizations([fcl.authz]))
-		}
-	}
+	ix.push(fcl.payer(fcl.authz), fcl.proposer(fcl.authz), fcl.authorizations([fcl.authz]))
 
 	if (params.args) {
 		ix.push(params.args)
@@ -64,4 +47,3 @@ export const waitForSeal = async (txId: string): Promise<TxResult> => {
 
 export const contractAddressHex = async (label: string) =>
 	fcl.sansPrefix(await fcl.config.get(label))
-

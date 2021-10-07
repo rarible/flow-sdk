@@ -9,10 +9,9 @@
     "typings.d.ts"
   ],
   "private": true,
-  "repository": "https://github.com/rarible/flow-sdk",
   "scripts": {
     "prepare": "install-peers",
-    "build": "rimraf ./build && tsc --project tsconfig-build.json",
+    "build": "tsc --project tsconfig-build.json",
     "clean": "rimraf ./build",
     "verify": "tsc --noEmit",
     "test": "jest --passWithNoTests --maxWorkers=1"
@@ -24,7 +23,7 @@
     "@onflow/types": "0.0.5"
   },
   "devDependencies": {
-    "typescript": "^4.4.2",
+    "typescript": "^4.3.5",
     "@types/jest": "27.0.1",
     "babel-jest": "^27.1.0",
     "jest": "^27.2.0",
@@ -33,5 +32,9 @@
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.6",
     "flow-js-testing": "^0.1.13"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }

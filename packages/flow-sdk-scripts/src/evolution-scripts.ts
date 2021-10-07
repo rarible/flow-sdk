@@ -9,7 +9,7 @@ pub fun main(address: Address, tokenId: UInt64): &AnyResource {
     let collection = getAccount(address).getCapability<&{Evolution.EvolutionCollectionPublic}>(/public/f4264ac8f3256818_Evolution_Collection).borrow()!
     return collection.borrowNFT(id: tokenId)
 }
-`, 
+`,
 	check: `
 
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
@@ -19,7 +19,7 @@ pub fun main(address: Address): Bool? {
     let account = getAccount(address)
     return getAccount(address).getCapability<&{Evolution.EvolutionCollectionPublic}>(/public/f4264ac8f3256818_Evolution_Collection).check()
 }
-`, 
+`,
 	get_ids: `
 
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
@@ -30,5 +30,5 @@ pub fun main(address: Address): [UInt64]? {
     let collection = getAccount(address).getCapability<&{Evolution.EvolutionCollectionPublic}>(/public/f4264ac8f3256818_Evolution_Collection).borrow()!
     return collection.getIDs()
 }
-`
+`,
 }

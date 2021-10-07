@@ -1,10 +1,17 @@
 {
   "packages": [
-    "packages/flow-test-common",
-    "packages/flow-sdk-scripts",
-    "packages/flow-sdk"
+    "packages/*"
   ],
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "command": {
+    "publish": {
+      "allowBranch": "master",
+      "conventionalCommits": true,
+      "registry": "https://registry.npmjs.org/",
+      "message": "chore(release): bump versions after release",
+      "yes": true
+    }
+  }
 }

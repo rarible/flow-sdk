@@ -62,7 +62,7 @@ transaction(saleItemID: UInt64, saleItemPrice: UFix64) {
         )
     }
 }
-`, 
+`,
 	buy_item: `
 
 import FungibleToken from 0xFUNGIBLETOKEN
@@ -109,7 +109,7 @@ transaction(saleOfferResourceID: UInt64, storefrontAddress: Address) {
         self.storefront.cleanup(saleOfferResourceID: saleOfferResourceID)
     }
 }
-`, 
+`,
 	remove_item: `
 import NFTStorefront from 0xNFTSTOREFRONT
 
@@ -124,5 +124,5 @@ transaction(saleOfferResourceID: UInt64) {
     execute {
         self.storefront.removeSaleOffer(saleOfferResourceID: saleOfferResourceID)
     }
-}`
+}`,
 }

@@ -1,37 +1,48 @@
 {
   "name": "root",
   "private": true,
-  "license": "MIT",
   "workspaces": [
-    "packages/flow-sdk",
-    "packages/flow-sdk-scripts",
-    "packages/flow-test-common"
+    "packages/*"
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap && lerna link",
-    "clean": "yarn workspaces run clean",
-    "build-all": "sh build-all.sh",
+    "clean": "lerna run clean --parallel",
+    "build-all": "sh ./scripts/build.sh",
     "build-sdk": "yarn workspace @rarible/flow-sdk run build",
     "build-scripts": "yarn workspace @rarible/flow-sdk-scripts run build",
     "build-test": "yarn workspace @rarible/flow-test-common run build",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx ./",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
+    "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx . --fix",
     "release": "lerna publish from-package",
-    "prettify": "prettier --write **/src/**/*",
-    "test": "yarn workspaces run test",
-    "verify": "yarn workspaces run verify"
+    "prettify:packages": "lerna exec -- sort-package-json && sort-package-json",
+    "prettify": "run-s prettify:*",
+    "test": "lerna run test --parallel",
+    "verify": "lerna run verify --parallel",
+    "lint-staged": "lint-staged",
+    "publish-all": "lerna publish from-package",
+    "precommit": "run-s verify lint"
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": [
-      "yarn run prettify"
+    "**/src/package.json": [
+      "yarn run prettify:packages"
+    ],
+    "package.json": [
+      "yarn run prettify:packages"
     ]
   },
   "devDependencies": {
     "@roborox/eslint-config-default": "2.2.0",
-    "eslint": "7.10.0",
+    "eslint": "7.32.0",
     "eslint-config-prettier": "6.11.0",
-    "lerna": "^3.22.1",
-    "lint-staged": "10.4.0",
     "prettier": "2.1.2",
-    "tslib": "2.3.1"
+    "@rarible/eslint-config-ts": "0.0.5",
+    "can-npm-publish": "1.3.5",
+    "husky": "4.3.0",
+    "lerna": "4.0.0",
+    "lint-staged": "10.4.0",
+    "npm-run-all": "4.1.5",
+    "sort-package-json": "1.50.0",
+    "tslib": "2.3.1",
+    "typescript": "4.3.5"
   }
 }

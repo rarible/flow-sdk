@@ -35,7 +35,7 @@ describe("test transfer", () => {
 
 		expect(result.events[0].type).toBe(`A.${sansPrefix(accountAddress)}.CommonNFT.Mint`)
 		expect(result.events[1].type).toBe(`A.${sansPrefix(accountAddress)}.CommonNFT.Deposit`)
-		const { id: tokenId, to: recipient } = result.events[1].data
+		const { id: tokenId } = result.events[1].data
 		const transferCode = replaceImportAddresses(commonNftTransactions.transfer, addressMap)
 		const transferResult = await sendTransaction({
 			code: transferCode,
