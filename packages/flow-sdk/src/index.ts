@@ -1,4 +1,4 @@
-import { CONFIGS, Networks, Royalty } from "@rarible/flow-sdk-scripts"
+import { CONFIGS, Networks, Royalty, TxResult } from "@rarible/flow-sdk-scripts"
 import { config } from "@onflow/fcl"
 import { mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
@@ -15,7 +15,7 @@ export interface FlowNftSdk {
 	 * @param metadata
 	 * @param royalties
 	 */
-	mint(collection: string, metadata: string, royalties: Royalty[]): Promise<string>
+	mint(collection: string, metadata: string, royalties: Royalty[]): Promise<TxResult>
 
 	/**
 	 *
@@ -23,14 +23,14 @@ export interface FlowNftSdk {
 	 * @param tokenId
 	 * @param to
 	 */
-	transfer(collection: string, tokenId: number, to: string): Promise<string>
+	transfer(collection: string, tokenId: number, to: string): Promise<TxResult>
 
 	/**
 	 *
 	 * @param collection
 	 * @param tokenId
 	 */
-	burn(collection: string, tokenId: number): Promise<string>
+	burn(collection: string, tokenId: number): Promise<TxResult>
 }
 
 export interface FlowOrderSdk {
@@ -40,7 +40,7 @@ export interface FlowOrderSdk {
 	 * @param sellItemId
 	 * @param sellItemPrice
 	 */
-	sell(collection: string, sellItemId: number, sellItemPrice: string): Promise<string>
+	sell(collection: string, sellItemId: number, sellItemPrice: string): Promise<TxResult>
 
 	/**
 	 *
@@ -48,14 +48,14 @@ export interface FlowOrderSdk {
 	 * @param itemId
 	 * @param owner
 	 */
-	buy(collection: string, itemId: number, owner: string): Promise<string>
+	buy(collection: string, itemId: number, owner: string): Promise<TxResult>
 
 	/**
 	 *
 	 * @param collection
 	 * @param orderId
 	 */
-	cancelOrder(collection: string, orderId: number): Promise<string>
+	cancelOrder(collection: string, orderId: number): Promise<TxResult>
 }
 
 export interface FlowSdk {

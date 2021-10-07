@@ -6,8 +6,7 @@ export async function cancelOrder(network: Networks, collection: string, orderId
 		case `A.${collectionAddress}.CommonNFT.NFT`: {
 			if (collectionConfig.mintable) {
 				const txId = await runTransaction(addressMap, collectionConfig.transactions.order.removeOrder(orderId))
-				await waitForSeal(txId)
-				return txId
+				return await waitForSeal(txId)
 			} else {
 				throw Error("This collection doesn't support order canceling")
 			}
