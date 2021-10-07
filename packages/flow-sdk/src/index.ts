@@ -14,8 +14,9 @@ export interface FlowNftSdk {
 	 * @param collection
 	 * @param metadata
 	 * @param royalties
+	 * @return token id
 	 */
-	mint(collection: string, metadata: string, royalties: Royalty[]): Promise<TxResult>
+	mint(collection: string, metadata: string, royalties: Royalty[]): Promise<number>
 
 	/**
 	 *

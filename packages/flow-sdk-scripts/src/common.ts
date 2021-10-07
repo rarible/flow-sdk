@@ -26,21 +26,24 @@ export const runTransaction = async (addressMap: AddressMap, params: MethodArgs)
 }
 
 export type TxResult = {
-	error: Error | null,
-	txId: string
+	error: boolean,
+	txId: string,
+	events: any[]
+	errorMessage?: string,
+	status?: number
+	statusCode?: number
 }
 
 export const waitForSeal = async (txId: string): Promise<TxResult> => {
 	try {
-		await fcl.tx(txId).onceSealed()
-		return { error: null, txId }
+		const sealed = await fcl.tx(txId).onceSealed()
+		return { error: false, txId, ...sealed }
 	} catch (e: any) {
 		return {
-			error: {
-				message: `Transaction sent, but got error when wait for seal: ${e}`,
-				name: "Transaction processing error",
-			},
+			error: true,
+			errorMessage: `Transaction sent, but got error when wait for seal: ${e}`,
 			txId,
+			events: [],
 		}
 	}
 }
