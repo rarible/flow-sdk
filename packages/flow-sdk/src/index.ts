@@ -1,4 +1,4 @@
-import { CONFIGS, Networks, Royalty } from "@rarible/flow-sdk-scripts"
+import { CONFIGS, Networks, Royalty, TxResult } from "@rarible/flow-sdk-scripts"
 import { config } from "@onflow/fcl"
 import { mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
@@ -9,15 +9,15 @@ import { cancelOrder as cancelOrderTmeplate } from "./order/cancel-order"
 import { signUserMessage } from "./signature/sign-user-message"
 
 export type FlowNftSdk = {
-	mint(collection: string, metadata: string, royalties: Royalty[]): Promise<string>
-	transfer(collection: string, tokenId: number, to: string): Promise<string>
-	burn(collection: string, tokenId: number): Promise<string>
+	mint(collection: string, metadata: string, royalties: Royalty[]): Promise<TxResult>
+	transfer(collection: string, tokenId: number, to: string): Promise<TxResult>
+	burn(collection: string, tokenId: number): Promise<TxResult>
 }
 
 export type FlowOrderSdk = {
-	sell(collection: string, sellItemId: number, sellItemPrice: string): Promise<string>
-	buy(collection: string, itemId: number, owner: string): Promise<string>
-	cancelOrder(collection: string, orderId: number): Promise<string>
+	sell(collection: string, sellItemId: number, sellItemPrice: string): Promise<TxResult>
+	buy(collection: string, itemId: number, owner: string): Promise<TxResult>
+	cancelOrder(collection: string, orderId: number): Promise<TxResult>
 }
 
 type FlowSdk = {
