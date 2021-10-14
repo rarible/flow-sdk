@@ -1,21 +1,10 @@
-import * as fcl from "@onflow/fcl"
+import type { Fcl } from "../fcl"
 
-interface CurrentUser {
-	snapshot(): Promise<any>
-
-	signUserMessage(message: string): Promise<Signature[]>
-}
-
-type Signature = {
-	addr: string
-	signature: string
-}
-
-export async function signUserMessage(message: string): Promise<string> {
-	const currentUser: CurrentUser = fcl.currentUser()
+export async function signUserMessage(fcl: Fcl, message: string): Promise<string> {
+	const currentUser = fcl.currentUser()
 	const userAddress = (await currentUser.snapshot()).addr
 	const messageHex = Buffer.from(message).toString("hex")
-	const signatures: Signature[] = await currentUser.signUserMessage(messageHex)
+	const signatures = await currentUser.signUserMessage(messageHex)
 	if (signatures.length) {
 		const signature = signatures.find(s => s.addr.toLowerCase() === userAddress.toLowerCase())?.signature
 		if (signature) {
