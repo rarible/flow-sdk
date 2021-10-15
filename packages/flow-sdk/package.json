@@ -1,6 +1,6 @@
 {
   "name": "@rarible/flow-sdk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "SDK for interact with flow blockchain and Rarible protocol",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -14,8 +14,6 @@
     "clean": "rimraf ./build",
     "test": "jest --passWithNoTests",
     "verify": "tsc --noEmit"
-  },
-  "devDependencies": {
   },
   "peerDependencies": {
     "@rarible/flow-sdk-scripts": "0.0.1",
