@@ -1,6 +1,6 @@
 {
   "name": "@rarible/flow-sdk",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "SDK for interact with flow blockchain and Rarible protocol",
   "main": "build/index.js",
   "types": "build/index.d.ts",
