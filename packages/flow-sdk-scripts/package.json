@@ -9,7 +9,6 @@
     "typings.d.ts"
   ],
   "scripts": {
-    "prepare": "install-peers",
     "build": "tsc --project tsconfig-build.json",
     "clean": "rimraf ./build",
     "verify": "tsc --noEmit",
