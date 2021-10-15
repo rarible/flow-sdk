@@ -10,7 +10,6 @@
   ],
   "private": true,
   "scripts": {
-    "prepare": "install-peers",
     "build": "tsc --project tsconfig-build.json",
     "clean": "rimraf ./build",
     "verify": "tsc --noEmit",
