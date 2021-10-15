@@ -7,7 +7,25 @@ import { FlowAddress } from "./types/types"
 export type AddressMap = { [key: string]: string }
 export type Networks = "emulator" | "testnet" | "mainnet"
 
-const blocktoWallet = "https://flow-wallet-testnet.blocto.app/authn"
+type BlocktoWallet = Record<Networks, {
+	accessNode: string
+	wallet: string
+}>
+
+const blocktoWallet: BlocktoWallet = {
+	testnet: {
+		accessNode: "https://access-testnet.onflow.org",
+		wallet: "https://flow-wallet-testnet.blocto.app/authn",
+	},
+	mainnet: {
+		accessNode: "https://flow-access-mainnet.portto.io",
+		wallet: "https://flow-wallet.blocto.app/authn",
+	},
+	emulator: {
+		accessNode: "127.0.0.1:3569",
+		wallet: "",
+	},
+}
 
 type ConfigData = RaribleConfigData | MotoGpConfigData
 type RaribleConfigData = {
@@ -61,6 +79,7 @@ const motoGPConfigData: ConfigData = {
 type Config = {
 	walletDiscovery: string,
 	accessNode: string,
+	challengeHandshake: string,
 	collections: Record<FlowAddress, ConfigData>
 	mainAddressMap: { [key: string]: FlowAddress }
 }
@@ -69,6 +88,7 @@ export const CONFIGS: Record<Networks, Config> = {
 	emulator: {
 		walletDiscovery: "",
 		accessNode: "127.0.0.1:3569",
+		challengeHandshake: "",
 		collections: {
 			[raribleCollection.emulator]: raribleConfigData,
 			[motoGpCollection.emulator]: motoGPConfigData,
@@ -80,8 +100,9 @@ export const CONFIGS: Record<Networks, Config> = {
 		},
 	},
 	testnet: {
-		walletDiscovery: blocktoWallet,
-		accessNode: "https://access-testnet.onflow.org",
+		walletDiscovery: "",
+		accessNode: blocktoWallet.testnet.accessNode,
+		challengeHandshake: blocktoWallet.testnet.wallet,
 		collections: {
 			[raribleCollection.testnet]: raribleConfigData,
 			[motoGpCollection.testnet]: motoGPConfigData,
@@ -93,8 +114,9 @@ export const CONFIGS: Record<Networks, Config> = {
 		},
 	},
 	mainnet: {
-		walletDiscovery: blocktoWallet,
-		accessNode: "access.mainnet.nodes.onflow.org:9000",
+		walletDiscovery: "",
+		accessNode: blocktoWallet.mainnet.accessNode,
+		challengeHandshake: blocktoWallet.mainnet.wallet,
 		collections: {
 			[raribleCollection.mainnet]: raribleConfigData,
 			[motoGpCollection.mainnet]: motoGPConfigData,

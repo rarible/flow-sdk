@@ -11,6 +11,7 @@
     "build-sdk": "yarn workspace @rarible/flow-sdk run build",
     "build-scripts": "yarn workspace @rarible/flow-sdk-scripts run build",
     "build-test": "yarn workspace @rarible/flow-test-common run build",
+    "build-fcl-provider": "yarn workspace @rarible/fcl-provider run build",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx . --fix",
     "release": "lerna publish from-package",

@@ -18,8 +18,6 @@
   "devDependencies": {
   },
   "peerDependencies": {
-    "@onflow/fcl": "^0.0.77",
-    "@onflow/types": "^0.0.5",
     "@rarible/flow-sdk-scripts": "0.0.1",
     "typescript": "4.3.5"
   },

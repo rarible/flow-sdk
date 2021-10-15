@@ -1,0 +1,28 @@
+{
+  "name": "@rarible/fcl-provider",
+  "version": "0.0.1",
+  "description": "",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "files": [
+    "build",
+    "typings.d.ts"
+  ],
+  "private": true,
+  "scripts": {
+    "prepare": "install-peers",
+    "build": "tsc --project tsconfig-build.json",
+    "clean": "rimraf ./build",
+    "verify": "tsc --noEmit",
+    "test": "jest --passWithNoTests --maxWorkers=1"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "typescript": "^4.3.5"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  }
+}
