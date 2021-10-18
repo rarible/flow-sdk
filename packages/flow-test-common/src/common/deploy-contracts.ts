@@ -5,10 +5,7 @@ export async function deployAll(address: string) {
 		name: "NonFungibleToken",
 		to: address,
 	})
-	// await deployContractByName({
-	// 	name: "FungibleToken",
-	// 	to: address,
-	// })
+
 	await deployContractByName({
 		name: "NFTPlus",
 		to: address,

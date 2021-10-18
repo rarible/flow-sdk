@@ -1,6 +1,6 @@
 {
-  "name": "@rarible/fcl-provider",
-  "version": "0.0.3",
+  "name": "@rarible/fcl-types",
+  "version": "0.0.1",
   "description": "",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -8,15 +8,11 @@
     "build",
     "typings.d.ts"
   ],
-  "private": true,
   "scripts": {
     "build": "tsc --project tsconfig-build.json",
     "clean": "rimraf ./build",
     "verify": "tsc --noEmit",
     "test": "jest --passWithNoTests --maxWorkers=1"
-  },
-  "dependencies": {
-    "@rarible/fcl-types": "0.0.1"
   },
   "devDependencies": {
     "typescript": "^4.3.5"

@@ -1,4 +1,5 @@
-import { CONFIGS, Networks, Royalty, TxResult } from "@rarible/flow-sdk-scripts"
+import type { Fcl } from "@rarible/fcl-types"
+import { Royalty } from "@rarible/flow-sdk-scripts"
 import { mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
 import { transfer as transferTemplate } from "./nft/transfer"
@@ -6,7 +7,8 @@ import { sell as sellTemplate } from "./order/sell"
 import { buy as buyTemplate } from "./order/buy"
 import { cancelOrder as cancelOrderTmeplate } from "./order/cancel-order"
 import { signUserMessage as signUserMessageTemplate } from "./signature/sign-user-message"
-import type { Fcl } from "./fcl"
+import { TxResult } from "./common/transaction"
+import { CONFIGS, Networks } from "./config"
 
 export interface FlowNftSdk {
 	/**
@@ -66,19 +68,27 @@ export interface FlowSdk {
 	signUserMessage(message: string): Promise<string>
 }
 
+
 // todo may be add config param for wallet discovery
-export function createFlowSdk(fcl: Fcl, network: Networks): FlowSdk {
+/**
+ *
+ * @param fcl
+ * @param network
+ * @param auth  - optional, only for testing purposes
+ */
+export function createFlowSdk(fcl: Fcl, network: Networks, auth?: any): FlowSdk {
 	fcl.config()
 		.put("accessNode.api", CONFIGS[network].accessNode)
 		.put("challenge.handshake", CONFIGS[network].challengeHandshake)
+	const authz = auth || fcl.authz
 
-	const mint = mintTemplate.bind(null, network)
-	const transfer = transferTemplate.bind(null, network)
-	const burn = burnTemplate.bind(null, network)
+	const mint = mintTemplate.bind(null, fcl, authz, network)
+	const transfer = transferTemplate.bind(null, fcl, network)
+	const burn = burnTemplate.bind(null, fcl, network)
 
-	const sell = sellTemplate.bind(null, network)
-	const buy = buyTemplate.bind(null, network)
-	const cancelOrder = cancelOrderTmeplate.bind(null, network)
+	const sell = sellTemplate.bind(null, fcl, network)
+	const buy = buyTemplate.bind(null, fcl, network)
+	const cancelOrder = cancelOrderTmeplate.bind(null, fcl, network)
 
 	const signUserMessage = signUserMessageTemplate.bind(null, fcl)
 
