@@ -1,11 +1,7 @@
 import * as t from "@onflow/types"
 import { Fcl } from "@rarible/fcl-types"
+import { Royalty } from "../../index"
 import { commonNftScripts, commonNftTransactions } from "./scripts"
-
-export type Royalty = {
-	account: string
-	value: string
-}
 
 export const convertRoyalties = (royalties: Royalty[]) =>
 	royalties.map(royalty => ({

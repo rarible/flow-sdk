@@ -11,7 +11,7 @@ import TopShot from 0xTOPSHOT
 // account: The Flow Address of the account whose moment data needs to be read
 // id: The unique ID for the moment whose data needs to be read
 
-// Returns: {String: String} 
+// Returns: {String: String}
 // A dictionary of all the play metadata associated
 // with the specified moment
 
@@ -30,7 +30,7 @@ pub fun main(account: Address, id: UInt64): {String: String} {
     // Get the moment's metadata to access its play and Set IDs
     let data = token.data
 
-    // Use the moment's play ID 
+    // Use the moment's play ID
     // to get all the metadata associated with that play
     let metadata = TopShot.getPlayMetaData(playID: data.playID) ?? panic("Play doesn't exist")
 
@@ -55,7 +55,7 @@ pub fun main(address: Address): Bool {
 import TopShot from 0xTOPSHOT
 
 // This is the script to get a list of all the moments' ids an account owns
-// Just change the argument to `getAccount` to whatever account you want
+// Just change the argument to 'getAccount' to whatever account you want
 // and as long as they have a published Collection receiver, you can see
 // the moments they own.
 

@@ -3,9 +3,9 @@ import t from "@onflow/types"
 import { createFlowEmulator } from "@rarible/flow-test-common/src"
 import { commonNftTransactions } from "@rarible/flow-sdk-scripts/src/cadence/rarible/scripts"
 import { convertRoyalties } from "@rarible/flow-sdk-scripts/src/cadence/rarible/common-nft"
-import { getCollectionConfig } from "../config"
 import { replaceImportAddresses } from "../common/replace-imports"
 import { sansPrefix } from "../common/utils"
+import { getCollectionConfig } from "../common/get-collection-config"
 
 describe("test-emulator transfer", () => {
 	const { accountName } = createFlowEmulator({})
