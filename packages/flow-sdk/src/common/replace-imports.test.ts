@@ -1,7 +1,7 @@
 import { replaceImportAddresses } from "./replace-imports"
 
 describe("replace import", () => {
-	test("test replace import", () => {
+	test("test-emulator replace import", () => {
 		const replaceResult = replaceImportAddresses(
 			`
 			import Contract1Name from "0x0"

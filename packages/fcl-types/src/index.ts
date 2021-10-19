@@ -1,11 +1,11 @@
-export type Fcl = {
+export interface Fcl {
 	sansPrefix(address: string): null | string
 
 	send(args: any[], opts?: {}): Promise<any>
 
 	getAccount(address: string): Promise<any>
 
-	config(): { put(c: string, a: string): any }
+	config(): { put(c: string, a: string): any, get(label: string): Promise<string> }
 
 	transaction(...a: any): any
 
@@ -23,18 +23,21 @@ export type Fcl = {
 
 	proposer(...a: any): any
 
-	tx(...a: any): any
-
 	limit(...a: any): any
 
-	tx(...a: any): any
-
 	currentUser(): CurrentUser
+
+	authz(): any
+
+	authorizations(signature: any[]): any
+
+	verifyUserSignature(message: string, compositeSignatures: any[]): any
+
+	withPrefix(address: string): string
 }
 
-
 interface CurrentUser {
-	snapshot(): Promise<any>
+	snapshot(): Promise<{ addr: string }>
 
 	signUserMessage(message: string): Promise<Signature[]>
 }

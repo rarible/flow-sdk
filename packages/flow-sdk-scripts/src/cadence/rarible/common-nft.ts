@@ -1,8 +1,8 @@
-import * as fcl from "@onflow/fcl"
 import * as t from "@onflow/types"
+import { Fcl } from "@rarible/fcl-types"
 import { commonNftScripts, commonNftTransactions } from "./scripts"
 
-export interface Royalty {
+export type Royalty = {
 	account: string
 	value: string
 }
@@ -16,22 +16,22 @@ export const convertRoyalties = (royalties: Royalty[]) =>
 	}))
 
 export const CommonNft = {
-	borrowNft: (address: string, tokenId: number) => ({
+	borrowNft: (fcl: Fcl, address: string, tokenId: number) => ({
 		cadence: commonNftScripts.borrow_nft,
 		args: fcl.args([fcl.arg(address, t.Address), fcl.arg(tokenId, t.UInt64)]),
 	}),
 
-	check: (address: string) => ({
+	check: (fcl: Fcl, address: string) => ({
 		cadence: commonNftScripts.check,
 		args: fcl.args([fcl.arg(address, t.Address)]),
 	}),
 
-	getIds: (address: string) => ({
+	getIds: (fcl: Fcl, address: string) => ({
 		cadence: commonNftScripts.get_ids,
 		args: fcl.args([fcl.arg(address, t.Address)]),
 	}),
 
-	burn: (tokenId: number) => ({
+	burn: (fcl: Fcl, tokenId: number) => ({
 		cadence: commonNftTransactions.burn,
 		args: fcl.args([fcl.arg(tokenId, t.UInt64)]),
 	}),
@@ -44,7 +44,7 @@ export const CommonNft = {
 		cadence: commonNftTransactions.clean,
 	}),
 
-	mint: (collectionAddress: string, metadata: string, royalties: Royalty[]) => {
+	mint: (fcl: Fcl, collectionAddress: string, metadata: string, royalties: Royalty[]) => {
 		const RoyaltiesType = t.Array(t.Struct(
 			`A.${fcl.sansPrefix(collectionAddress)}.CommonNFT.Royalties`,
 			[
@@ -59,7 +59,7 @@ export const CommonNft = {
 		})
 	},
 
-	transfer: (tokenId: number, to: string) => ({
+	transfer: (fcl: Fcl, tokenId: number, to: string) => ({
 		cadence: commonNftTransactions.transfer,
 		args: fcl.args([fcl.arg(tokenId, t.UInt64), fcl.arg(to, t.Address)]),
 	}),

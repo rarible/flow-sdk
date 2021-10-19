@@ -15,6 +15,9 @@
     "verify": "tsc --noEmit",
     "test": "jest --passWithNoTests --maxWorkers=1"
   },
+  "dependencies": {
+    "@rarible/fcl-types": "0.0.1"
+  },
   "devDependencies": {
     "typescript": "^4.3.5"
   },

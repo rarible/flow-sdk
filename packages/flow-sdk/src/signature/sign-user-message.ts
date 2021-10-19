@@ -1,4 +1,4 @@
-import type { Fcl } from "../fcl"
+import { Fcl } from "@rarible/fcl-types"
 
 export async function signUserMessage(fcl: Fcl, message: string): Promise<string> {
 	const currentUser = fcl.currentUser()

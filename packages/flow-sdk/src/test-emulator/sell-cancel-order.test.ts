@@ -1,14 +1,18 @@
 import { getAccountAddress, sendTransaction } from "flow-js-testing"
 import * as fcl from "@onflow/fcl"
-import { sansPrefix } from "@onflow/fcl"
 import * as t from "@onflow/types"
 import { createFlowEmulator } from "@rarible/flow-test-common/src"
+import {
+	commonNftTransactions,
+	nftStorefrontScripts,
+	nftStorefrontTransactions,
+} from "@rarible/flow-sdk-scripts/src/cadence/rarible/scripts"
+import { convertRoyalties } from "@rarible/flow-sdk-scripts/src/cadence/rarible/common-nft"
 import { getCollectionConfig } from "../config"
-import { replaceImportAddresses } from "../utils/replace-imports"
-import { commonNftTransactions, nftStorefrontScripts, nftStorefrontTransactions } from "../cadence/rarible/scripts"
-import { convertRoyalties } from "../cadence/rarible/common-nft"
+import { replaceImportAddresses } from "../common/replace-imports"
+import { sansPrefix } from "../common/utils"
 
-describe("test sell", () => {
+describe("test-emulator sell", () => {
 	const { accountName } = createFlowEmulator({})
 
 	let accountAddress: string
@@ -16,7 +20,7 @@ describe("test sell", () => {
 		accountAddress = await getAccountAddress(accountName)
 	})
 	test("should place sell order nft", async () => {
-		const { addressMap } = getCollectionConfig("emulator", `A.${accountAddress}`)
+		const { addressMap } = getCollectionConfig("emulator", `A.${accountAddress}.`)
 
 		//mint nft
 		const code = replaceImportAddresses(
@@ -57,11 +61,12 @@ describe("test sell", () => {
 		expect(nftType).toBe(`A.${sansPrefix(accountAddress)}.CommonNFT.NFT`)
 
 		//buy nft
-		const buyCode = replaceImportAddresses(nftStorefrontTransactions.buy_item, addressMap)
-		const buyResult = await sendTransaction({
-			code: buyCode,
-			args: [[saleOfferResourceID, t.UInt64], ["0xf8d6e0586b0a20c7", t.Address]],
+		const cancelCode = replaceImportAddresses(nftStorefrontTransactions.remove_item, addressMap)
+		const cancelResult = await sendTransaction({
+			code: cancelCode,
+			args: [[saleOfferResourceID, t.UInt64]],
 		})
-		expect(buyResult.events[10].data.id).toBe(tokenId)
+
+		expect(cancelResult.events[0]).toBeTruthy()
 	})
 })

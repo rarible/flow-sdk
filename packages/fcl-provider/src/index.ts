@@ -1,9 +1,13 @@
+import { Fcl } from "@rarible/fcl-types"
+import { Networks } from "@rarible/flow-sdk/build/config"
+
 export type FclConfig = {
 	fcl: Fcl
+	network: Networks
 	gas?: string | number
 }
 
-export class FclProvider implements Fcl {
+export class FclProvider {
 	constructor(private readonly fclConfig: FclConfig) {
 	}
 
@@ -23,60 +27,4 @@ export class FclProvider implements Fcl {
 			throw Error("Response of signUserMessage is empty")
 		}
 	}
-
-	sansPrefix = this.fclConfig.fcl.sansPrefix
-	send = this.fclConfig.fcl.send
-	getAccount = this.fclConfig.fcl.getAccount
-	config = this.fclConfig.fcl.config
-	transaction = this.fclConfig.fcl.transaction
-	script = this.fclConfig.fcl.script
-	decode = this.fclConfig.fcl.decode
-	arg = this.fclConfig.fcl.arg
-	args = this.fclConfig.fcl.args
-	payer = this.fclConfig.fcl.payer
-	tx = this.fclConfig.fcl.tx
-	proposer = this.fclConfig.fcl.proposer
-	limit = this.fclConfig.fcl.limit
-	currentUser = this.fclConfig.fcl.currentUser
-}
-
-export interface Fcl {
-	sansPrefix(address: string): null | string
-
-	send(args: any[], opts?: {}): Promise<any>
-
-	getAccount(address: string): Promise<any>
-
-	config(): { put(c: string, a: string): any }
-
-	transaction(...a: any): any
-
-	script(...a: any): any
-
-	decode(a: any): any
-
-	arg(...a: any): any
-
-	args(...a: any): any
-
-	payer(...a: any): any
-
-	tx(...a: any): any
-
-	proposer(...a: any): any
-
-	limit(...a: any): any
-
-	currentUser(): CurrentUser
-}
-
-interface CurrentUser {
-	snapshot(): Promise<any>
-
-	signUserMessage(message: string): Promise<Signature[]>
-}
-
-type Signature = {
-	addr: string
-	signature: string
 }

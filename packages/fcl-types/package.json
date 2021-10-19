@@ -1,6 +1,6 @@
 {
-  "name": "@rarible/flow-sdk-scripts",
-  "version": "0.0.4",
+  "name": "@rarible/fcl-types",
+  "version": "0.0.1",
   "description": "",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -14,11 +14,7 @@
     "verify": "tsc --noEmit",
     "test": "jest --passWithNoTests --maxWorkers=1"
   },
-  "peerDependencies": {
-    "@onflow/types": "0.0.5"
-  },
   "devDependencies": {
-    "@rarible/fcl-types": "0.0.1",
     "typescript": "^4.3.5"
   },
   "publishConfig": {

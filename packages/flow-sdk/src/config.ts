@@ -1,12 +1,9 @@
-import { extractContractAddress } from "./utils/extract-contract-address"
-import { CommonNft } from "./cadence/rarible/common-nft"
-import { CommonNftOrder } from "./cadence/rarible/common-nft-order"
-import { MotogpCardOrder } from "./cadence/motogp/motogp-card-order"
-import { FlowAddress } from "./types/types"
+import { CommonNft, CommonNftOrder, MotogpCardOrder } from "@rarible/flow-sdk-scripts"
+import { extractContractAddress } from "./common/extract-contract-address"
 
 export type AddressMap = { [key: string]: string }
 export type Networks = "emulator" | "testnet" | "mainnet"
-
+type FlowAddress = string
 type BlocktoWallet = Record<Networks, {
 	accessNode: string
 	wallet: string

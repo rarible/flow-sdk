@@ -1,13 +1,13 @@
 import { getAccountAddress, sendTransaction } from "flow-js-testing"
 import t from "@onflow/types"
-import { sansPrefix } from "@onflow/fcl"
 import { createFlowEmulator } from "@rarible/flow-test-common/src"
+import { commonNftTransactions } from "@rarible/flow-sdk-scripts/src/cadence/rarible/scripts"
+import { convertRoyalties } from "@rarible/flow-sdk-scripts/src/cadence/rarible/common-nft"
 import { getCollectionConfig } from "../config"
-import { replaceImportAddresses } from "../utils/replace-imports"
-import { commonNftTransactions } from "../cadence/rarible/scripts"
-import { convertRoyalties } from "../cadence/rarible/common-nft"
+import { replaceImportAddresses } from "../common/replace-imports"
+import { sansPrefix } from "../common/utils"
 
-describe("test mint", () => {
+describe("test-emulator mint", () => {
 	const { accountName } = createFlowEmulator({})
 
 	let accountAddress: string

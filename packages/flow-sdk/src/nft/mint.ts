@@ -1,14 +1,17 @@
-import { getCollectionConfig, Networks, Royalty, runTransaction, waitForSeal } from "@rarible/flow-sdk-scripts"
+import { Fcl } from "@rarible/fcl-types"
+import { Royalty } from "@rarible/flow-sdk-scripts"
+import { getCollectionConfig, Networks } from "../config"
+import { runTransaction, waitForSeal } from "../common/transaction"
 
 export async function mint(
-	network: Networks, collection: string, metadata: string, royalties: Royalty[],
+	fcl: Fcl, auth: any, network: Networks, collection: string, metadata: string, royalties: Royalty[],
 ): Promise<number> {
 	const { addressMap, collectionAddress, collectionConfig } = getCollectionConfig(network, collection)
 	if (collectionConfig.mintable) {
 		const txId = await runTransaction(
-			addressMap, collectionConfig.transactions.nft.mint(collectionAddress, metadata, royalties),
+			fcl, addressMap, collectionConfig.transactions.nft.mint(fcl, collectionAddress, metadata, royalties), auth,
 		)
-		const txResult = await waitForSeal(txId)
+		const txResult = await waitForSeal(fcl, txId)
 		if (txResult.events.length) {
 			return txResult.events[0].data.id
 		} else {

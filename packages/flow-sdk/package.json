@@ -12,12 +12,24 @@
   "scripts": {
     "build": "tsc --project tsconfig-build.json",
     "clean": "rimraf ./build",
-    "test": "jest --passWithNoTests",
+    "test": "jest --passWithNoTests --maxWorkers=1",
     "verify": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@rarible/flow-sdk-scripts": "0.0.1",
+    "@rarible/flow-sdk-scripts": "0.0.3",
+    "@rarible/fcl-types": "0.0.1",
     "typescript": "4.3.5"
+  },
+  "devDependencies": {
+    "@rarible/flow-test-common": "0.0.3",
+    "@onflow/fcl": "0.0.77",
+    "@types/jest": "27.0.1",
+    "@babel/core": "7.11.0",
+    "babel-jest": "^27.1.0",
+    "flow-js-testing": "^0.1.13",
+    "elliptic": "^6.5.4",
+    "jest": "^27.2.0",
+    "ts-jest": "27.0.5"
   },
   "publishConfig": {
     "access": "public",
