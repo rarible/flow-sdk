@@ -1,6 +1,7 @@
 import { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import {
+	StorefrontCommon,
 	StorefrontCommonNft,
 	StorefrontEvolution,
 	StorefrontMotogpCard,
@@ -79,6 +80,12 @@ export function getOrderCode(collection: CollectionName) {
 			return {
 				cadence: fcl.transaction(orderCode[collection][currency]),
 				args: fcl.args([fcl.arg(orderId, t.UInt64), fcl.arg(address, t.Address)]),
+			}
+		},
+		cancelOrder: (fcl: Fcl, orderId: number) => {
+			return {
+				cadence: fcl.transaction(StorefrontCommon.remove_item),
+				args: fcl.args([fcl.arg(orderId, t.UInt64)]),
 			}
 		},
 	}

@@ -1,7 +1,6 @@
 import * as t from "@onflow/types"
 import { Fcl } from "@rarible/fcl-types"
-import { Currency } from "../../index"
-import { orderCode } from "../../order"
+import { motogpCardTransactions } from "../../index"
 import { motogpCardScripts } from "./motogp-card-scripts"
 
 export const MotogpCardOrder = {
@@ -15,16 +14,16 @@ export const MotogpCardOrder = {
 		args: fcl.args([fcl.arg(address, t.Address), fcl.arg(tokenId, t.UInt64)]),
 	}),
 
-	sell: (fcl: Fcl, currency: Currency, tokenId: number, price: string) => {
+	sell: (fcl: Fcl, tokenId: number, price: string) => {
 		return {
-			cadence: fcl.transaction(orderCode.motoGp[currency]),
+			cadence: fcl.transaction(motogpCardTransactions.sell_card),
 			args: fcl.args([fcl.arg(tokenId, t.UInt64), fcl.arg(price, t.UFix64)]),
 		}
 	},
 
-	buy: (fcl: Fcl, currency: Currency, orderId: number, address: string) => {
+	buy: (fcl: Fcl, orderId: number, address: string) => {
 		return {
-			cadence: fcl.transaction(orderCode.motoGp[currency]),
+			cadence: fcl.transaction(motogpCardTransactions.buy_card),
 			args: fcl.args([fcl.arg(orderId, t.UInt64), fcl.arg(address, t.Address)]),
 		}
 	},
