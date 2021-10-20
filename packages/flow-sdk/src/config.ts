@@ -1,13 +1,4 @@
-import { CommonNft, CommonNftOrder, MotogpCardOrder } from "@rarible/flow-sdk-scripts"
-import { extractContractAddress } from "./common/extract-contract-address"
-
-export type AddressMap = { [key: string]: string }
-export type Networks = "emulator" | "testnet" | "mainnet"
-type FlowAddress = string
-type BlocktoWallet = Record<Networks, {
-	accessNode: string
-	wallet: string
-}>
+import { CollectionName, FlowAddress } from "./types"
 
 const blocktoWallet: BlocktoWallet = {
 	testnet: {
@@ -24,61 +15,36 @@ const blocktoWallet: BlocktoWallet = {
 	},
 }
 
-type ConfigData = RaribleConfigData | MotoGpConfigData
-type RaribleConfigData = {
-	contractsNames: string[],
-	mintable: true,
-	transactions: {
-		nft: typeof CommonNft
-		order: typeof CommonNftOrder
-	}
-}
-
-type MotoGpConfigData = {
-	contractsNames: string[],
-	mintable: false,
-	transactions: {
-		order: typeof MotogpCardOrder
-	}
-}
-
-type CollectionByNetwork = Record<Networks, FlowAddress>
-
-const raribleCollection: CollectionByNetwork = {
-	emulator: "0x01cf0e2f2f715450",
-	testnet: "0x665b9acf64dfdfdb",
-	mainnet: "0x0",
-}
-
+/*
+ * contractsNames - additional contracts deployed in main collection
+ * mintable - ia mint/burn/transfer avaliable in collection
+ */
 const raribleConfigData: ConfigData = {
-	contractsNames: ["NFTPlus", "CommonFee", "CommonNFT", "NFTStorefront"],
+	contractsNames: ["CommonOrder", "CommonNFT", "LicensedNFT"],
 	mintable: true,
-	transactions: {
-		order: CommonNftOrder,
-		nft: CommonNft,
-	},
-}
-
-const motoGpCollection: CollectionByNetwork = {
-	emulator: "0x01",
-	testnet: "0x02",
-	mainnet: "0x03",
 }
 
 const motoGPConfigData: ConfigData = {
-	contractsNames: ["NFTPlus", "CommonFee", "CommonNFT", "NFTStorefront"],
+	contractsNames: [],
 	mintable: false,
-	transactions: {
-		order: MotogpCardOrder,
-	},
 }
 
-type Config = {
-	walletDiscovery: string,
-	accessNode: string,
-	challengeHandshake: string,
-	collections: Record<FlowAddress, ConfigData>
-	mainAddressMap: { [key: string]: FlowAddress }
+const evolutionConfigData: ConfigData = {
+	contractsNames: [],
+	mintable: false,
+}
+
+const topShotConfigData: ConfigData = {
+	contractsNames: [],
+	mintable: false,
+}
+
+export const collectionsConfig: Record<CollectionName, ConfigData> = {
+	CommonNFT: raribleConfigData,
+	Rarible: raribleConfigData,
+	MotoGPCard: motoGPConfigData,
+	Evolution: evolutionConfigData,
+	TopShot: topShotConfigData,
 }
 
 export const CONFIGS: Record<Networks, Config> = {
@@ -86,65 +52,107 @@ export const CONFIGS: Record<Networks, Config> = {
 		walletDiscovery: "",
 		accessNode: "127.0.0.1:3569",
 		challengeHandshake: "",
-		collections: {
-			[raribleCollection.emulator]: raribleConfigData,
-			[motoGpCollection.emulator]: motoGPConfigData,
-		},
-		mainAddressMap: {
+		mainAddressMap: {//todo
 			"NonFungibleToken": "0x01cf0e2f2f715450",
 			"FungibleToken": "0xee82856bf20e2aa6",
 			"FlowToken": "0x0ae53cb6e3f42a79",
+			"FUSD": "0x01cf0e2f2f715450",
+			"NFTStorefront": "0x01cf0e2f2f715450",
+			"CommonOrder": "0x01cf0e2f2f715450",
+			"MotoGPCard": "0x01cf0e2f2f715450",
+			"Evolution": "0x01cf0e2f2f715450",
+			"CommonFee": "0x01cf0e2f2f715450",
+			"TopShot": "0x01cf0e2f2f715450",
 		},
 	},
 	testnet: {
 		walletDiscovery: "",
 		accessNode: blocktoWallet.testnet.accessNode,
 		challengeHandshake: blocktoWallet.testnet.wallet,
-		collections: {
-			[raribleCollection.testnet]: raribleConfigData,
-			[motoGpCollection.testnet]: motoGPConfigData,
-		},
-		mainAddressMap: {
+		mainAddressMap: {//todo
 			"NonFungibleToken": "0x631e88ae7f1d7c20",
 			"FungibleToken": "0x9a0766d93b6608b7",
+			"FUSD": "0xe223d8a629e49c68",
 			"FlowToken": "0x7e60df042a9c0868",
+			"NFTStorefront": "0x94b06cfca1d8a476",
+			"CommonOrder": "0x01658d9b94068f3c",
+			"MotoGPCard": "0x01658d9b94068f3c",
+			"Evolution": "0x01658d9b94068f3c",
+			"CommonFee": "0x01658d9b94068f3c",
+			"TopShot": "0x01658d9b94068f3c",
 		},
 	},
 	mainnet: {
 		walletDiscovery: "",
 		accessNode: blocktoWallet.mainnet.accessNode,
 		challengeHandshake: blocktoWallet.mainnet.wallet,
-		collections: {
-			[raribleCollection.mainnet]: raribleConfigData,
-			[motoGpCollection.mainnet]: motoGPConfigData,
-		},
 		mainAddressMap: {
-			"NonFungibleToken": "0x01",
-			"FungibleToken": "0x01",
+			"NonFungibleToken": "0x1d7e57aa55817448",
+			"FungibleToken": "0xf233dcee88fe0abe",
+			"FUSD": "0x3c5959b568896393",
 			"FlowToken": "0x1654653399040a61",
+			"NFTStorefront": "0x4eb8a10cb9f87357",
+			"CommonOrder": "0x0", //todo not deployed yet
+			"MotoGPCard": "0xa49cc0ee46c54bfb",
+			"Evolution": "f4264ac8f3256818",
+			"CommonFee": "0x0", //todo not deployed yet
+			"TopShot": "0b2a3299cc857e29",
+			"CommonNFT": "0x0", //todo not deployed yet
+			"LicensedNFT": "0x0", //todo not deployed yet
 		},
 	},
 }
 
-type GetContractsAddressMap = {
-	addressMap: AddressMap,
-	collectionAddress: FlowAddress,
-	collectionConfig: ConfigData
+export type AddressMap = { [key: string]: string }
+export type Networks = "emulator" | "testnet" | "mainnet"
+export type BlocktoWallet = Record<Networks, {
+	accessNode: string
+	wallet: string
+}>
+
+type Config = {
+	walletDiscovery: string,
+	accessNode: string,
+	challengeHandshake: string,
+	mainAddressMap: { [key: string]: FlowAddress }
 }
 
-export function getCollectionConfig(network: Networks, collection: string): GetContractsAddressMap {
-	try {
-		const collectionAddress = extractContractAddress(collection)
-		const map: AddressMap = {}
-		CONFIGS[network].collections[collectionAddress].contractsNames.forEach(k => {
-			map[k] = collectionAddress
-		})
-		return {
-			addressMap: Object.assign(map, CONFIGS[network].mainAddressMap),
-			collectionAddress,
-			collectionConfig: CONFIGS[network].collections[collectionAddress],
-		}
-	} catch (e) {
-		throw Error(`Wrong collection: ${e}`)
-	}
+export type ConfigData = {
+	contractsNames: string[],
+	mintable: boolean,
 }
+
+export enum EmulatorCollections {
+	RARIBLE = "A.0x01cf0e2f2f715450.CommonNFT",
+	MOTOGP = "A.0x01cf0e2f2f715450.MotoGPCard",
+	EVOLUTION = "A.0x01cf0e2f2f715450.Evolution",
+	TOPSHOT = "A.0x01cf0e2f2f715450.TopShot",
+}
+
+export enum TestnetCollections {
+	RARIBLE = "A.0x01658d9b94068f3c.CommonNFT",
+	MOTOGP = "A.0x01658d9b94068f3c.MotoGPCard",
+	EVOLUTION = "A.0x01658d9b94068f3c.Evolution",
+	TOPSHOT = "A.0x01658d9b94068f3c.TopShot",
+}
+
+export enum MainnetCollections {
+	RARIBLE = "A.0x0.Rarible",
+	MOTOGP = "A.0xa49cc0ee46c54bfb.MotoGPCard",
+	EVOLUTION = "A.f4264ac8f3256818.Evolution",
+	TOPSHOT = "A.0b2a3299cc857e29.TopShot",
+}
+
+export type Collection =
+	MainnetCollections.RARIBLE |
+	MainnetCollections.MOTOGP |
+	MainnetCollections.EVOLUTION |
+	MainnetCollections.TOPSHOT |
+	TestnetCollections.RARIBLE |
+	TestnetCollections.MOTOGP |
+	TestnetCollections.EVOLUTION |
+	TestnetCollections.TOPSHOT |
+	EmulatorCollections.RARIBLE |
+	EmulatorCollections.MOTOGP |
+	EmulatorCollections.EVOLUTION |
+	EmulatorCollections.TOPSHOT

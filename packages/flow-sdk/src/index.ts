@@ -9,6 +9,7 @@ import { cancelOrder as cancelOrderTmeplate } from "./order/cancel-order"
 import { signUserMessage as signUserMessageTemplate } from "./signature/sign-user-message"
 import { TxResult } from "./common/transaction"
 import { CONFIGS, Networks } from "./config"
+import { Currency } from "./types"
 
 export interface FlowNftSdk {
 	/**
@@ -43,7 +44,7 @@ export interface FlowOrderSdk {
 	 * @param sellItemId
 	 * @param sellItemPrice
 	 */
-	sell(collection: string, sellItemId: number, sellItemPrice: string): Promise<TxResult>
+	sell(collection: string, currency: Currency, sellItemId: number, sellItemPrice: string): Promise<TxResult>
 
 	/**
 	 *
@@ -51,7 +52,7 @@ export interface FlowOrderSdk {
 	 * @param itemId
 	 * @param owner
 	 */
-	buy(collection: string, itemId: number, owner: string): Promise<TxResult>
+	buy(collection: string, currency: Currency, itemId: number, owner: string): Promise<TxResult>
 
 	/**
 	 *
