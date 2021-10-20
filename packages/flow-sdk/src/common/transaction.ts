@@ -32,10 +32,15 @@ export const runTransaction = async (
 	return fcl.send(ix).then(fcl.decode)
 }
 
+type TxEvent = {
+	data: any,
+	type: string
+}
+
 export type TxResult = {
 	error: boolean,
 	txId: string,
-	events: any[]
+	events: TxEvent[]
 	errorMessage?: string,
 	status?: number
 	statusCode?: number

@@ -1,6 +1,7 @@
 import { createTestAuth, testAccount } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
 import { createFlowSdk, FlowSdk } from "../index"
+import { checkEvent } from "../common/tests-utils"
 
 describe("Test buy on testnet", () => {
 	let sdk: FlowSdk
@@ -16,8 +17,8 @@ describe("Test buy on testnet", () => {
 		const { orderId } = tx.events[1].data
 		expect(orderId).toBeGreaterThan(0)
 		const buyTx = await sdk.order.buy(collection, "FLOW", orderId, testAccountAddress)
-		expect(buyTx.events[1].type).toEqual("A.01658d9b94068f3c.CommonNFT.Withdraw")
-		expect(buyTx.events[10].type).toEqual("A.01658d9b94068f3c.CommonNFT.Deposit")
+		checkEvent(buyTx, "Withdraw")
+		checkEvent(buyTx, "Deposit", "CommonNFT")
 	}, 70000)
 })
 

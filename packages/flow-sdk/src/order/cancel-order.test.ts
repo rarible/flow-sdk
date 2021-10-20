@@ -1,6 +1,7 @@
 import { createTestAuth, testAccount } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
 import { createFlowSdk, FlowSdk } from "../index"
+import { checkEvent } from "../common/tests-utils"
 
 describe("Test cancel order on testnet", () => {
 	let sdk: FlowSdk
@@ -15,7 +16,7 @@ describe("Test cancel order on testnet", () => {
 		const { orderId } = tx.events[1].data
 		expect(orderId).toBeGreaterThan(0)
 		const cancelTx = await sdk.order.cancelOrder(collection, orderId)
-		expect(cancelTx.events[0].type).toEqual("A.94b06cfca1d8a476.NFTStorefront.ListingCompleted")
+		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	}, 100000)
 })
 

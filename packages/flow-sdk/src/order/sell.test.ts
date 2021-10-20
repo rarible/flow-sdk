@@ -1,6 +1,7 @@
 import { createTestAuth, testAccount } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
 import { createFlowSdk, FlowSdk } from "../index"
+import { checkEvent } from "../common/tests-utils"
 
 describe("Test sell on testnet", () => {
 	let sdk: FlowSdk
@@ -12,8 +13,8 @@ describe("Test sell on testnet", () => {
 	test("Should create CommonNFT sell order", async () => {
 		const tokenId = await sdk.nft.mint(collection, "some meta", [])
 		const tx = await sdk.order.sell(collection, "FLOW", tokenId, "0.1")
-		expect(tx.events[0].type).toEqual("A.94b06cfca1d8a476.NFTStorefront.ListingAvailable")
-		expect(tx.events[1].type).toEqual("A.01658d9b94068f3c.CommonOrder.OrderAvailable")
+		checkEvent(tx, "ListingAvailable", "NFTStorefront")
+		checkEvent(tx, "OrderAvailable", "CommonOrder")
 		expect(tx.events[1].data.orderId).toBeGreaterThan(0)
 	}, 50000)
 })
