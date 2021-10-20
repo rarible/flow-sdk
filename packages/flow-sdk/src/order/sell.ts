@@ -7,6 +7,7 @@ import { getCollectionConfig } from "../common/get-collection-config"
 
 export async function sell(
 	fcl: Fcl,
+	auth: any,
 	network:
 	Networks,
 	collection: string,
@@ -19,6 +20,7 @@ export async function sell(
 		fcl,
 		addressMap,
 		getOrderCode(collectionName).sell(fcl, currency, sellItemId, sellItemPrice),
+		auth,
 	)
 	return await waitForSeal(fcl, txId)
 }

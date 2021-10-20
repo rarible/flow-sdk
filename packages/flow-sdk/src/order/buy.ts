@@ -7,6 +7,7 @@ import { getCollectionConfig } from "../common/get-collection-config"
 
 export async function buy(
 	fcl: Fcl,
+	auth: any,
 	network: Networks,
 	collection: string,
 	currency: Currency,
@@ -14,6 +15,11 @@ export async function buy(
 	owner: string,
 ) {
 	const { collectionName, addressMap } = getCollectionConfig(network, collection)
-	const txId = await runTransaction(fcl, addressMap, getOrderCode(collectionName).buy(fcl, currency, orderId, owner))
+	const txId = await runTransaction(
+		fcl,
+		addressMap,
+		getOrderCode(collectionName).buy(fcl, currency, orderId, owner),
+		auth
+	)
 	return await waitForSeal(fcl, txId)
 }

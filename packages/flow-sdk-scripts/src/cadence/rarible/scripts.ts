@@ -75,24 +75,25 @@ transaction {
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
 import CommonNFT from 0xCOMMONNFT
 
-transaction(metadata: String, royalties: [CommonNFT.Royalties]) {
+
+transaction(metadata: String, royalties: [CommonNFT.Royalty]) {
     let minter: Capability<&CommonNFT.Minter>
     let receiver: Capability<&{NonFungibleToken.Receiver}>
 
-    prepare(account: AuthAccount) {
-        if account.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath) == nil {
+    prepare(acct: AuthAccount) {
+        if acct.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath) == nil {
             let collection <- CommonNFT.createEmptyCollection() as! @CommonNFT.Collection
-            account.save(<- collection, to: CommonNFT.collectionStoragePath)
-            account.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
+            acct.save(<- collection, to: CommonNFT.collectionStoragePath)
+            acct.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
         }
 
         self.minter = CommonNFT.minter()
-        self.receiver = CommonNFT.receiver(account.address)
+        self.receiver = acct.getCapability<&{NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath)
     }
 
     execute {
         let minter = self.minter.borrow() ?? panic("Could not borrow receiver capability (maybe receiver not configured?)")
-        minter.mintTo(creator: self.receiver, metadata: metadata, royalties: royalties)
+        minter.mintTo(creator: self.receiver, metadata: {"metaURI": metadata}, royalties: royalties)
     }
 }
 	`,
@@ -156,7 +157,7 @@ pub fun main(account: Address, saleOfferResourceID: UInt64): NFTStorefront.SaleO
 
     let saleOffer = storefrontRef.borrowSaleOffer(saleOfferResourceID: saleOfferResourceID)
         ?? panic("No item with that ID")
-    
+
     return saleOffer.getDetails()
 }
 	`,
@@ -173,7 +174,7 @@ pub fun main(account: Address): [UInt64] {
         )
         .borrow()
         ?? panic("Could not borrow public storefront from address")
-    
+
     return storefrontRef.getSaleOfferIDs()
 }
  	`,
@@ -376,7 +377,7 @@ transaction {
 
             // Create a new empty .Storefront
             let storefront <- NFTStorefront.createStorefront() as! @NFTStorefront.Storefront
-            
+
             // save it to the account
             acct.save(<-storefront, to: NFTStorefront.StorefrontStoragePath)
 

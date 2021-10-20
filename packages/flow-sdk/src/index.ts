@@ -7,9 +7,11 @@ import { sell as sellTemplate } from "./order/sell"
 import { buy as buyTemplate } from "./order/buy"
 import { cancelOrder as cancelOrderTmeplate } from "./order/cancel-order"
 import { signUserMessage as signUserMessageTemplate } from "./signature/sign-user-message"
-import { TxResult } from "./common/transaction"
 import { CONFIGS, Networks } from "./config"
 import { Currency } from "./types"
+import { TxResult } from "./common/transaction"
+
+export { TxResult } from "./common/transaction"
 
 export interface FlowNftSdk {
 	/**
@@ -52,7 +54,7 @@ export interface FlowOrderSdk {
 	 * @param itemId
 	 * @param owner
 	 */
-	buy(collection: string, currency: Currency, itemId: number, owner: string): Promise<TxResult>
+	buy(collection: string, currency: Currency, orderId: number, owner: string): Promise<TxResult>
 
 	/**
 	 *
@@ -84,12 +86,12 @@ export function createFlowSdk(fcl: Fcl, network: Networks, auth?: any): FlowSdk 
 	const authz = auth || fcl.authz
 
 	const mint = mintTemplate.bind(null, fcl, authz, network)
-	const transfer = transferTemplate.bind(null, fcl, network)
-	const burn = burnTemplate.bind(null, fcl, network)
+	const transfer = transferTemplate.bind(null, fcl, authz, network)
+	const burn = burnTemplate.bind(null, fcl, authz, network)
 
-	const sell = sellTemplate.bind(null, fcl, network)
-	const buy = buyTemplate.bind(null, fcl, network)
-	const cancelOrder = cancelOrderTmeplate.bind(null, fcl, network)
+	const sell = sellTemplate.bind(null, fcl, authz, network)
+	const buy = buyTemplate.bind(null, fcl, authz, network)
+	const cancelOrder = cancelOrderTmeplate.bind(null, fcl, authz, network)
 
 	const signUserMessage = signUserMessageTemplate.bind(null, fcl)
 

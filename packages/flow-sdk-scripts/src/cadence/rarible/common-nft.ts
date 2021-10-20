@@ -2,6 +2,7 @@ import * as t from "@onflow/types"
 import { Fcl } from "@rarible/fcl-types"
 import { Royalty } from "../../index"
 import { commonNftScripts, commonNftTransactions } from "./scripts"
+import { CommonNftSources } from "./common-nft-sources"
 
 export const convertRoyalties = (royalties: Royalty[]) =>
 	royalties.map(royalty => ({
@@ -28,7 +29,7 @@ export const CommonNft = {
 	}),
 
 	burn: (fcl: Fcl, tokenId: number) => ({
-		cadence: commonNftTransactions.burn,
+		cadence: CommonNftSources.burn,
 		args: fcl.args([fcl.arg(tokenId, t.UInt64)]),
 	}),
 
@@ -50,13 +51,13 @@ export const CommonNft = {
 		))
 
 		return ({
-			cadence: commonNftTransactions.mint,
+			cadence: CommonNftSources.mint,
 			args: fcl.args([fcl.arg(metadata, t.String), fcl.arg(convertRoyalties(royalties), RoyaltiesType)]),
 		})
 	},
 
 	transfer: (fcl: Fcl, tokenId: number, to: string) => ({
-		cadence: commonNftTransactions.transfer,
+		cadence: CommonNftSources.transfer,
 		args: fcl.args([fcl.arg(tokenId, t.UInt64), fcl.arg(to, t.Address)]),
 	}),
 }

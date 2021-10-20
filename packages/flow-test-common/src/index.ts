@@ -43,7 +43,8 @@ export function createTestAuth(fcl: Fcl, accountAddress: string, privateKey: str
 }
 
 export const testAccount = {
-	address: "0xec2a94b19a8931d8",
-	privKey: "7b829cbd4d2993bf90c3b9d098488980c67cd5cc31ae3fee8c995465cfd1c16c",
-	pubKey: "c7fefd4f5dbbf79e65f3f4bd6b8597ac53b9014449874b918222b206f6634ce7eba1093980ebec11c05afcec1c00b1fa5f97ecdae5b2f1c2590bf58ee3c5c4a1",
+	address: "0x285b7909b8ed1652",
+	privKey: "90a0c5a6cf05794f2e1104ca4be77895d8bfd8d4681eba3552ac5723f585b91c",
+	pubKey: "12955691c2f82ebcda217af08f4619a96eb5991b95ac7c9c846e854f2164bc1048ed7f0ed5daa97ea37a638ea9d97b3e6981cd189d4a927a0244258e937d0fc4",
+
 }
