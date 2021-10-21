@@ -46,13 +46,13 @@ export const collectionsConfig: Record<CollectionName, ConfigData> = {
 	Evolution: evolutionConfigData,
 	TopShot: topShotConfigData,
 }
-
+// todo move contracts address to fcl.config aliases
 export const CONFIGS: Record<Networks, Config> = {
 	emulator: {
 		walletDiscovery: "",
 		accessNode: "127.0.0.1:3569",
 		challengeHandshake: "",
-		mainAddressMap: {//todo
+		mainAddressMap: {
 			"NonFungibleToken": "0x01cf0e2f2f715450",
 			"FungibleToken": "0xee82856bf20e2aa6",
 			"FlowToken": "0x0ae53cb6e3f42a79",
@@ -69,7 +69,7 @@ export const CONFIGS: Record<Networks, Config> = {
 		walletDiscovery: "",
 		accessNode: blocktoWallet.testnet.accessNode,
 		challengeHandshake: blocktoWallet.testnet.wallet,
-		mainAddressMap: {//todo
+		mainAddressMap: {
 			"NonFungibleToken": "0x631e88ae7f1d7c20",
 			"FungibleToken": "0x9a0766d93b6608b7",
 			"FUSD": "0xe223d8a629e49c68",

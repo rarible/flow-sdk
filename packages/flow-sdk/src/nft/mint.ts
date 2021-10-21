@@ -15,7 +15,12 @@ export async function mint(
 		)
 		const txResult = await waitForSeal(fcl, txId)
 		if (txResult.events.length) {
-			return txResult.events[0].data.id
+			const mintEvent = txResult.events.find(e => e.type === "Mint")
+			if (mintEvent) {
+				return mintEvent.data.id
+			} else {
+				throw Error("Mint event not found in transaction response")
+			}
 		} else {
 			throw Error("Something went wrong, transaction sent but events is empty")
 		}
