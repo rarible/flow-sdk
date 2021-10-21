@@ -2,12 +2,12 @@ import { Fcl } from "@rarible/fcl-types"
 import { Networks } from "../config"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getOrderCode } from "../txCodeStore/order"
-import { Currency } from "../types"
+import { AuthWithPrivateKey, Currency } from "../types"
 import { getCollectionConfig } from "../common/get-collection-config"
 
 export async function sell(
 	fcl: Fcl,
-	auth: any,
+	auth: AuthWithPrivateKey,
 	network:
 	Networks,
 	collection: string,

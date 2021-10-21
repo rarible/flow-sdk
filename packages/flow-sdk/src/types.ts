@@ -6,3 +6,4 @@ export type Royalty = {
 export type FlowAddress = string
 export type CollectionName = "CommonNFT" | "MotoGPCard" | "Evolution" | "TopShot" | "Rarible"
 export type CollectionAddress = string
+export type AuthWithPrivateKey = undefined | ((account?: any) => Promise<any>)

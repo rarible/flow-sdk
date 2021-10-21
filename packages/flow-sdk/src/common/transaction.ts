@@ -1,4 +1,5 @@
 import { Fcl } from "@rarible/fcl-types"
+import { AuthWithPrivateKey } from "../types"
 import { replaceImportAddresses } from "./replace-imports"
 
 export type MethodArgs = {
@@ -18,12 +19,16 @@ export const runTransaction = async (
 	fcl: Fcl,
 	addressMap: AddressMap,
 	params: MethodArgs,
-	signature: any = fcl.authz,
+	signature: AuthWithPrivateKey,
 ): Promise<string> => {
 
 	const code = replaceImportAddresses(params.cadence, addressMap)
 	const ix = [fcl.limit(999)]
-	ix.push(fcl.payer(signature), fcl.proposer(signature), fcl.authorizations([signature]))
+	ix.push(
+		fcl.payer(signature || fcl.authz),
+		fcl.proposer(signature || fcl.authz),
+		fcl.authorizations([signature || fcl.authz])
+	)
 
 	if (params.args) {
 		ix.push(params.args)

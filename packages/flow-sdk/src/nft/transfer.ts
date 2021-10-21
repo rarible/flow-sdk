@@ -3,14 +3,15 @@ import { Networks } from "../config"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getNftCode } from "../txCodeStore/ntf"
 import { getCollectionConfig } from "../common/get-collection-config"
+import { AuthWithPrivateKey } from "../types"
 
 export async function transfer(
 	fcl: Fcl,
-	auth: any,
+	auth: AuthWithPrivateKey,
 	network: Networks,
 	collection: string,
 	tokenId: number,
-	to: string
+	to: string,
 ) {
 	const { addressMap, collectionConfig, collectionName } = getCollectionConfig(network, collection)
 	if (collectionConfig.mintable) {
