@@ -20,14 +20,15 @@ export const runTransaction = async (
 	addressMap: AddressMap,
 	params: MethodArgs,
 	signature: AuthWithPrivateKey,
+	gasLimit: number = 999,
 ): Promise<string> => {
 
 	const code = replaceImportAddresses(params.cadence, addressMap)
-	const ix = [fcl.limit(999)]
+	const ix = [fcl.limit(gasLimit)]
 	ix.push(
 		fcl.payer(signature || fcl.authz),
 		fcl.proposer(signature || fcl.authz),
-		fcl.authorizations([signature || fcl.authz])
+		fcl.authorizations([signature || fcl.authz]),
 	)
 
 	if (params.args) {

@@ -16,7 +16,10 @@ export async function mint(
 		)
 		const txResult = await waitForSeal(fcl, txId)
 		if (txResult.events.length) {
-			const mintEvent = txResult.events.find(e => e.type === "Mint")
+			const mintEvent = txResult.events.find(e => {
+				const [_, __, ___, event] = e.type.split(".")
+				return event === "Mint"
+			})
 			if (mintEvent) {
 				return mintEvent.data.id
 			} else {
