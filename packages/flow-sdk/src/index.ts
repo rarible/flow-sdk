@@ -1,6 +1,7 @@
 import type { Fcl } from "@rarible/fcl-types"
 import { Royalty } from "@rarible/flow-sdk-scripts"
-import { mint as mintTemplate } from "./nft/mint"
+import { FlowTransaction } from "@rarible/fcl-types/src"
+import { FlowMintResponse, mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
 import { transfer as transferTemplate } from "./nft/transfer"
 import { sell as sellTemplate } from "./order/sell"
@@ -9,9 +10,10 @@ import { cancelOrder as cancelOrderTmeplate } from "./order/cancel-order"
 import { signUserMessage as signUserMessageTemplate } from "./signature/sign-user-message"
 import { CONFIGS, Networks } from "./config"
 import { AuthWithPrivateKey, Currency } from "./types"
-import { TxResult } from "./common/transaction"
 
 export { TxResult } from "./common/transaction"
+export { FlowMintResponse } from "./nft/mint"
+export { FlowTransaction } from "@rarible/fcl-types"
 
 export interface FlowNftSdk {
 	/**
@@ -21,7 +23,7 @@ export interface FlowNftSdk {
 	 * @param royalties
 	 * @return token id
 	 */
-	mint(collection: string, metadata: string, royalties: Royalty[]): Promise<number>
+	mint(collection: string, metadata: string, royalties: Royalty[]): Promise<FlowMintResponse>
 
 	/**
 	 *
@@ -29,14 +31,14 @@ export interface FlowNftSdk {
 	 * @param tokenId
 	 * @param to
 	 */
-	transfer(collection: string, tokenId: number, to: string): Promise<TxResult>
+	transfer(collection: string, tokenId: number, to: string): Promise<FlowTransaction>
 
 	/**
 	 *
 	 * @param collection
 	 * @param tokenId
 	 */
-	burn(collection: string, tokenId: number): Promise<TxResult>
+	burn(collection: string, tokenId: number): Promise<FlowTransaction>
 }
 
 export interface FlowOrderSdk {
@@ -46,7 +48,7 @@ export interface FlowOrderSdk {
 	 * @param sellItemId
 	 * @param sellItemPrice
 	 */
-	sell(collection: string, currency: Currency, sellItemId: number, sellItemPrice: string): Promise<TxResult>
+	sell(collection: string, currency: Currency, sellItemId: number, sellItemPrice: string): Promise<FlowTransaction>
 
 	/**
 	 *
@@ -54,14 +56,14 @@ export interface FlowOrderSdk {
 	 * @param itemId
 	 * @param owner
 	 */
-	buy(collection: string, currency: Currency, orderId: number, owner: string): Promise<TxResult>
+	buy(collection: string, currency: Currency, orderId: number, owner: string): Promise<FlowTransaction>
 
 	/**
 	 *
 	 * @param collection
 	 * @param orderId
 	 */
-	cancelOrder(collection: string, orderId: number): Promise<TxResult>
+	cancelOrder(collection: string, orderId: number): Promise<FlowTransaction>
 }
 
 export interface FlowSdk {

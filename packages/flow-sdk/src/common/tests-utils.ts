@@ -1,4 +1,4 @@
-import { TxResult } from "./transaction"
+import { FlowTransaction } from "@rarible/fcl-types"
 
 type EventNames =
 	"Withdraw"
@@ -23,7 +23,7 @@ type ContractNames =
 	| "CommonNFT"
 	| "LicensedNFT"
 
-export function checkEvent(txResult: TxResult, eventName: EventNames, contractName?: ContractNames) {
+export function checkEvent(txResult: FlowTransaction, eventName: EventNames, contractName?: ContractNames) {
 	const result = !!txResult.events.find(e => {
 		const [_, __, name, event] = e.type.split(".")
 		if (contractName) {

@@ -1,14 +1,19 @@
 import { Fcl } from "@rarible/fcl-types"
 import { Royalty } from "@rarible/flow-sdk-scripts"
+import { FlowTransaction } from "@rarible/fcl-types/src"
 import { Networks } from "../config"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getNftCode } from "../txCodeStore/ntf"
 import { getCollectionConfig } from "../common/get-collection-config"
 import { AuthWithPrivateKey } from "../types"
 
+export interface FlowMintResponse extends FlowTransaction {
+	tokenId: number
+}
+
 export async function mint(
 	fcl: Fcl, auth: AuthWithPrivateKey, network: Networks, collection: string, metadata: string, royalties: Royalty[],
-): Promise<number> {
+): Promise<FlowMintResponse> {
 	const { addressMap, collectionAddress, collectionConfig, collectionName } = getCollectionConfig(network, collection)
 	if (collectionConfig.mintable) {
 		const txId = await runTransaction(
@@ -21,7 +26,10 @@ export async function mint(
 				return event === "Mint"
 			})
 			if (mintEvent) {
-				return mintEvent.data.id
+				return {
+					tokenId: mintEvent.data.id,
+					...txResult,
+				}
 			} else {
 				throw Error("Mint event not found in transaction response")
 			}

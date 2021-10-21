@@ -11,9 +11,9 @@ describe("Test burn on testnet", () => {
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
 	test("Should burn NFT", async () => {
-		const tokenId = await sdk.nft.mint(collection, "some meta", [])
-		const tx = await sdk.nft.burn(collection, tokenId)
-		checkEvent(tx, "Withdraw", "CommonNFT")
-		checkEvent(tx, "Destroy", "CommonNFT")
+		const txMint = await sdk.nft.mint(collection, "some meta", [])
+		const txBurn = await sdk.nft.burn(collection, txMint.tokenId)
+		checkEvent(txBurn, "Withdraw", "CommonNFT")
+		checkEvent(txBurn, "Destroy", "CommonNFT")
 	}, 50000)
 })

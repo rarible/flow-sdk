@@ -11,8 +11,8 @@ describe("Test cancel order on testnet", () => {
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
 	test("Should cancel CommonNFT order", async () => {
-		const tokenId = await sdk.nft.mint(collection, "some meta", [])
-		const tx = await sdk.order.sell(collection, "FLOW", tokenId, "0.1")
+		const mintTx = await sdk.nft.mint(collection, "some meta", [])
+		const tx = await sdk.order.sell(collection, "FLOW", mintTx.tokenId, "0.1")
 		const { orderId } = tx.events[1].data
 		expect(orderId).toBeGreaterThan(0)
 		const cancelTx = await sdk.order.cancelOrder(collection, orderId)

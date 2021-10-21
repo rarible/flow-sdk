@@ -1,4 +1,5 @@
 import { Fcl } from "@rarible/fcl-types"
+import { FlowTransaction } from "@rarible/fcl-types/src"
 import { AuthWithPrivateKey } from "../types"
 import { replaceImportAddresses } from "./replace-imports"
 
@@ -35,7 +36,13 @@ export const runTransaction = async (
 		ix.push(params.args)
 	}
 	ix.push(fcl.transaction(code))
-	return fcl.send(ix).then(fcl.decode)
+	try {
+		const tx = await fcl.send(ix)
+		const { transactionId } = tx
+		return transactionId
+	} catch (e) {
+		throw Error(`SDK:Transaction error: ${e}`)
+	}
 }
 
 type TxEvent = {
@@ -52,18 +59,25 @@ export type TxResult = {
 	statusCode?: number
 }
 
-export const waitForSeal = async (fcl: Fcl, txId: string): Promise<TxResult> => {
+export const waitForSeal = async (fcl: Fcl, txId: string): Promise<FlowTransaction> => {
 	try {
 		const sealed = await fcl.tx(txId).onceSealed()
-		return { error: false, txId, ...sealed }
+		return sealed
 	} catch (e: any) {
-		return {
-			error: true,
-			errorMessage: `Transaction sent, but got error when wait for seal: ${e}`,
-			txId,
-			events: [],
-		}
+		throw Error(`SDK:Transactions error: ${e}`)
 	}
+}
+
+export function subscribeForTxResult(fcl: Fcl, txId: string, cb: (tx: FlowTransaction) => void) {
+	const unsub = fcl
+		.tx(txId)
+		.subscribe((transaction) => {
+			console.log("transaction", transaction)
+			cb(transaction)
+			if (fcl.tx.isSealed(transaction)) {
+				unsub()
+			}
+		})
 }
 
 export const contractAddressHex = async (fcl: Fcl, label: string) =>

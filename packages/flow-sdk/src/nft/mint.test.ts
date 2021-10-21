@@ -10,8 +10,8 @@ describe("Minting on testnet", () => {
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
 	test("should mint nft", async () => {
-		const tokenId = await sdk.nft.mint("A.0x01658d9b94068f3c.CommonNFT.NFT", "some meta", [])
-		expect(tokenId).toBeGreaterThan(0)
+		const mintTx = await sdk.nft.mint("A.0x01658d9b94068f3c.CommonNFT.NFT", "some meta", [])
+		expect(mintTx.tokenId).toBeGreaterThan(0)
 	}, 30000)
 
 	test("should throw error invalid collection", async () => {

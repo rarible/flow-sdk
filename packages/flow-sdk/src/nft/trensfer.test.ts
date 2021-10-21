@@ -12,8 +12,8 @@ describe("Test transfer on testnet", () => {
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
 	test("Should transfer NFT", async () => {
-		const tokenId = await sdk.nft.mint(collection, "some meta", [])
-		const tx = await sdk.nft.transfer(collection, tokenId, testAccountAddress)
+		const mintTx = await sdk.nft.mint(collection, "some meta", [])
+		const tx = await sdk.nft.transfer(collection, mintTx.tokenId, testAccountAddress)
 		checkEvent(tx, "Withdraw", "CommonNFT")
 		checkEvent(tx, "Deposit", "CommonNFT")
 	}, 50000)

@@ -11,8 +11,8 @@ describe("Test sell on testnet", () => {
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
 	test("Should create CommonNFT sell order", async () => {
-		const tokenId = await sdk.nft.mint(collection, "some meta", [])
-		const tx = await sdk.order.sell(collection, "FLOW", tokenId, "0.1")
+		const mintTx = await sdk.nft.mint(collection, "some meta", [])
+		const tx = await sdk.order.sell(collection, "FLOW", mintTx.tokenId, "0.1")
 		checkEvent(tx, "ListingAvailable", "NFTStorefront")
 		checkEvent(tx, "OrderAvailable", "CommonOrder")
 		expect(tx.events[1].data.orderId).toBeGreaterThan(0)
