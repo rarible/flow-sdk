@@ -11,7 +11,11 @@ describe("Test sell on testnet", () => {
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
 	test("Should create CommonNFT sell order", async () => {
-		const mintTx = await sdk.nft.mint(collection, "some meta", [])
+		const mintTx = await sdk.nft.mint(
+			collection,
+			"some meta",
+			[{ account: testAccount.address, value: "0.1" }]
+		)
 		const tx = await sdk.order.sell(collection, "FLOW", mintTx.tokenId, "0.1")
 		checkEvent(tx, "ListingAvailable", "NFTStorefront")
 		checkEvent(tx, "OrderAvailable", "CommonOrder")
