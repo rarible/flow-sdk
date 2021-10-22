@@ -1,6 +1,6 @@
 import type { Fcl } from "@rarible/fcl-types"
+import { FlowTransaction } from "@rarible/fcl-types"
 import { Royalty } from "@rarible/flow-sdk-scripts"
-import { FlowTransaction } from "@rarible/fcl-types/src"
 import { FlowMintResponse, mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
 import { transfer as transferTemplate } from "./nft/transfer"

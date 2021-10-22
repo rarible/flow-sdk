@@ -1,5 +1,4 @@
-import { Fcl } from "@rarible/fcl-types"
-import { FlowTransaction } from "@rarible/fcl-types/src"
+import { Fcl, FlowTransaction } from "@rarible/fcl-types"
 import { AuthWithPrivateKey } from "../types"
 import { replaceImportAddresses } from "./replace-imports"
 

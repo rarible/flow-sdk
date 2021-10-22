@@ -1,6 +1,5 @@
-import { Fcl } from "@rarible/fcl-types"
+import { Fcl, FlowTransaction } from "@rarible/fcl-types"
 import { Royalty } from "@rarible/flow-sdk-scripts"
-import { FlowTransaction } from "@rarible/fcl-types/src"
 import { Networks } from "../config"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getNftCode } from "../txCodeStore/ntf"
