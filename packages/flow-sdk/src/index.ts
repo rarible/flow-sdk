@@ -7,7 +7,7 @@ import { sell as sellTemplate } from "./order/sell"
 import { buy as buyTemplate } from "./order/buy"
 import { cancelOrder as cancelOrderTmeplate } from "./order/cancel-order"
 import { signUserMessage as signUserMessageTemplate } from "./signature/sign-user-message"
-import { CONFIGS, Networks } from "./config"
+import { Networks } from "./config"
 import { AuthWithPrivateKey, Currency } from "./types"
 
 export { TxResult } from "./common/transaction"
@@ -85,10 +85,6 @@ export interface FlowSdk {
  * @param auth  - optional, only for testing purposes
  */
 export function createFlowSdk(fcl: Fcl, network: Networks, auth?: AuthWithPrivateKey): FlowSdk {
-	//todo maybe only check config exist, and configuration must initialized  on client
-	fcl.config()
-		.put("accessNode.api", CONFIGS[network].accessNode)
-		.put("challenge.handshake", CONFIGS[network].challengeHandshake)
 
 	const mint = mintTemplate.bind(null, fcl, auth, network)
 	const transfer = transferTemplate.bind(null, fcl, auth, network)
