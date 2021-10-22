@@ -1,10 +1,11 @@
-import { Fcl, FlowTransaction } from "@rarible/fcl-types"
+import { Fcl } from "@rarible/fcl-types"
 import { Royalty } from "@rarible/flow-sdk-scripts"
 import { Networks } from "../config"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getNftCode } from "../txCodeStore/ntf"
 import { getCollectionConfig } from "../common/get-collection-config"
 import { AuthWithPrivateKey } from "../types"
+import { FlowTransaction } from "../index"
 
 export interface FlowMintResponse extends FlowTransaction {
 	tokenId: number

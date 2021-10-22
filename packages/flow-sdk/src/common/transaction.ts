@@ -1,5 +1,6 @@
-import { Fcl, FlowTransaction } from "@rarible/fcl-types"
+import { Fcl } from "@rarible/fcl-types"
 import { AuthWithPrivateKey } from "../types"
+import { FlowTransaction } from "../index"
 import { replaceImportAddresses } from "./replace-imports"
 
 export type MethodArgs = {
@@ -61,7 +62,10 @@ export type TxResult = {
 export const waitForSeal = async (fcl: Fcl, txId: string): Promise<FlowTransaction> => {
 	try {
 		const sealed = await fcl.tx(txId).onceSealed()
-		return sealed
+		return {
+			...sealed,
+			txId,
+		}
 	} catch (e: any) {
 		throw Error(`SDK:Transactions error: ${e}`)
 	}
@@ -72,7 +76,7 @@ export function subscribeForTxResult(fcl: Fcl, txId: string, cb: (tx: FlowTransa
 		.tx(txId)
 		.subscribe((transaction) => {
 			console.log("transaction", transaction)
-			cb(transaction)
+			cb({ txId, ...transaction })
 			if (fcl.tx.isSealed(transaction)) {
 				unsub()
 			}

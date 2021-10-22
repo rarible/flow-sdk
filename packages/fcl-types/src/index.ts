@@ -43,14 +43,14 @@ interface CurrentUser {
 }
 
 type TxSubscription = {
-	subscribe(cb: (transaction: FlowTransaction) => void): () => void
-	onceSealed(): Promise<FlowTransaction>
+	subscribe(cb: (transaction: CommonFlowTransaction) => void): () => void
+	onceSealed(): Promise<CommonFlowTransaction>
 }
 
 type FclTxExec = (...a: any) => TxSubscription
 
 interface FclTx extends FclTxExec {
-	isSealed(tx: FlowTransaction): boolean
+	isSealed(tx: CommonFlowTransaction): boolean
 }
 
 enum TxStatus {
@@ -62,11 +62,16 @@ enum TxStatus {
 	EXPIRED = 5
 }
 
-export type FlowTransaction = {
+type TransactionEvent = {
+	type: string,
+	[key: string]: any
+}
+
+export type CommonFlowTransaction = {
 	status: TxStatus,
 	statusCode: number,
 	errorMessage: string,
-	events: any[]
+	events: TransactionEvent[]
 }
 
 type Signature = {

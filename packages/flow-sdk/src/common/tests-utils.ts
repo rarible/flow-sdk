@@ -1,4 +1,4 @@
-import { FlowTransaction } from "@rarible/fcl-types"
+import { FlowTransaction } from "../index"
 
 type EventNames =
 	"Withdraw"

@@ -1,5 +1,4 @@
-import type { Fcl } from "@rarible/fcl-types"
-import { FlowTransaction } from "@rarible/fcl-types"
+import type { CommonFlowTransaction, Fcl } from "@rarible/fcl-types"
 import { Royalty } from "@rarible/flow-sdk-scripts"
 import { FlowMintResponse, mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
@@ -13,7 +12,11 @@ import { AuthWithPrivateKey, Currency } from "./types"
 
 export { TxResult } from "./common/transaction"
 export { FlowMintResponse } from "./nft/mint"
-export { FlowTransaction } from "@rarible/fcl-types"
+export { CommonFlowTransaction } from "@rarible/fcl-types"
+
+export interface FlowTransaction extends CommonFlowTransaction {
+	txId: string
+}
 
 export interface FlowNftSdk {
 	/**
