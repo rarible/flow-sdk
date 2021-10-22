@@ -19,5 +19,3 @@ describe("Test cancel order on testnet", () => {
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	}, 100000)
 })
-
-//todo write tests for cancel order by collections, evolution, topShot, motoGP

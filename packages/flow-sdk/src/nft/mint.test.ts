@@ -18,7 +18,7 @@ describe("Minting on testnet", () => {
 		try {
 			await sdk.nft.mint("A.0x0000000000000000.CommonNFT.NFT", "some meta", [])
 		} catch (e) {
-			expect(e).toEqual(Error("Something went wrong, transaction sent but events is empty"))
+			expect(e).toBeInstanceOf(Error)
 		}
 	}, 30000)
 })
