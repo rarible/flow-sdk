@@ -1,4 +1,6 @@
 import { Fcl } from "@rarible/fcl-types"
+import { AuthWithPrivateKey } from "../types"
+import { FlowTransaction } from "../index"
 import { replaceImportAddresses } from "./replace-imports"
 
 export type MethodArgs = {
@@ -18,41 +20,67 @@ export const runTransaction = async (
 	fcl: Fcl,
 	addressMap: AddressMap,
 	params: MethodArgs,
-	signature: any = fcl.authz,
+	signature: AuthWithPrivateKey,
+	gasLimit: number = 999,
 ): Promise<string> => {
 
 	const code = replaceImportAddresses(params.cadence, addressMap)
-	const ix = [fcl.limit(999)]
-	ix.push(fcl.payer(signature), fcl.proposer(signature), fcl.authorizations([signature]))
+	const ix = [fcl.limit(gasLimit)]
+	ix.push(
+		fcl.payer(signature || fcl.authz),
+		fcl.proposer(signature || fcl.authz),
+		fcl.authorizations([signature || fcl.authz]),
+	)
 
 	if (params.args) {
 		ix.push(params.args)
 	}
 	ix.push(fcl.transaction(code))
-	return fcl.send(ix).then(fcl.decode)
+	try {
+		const tx = await fcl.send(ix)
+		const { transactionId } = tx
+		return transactionId
+	} catch (e) {
+		throw Error(`SDK:Transaction error: ${e}`)
+	}
+}
+
+type TxEvent = {
+	data: any,
+	type: string
 }
 
 export type TxResult = {
 	error: boolean,
 	txId: string,
-	events: any[]
+	events: TxEvent[]
 	errorMessage?: string,
 	status?: number
 	statusCode?: number
 }
 
-export const waitForSeal = async (fcl: Fcl, txId: string): Promise<TxResult> => {
+export const waitForSeal = async (fcl: Fcl, txId: string): Promise<FlowTransaction> => {
 	try {
 		const sealed = await fcl.tx(txId).onceSealed()
-		return { error: false, txId, ...sealed }
-	} catch (e: any) {
 		return {
-			error: true,
-			errorMessage: `Transaction sent, but got error when wait for seal: ${e}`,
+			...sealed,
 			txId,
-			events: [],
 		}
+	} catch (e: any) {
+		throw Error(`SDK:Transactions error: ${e}`)
 	}
+}
+
+export function subscribeForTxResult(fcl: Fcl, txId: string, cb: (tx: FlowTransaction) => void) {
+	const unsub = fcl
+		.tx(txId)
+		.subscribe((transaction) => {
+			console.log("transaction", transaction)
+			cb({ txId, ...transaction })
+			if (fcl.tx.isSealed(transaction)) {
+				unsub()
+			}
+		})
 }
 
 export const contractAddressHex = async (fcl: Fcl, label: string) =>

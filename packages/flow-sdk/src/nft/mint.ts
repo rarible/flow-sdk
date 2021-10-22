@@ -4,10 +4,16 @@ import { Networks } from "../config"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getNftCode } from "../txCodeStore/ntf"
 import { getCollectionConfig } from "../common/get-collection-config"
+import { AuthWithPrivateKey } from "../types"
+import { FlowTransaction } from "../index"
+
+export interface FlowMintResponse extends FlowTransaction {
+	tokenId: number
+}
 
 export async function mint(
-	fcl: Fcl, auth: any, network: Networks, collection: string, metadata: string, royalties: Royalty[],
-): Promise<number> {
+	fcl: Fcl, auth: AuthWithPrivateKey, network: Networks, collection: string, metadata: string, royalties: Royalty[],
+): Promise<FlowMintResponse> {
 	const { addressMap, collectionAddress, collectionConfig, collectionName } = getCollectionConfig(network, collection)
 	if (collectionConfig.mintable) {
 		const txId = await runTransaction(
@@ -15,7 +21,18 @@ export async function mint(
 		)
 		const txResult = await waitForSeal(fcl, txId)
 		if (txResult.events.length) {
-			return txResult.events[0].data.id
+			const mintEvent = txResult.events.find(e => {
+				const [_, __, ___, event] = e.type.split(".")
+				return event === "Mint"
+			})
+			if (mintEvent) {
+				return {
+					tokenId: mintEvent.data.id,
+					...txResult,
+				}
+			} else {
+				throw Error("Mint event not found in transaction response")
+			}
 		} else {
 			throw Error("Something went wrong, transaction sent but events is empty")
 		}

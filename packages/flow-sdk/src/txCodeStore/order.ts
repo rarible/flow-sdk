@@ -71,20 +71,20 @@ export function getOrderCode(collection: CollectionName) {
 	return {
 		sell: (fcl: Fcl, currency: Currency, tokenId: number, price: string) => {
 			return {
-				cadence: fcl.transaction(orderCode[collection][currency]),
+				cadence: orderCode[collection][currency].sell,
 				args: fcl.args([fcl.arg(tokenId, t.UInt64), fcl.arg(price, t.UFix64)]),
 			}
 		},
 
 		buy: (fcl: Fcl, currency: Currency, orderId: number, address: string) => {
 			return {
-				cadence: fcl.transaction(orderCode[collection][currency]),
+				cadence: orderCode[collection][currency].buy,
 				args: fcl.args([fcl.arg(orderId, t.UInt64), fcl.arg(address, t.Address)]),
 			}
 		},
 		cancelOrder: (fcl: Fcl, orderId: number) => {
 			return {
-				cadence: fcl.transaction(StorefrontCommon.remove_item),
+				cadence: StorefrontCommon.remove_item,
 				args: fcl.args([fcl.arg(orderId, t.UInt64)]),
 			}
 		},

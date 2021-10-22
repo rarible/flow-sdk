@@ -1,7 +1,7 @@
 export interface Fcl {
 	sansPrefix(address: string): null | string
 
-	send(args: any[], opts?: {}): Promise<any>
+	send(args: any[], opts?: {}): Promise<FlowTransactionResponse>
 
 	getAccount(address: string): Promise<any>
 
@@ -19,7 +19,7 @@ export interface Fcl {
 
 	payer(...a: any): any
 
-	tx(...a: any): any
+	tx: FclTx
 
 	proposer(...a: any): any
 
@@ -42,7 +42,53 @@ interface CurrentUser {
 	signUserMessage(message: string): Promise<Signature[]>
 }
 
+type TxSubscription = {
+	subscribe(cb: (transaction: CommonFlowTransaction) => void): () => void
+	onceSealed(): Promise<CommonFlowTransaction>
+}
+
+type FclTxExec = (...a: any) => TxSubscription
+
+interface FclTx extends FclTxExec {
+	isSealed(tx: CommonFlowTransaction): boolean
+}
+
+enum TxStatus {
+	UNKNOWN = 0,
+	PENDING = 1,
+	FINALIZED = 2,
+	EXECUTED = 3,
+	SEALED = 4,
+	EXPIRED = 5
+}
+
+type TransactionEvent = {
+	type: string,
+	[key: string]: any
+}
+
+export type CommonFlowTransaction = {
+	status: TxStatus,
+	statusCode: number,
+	errorMessage: string,
+	events: TransactionEvent[]
+}
+
 type Signature = {
 	addr: string
 	signature: string
+}
+
+type FlowTransactionResponse = {
+	tag: "TRANSACTION" | "SCRIPT",
+	transaction: any,
+	transactionStatus: number,
+	transactionId: string,
+	encodedData: any,
+	events: any,
+	account: any,
+	block: any,
+	blockHeader: any,
+	latestBlock: any,
+	collection: any
 }
