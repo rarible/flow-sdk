@@ -1,6 +1,6 @@
 {
   "name": "@rarible/fcl-provider",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -16,7 +16,7 @@
     "test": "jest --passWithNoTests --maxWorkers=1"
   },
   "dependencies": {
-    "@rarible/fcl-types": "0.0.1"
+    "@rarible/fcl-types": "^0.0.5"
   },
   "devDependencies": {
     "typescript": "^4.3.5"
