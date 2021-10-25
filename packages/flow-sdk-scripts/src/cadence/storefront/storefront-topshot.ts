@@ -11,7 +11,7 @@ import TopShot from 0xTOPSHOT
 // account: The Flow Address of the account whose moment data needs to be read
 // id: The unique ID for the moment whose data needs to be read
 
-// Returns: {String: String}
+// Returns: {String: String} 
 // A dictionary of all the play metadata associated
 // with the specified moment
 
@@ -30,7 +30,7 @@ pub fun main(account: Address, id: UInt64): {String: String} {
     // Get the moment's metadata to access its play and Set IDs
     let data = token.data
 
-    // Use the moment's play ID
+    // Use the moment's play ID 
     // to get all the metadata associated with that play
     let metadata = TopShot.getPlayMetaData(playID: data.playID) ?? panic("Play doesn't exist")
 
@@ -55,7 +55,7 @@ pub fun main(address: Address): Bool {
 import TopShot from 0xTOPSHOT
 
 // This is the script to get a list of all the moments' ids an account owns
-// Just change the argument to 'getAccount' to whatever account you want
+// Just change the argument to `getAccount` to whatever account you want
 // and as long as they have a published Collection receiver, you can see
 // the moments they own.
 
@@ -181,36 +181,36 @@ transaction(tokenId: UInt64, price: UFix64) {
 }
 `,
 	buy_flow: `
-import FungibleToken from 0xFUNGIBLETOKEN
-import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import FlowToken from 0xFLOWTOKEN
 import TopShot from 0xTOPSHOT
+import CommonOrder from 0xCOMMONORDER
+import FlowToken from 0xFLOWTOKEN
+import FungibleToken from 0xFUNGIBLETOKEN
 import NFTStorefront from 0xNFTSTOREFRONT
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
 
-transaction(listingResourceID: UInt64, storefrontAddress: Address) {
-    let paymentVault: @FungibleToken.Vault
-    let collection: &{TopShot.MomentCollectionPublic}
-    let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
+transaction (orderId: UInt64, storefrontAddress: Address) {
     let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
+    let paymentVault: @FungibleToken.Vault
+    let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
+    let tokenReceiver: &{TopShot.MomentCollectionPublic}
+    let buyerAddress: Address
 
     prepare(acct: AuthAccount) {
         let collectionPublicPath = /public/MomentCollection
         let collectionStoragePath = /storage/MomentCollection
 
         self.storefront = getAccount(storefrontAddress)
-            .getCapability<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>(
-                NFTStorefront.StorefrontPublicPath
-            )!
-            .borrow()
+            .getCapability(NFTStorefront.StorefrontPublicPath)!
+            .borrow<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>()
             ?? panic("Could not borrow Storefront from provided address")
 
-        self.listing = self.storefront.borrowListing(listingResourceID: listingResourceID)
+        self.listing = self.storefront.borrowListing(listingResourceID: orderId)
                     ?? panic("No Offer with that ID in Storefront")
         let price = self.listing.getDetails().salePrice
 
-        let mainFlowVault = acct.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
+        let mainVault = acct.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
             ?? panic("Cannot borrow FlowToken vault from acct storage")
-        self.paymentVault <- mainFlowVault.withdraw(amount: price)
+        self.paymentVault <- mainVault.withdraw(amount: price)
 
         if acct.borrow<&TopShot.Collection>(from: collectionStoragePath) == nil {
             let collection <- TopShot.createEmptyCollection() as! @TopShot.Collection
@@ -218,48 +218,57 @@ transaction(listingResourceID: UInt64, storefrontAddress: Address) {
             acct.link<&{TopShot.MomentCollectionPublic}>(collectionPublicPath, target: collectionStoragePath)
         }
 
-        self.collection = acct.getCapability<&{TopShot.MomentCollectionPublic}>(collectionPublicPath).borrow()
+        self.tokenReceiver = acct.getCapability(collectionPublicPath)
+            .borrow<&{TopShot.MomentCollectionPublic}>()
             ?? panic("Cannot borrow NFT collection receiver from account")
+
+        self.buyerAddress = acct.address
     }
 
     execute {
-        let item <- self.listing.purchase(payment: <-self.paymentVault)
-        self.collection.deposit(token: <-item)
-        self.storefront.cleanup(listingResourceID: listingResourceID)
+        let item <- CommonOrder.closeOrder(
+            storefront: self.storefront,
+            orderId: orderId,
+            orderAddress: storefrontAddress,
+            listing: self.listing,
+            paymentVault: <- self.paymentVault,
+            buyerAddress: self.buyerAddress
+        )
+        self.tokenReceiver.deposit(token: <-item)
     }
 }
 `,
 	buy_fusd: `
-import FungibleToken from 0xFUNGIBLETOKEN
-import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import FUSD from 0xFUSD
 import TopShot from 0xTOPSHOT
+import CommonOrder from 0xCOMMONORDER
+import FUSD from 0xFUSD
+import FungibleToken from 0xFUNGIBLETOKEN
 import NFTStorefront from 0xNFTSTOREFRONT
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
 
-transaction(listingResourceID: UInt64, storefrontAddress: Address) {
-    let paymentVault: @FungibleToken.Vault
-    let collection: &{TopShot.MomentCollectionPublic}
-    let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
+transaction (orderId: UInt64, storefrontAddress: Address) {
     let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
+    let paymentVault: @FungibleToken.Vault
+    let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
+    let tokenReceiver: &{TopShot.MomentCollectionPublic}
+    let buyerAddress: Address
 
     prepare(acct: AuthAccount) {
         let collectionPublicPath = /public/MomentCollection
         let collectionStoragePath = /storage/MomentCollection
 
         self.storefront = getAccount(storefrontAddress)
-            .getCapability<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>(
-                NFTStorefront.StorefrontPublicPath
-            )!
-            .borrow()
+            .getCapability(NFTStorefront.StorefrontPublicPath)!
+            .borrow<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>()
             ?? panic("Could not borrow Storefront from provided address")
 
-        self.listing = self.storefront.borrowListing(listingResourceID: listingResourceID)
+        self.listing = self.storefront.borrowListing(listingResourceID: orderId)
                     ?? panic("No Offer with that ID in Storefront")
         let price = self.listing.getDetails().salePrice
 
-        let mainFlowVault = acct.borrow<&FUSD.Vault>(from: /storage/fusdVault)
+        let mainVault = acct.borrow<&FUSD.Vault>(from: /storage/fusdVault)
             ?? panic("Cannot borrow FUSD vault from acct storage")
-        self.paymentVault <- mainFlowVault.withdraw(amount: price)
+        self.paymentVault <- mainVault.withdraw(amount: price)
 
         if acct.borrow<&TopShot.Collection>(from: collectionStoragePath) == nil {
             let collection <- TopShot.createEmptyCollection() as! @TopShot.Collection
@@ -267,14 +276,23 @@ transaction(listingResourceID: UInt64, storefrontAddress: Address) {
             acct.link<&{TopShot.MomentCollectionPublic}>(collectionPublicPath, target: collectionStoragePath)
         }
 
-        self.collection = acct.getCapability<&{TopShot.MomentCollectionPublic}>(collectionPublicPath).borrow()
+        self.tokenReceiver = acct.getCapability(collectionPublicPath)
+            .borrow<&{TopShot.MomentCollectionPublic}>()
             ?? panic("Cannot borrow NFT collection receiver from account")
+
+        self.buyerAddress = acct.address
     }
 
     execute {
-        let item <- self.listing.purchase(payment: <-self.paymentVault)
-        self.collection.deposit(token: <-item)
-        self.storefront.cleanup(listingResourceID: listingResourceID)
+        let item <- CommonOrder.closeOrder(
+            storefront: self.storefront,
+            orderId: orderId,
+            orderAddress: storefrontAddress,
+            listing: self.listing,
+            paymentVault: <- self.paymentVault,
+            buyerAddress: self.buyerAddress
+        )
+        self.tokenReceiver.deposit(token: <-item)
     }
 }
 `,
