@@ -14,8 +14,8 @@
     "verify": "tsc --noEmit",
     "test": "jest --passWithNoTests --maxWorkers=1"
   },
-  "peerDependencies": {
-    "@onflow/types": "0.0.5"
+  "dependencies": {
+    "@onflow/types": "^0.0.5"
   },
   "devDependencies": {
     "@rarible/fcl-types": "^0.0.6",
