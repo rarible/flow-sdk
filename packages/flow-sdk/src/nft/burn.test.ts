@@ -1,7 +1,8 @@
-import { createTestAuth, testAccount } from "@rarible/flow-test-common"
+import { createTestAuth } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
 import { createFlowSdk, FlowSdk } from "../index"
 import { checkEvent } from "../common/tests-utils"
+import { testAccount } from "../test-account"
 
 describe("Test burn on testnet", () => {
 	let sdk: FlowSdk

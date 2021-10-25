@@ -75,7 +75,6 @@ export function subscribeForTxResult(fcl: Fcl, txId: string, cb: (tx: FlowTransa
 	const unsub = fcl
 		.tx(txId)
 		.subscribe((transaction) => {
-			console.log("transaction", transaction)
 			cb({ txId, ...transaction })
 			if (fcl.tx.isSealed(transaction)) {
 				unsub()

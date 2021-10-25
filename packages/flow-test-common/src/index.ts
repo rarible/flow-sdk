@@ -33,6 +33,9 @@ export function createFlowEmulator(params: CreateFlowEmulatorParams): CreateFlow
 }
 
 export function createTestAuth(fcl: Fcl, accountAddress: string, privateKey: string, keyIndex: number = 0) {
+	fcl.config()
+		.put("accessNode.api", "https://access-testnet.onflow.org")
+		.put("challenge.handshake", "https://flow-wallet-testnet.blocto.app/authn")
 	const flowService = new FlowService(
 		fcl,
 		accountAddress,
@@ -40,11 +43,4 @@ export function createTestAuth(fcl: Fcl, accountAddress: string, privateKey: str
 		keyIndex,
 	)
 	return flowService.authorizeMinter()
-}
-
-export const testAccount = {
-	address: "0x285b7909b8ed1652",
-	privKey: "90a0c5a6cf05794f2e1104ca4be77895d8bfd8d4681eba3552ac5723f585b91c",
-	pubKey: "12955691c2f82ebcda217af08f4619a96eb5991b95ac7c9c846e854f2164bc1048ed7f0ed5daa97ea37a638ea9d97b3e6981cd189d4a927a0244258e937d0fc4",
-
 }

@@ -1,12 +1,13 @@
 import * as fcl from "@onflow/fcl"
-import { createTestAuth, testAccount } from "@rarible/flow-test-common"
+import { createTestAuth } from "@rarible/flow-test-common"
 import { createFlowSdk, FlowSdk } from "../index"
+import { testAccount } from "../test-account"
 
 describe("Minting on testnet", () => {
 	let sdk: FlowSdk
 
 	beforeAll(async () => {
-		const auth = await createTestAuth(fcl, testAccount.address, testAccount.privKey, 0)
+		const auth = createTestAuth(fcl, testAccount.address, testAccount.privKey, 0)
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
 	test("should mint nft", async () => {

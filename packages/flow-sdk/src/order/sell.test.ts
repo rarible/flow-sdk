@@ -1,7 +1,8 @@
-import { createTestAuth, testAccount } from "@rarible/flow-test-common"
+import { createTestAuth } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
 import { createFlowSdk, FlowSdk } from "../index"
 import { checkEvent } from "../common/tests-utils"
+import { testAccount } from "../test-account"
 
 describe("Test sell on testnet", () => {
 	let sdk: FlowSdk
@@ -14,7 +15,7 @@ describe("Test sell on testnet", () => {
 		const mintTx = await sdk.nft.mint(
 			collection,
 			"some meta",
-			[{ account: testAccount.address, value: "0.1" }]
+			[{ account: testAccount.address, value: "0.1" }],
 		)
 		const tx = await sdk.order.sell(collection, "FLOW", mintTx.tokenId, "0.1")
 		checkEvent(tx, "ListingAvailable", "NFTStorefront")
