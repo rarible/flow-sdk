@@ -15,7 +15,7 @@
     "test": "jest --passWithNoTests --maxWorkers=1"
   },
   "dependencies": {
-    "@onflow/types": "^0.0.6"
+    "@onflow/types": "^0.0.5"
   },
   "devDependencies": {
     "@rarible/fcl-types": "^0.0.7",
