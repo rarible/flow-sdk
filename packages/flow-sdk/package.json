@@ -16,8 +16,8 @@
     "verify": "tsc --noEmit"
   },
   "dependencies": {
-    "@rarible/fcl-types": "^0.0.5",
-    "@rarible/flow-sdk-scripts": "^0.0.5",
+    "@rarible/fcl-types": "^0.0.6",
+    "@rarible/flow-sdk-scripts": "^0.0.6",
     "typescript": "4.3.5"
   },
   "devDependencies": {
