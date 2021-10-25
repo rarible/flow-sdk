@@ -15,20 +15,19 @@
     "verify": "tsc --noEmit"
   },
   "dependencies": {
+    "@onflow/types": "^0.0.5",
+    "elliptic": "^6.5.4",
+    "sha3": "^2.1.4"
+  },
+  "devDependencies": {
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.6",
-    "@onflow/fcl": "^0.0.77",
-    "@onflow/types": "^0.0.5",
     "@types/elliptic": "6.4.13",
     "@types/jest": "27.0.1",
     "babel-jest": "^27.2.0",
-    "elliptic": "^6.5.4",
     "flow-js-testing": "^0.1.13",
     "jest": "^27.2.0",
-    "sha3": "^2.1.4",
-    "ts-jest": "27.0.5"
-  },
-  "devDependencies": {
+    "ts-jest": "27.0.5",
     "typescript": "^4.3.5"
   },
   "publishConfig": {

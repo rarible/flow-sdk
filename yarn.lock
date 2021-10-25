@@ -2211,7 +2211,7 @@
   resolved "https://registry.yarnpkg.com/@onflow/fcl-config/-/fcl-config-0.0.1.tgz#e983f6bdad96a09753ca2000633d7bfed7587527"
   integrity sha512-umvYsAwejX2yGJ5OFxM1dEaKmFEXf+34f4rJfVkfEYztgJqLkUbBkEB8HQsI8M78QUpWkWuNArqwbFvFerBbHA==
 
-"@onflow/fcl@0.0.77", "@onflow/fcl@^0.0.77":
+"@onflow/fcl@0.0.77":
   version "0.0.77"
   resolved "https://registry.yarnpkg.com/@onflow/fcl/-/fcl-0.0.77.tgz#2a2da9ec8f90e0cf012d9a459a3472b57e416549"
   integrity sha512-hgFW51Va29KwlzhDy6Fm15UesfXluRTR5RJn+zrm5d5HFfkquaxKOnMGT5waKVFn5u4THQIE6v+OnaDDchGNpg==
