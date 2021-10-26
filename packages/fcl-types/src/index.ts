@@ -5,6 +5,8 @@ export interface Fcl {
 
 	getAccount(address: string): Promise<any>
 
+	account(address: string): Promise<FlowAccount>
+
 	config(): { put(c: string, a: string): any, get(label: string): Promise<string> }
 
 	transaction(...a: any): any
@@ -91,4 +93,21 @@ type FlowTransactionResponse = {
 	blockHeader: any,
 	latestBlock: any,
 	collection: any
+}
+
+export type FlowAccount = {
+	address: string
+	balance: number
+	code: string
+	contracts: { [key: string]: string }
+	keys: FlowAccountKey[]
+}
+type FlowAccountKey = {
+	hashAlgo: number
+	index: number
+	publicKey: string
+	revoked: boolean
+	sequenceNumber: number
+	signAlgo: number
+	weight: number
 }

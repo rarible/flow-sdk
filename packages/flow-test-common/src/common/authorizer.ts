@@ -10,7 +10,7 @@ class FlowService {
 		private readonly fcl: Fcl,
 		private readonly minterFlowAddress: string,
 		private readonly minterPrivateKeyHex: string,
-		private readonly minterAccountIndex: string | number,
+		private readonly minterAccountIndex: number,
 	) {
 	}
 
@@ -39,7 +39,7 @@ class FlowService {
 	}
 
 	getAccount = async (addr: string) => {
-		const { account } = await this.fcl.send([this.fcl.getAccount(addr)])
+		const account = await this.fcl.account(addr)
 		return account
 	}
 
