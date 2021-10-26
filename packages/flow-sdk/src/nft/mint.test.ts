@@ -15,6 +15,7 @@ describe("Minting on testnet", () => {
 	}, 30000)
 
 	test("should throw error invalid collection", async () => {
+		expect.assertions(1)
 		try {
 			await sdk.nft.mint("A.0x0000000000000000.CustomCollection", "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
 		} catch (e) {

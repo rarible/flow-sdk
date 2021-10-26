@@ -18,7 +18,7 @@ describe("Test buy on testnet", () => {
 		const buyTx = await sdk.order.buy(collection, "FLOW", orderId, TEST_ACCOUNT_1.address)
 		checkEvent(buyTx, "Withdraw")
 		checkEvent(buyTx, "Deposit", "CommonNFT")
-	}, 70000)
+	})
 })
 
 //todo write tests for buy order by collections, evolution, topShot, motoGP
