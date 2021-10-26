@@ -1,6 +1,6 @@
 {
   "name": "@rarible/flow-sdk",
-  "version": "0.0.88",
+  "version": "0.0.89",
   "description": "SDK for interact with flow blockchain and Rarible protocol",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -16,13 +16,13 @@
     "verify": "tsc --noEmit"
   },
   "dependencies": {
-    "@rarible/fcl-types": "^0.0.88",
-    "@rarible/flow-sdk-scripts": "^0.0.88"
+    "@rarible/fcl-types": "^0.0.89",
+    "@rarible/flow-sdk-scripts": "^0.0.89"
   },
   "devDependencies": {
     "@babel/core": "7.11.0",
     "@onflow/fcl": "0.0.77",
-    "@rarible/flow-test-common": "^0.0.88",
+    "@rarible/flow-test-common": "^0.0.89",
     "@types/jest": "27.0.1",
     "babel-jest": "^27.1.0",
     "elliptic": "^6.5.4",
