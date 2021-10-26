@@ -6,7 +6,7 @@ describe("Minting on testnet", () => {
 	let sdk: FlowSdk
 
 	beforeAll(async () => {
-		const auth = createTestAuth(fcl, TEST_ACCOUNT_1.address, TEST_ACCOUNT_1.privKey, 0)
+		const auth = await createTestAuth(fcl, TEST_ACCOUNT_1.address, TEST_ACCOUNT_1.privKey, 0)
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
 	afterTestWait()
