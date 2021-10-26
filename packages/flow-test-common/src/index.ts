@@ -62,3 +62,4 @@ export const TEST_ACCOUNT_2: TestAccount = {
 	privKey: "319e778494e038707b4e1ed67b1fdd5a4b36a8ed42f8ef53364c6dc4b1fccdf2",
 	pubKey: "4d66ade3ce849e31308221f831c9afc4ec1808cf7ab85b75bb181a04897a8b39447d9cc8be85242385ddd9b580f93f248fa75cfadc9a492dac5b8cbaf149b9a1",
 }
+export { afterTestWait } from "./common/after-test-wait"

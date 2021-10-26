@@ -1,5 +1,5 @@
 import * as fcl from "@onflow/fcl"
-import { createTestAuth, TEST_ACCOUNT_1 } from "@rarible/flow-test-common"
+import { afterTestWait, createTestAuth, TEST_ACCOUNT_1 } from "@rarible/flow-test-common"
 import { createFlowSdk, FlowSdk } from "../index"
 
 describe("Minting on testnet", () => {
@@ -9,6 +9,7 @@ describe("Minting on testnet", () => {
 		const auth = createTestAuth(fcl, TEST_ACCOUNT_1.address, TEST_ACCOUNT_1.privKey, 0)
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
+	afterTestWait()
 	test("should mint nft", async () => {
 		const mintTx = await sdk.nft.mint("A.0x01658d9b94068f3c.CommonNFT.NFT", "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
 		expect(mintTx.tokenId).toBeGreaterThan(0)
