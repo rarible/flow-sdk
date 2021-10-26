@@ -19,7 +19,6 @@ describe("Test sell on testnet", () => {
 		const tx = await sdk.order.sell(collection, "FLOW", mintTx.tokenId, "0.1")
 		checkEvent(tx, "ListingAvailable", "NFTStorefront")
 		checkEvent(tx, "OrderAvailable", "CommonOrder")
-		console.log(tx)
 		expect(tx.events[1].data.orderId).toBeGreaterThan(0)
 	}, 50000)
 })
