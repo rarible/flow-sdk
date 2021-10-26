@@ -1,6 +1,6 @@
 {
   "name": "@rarible/flow-test-common",
-  "version": "0.0.81",
+  "version": "0.0.82",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "files": [

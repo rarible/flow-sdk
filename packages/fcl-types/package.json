@@ -1,6 +1,6 @@
 {
   "name": "@rarible/fcl-types",
-  "version": "0.0.81",
+  "version": "0.0.82",
   "description": "",
   "main": "build/index.js",
   "types": "build/index.d.ts",
