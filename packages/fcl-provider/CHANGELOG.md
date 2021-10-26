@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.87](https://github.com/rarible/flow-sdk/compare/v0.0.86...v0.0.87) (2021-10-26)
+
+**Note:** Version bump only for package @rarible/fcl-provider
+
+
+
+
+
 ## [0.0.86](https://github.com/rarible/flow-sdk/compare/v0.0.85...v0.0.86) (2021-10-26)
 
 **Note:** Version bump only for package @rarible/fcl-provider
