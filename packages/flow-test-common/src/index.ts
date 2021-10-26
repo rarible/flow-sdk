@@ -44,3 +44,20 @@ export function createTestAuth(fcl: Fcl, accountAddress: string, privateKey: str
 	)
 	return flowService.authorizeMinter()
 }
+
+type TestAccount = {
+	address: string
+	privKey: string
+	pubKey: string
+}
+
+export const TEST_ACCOUNT_1: TestAccount = {
+	address: "0x285b7909b8ed1652",
+	privKey: "90a0c5a6cf05794f2e1104ca4be77895d8bfd8d4681eba3552ac5723f585b91c",
+	pubKey: "12955691c2f82ebcda217af08f4619a96eb5991b95ac7c9c846e854f2164bc1048ed7f0ed5daa97ea37a638ea9d97b3e6981cd189d4a927a0244258e937d0fc4",
+}
+export const TEST_ACCOUNT_2: TestAccount = {
+	address: "0x285b7909b8ed1652",
+	privKey: "90a0c5a6cf05794f2e1104ca4be77895d8bfd8d4681eba3552ac5723f585b91c",
+	pubKey: "12955691c2f82ebcda217af08f4619a96eb5991b95ac7c9c846e854f2164bc1048ed7f0ed5daa97ea37a638ea9d97b3e6981cd189d4a927a0244258e937d0fc4",
+}
