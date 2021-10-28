@@ -1,106 +1,27 @@
-export const StorefrontTopshot = {
-	borrow_nft: `
-import TopShot from 0xTOPSHOT
-
-// This script gets the metadata associated with a moment
-// in a collection by looking up its playID and then searching
-// for that play's metadata in the TopShot contract
-
-// Parameters:
-//
-// account: The Flow Address of the account whose moment data needs to be read
-// id: The unique ID for the moment whose data needs to be read
-
-// Returns: {String: String} 
-// A dictionary of all the play metadata associated
-// with the specified moment
-
-pub fun main(account: Address, id: UInt64): {String: String} {
-
-    // get the public capability for the owner's moment collection
-    // and borrow a reference to it
-    let collectionRef = getAccount(account).getCapability(/public/MomentCollection)
-        .borrow<&{TopShot.MomentCollectionPublic}>()
-        ?? panic("Could not get public moment collection reference")
-
-    // Borrow a reference to the specified moment
-    let token = collectionRef.borrowMoment(id: id)
-        ?? panic("Could not borrow a reference to the specified moment")
-
-    // Get the moment's metadata to access its play and Set IDs
-    let data = token.data
-
-    // Use the moment's play ID 
-    // to get all the metadata associated with that play
-    let metadata = TopShot.getPlayMetaData(playID: data.playID) ?? panic("Play doesn't exist")
-
-    log(metadata)
-
-    return metadata
-}
-`,
-	check: `
-import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import TopShot from 0xTOPSHOT
-
-// check CommonNFT collection is available on given address
-//
-pub fun main(address: Address): Bool {
-    return getAccount(address)
-        .getCapability<&{TopShot.MomentCollectionPublic}>(/public/MomentCollection)
-        .check()
-}
-`,
-	get_ids: `
-import TopShot from 0xTOPSHOT
-
-// This is the script to get a list of all the moments' ids an account owns
-// Just change the argument to `getAccount` to whatever account you want
-// and as long as they have a published Collection receiver, you can see
-// the moments they own.
-
-// Parameters:
-//
-// account: The Flow Address of the account whose moment data needs to be read
-
-// Returns: [UInt64]
-// list of all moments' ids an account owns
-
-pub fun main(account: Address): [UInt64] {
-
-    let acct = getAccount(account)
-
-    let collectionRef = acct.getCapability(/public/MomentCollection)
-                            .borrow<&{TopShot.MomentCollectionPublic}>()!
-
-    log(collectionRef.getIDs())
-
-    return collectionRef.getIDs()
-}
-`,
-	sell_flow: `
-import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import FlowToken from 0xFLOWTOKEN
-import NFTStorefront from 0xNFTSTOREFRONT
-import CommonOrder from 0xCOMMONORDER
-import TopShot from 0xTOPSHOT
+export const StorefrontTopShot = {
+	sell_flow = `
 import CommonFee from 0xCOMMONFEE
+import TopShot from 0xTOPSHOT
+import CommonOrder from 0xCOMMONORDER
+import FlowToken from 0xFLOWTOKEN
+import FungibleToken from 0xFUNGIBLETOKEN
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import NFTStorefront from 0xNFTSTOREFRONT
 
-// Sell TopShot moment for Flow with NFTStorefront
+// Sell TopShot token for FlowToken with NFTStorefront
 //
 transaction(tokenId: UInt64, price: UFix64) {
     let nftProvider: Capability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>
     let storefront: &NFTStorefront.Storefront
 
     prepare(acct: AuthAccount) {
-        let collectionStoragePath = /storage/MomentCollection
-
-        let nftProviderPath = /private/TopShotCollectionProviderForNFTStorefront
+        let nftProviderPath = /private/TopShotProviderForNFTStorefront
         if !acct.getCapability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.check() {
-            acct.link<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath, target: collectionStoragePath)
+            acct.link<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath, target: /storage/MomentCollection)
         }
+
         self.nftProvider = acct.getCapability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!
-        assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed TopShot.Collection provider")
+        assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed nft collection provider")
 
         if acct.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath) == nil {
             let storefront <- NFTStorefront.createStorefront() as! @NFTStorefront.Storefront
@@ -112,9 +33,12 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 
     execute {
-        let topshotFeeAddress = CommonFee.feeAddress() // TODO Replace with TopShot fee address
-        let topshotFeeRate = 0.05
-
+        let royalties: [CommonOrder.PaymentPart] = []
+        let extraCuts: [CommonOrder.PaymentPart] = []
+        
+        
+        extraCuts.append(CommonOrder.PaymentPart(address: CommonFee.feeAddress(), rate: 0.05))
+        
         CommonOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
@@ -123,35 +47,35 @@ transaction(tokenId: UInt64, price: UFix64) {
             vaultPath: /public/flowTokenReceiver,
             vaultType: Type<@FlowToken.Vault>(),
             price: price,
-            extraCuts: [CommonOrder.PaymentPart(address: topshotFeeAddress, rate: topshotFeeRate)],
-            royalties: []
+            extraCuts: extraCuts,
+            royalties: royalties
         )
     }
 }
 `,
-	sell_fusd: `
-import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import FUSD from 0xFUSD
-import NFTStorefront from 0xNFTSTOREFRONT
-import CommonOrder from 0xCOMMONORDER
-import TopShot from 0xTOPSHOT
+	sell_fusd = `
 import CommonFee from 0xCOMMONFEE
+import TopShot from 0xTOPSHOT
+import CommonOrder from 0xCOMMONORDER
+import FUSD from 0xFUSD
+import FungibleToken from 0xFUNGIBLETOKEN
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import NFTStorefront from 0xNFTSTOREFRONT
 
-// Sell TopShot moment for FUSD with NFTStorefront
+// Sell TopShot token for FUSD with NFTStorefront
 //
 transaction(tokenId: UInt64, price: UFix64) {
     let nftProvider: Capability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>
     let storefront: &NFTStorefront.Storefront
 
     prepare(acct: AuthAccount) {
-        let collectionStoragePath = /storage/MomentCollection
-
-        let nftProviderPath = /private/TopShotCollectionProviderForNFTStorefront
+        let nftProviderPath = /private/TopShotProviderForNFTStorefront
         if !acct.getCapability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.check() {
-            acct.link<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath, target: collectionStoragePath)
+            acct.link<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath, target: /storage/MomentCollection)
         }
+
         self.nftProvider = acct.getCapability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!
-        assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed TopShot.Collection provider")
+        assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed nft collection provider")
 
         if acct.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath) == nil {
             let storefront <- NFTStorefront.createStorefront() as! @NFTStorefront.Storefront
@@ -163,9 +87,12 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 
     execute {
-        let topshotFeeAddress = CommonFee.feeAddress() // TODO Replace with TopShot fee address
-        let topshotFeeRate = 0.05
-
+        let royalties: [CommonOrder.PaymentPart] = []
+        let extraCuts: [CommonOrder.PaymentPart] = []
+        
+        
+        extraCuts.append(CommonOrder.PaymentPart(address: CommonFee.feeAddress(), rate: 0.05))
+        
         CommonOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
@@ -174,13 +101,143 @@ transaction(tokenId: UInt64, price: UFix64) {
             vaultPath: /public/fusdReceiver,
             vaultType: Type<@FUSD.Vault>(),
             price: price,
-            extraCuts: [CommonOrder.PaymentPart(address: topshotFeeAddress, rate: topshotFeeRate)],
-            royalties: []
+            extraCuts: extraCuts,
+            royalties: royalties
         )
     }
 }
 `,
-	buy_flow: `
+	update_flow = `
+import CommonFee from 0xCOMMONFEE
+import TopShot from 0xTOPSHOT
+import CommonOrder from 0xCOMMONORDER
+import FlowToken from 0xFLOWTOKEN
+import FungibleToken from 0xFUNGIBLETOKEN
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import NFTStorefront from 0xNFTSTOREFRONT
+
+// Cancels order with [orderId], then open new order with same TopShot token for FlowToken [price]
+//
+transaction(orderId: UInt64, price: UFix64) {
+    let nftProvider: Capability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>
+    let storefront: &NFTStorefront.Storefront
+    let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
+    let orderAddress: Address
+
+    prepare(acct: AuthAccount) {
+        let nftProviderPath = /private/TopShotProviderForNFTStorefront
+        if !acct.getCapability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.check() {
+            acct.link<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath, target: /storage/MomentCollection)
+        }
+
+        self.nftProvider = acct.getCapability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!
+        assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed nft collection provider")
+
+        self.storefront = acct.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath)
+            ?? panic("Missing or mis-typed NFTStorefront Storefront")
+
+        self.listing = self.storefront.borrowListing(listingResourceID: orderId)
+            ?? panic("No Offer with that ID in Storefront")
+
+        self.orderAddress = acct.address
+    }
+
+    execute {
+        let royalties: [CommonOrder.PaymentPart] = []
+        let extraCuts: [CommonOrder.PaymentPart] = []
+        let details = self.listing.getDetails() 
+        let tokenId = details.nftID
+        
+        
+        extraCuts.append(CommonOrder.PaymentPart(address: CommonFee.feeAddress(), rate: 0.05))
+        
+        CommonOrder.removeOrder(
+            storefront: self.storefront,
+            orderId: orderId,
+            orderAddress: self.orderAddress,
+            listing: self.listing,
+        )
+
+        CommonOrder.addOrder(
+            storefront: self.storefront,
+            nftProvider: self.nftProvider,
+            nftType: details.nftType,
+            nftId: details.nftID,
+            vaultPath: /public/flowTokenReceiver,
+            vaultType: Type<@FlowToken.Vault>(),
+            price: price,
+            extraCuts: extraCuts,
+            royalties: royalties
+        )
+    }
+}
+`,
+	update_fusd = `
+import CommonFee from 0xCOMMONFEE
+import TopShot from 0xTOPSHOT
+import CommonOrder from 0xCOMMONORDER
+import FUSD from 0xFUSD
+import FungibleToken from 0xFUNGIBLETOKEN
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import NFTStorefront from 0xNFTSTOREFRONT
+
+// Cancels order with [orderId], then open new order with same TopShot token for FUSD [price]
+//
+transaction(orderId: UInt64, price: UFix64) {
+    let nftProvider: Capability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>
+    let storefront: &NFTStorefront.Storefront
+    let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
+    let orderAddress: Address
+
+    prepare(acct: AuthAccount) {
+        let nftProviderPath = /private/TopShotProviderForNFTStorefront
+        if !acct.getCapability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.check() {
+            acct.link<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath, target: /storage/MomentCollection)
+        }
+
+        self.nftProvider = acct.getCapability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!
+        assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed nft collection provider")
+
+        self.storefront = acct.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath)
+            ?? panic("Missing or mis-typed NFTStorefront Storefront")
+
+        self.listing = self.storefront.borrowListing(listingResourceID: orderId)
+            ?? panic("No Offer with that ID in Storefront")
+
+        self.orderAddress = acct.address
+    }
+
+    execute {
+        let royalties: [CommonOrder.PaymentPart] = []
+        let extraCuts: [CommonOrder.PaymentPart] = []
+        let details = self.listing.getDetails() 
+        let tokenId = details.nftID
+        
+        
+        extraCuts.append(CommonOrder.PaymentPart(address: CommonFee.feeAddress(), rate: 0.05))
+        
+        CommonOrder.removeOrder(
+            storefront: self.storefront,
+            orderId: orderId,
+            orderAddress: self.orderAddress,
+            listing: self.listing,
+        )
+
+        CommonOrder.addOrder(
+            storefront: self.storefront,
+            nftProvider: self.nftProvider,
+            nftType: details.nftType,
+            nftId: details.nftID,
+            vaultPath: /public/fusdReceiver,
+            vaultType: Type<@FUSD.Vault>(),
+            price: price,
+            extraCuts: extraCuts,
+            royalties: royalties
+        )
+    }
+}
+`,
+	buy_flow = `
 import TopShot from 0xTOPSHOT
 import CommonOrder from 0xCOMMONORDER
 import FlowToken from 0xFLOWTOKEN
@@ -188,6 +245,8 @@ import FungibleToken from 0xFUNGIBLETOKEN
 import NFTStorefront from 0xNFTSTOREFRONT
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
 
+// Buy TopShot token for FlowToken with NFTStorefront
+//
 transaction (orderId: UInt64, storefrontAddress: Address) {
     let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
     let paymentVault: @FungibleToken.Vault
@@ -196,9 +255,6 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     let buyerAddress: Address
 
     prepare(acct: AuthAccount) {
-        let collectionPublicPath = /public/MomentCollection
-        let collectionStoragePath = /storage/MomentCollection
-
         self.storefront = getAccount(storefrontAddress)
             .getCapability(NFTStorefront.StorefrontPublicPath)!
             .borrow<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>()
@@ -212,15 +268,15 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
             ?? panic("Cannot borrow FlowToken vault from acct storage")
         self.paymentVault <- mainVault.withdraw(amount: price)
 
-        if acct.borrow<&TopShot.Collection>(from: collectionStoragePath) == nil {
+        if acct.borrow<&TopShot.Collection>(from: /storage/MomentCollection) == nil {
             let collection <- TopShot.createEmptyCollection() as! @TopShot.Collection
-            acct.save(<-collection, to: collectionStoragePath)
-            acct.link<&{TopShot.MomentCollectionPublic}>(collectionPublicPath, target: collectionStoragePath)
+            acct.save(<-collection, to: /storage/MomentCollection)
+            acct.link<&{TopShot.MomentCollectionPublic}>(/public/MomentCollection, target: /storage/MomentCollection)
         }
 
-        self.tokenReceiver = acct.getCapability(collectionPublicPath)
+        self.tokenReceiver = acct.getCapability(/public/MomentCollection)
             .borrow<&{TopShot.MomentCollectionPublic}>()
-            ?? panic("Cannot borrow NFT collection receiver from account")
+            ?? panic("Cannot borrow NFT collection receiver from acct")
 
         self.buyerAddress = acct.address
     }
@@ -238,7 +294,7 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 }
 `,
-	buy_fusd: `
+	buy_fusd = `
 import TopShot from 0xTOPSHOT
 import CommonOrder from 0xCOMMONORDER
 import FUSD from 0xFUSD
@@ -246,6 +302,8 @@ import FungibleToken from 0xFUNGIBLETOKEN
 import NFTStorefront from 0xNFTSTOREFRONT
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
 
+// Buy TopShot token for FUSD with NFTStorefront
+//
 transaction (orderId: UInt64, storefrontAddress: Address) {
     let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
     let paymentVault: @FungibleToken.Vault
@@ -254,9 +312,6 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     let buyerAddress: Address
 
     prepare(acct: AuthAccount) {
-        let collectionPublicPath = /public/MomentCollection
-        let collectionStoragePath = /storage/MomentCollection
-
         self.storefront = getAccount(storefrontAddress)
             .getCapability(NFTStorefront.StorefrontPublicPath)!
             .borrow<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>()
@@ -270,15 +325,15 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
             ?? panic("Cannot borrow FUSD vault from acct storage")
         self.paymentVault <- mainVault.withdraw(amount: price)
 
-        if acct.borrow<&TopShot.Collection>(from: collectionStoragePath) == nil {
+        if acct.borrow<&TopShot.Collection>(from: /storage/MomentCollection) == nil {
             let collection <- TopShot.createEmptyCollection() as! @TopShot.Collection
-            acct.save(<-collection, to: collectionStoragePath)
-            acct.link<&{TopShot.MomentCollectionPublic}>(collectionPublicPath, target: collectionStoragePath)
+            acct.save(<-collection, to: /storage/MomentCollection)
+            acct.link<&{TopShot.MomentCollectionPublic}>(/public/MomentCollection, target: /storage/MomentCollection)
         }
 
-        self.tokenReceiver = acct.getCapability(collectionPublicPath)
+        self.tokenReceiver = acct.getCapability(/public/MomentCollection)
             .borrow<&{TopShot.MomentCollectionPublic}>()
-            ?? panic("Cannot borrow NFT collection receiver from account")
+            ?? panic("Cannot borrow NFT collection receiver from acct")
 
         self.buyerAddress = acct.address
     }
@@ -295,6 +350,5 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
         self.tokenReceiver.deposit(token: <-item)
     }
 }
-`,
-
+`
 }

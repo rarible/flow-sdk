@@ -1,4 +1,44 @@
 export const MotoGPCard = {
+	get_ids: `
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import MotoGPCard from 0xMOTOGPCARD
+
+// Take MotoGPCard ids by account address
+//
+pub fun main(address: Address): [UInt64]? {
+    let collection = getAccount(address)
+        .getCapability(/public/motogpCardCollection)
+        .borrow<&MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}>()
+        ?? panic("NFT Collection not found")
+    return collection.getIDs()
+}
+`,
+	borrow_nft: `
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import MotoGPCard from 0xMOTOGPCARD
+
+// Take MotoGPCard token props by account address and tokenId
+//
+pub fun main(address: Address, tokenId: UInt64): &AnyResource {
+    let collection = getAccount(address)
+        .getCapability(/public/motogpCardCollection)
+        .borrow<&MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}>()
+        ?? panic("NFT Collection not found")
+    return collection.borrowNFT(id: tokenId)
+}
+`,
+	check: `
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+    import MotoGPCard from 0xMOTOGPCARD
+
+    // check MotoGPCard collection is available on given address
+    //
+    pub fun main(address: Address): Bool {
+        return getAccount(address)
+            .getCapability<&MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}>(/public/motogpCardCollection)
+            .check()
+    }
+`,
 	setup_account: `
 import MotoGPCard from 0xMOTOGPCARD
 

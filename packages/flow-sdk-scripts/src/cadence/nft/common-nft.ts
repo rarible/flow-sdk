@@ -1,4 +1,44 @@
 export const CommonNFT = {
+	get_ids: `
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import CommonNFT from 0xCOMMONNFT
+
+// Take CommonNFT ids by account address
+//
+pub fun main(address: Address): [UInt64]? {
+    let collection = getAccount(address)
+        .getCapability(CommonNFT.collectionPublicPath)
+        .borrow<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>()
+        ?? panic("NFT Collection not found")
+    return collection.getIDs()
+}
+`,
+	borrow_nft: `
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import CommonNFT from 0xCOMMONNFT
+
+// Take CommonNFT token props by account address and tokenId
+//
+pub fun main(address: Address, tokenId: UInt64): &AnyResource {
+    let collection = getAccount(address)
+        .getCapability(CommonNFT.collectionPublicPath)
+        .borrow<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>()
+        ?? panic("NFT Collection not found")
+    return collection.borrowNFT(id: tokenId)
+}
+`,
+	check: `
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+    import CommonNFT from 0xCOMMONNFT
+
+    // check CommonNFT collection is available on given address
+    //
+    pub fun main(address: Address): Bool {
+        return getAccount(address)
+            .getCapability<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath)
+            .check()
+    }
+`,
 	setup_account: `
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
 import CommonNFT from 0xCOMMONNFT

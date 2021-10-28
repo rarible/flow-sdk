@@ -1,61 +1,22 @@
-export const StorefrontCommonNft = {
-	borrow_nft: `
-import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import CommonNFT from 0xCOMMONNFT
+export const StorefrontCommonNFT = {
+	sell_flow = `
+import LicensedNFT from 0xLICENSEDNFT
 
-// Take CommonNFT token props by account address and tokenId
-//
-pub fun main(address: Address, tokenId: UInt64): &AnyResource {
-    let collection = getAccount(address)
-        .getCapability<&{NonFungibleToken.CollectionPublic}>(CommonNFT.collectionPublicPath)
-        .borrow()
-        ?? panic("NFT Collection not found")
-    return collection.borrowNFT(id: tokenId)
-}
-`,
-	check: `
-import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import CommonNFT from 0xCOMMONNFT
-
-// check CommonNFT collection is available on given address
-//
-pub fun main(address: Address): Bool {
-    return getAccount(address)
-        .getCapability<&{NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath)
-        .check()
-}
-`,
-	get_ids: `
-import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import CommonNFT from 0xCOMMONNFT
-
-// Take CommonNFT ids by account address
-//
-pub fun main(address: Address): [UInt64]? {
-    let collection = getAccount(address)
-        .getCapability<&{NonFungibleToken.CollectionPublic}>(CommonNFT.collectionPublicPath)
-        .borrow()
-        ?? panic("NFT Collection not found")
-    return collection.getIDs()
-}
-`,
-	sell_flow: `
 import CommonNFT from 0xCOMMONNFT
 import CommonOrder from 0xCOMMONORDER
 import FlowToken from 0xFLOWTOKEN
 import FungibleToken from 0xFUNGIBLETOKEN
-import LicensedNFT from 0xLICENSEDNFT
-import NFTStorefront from 0xNFTSTOREFRONT
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import NFTStorefront from 0xNFTSTOREFRONT
 
-// Sell CommonNFT token for Flow with NFTStorefront
+// Sell CommonNFT token for FlowToken with NFTStorefront
 //
 transaction(tokenId: UInt64, price: UFix64) {
     let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>
     let storefront: &NFTStorefront.Storefront
 
     prepare(acct: AuthAccount) {
-        let nftProviderPath = /private/commonNFTProviderForNFTStorefront
+        let nftProviderPath = /private/CommonNFTProviderForNFTStorefront
         if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.check() {
             acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: CommonNFT.collectionStoragePath)
         }
@@ -74,9 +35,13 @@ transaction(tokenId: UInt64, price: UFix64) {
 
     execute {
         let royalties: [CommonOrder.PaymentPart] = []
+        let extraCuts: [CommonOrder.PaymentPart] = []
+        
         for royalty in self.nftProvider.borrow()!.getRoyalties(id: tokenId) {
             royalties.append(CommonOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
         }
+        
+        
         CommonOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
@@ -85,20 +50,21 @@ transaction(tokenId: UInt64, price: UFix64) {
             vaultPath: /public/flowTokenReceiver,
             vaultType: Type<@FlowToken.Vault>(),
             price: price,
-            extraCuts: [],
+            extraCuts: extraCuts,
             royalties: royalties
         )
     }
 }
 `,
-	sell_fusd: `
+	sell_fusd = `
+import LicensedNFT from 0xLICENSEDNFT
+
 import CommonNFT from 0xCOMMONNFT
 import CommonOrder from 0xCOMMONORDER
 import FUSD from 0xFUSD
 import FungibleToken from 0xFUNGIBLETOKEN
-import LicensedNFT from 0xLICENSEDNFT
-import NFTStorefront from 0xNFTSTOREFRONT
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import NFTStorefront from 0xNFTSTOREFRONT
 
 // Sell CommonNFT token for FUSD with NFTStorefront
 //
@@ -107,7 +73,7 @@ transaction(tokenId: UInt64, price: UFix64) {
     let storefront: &NFTStorefront.Storefront
 
     prepare(acct: AuthAccount) {
-        let nftProviderPath = /private/commonNFTProviderForNFTStorefront
+        let nftProviderPath = /private/CommonNFTProviderForNFTStorefront
         if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.check() {
             acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: CommonNFT.collectionStoragePath)
         }
@@ -126,9 +92,13 @@ transaction(tokenId: UInt64, price: UFix64) {
 
     execute {
         let royalties: [CommonOrder.PaymentPart] = []
+        let extraCuts: [CommonOrder.PaymentPart] = []
+        
         for royalty in self.nftProvider.borrow()!.getRoyalties(id: tokenId) {
             royalties.append(CommonOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
         }
+        
+        
         CommonOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
@@ -137,13 +107,149 @@ transaction(tokenId: UInt64, price: UFix64) {
             vaultPath: /public/fusdReceiver,
             vaultType: Type<@FUSD.Vault>(),
             price: price,
-            extraCuts: [],
+            extraCuts: extraCuts,
             royalties: royalties
         )
     }
 }
 `,
-	buy_flow: `
+	update_flow = `
+import LicensedNFT from 0xLICENSEDNFT
+
+import CommonNFT from 0xCOMMONNFT
+import CommonOrder from 0xCOMMONORDER
+import FlowToken from 0xFLOWTOKEN
+import FungibleToken from 0xFUNGIBLETOKEN
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import NFTStorefront from 0xNFTSTOREFRONT
+
+// Cancels order with [orderId], then open new order with same CommonNFT token for FlowToken [price]
+//
+transaction(orderId: UInt64, price: UFix64) {
+    let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>
+    let storefront: &NFTStorefront.Storefront
+    let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
+    let orderAddress: Address
+
+    prepare(acct: AuthAccount) {
+        let nftProviderPath = /private/CommonNFTProviderForNFTStorefront
+        if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.check() {
+            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: CommonNFT.collectionStoragePath)
+        }
+
+        self.nftProvider = acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!
+        assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed nft collection provider")
+
+        self.storefront = acct.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath)
+            ?? panic("Missing or mis-typed NFTStorefront Storefront")
+
+        self.listing = self.storefront.borrowListing(listingResourceID: orderId)
+            ?? panic("No Offer with that ID in Storefront")
+
+        self.orderAddress = acct.address
+    }
+
+    execute {
+        let royalties: [CommonOrder.PaymentPart] = []
+        let extraCuts: [CommonOrder.PaymentPart] = []
+        let details = self.listing.getDetails() 
+        let tokenId = details.nftID
+        
+        for royalty in self.nftProvider.borrow()!.getRoyalties(id: tokenId) {
+            royalties.append(CommonOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
+        }
+        
+        
+        CommonOrder.removeOrder(
+            storefront: self.storefront,
+            orderId: orderId,
+            orderAddress: self.orderAddress,
+            listing: self.listing,
+        )
+
+        CommonOrder.addOrder(
+            storefront: self.storefront,
+            nftProvider: self.nftProvider,
+            nftType: details.nftType,
+            nftId: details.nftID,
+            vaultPath: /public/flowTokenReceiver,
+            vaultType: Type<@FlowToken.Vault>(),
+            price: price,
+            extraCuts: extraCuts,
+            royalties: royalties
+        )
+    }
+}
+`,
+	update_fusd = `
+import LicensedNFT from 0xLICENSEDNFT
+
+import CommonNFT from 0xCOMMONNFT
+import CommonOrder from 0xCOMMONORDER
+import FUSD from 0xFUSD
+import FungibleToken from 0xFUNGIBLETOKEN
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import NFTStorefront from 0xNFTSTOREFRONT
+
+// Cancels order with [orderId], then open new order with same CommonNFT token for FUSD [price]
+//
+transaction(orderId: UInt64, price: UFix64) {
+    let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>
+    let storefront: &NFTStorefront.Storefront
+    let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
+    let orderAddress: Address
+
+    prepare(acct: AuthAccount) {
+        let nftProviderPath = /private/CommonNFTProviderForNFTStorefront
+        if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.check() {
+            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: CommonNFT.collectionStoragePath)
+        }
+
+        self.nftProvider = acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!
+        assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed nft collection provider")
+
+        self.storefront = acct.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath)
+            ?? panic("Missing or mis-typed NFTStorefront Storefront")
+
+        self.listing = self.storefront.borrowListing(listingResourceID: orderId)
+            ?? panic("No Offer with that ID in Storefront")
+
+        self.orderAddress = acct.address
+    }
+
+    execute {
+        let royalties: [CommonOrder.PaymentPart] = []
+        let extraCuts: [CommonOrder.PaymentPart] = []
+        let details = self.listing.getDetails() 
+        let tokenId = details.nftID
+        
+        for royalty in self.nftProvider.borrow()!.getRoyalties(id: tokenId) {
+            royalties.append(CommonOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
+        }
+        
+        
+        CommonOrder.removeOrder(
+            storefront: self.storefront,
+            orderId: orderId,
+            orderAddress: self.orderAddress,
+            listing: self.listing,
+        )
+
+        CommonOrder.addOrder(
+            storefront: self.storefront,
+            nftProvider: self.nftProvider,
+            nftType: details.nftType,
+            nftId: details.nftID,
+            vaultPath: /public/fusdReceiver,
+            vaultType: Type<@FUSD.Vault>(),
+            price: price,
+            extraCuts: extraCuts,
+            royalties: royalties
+        )
+    }
+}
+`,
+	buy_flow = `
 import CommonNFT from 0xCOMMONNFT
 import CommonOrder from 0xCOMMONORDER
 import FlowToken from 0xFLOWTOKEN
@@ -151,11 +257,13 @@ import FungibleToken from 0xFUNGIBLETOKEN
 import NFTStorefront from 0xNFTSTOREFRONT
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
 
+// Buy CommonNFT token for FlowToken with NFTStorefront
+//
 transaction (orderId: UInt64, storefrontAddress: Address) {
     let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
     let paymentVault: @FungibleToken.Vault
     let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
-    let tokenReceiver: &{NonFungibleToken.Receiver}
+    let tokenReceiver: &{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}
     let buyerAddress: Address
 
     prepare(acct: AuthAccount) {
@@ -174,12 +282,12 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
 
         if acct.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath) == nil {
             let collection <- CommonNFT.createEmptyCollection() as! @CommonNFT.Collection
-            acct.save(<- collection, to: CommonNFT.collectionStoragePath)
+            acct.save(<-collection, to: CommonNFT.collectionStoragePath)
             acct.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
         }
 
         self.tokenReceiver = acct.getCapability(CommonNFT.collectionPublicPath)
-            .borrow<&{NonFungibleToken.Receiver}>()
+            .borrow<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>()
             ?? panic("Cannot borrow NFT collection receiver from acct")
 
         self.buyerAddress = acct.address
@@ -198,7 +306,7 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 }
 `,
-	buy_fusd: `
+	buy_fusd = `
 import CommonNFT from 0xCOMMONNFT
 import CommonOrder from 0xCOMMONORDER
 import FUSD from 0xFUSD
@@ -206,11 +314,13 @@ import FungibleToken from 0xFUNGIBLETOKEN
 import NFTStorefront from 0xNFTSTOREFRONT
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
 
+// Buy CommonNFT token for FUSD with NFTStorefront
+//
 transaction (orderId: UInt64, storefrontAddress: Address) {
     let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
     let paymentVault: @FungibleToken.Vault
     let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
-    let tokenReceiver: &{NonFungibleToken.Receiver}
+    let tokenReceiver: &{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}
     let buyerAddress: Address
 
     prepare(acct: AuthAccount) {
@@ -229,12 +339,12 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
 
         if acct.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath) == nil {
             let collection <- CommonNFT.createEmptyCollection() as! @CommonNFT.Collection
-            acct.save(<- collection, to: CommonNFT.collectionStoragePath)
+            acct.save(<-collection, to: CommonNFT.collectionStoragePath)
             acct.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
         }
 
         self.tokenReceiver = acct.getCapability(CommonNFT.collectionPublicPath)
-            .borrow<&{NonFungibleToken.Receiver}>()
+            .borrow<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>()
             ?? panic("Cannot borrow NFT collection receiver from acct")
 
         self.buyerAddress = acct.address
@@ -252,6 +362,5 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
         self.tokenReceiver.deposit(token: <-item)
     }
 }
-`,
-
+`
 }

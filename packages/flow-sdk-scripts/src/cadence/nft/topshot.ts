@@ -1,4 +1,44 @@
 export const TopShot = {
+	get_ids: `
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import TopShot from 0xTOPSHOT
+
+// Take TopShot ids by account address
+//
+pub fun main(address: Address): [UInt64]? {
+    let collection = getAccount(address)
+        .getCapability(/public/MomentCollection)
+        .borrow<&{TopShot.MomentCollectionPublic}>()
+        ?? panic("NFT Collection not found")
+    return collection.getIDs()
+}
+`,
+	borrow_nft: `
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import TopShot from 0xTOPSHOT
+
+// Take TopShot token props by account address and tokenId
+//
+pub fun main(address: Address, tokenId: UInt64): &AnyResource {
+    let collection = getAccount(address)
+        .getCapability(/public/MomentCollection)
+        .borrow<&{TopShot.MomentCollectionPublic}>()
+        ?? panic("NFT Collection not found")
+    return collection.borrowNFT(id: tokenId)
+}
+`,
+	check: `
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+    import TopShot from 0xTOPSHOT
+
+    // check TopShot collection is available on given address
+    //
+    pub fun main(address: Address): Bool {
+        return getAccount(address)
+            .getCapability<&{TopShot.MomentCollectionPublic}>(/public/MomentCollection)
+            .check()
+    }
+`,
 	setup_account: `
 import TopShot from 0xTOPSHOT
 

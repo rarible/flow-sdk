@@ -1,4 +1,44 @@
 export const Evolution = {
+	get_ids: `
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import Evolution from 0xEVOLUTION
+
+// Take Evolution ids by account address
+//
+pub fun main(address: Address): [UInt64]? {
+    let collection = getAccount(address)
+        .getCapability(/public/f4264ac8f3256818_Evolution_Collection)
+        .borrow<&{Evolution.EvolutionCollectionPublic}>()
+        ?? panic("NFT Collection not found")
+    return collection.getIDs()
+}
+`,
+	borrow_nft: `
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import Evolution from 0xEVOLUTION
+
+// Take Evolution token props by account address and tokenId
+//
+pub fun main(address: Address, tokenId: UInt64): &AnyResource {
+    let collection = getAccount(address)
+        .getCapability(/public/f4264ac8f3256818_Evolution_Collection)
+        .borrow<&{Evolution.EvolutionCollectionPublic}>()
+        ?? panic("NFT Collection not found")
+    return collection.borrowNFT(id: tokenId)
+}
+`,
+	check: `
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+    import Evolution from 0xEVOLUTION
+
+    // check Evolution collection is available on given address
+    //
+    pub fun main(address: Address): Bool {
+        return getAccount(address)
+            .getCapability<&{Evolution.EvolutionCollectionPublic}>(/public/f4264ac8f3256818_Evolution_Collection)
+            .check()
+    }
+`,
 	setup_account: `
 import Evolution from 0xEVOLUTION
 
