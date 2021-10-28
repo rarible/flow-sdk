@@ -47,6 +47,7 @@ interface CurrentUser {
 type TxSubscription = {
 	subscribe(cb: (transaction: CommonFlowTransaction) => void): () => void
 	onceSealed(): Promise<CommonFlowTransaction>
+	snapshot(): CommonFlowTransaction
 }
 
 type FclTxExec = (...a: any) => TxSubscription

@@ -22,7 +22,7 @@ describe("Test sell on testnet", () => {
 		checkEvent(tx, "ListingAvailable", "NFTStorefront")
 		checkEvent(tx, "OrderAvailable", "CommonOrder")
 		expect(tx.events[1].data.orderId).toBeGreaterThan(0)
-	}, 50000)
+	})
 })
 
 //todo write tests for sell by collections, evolution, topShot, motoGP
