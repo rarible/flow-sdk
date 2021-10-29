@@ -2,10 +2,10 @@ import { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import {
 	StorefrontCommon,
-	StorefrontCommonNft,
+	StorefrontCommonNFT,
 	StorefrontEvolution,
-	StorefrontMotogpCard,
-	StorefrontTopshot,
+	StorefrontMotoGPCard,
+	StorefrontTopShot,
 } from "@rarible/flow-sdk-scripts"
 import { CollectionName, Currency } from "../types"
 
@@ -17,32 +17,32 @@ type OrderCode = Record<CollectionName, CodeByCurrency>
 export const orderCode: OrderCode = {
 	Rarible: {
 		FLOW: {
-			buy: StorefrontCommonNft.buy_flow,
-			sell: StorefrontCommonNft.sell_flow,
+			buy: StorefrontCommonNFT.buy_flow,
+			sell: StorefrontCommonNFT.sell_flow,
 		},
 		FUSD: {
-			buy: StorefrontCommonNft.buy_fusd,
-			sell: StorefrontCommonNft.sell_fusd,
+			buy: StorefrontCommonNFT.buy_fusd,
+			sell: StorefrontCommonNFT.sell_fusd,
 		},
 	},
 	CommonNFT: {
 		FLOW: {
-			buy: StorefrontCommonNft.buy_flow,
-			sell: StorefrontCommonNft.sell_flow,
+			buy: StorefrontCommonNFT.buy_flow,
+			sell: StorefrontCommonNFT.sell_flow,
 		},
 		FUSD: {
-			buy: StorefrontCommonNft.buy_fusd,
-			sell: StorefrontCommonNft.sell_fusd,
+			buy: StorefrontCommonNFT.buy_fusd,
+			sell: StorefrontCommonNFT.sell_fusd,
 		},
 	},
 	MotoGPCard: {
 		FLOW: {
-			buy: StorefrontMotogpCard.buy_flow,
-			sell: StorefrontMotogpCard.sell_flow,
+			buy: StorefrontMotoGPCard.buy_flow,
+			sell: StorefrontMotoGPCard.sell_flow,
 		},
 		FUSD: {
-			buy: StorefrontMotogpCard.buy_fusd,
-			sell: StorefrontMotogpCard.sell_fusd,
+			buy: StorefrontMotoGPCard.buy_fusd,
+			sell: StorefrontMotoGPCard.sell_fusd,
 		},
 	},
 	Evolution: {
@@ -57,12 +57,12 @@ export const orderCode: OrderCode = {
 	},
 	TopShot: {
 		FLOW: {
-			buy: StorefrontTopshot.buy_flow,
-			sell: StorefrontTopshot.sell_flow,
+			buy: StorefrontTopShot.buy_flow,
+			sell: StorefrontTopShot.sell_flow,
 		},
 		FUSD: {
-			buy: StorefrontTopshot.buy_fusd,
-			sell: StorefrontTopshot.sell_fusd,
+			buy: StorefrontTopShot.buy_fusd,
+			sell: StorefrontTopShot.sell_fusd,
 		},
 	},
 }
