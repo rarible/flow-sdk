@@ -16,5 +16,5 @@ describe("Test burn on testnet", () => {
 		const txBurn = await sdk.nft.burn(collection, txMint.tokenId)
 		checkEvent(txBurn, "Withdraw", "CommonNFT")
 		checkEvent(txBurn, "Destroy", "CommonNFT")
-	}, 50000)
+	})
 })

@@ -27,7 +27,7 @@ export interface Fcl {
 
 	limit(...a: any): any
 
-	currentUser(): CurrentUser
+	currentUser(): FlowCurrentUser
 
 	authz(): any
 
@@ -38,15 +38,22 @@ export interface Fcl {
 	withPrefix(address: string): string
 }
 
-interface CurrentUser {
-	snapshot(): Promise<{ addr: string }>
+export interface FlowCurrentUser {
+	snapshot(): Promise<any>
 
-	signUserMessage(message: string): Promise<Signature[]>
+	signUserMessage(message: string): Promise<FlowSignature[]>
+}
+
+export type FlowSignature = {
+	addr: string
+	signature: string
+	keyId: number
 }
 
 type TxSubscription = {
 	subscribe(cb: (transaction: CommonFlowTransaction) => void): () => void
 	onceSealed(): Promise<CommonFlowTransaction>
+	snapshot(): CommonFlowTransaction
 }
 
 type FclTxExec = (...a: any) => TxSubscription
@@ -76,10 +83,6 @@ export type CommonFlowTransaction = {
 	events: TransactionEvent[]
 }
 
-type Signature = {
-	addr: string
-	signature: string
-}
 
 type FlowTransactionResponse = {
 	tag: "TRANSACTION" | "SCRIPT",
