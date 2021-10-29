@@ -1,4 +1,4 @@
-import { Fcl } from "@rarible/fcl-types"
+import { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import {
 	StorefrontCommon,
@@ -10,7 +10,7 @@ import {
 import { CollectionName, Currency } from "../types"
 
 
-type OrderMethods = Record<"buy" | "sell", string>
+type OrderMethods = Record<"buy" | "sell" | "update", string>
 export type CodeByCurrency = Record<Currency, OrderMethods>
 type OrderCode = Record<CollectionName, CodeByCurrency>
 
@@ -19,55 +19,73 @@ export const orderCode: OrderCode = {
 		FLOW: {
 			buy: StorefrontCommonNFT.buy_flow,
 			sell: StorefrontCommonNFT.sell_flow,
+			update: StorefrontCommonNFT.update_flow,
 		},
 		FUSD: {
 			buy: StorefrontCommonNFT.buy_fusd,
 			sell: StorefrontCommonNFT.sell_fusd,
+			update: StorefrontCommonNFT.update_fusd,
 		},
 	},
 	CommonNFT: {
 		FLOW: {
 			buy: StorefrontCommonNFT.buy_flow,
 			sell: StorefrontCommonNFT.sell_flow,
+			update: StorefrontCommonNFT.update_flow,
 		},
 		FUSD: {
 			buy: StorefrontCommonNFT.buy_fusd,
 			sell: StorefrontCommonNFT.sell_fusd,
+			update: StorefrontCommonNFT.update_fusd,
 		},
 	},
 	MotoGPCard: {
 		FLOW: {
 			buy: StorefrontMotoGPCard.buy_flow,
 			sell: StorefrontMotoGPCard.sell_flow,
+			update: StorefrontMotoGPCard.update_flow,
 		},
 		FUSD: {
 			buy: StorefrontMotoGPCard.buy_fusd,
 			sell: StorefrontMotoGPCard.sell_fusd,
+			update: StorefrontMotoGPCard.update_fusd,
 		},
 	},
 	Evolution: {
 		FLOW: {
 			buy: StorefrontEvolution.buy_flow,
 			sell: StorefrontEvolution.sell_flow,
+			update: StorefrontEvolution.update_flow,
 		},
 		FUSD: {
 			buy: StorefrontEvolution.buy_fusd,
 			sell: StorefrontEvolution.sell_fusd,
+			update: StorefrontEvolution.update_fusd,
 		},
 	},
 	TopShot: {
 		FLOW: {
 			buy: StorefrontTopShot.buy_flow,
 			sell: StorefrontTopShot.sell_flow,
+			update: StorefrontTopShot.update_flow,
 		},
 		FUSD: {
 			buy: StorefrontTopShot.buy_fusd,
 			sell: StorefrontTopShot.sell_fusd,
+			update: StorefrontTopShot.update_fusd,
 		},
 	},
 }
 
-export function getOrderCode(collection: CollectionName) {
+type GenerateCodeMEthodResponse = {
+	cadence: string,
+	args: ReturnType<FclArgs>
+}
+type GenerateCodeMethod = (...args: any) => GenerateCodeMEthodResponse
+
+type GenerateCodeResponse = Record<"sell" | "buy" | "update" | "cancelOrder", GenerateCodeMethod>
+
+export function getOrderCode(collection: CollectionName): GenerateCodeResponse {
 	return {
 		sell: (fcl: Fcl, currency: Currency, tokenId: number, price: string) => {
 			return {
@@ -80,6 +98,12 @@ export function getOrderCode(collection: CollectionName) {
 			return {
 				cadence: orderCode[collection][currency].buy,
 				args: fcl.args([fcl.arg(orderId, t.UInt64), fcl.arg(address, t.Address)]),
+			}
+		},
+		update: (fcl: Fcl, currency: Currency, orderId: number, price: string) => {
+			return {
+				cadence: orderCode[collection][currency].update,
+				args: fcl.args([fcl.arg(orderId, t.UInt64), fcl.arg(price, t.UFix64)]),
 			}
 		},
 		cancelOrder: (fcl: Fcl, orderId: number) => {

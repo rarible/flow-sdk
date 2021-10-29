@@ -15,9 +15,9 @@ export interface Fcl {
 
 	decode(a: any): any
 
-	arg(...a: any): any
+	arg: FclArg
 
-	args(...a: any): any
+	args: FclArgs
 
 	payer(...a: any): any
 
@@ -114,3 +114,7 @@ type FlowAccountKey = {
 	signAlgo: number
 	weight: number
 }
+
+export type FclArg = (value: string | number | object, xform: any) => any
+
+export type FclArgs = (args: FclArg[]) => any[]
