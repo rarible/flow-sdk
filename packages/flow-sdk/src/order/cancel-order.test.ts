@@ -18,5 +18,5 @@ describe("Test cancel order on testnet", () => {
 		expect(orderId).toBeGreaterThan(0)
 		const cancelTx = await sdk.order.cancelOrder(collection, orderId)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
-	}, 100000)
+	})
 })

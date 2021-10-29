@@ -14,7 +14,7 @@ pub fun main(address: Address, listingResourceID: UInt64): NFTStorefront.Listing
 
     let listing = storefrontRef.borrowListing(listingResourceID: listingResourceID)
         ?? panic("No item with that ID")
-    
+
     return listing.getDetails()
 }
 `,
@@ -30,7 +30,7 @@ pub fun main(address: Address): [UInt64] {
         )
         .borrow()
         ?? panic("Could not borrow public storefront from address")
-    
+
     return storefrontRef.getListingIDs()
 }
 `,
@@ -76,7 +76,7 @@ transaction {
 
             // Create a new empty .Storefront
             let storefront <- NFTStorefront.createStorefront() as! @NFTStorefront.Storefront
-            
+
             // save it to the account
             acct.save(<-storefront, to: NFTStorefront.StorefrontStoragePath)
 
@@ -86,5 +86,4 @@ transaction {
     }
 }
 `,
-
 }

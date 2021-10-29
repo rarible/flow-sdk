@@ -11,9 +11,9 @@ describe("Minting on testnet", () => {
 	})
 	afterTestWait()
 	test("should mint nft", async () => {
-		const mintTx = await sdk.nft.mint("A.0x01658d9b94068f3c.CommonNFT.NFT", "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
+		const mintTx = await sdk.nft.mint("A.01658d9b94068f3c.CommonNFT", "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
 		expect(mintTx.tokenId).toBeGreaterThan(0)
-	}, 30000)
+	})
 
 	test("should throw error invalid collection", async () => {
 		expect.assertions(1)
@@ -22,5 +22,5 @@ describe("Minting on testnet", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error)
 		}
-	}, 30000)
+	})
 })

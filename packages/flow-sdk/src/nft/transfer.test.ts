@@ -16,5 +16,5 @@ describe("Test transfer on testnet", () => {
 		const tx = await sdk.nft.transfer(collection, mintTx.tokenId, TEST_ACCOUNT_1.address)
 		checkEvent(tx, "Withdraw", "CommonNFT")
 		checkEvent(tx, "Deposit", "CommonNFT")
-	}, 50000)
+	})
 })

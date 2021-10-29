@@ -1,5 +1,5 @@
 export const StorefrontTopShot = {
-	sell_flow = `
+	sell_flow: `
 import CommonFee from 0xCOMMONFEE
 import TopShot from 0xTOPSHOT
 import CommonOrder from 0xCOMMONORDER
@@ -35,10 +35,10 @@ transaction(tokenId: UInt64, price: UFix64) {
     execute {
         let royalties: [CommonOrder.PaymentPart] = []
         let extraCuts: [CommonOrder.PaymentPart] = []
-        
-        
+
+
         extraCuts.append(CommonOrder.PaymentPart(address: CommonFee.feeAddress(), rate: 0.05))
-        
+
         CommonOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
@@ -53,7 +53,7 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 }
 `,
-	sell_fusd = `
+	sell_fusd: `
 import CommonFee from 0xCOMMONFEE
 import TopShot from 0xTOPSHOT
 import CommonOrder from 0xCOMMONORDER
@@ -89,10 +89,10 @@ transaction(tokenId: UInt64, price: UFix64) {
     execute {
         let royalties: [CommonOrder.PaymentPart] = []
         let extraCuts: [CommonOrder.PaymentPart] = []
-        
-        
+
+
         extraCuts.append(CommonOrder.PaymentPart(address: CommonFee.feeAddress(), rate: 0.05))
-        
+
         CommonOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
@@ -107,7 +107,7 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 }
 `,
-	update_flow = `
+	update_flow: `
 import CommonFee from 0xCOMMONFEE
 import TopShot from 0xTOPSHOT
 import CommonOrder from 0xCOMMONORDER
@@ -145,12 +145,12 @@ transaction(orderId: UInt64, price: UFix64) {
     execute {
         let royalties: [CommonOrder.PaymentPart] = []
         let extraCuts: [CommonOrder.PaymentPart] = []
-        let details = self.listing.getDetails() 
+        let details = self.listing.getDetails()
         let tokenId = details.nftID
-        
-        
+
+
         extraCuts.append(CommonOrder.PaymentPart(address: CommonFee.feeAddress(), rate: 0.05))
-        
+
         CommonOrder.removeOrder(
             storefront: self.storefront,
             orderId: orderId,
@@ -172,7 +172,7 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 }
 `,
-	update_fusd = `
+	update_fusd: `
 import CommonFee from 0xCOMMONFEE
 import TopShot from 0xTOPSHOT
 import CommonOrder from 0xCOMMONORDER
@@ -210,12 +210,12 @@ transaction(orderId: UInt64, price: UFix64) {
     execute {
         let royalties: [CommonOrder.PaymentPart] = []
         let extraCuts: [CommonOrder.PaymentPart] = []
-        let details = self.listing.getDetails() 
+        let details = self.listing.getDetails()
         let tokenId = details.nftID
-        
-        
+
+
         extraCuts.append(CommonOrder.PaymentPart(address: CommonFee.feeAddress(), rate: 0.05))
-        
+
         CommonOrder.removeOrder(
             storefront: self.storefront,
             orderId: orderId,
@@ -237,7 +237,7 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 }
 `,
-	buy_flow = `
+	buy_flow: `
 import TopShot from 0xTOPSHOT
 import CommonOrder from 0xCOMMONORDER
 import FlowToken from 0xFLOWTOKEN
@@ -294,7 +294,7 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 }
 `,
-	buy_fusd = `
+	buy_fusd: `
 import TopShot from 0xTOPSHOT
 import CommonOrder from 0xCOMMONORDER
 import FUSD from 0xFUSD
@@ -350,5 +350,5 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
         self.tokenReceiver.deposit(token: <-item)
     }
 }
-`
+`,
 }
