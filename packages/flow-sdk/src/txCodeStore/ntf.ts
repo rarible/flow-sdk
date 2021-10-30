@@ -1,5 +1,5 @@
 import { Fcl } from "@rarible/fcl-types"
-import t from "@onflow/types"
+import * as t from "@onflow/types"
 import { CommonNFT, CommonNftSources, Evolution, MotoGPCard, Royalty, TopShot } from "@rarible/flow-sdk-scripts"
 import { CollectionName } from "../types"
 import { convertRoyalties } from "../common/convert-royalties"
