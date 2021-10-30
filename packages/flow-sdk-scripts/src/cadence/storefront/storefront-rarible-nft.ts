@@ -1,24 +1,24 @@
-export const StorefrontCommonNFT = {
-	sell_flow: `
+export const StorefrontRaribleNFT = {
+	templates.sell_flow = `
 import LicensedNFT from 0xLICENSEDNFT
 
-import CommonNFT from 0xCOMMONNFT
-import CommonOrder from 0xCOMMONORDER
+import RaribleNFT from 0xRARIBLENFT
+import RaribleOrder from 0xRARIBLEORDER
 import FlowToken from 0xFLOWTOKEN
 import FungibleToken from 0xFUNGIBLETOKEN
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
 import NFTStorefront from 0xNFTSTOREFRONT
 
-// Sell CommonNFT token for FlowToken with NFTStorefront
+// Sell RaribleNFT token for FlowToken with NFTStorefront
 //
 transaction(tokenId: UInt64, price: UFix64) {
     let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>
     let storefront: &NFTStorefront.Storefront
 
     prepare(acct: AuthAccount) {
-        let nftProviderPath = /private/CommonNFTProviderForNFTStorefront
+        let nftProviderPath = /private/RaribleNFTProviderForNFTStorefront
         if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.check() {
-            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: CommonNFT.collectionStoragePath)
+            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: RaribleNFT.collectionStoragePath)
         }
 
         self.nftProvider = acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!
@@ -34,18 +34,18 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [CommonOrder.PaymentPart] = []
-        let extraCuts: [CommonOrder.PaymentPart] = []
-
+        let royalties: [RaribleOrder.PaymentPart] = []
+        let extraCuts: [RaribleOrder.PaymentPart] = []
+        
         for royalty in self.nftProvider.borrow()!.getRoyalties(id: tokenId) {
-            royalties.append(CommonOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
+            royalties.append(RaribleOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
         }
-
-
-        CommonOrder.addOrder(
+        
+        
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
-            nftType: Type<@CommonNFT.NFT>(),
+            nftType: Type<@RaribleNFT.NFT>(),
             nftId: tokenId,
             vaultPath: /public/flowTokenReceiver,
             vaultType: Type<@FlowToken.Vault>(),
@@ -56,26 +56,26 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 }
 `,
-	sell_fusd: `
+	templates.sell_fusd = `
 import LicensedNFT from 0xLICENSEDNFT
 
-import CommonNFT from 0xCOMMONNFT
-import CommonOrder from 0xCOMMONORDER
+import RaribleNFT from 0xRARIBLENFT
+import RaribleOrder from 0xRARIBLEORDER
 import FUSD from 0xFUSD
 import FungibleToken from 0xFUNGIBLETOKEN
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
 import NFTStorefront from 0xNFTSTOREFRONT
 
-// Sell CommonNFT token for FUSD with NFTStorefront
+// Sell RaribleNFT token for FUSD with NFTStorefront
 //
 transaction(tokenId: UInt64, price: UFix64) {
     let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>
     let storefront: &NFTStorefront.Storefront
 
     prepare(acct: AuthAccount) {
-        let nftProviderPath = /private/CommonNFTProviderForNFTStorefront
+        let nftProviderPath = /private/RaribleNFTProviderForNFTStorefront
         if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.check() {
-            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: CommonNFT.collectionStoragePath)
+            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: RaribleNFT.collectionStoragePath)
         }
 
         self.nftProvider = acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!
@@ -91,18 +91,18 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [CommonOrder.PaymentPart] = []
-        let extraCuts: [CommonOrder.PaymentPart] = []
-
+        let royalties: [RaribleOrder.PaymentPart] = []
+        let extraCuts: [RaribleOrder.PaymentPart] = []
+        
         for royalty in self.nftProvider.borrow()!.getRoyalties(id: tokenId) {
-            royalties.append(CommonOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
+            royalties.append(RaribleOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
         }
-
-
-        CommonOrder.addOrder(
+        
+        
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
-            nftType: Type<@CommonNFT.NFT>(),
+            nftType: Type<@RaribleNFT.NFT>(),
             nftId: tokenId,
             vaultPath: /public/fusdReceiver,
             vaultType: Type<@FUSD.Vault>(),
@@ -113,17 +113,17 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 }
 `,
-	update_flow: `
+	templates.update_flow = `
 import LicensedNFT from 0xLICENSEDNFT
 
-import CommonNFT from 0xCOMMONNFT
-import CommonOrder from 0xCOMMONORDER
+import RaribleNFT from 0xRARIBLENFT
+import RaribleOrder from 0xRARIBLEORDER
 import FlowToken from 0xFLOWTOKEN
 import FungibleToken from 0xFUNGIBLETOKEN
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
 import NFTStorefront from 0xNFTSTOREFRONT
 
-// Cancels order with [orderId], then open new order with same CommonNFT token for FlowToken [price]
+// Cancels order with [orderId], then open new order with same RaribleNFT token for FlowToken [price]
 //
 transaction(orderId: UInt64, price: UFix64) {
     let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>
@@ -132,9 +132,9 @@ transaction(orderId: UInt64, price: UFix64) {
     let orderAddress: Address
 
     prepare(acct: AuthAccount) {
-        let nftProviderPath = /private/CommonNFTProviderForNFTStorefront
+        let nftProviderPath = /private/RaribleNFTProviderForNFTStorefront
         if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.check() {
-            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: CommonNFT.collectionStoragePath)
+            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: RaribleNFT.collectionStoragePath)
         }
 
         self.nftProvider = acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!
@@ -150,24 +150,24 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [CommonOrder.PaymentPart] = []
-        let extraCuts: [CommonOrder.PaymentPart] = []
-        let details = self.listing.getDetails()
+        let royalties: [RaribleOrder.PaymentPart] = []
+        let extraCuts: [RaribleOrder.PaymentPart] = []
+        let details = self.listing.getDetails() 
         let tokenId = details.nftID
-
+        
         for royalty in self.nftProvider.borrow()!.getRoyalties(id: tokenId) {
-            royalties.append(CommonOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
+            royalties.append(RaribleOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
         }
-
-
-        CommonOrder.removeOrder(
+        
+        
+        RaribleOrder.removeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: self.orderAddress,
             listing: self.listing,
         )
 
-        CommonOrder.addOrder(
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
             nftType: details.nftType,
@@ -181,17 +181,17 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 }
 `,
-	update_fusd: `
+	templates.update_fusd = `
 import LicensedNFT from 0xLICENSEDNFT
 
-import CommonNFT from 0xCOMMONNFT
-import CommonOrder from 0xCOMMONORDER
+import RaribleNFT from 0xRARIBLENFT
+import RaribleOrder from 0xRARIBLEORDER
 import FUSD from 0xFUSD
 import FungibleToken from 0xFUNGIBLETOKEN
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
 import NFTStorefront from 0xNFTSTOREFRONT
 
-// Cancels order with [orderId], then open new order with same CommonNFT token for FUSD [price]
+// Cancels order with [orderId], then open new order with same RaribleNFT token for FUSD [price]
 //
 transaction(orderId: UInt64, price: UFix64) {
     let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>
@@ -200,9 +200,9 @@ transaction(orderId: UInt64, price: UFix64) {
     let orderAddress: Address
 
     prepare(acct: AuthAccount) {
-        let nftProviderPath = /private/CommonNFTProviderForNFTStorefront
+        let nftProviderPath = /private/RaribleNFTProviderForNFTStorefront
         if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.check() {
-            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: CommonNFT.collectionStoragePath)
+            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: RaribleNFT.collectionStoragePath)
         }
 
         self.nftProvider = acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!
@@ -218,24 +218,24 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [CommonOrder.PaymentPart] = []
-        let extraCuts: [CommonOrder.PaymentPart] = []
-        let details = self.listing.getDetails()
+        let royalties: [RaribleOrder.PaymentPart] = []
+        let extraCuts: [RaribleOrder.PaymentPart] = []
+        let details = self.listing.getDetails() 
         let tokenId = details.nftID
-
+        
         for royalty in self.nftProvider.borrow()!.getRoyalties(id: tokenId) {
-            royalties.append(CommonOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
+            royalties.append(RaribleOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
         }
-
-
-        CommonOrder.removeOrder(
+        
+        
+        RaribleOrder.removeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: self.orderAddress,
             listing: self.listing,
         )
 
-        CommonOrder.addOrder(
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
             nftType: details.nftType,
@@ -249,15 +249,15 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 }
 `,
-	buy_flow: `
-import CommonNFT from 0xCOMMONNFT
-import CommonOrder from 0xCOMMONORDER
+	templates.buy_flow = `
+import RaribleNFT from 0xRARIBLENFT
+import RaribleOrder from 0xRARIBLEORDER
 import FlowToken from 0xFLOWTOKEN
 import FungibleToken from 0xFUNGIBLETOKEN
 import NFTStorefront from 0xNFTSTOREFRONT
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
 
-// Buy CommonNFT token for FlowToken with NFTStorefront
+// Buy RaribleNFT token for FlowToken with NFTStorefront
 //
 transaction (orderId: UInt64, storefrontAddress: Address) {
     let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
@@ -280,13 +280,13 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
             ?? panic("Cannot borrow FlowToken vault from acct storage")
         self.paymentVault <- mainVault.withdraw(amount: price)
 
-        if acct.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath) == nil {
-            let collection <- CommonNFT.createEmptyCollection() as! @CommonNFT.Collection
-            acct.save(<-collection, to: CommonNFT.collectionStoragePath)
-            acct.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
+        if acct.borrow<&RaribleNFT.Collection>(from: RaribleNFT.collectionStoragePath) == nil {
+            let collection <- RaribleNFT.createEmptyCollection() as! @RaribleNFT.Collection
+            acct.save(<-collection, to: RaribleNFT.collectionStoragePath)
+            acct.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(RaribleNFT.collectionPublicPath, target: RaribleNFT.collectionStoragePath)
         }
 
-        self.tokenReceiver = acct.getCapability(CommonNFT.collectionPublicPath)
+        self.tokenReceiver = acct.getCapability(RaribleNFT.collectionPublicPath)
             .borrow<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>()
             ?? panic("Cannot borrow NFT collection receiver from acct")
 
@@ -294,7 +294,7 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 
     execute {
-        let item <- CommonOrder.closeOrder(
+        let item <- RaribleOrder.closeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: storefrontAddress,
@@ -306,15 +306,15 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 }
 `,
-	buy_fusd: `
-import CommonNFT from 0xCOMMONNFT
-import CommonOrder from 0xCOMMONORDER
+	templates.buy_fusd = `
+import RaribleNFT from 0xRARIBLENFT
+import RaribleOrder from 0xRARIBLEORDER
 import FUSD from 0xFUSD
 import FungibleToken from 0xFUNGIBLETOKEN
 import NFTStorefront from 0xNFTSTOREFRONT
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
 
-// Buy CommonNFT token for FUSD with NFTStorefront
+// Buy RaribleNFT token for FUSD with NFTStorefront
 //
 transaction (orderId: UInt64, storefrontAddress: Address) {
     let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
@@ -337,13 +337,13 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
             ?? panic("Cannot borrow FUSD vault from acct storage")
         self.paymentVault <- mainVault.withdraw(amount: price)
 
-        if acct.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath) == nil {
-            let collection <- CommonNFT.createEmptyCollection() as! @CommonNFT.Collection
-            acct.save(<-collection, to: CommonNFT.collectionStoragePath)
-            acct.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
+        if acct.borrow<&RaribleNFT.Collection>(from: RaribleNFT.collectionStoragePath) == nil {
+            let collection <- RaribleNFT.createEmptyCollection() as! @RaribleNFT.Collection
+            acct.save(<-collection, to: RaribleNFT.collectionStoragePath)
+            acct.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(RaribleNFT.collectionPublicPath, target: RaribleNFT.collectionStoragePath)
         }
 
-        self.tokenReceiver = acct.getCapability(CommonNFT.collectionPublicPath)
+        self.tokenReceiver = acct.getCapability(RaribleNFT.collectionPublicPath)
             .borrow<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>()
             ?? panic("Cannot borrow NFT collection receiver from acct")
 
@@ -351,7 +351,7 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 
     execute {
-        let item <- CommonOrder.closeOrder(
+        let item <- RaribleOrder.closeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: storefrontAddress,
@@ -362,5 +362,5 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
         self.tokenReceiver.deposit(token: <-item)
     }
 }
-`,
+`
 }
