@@ -1,5 +1,5 @@
 export const StorefrontRaribleNFT = {
-	templates.sell_flow = `
+	sell_flow = `
 import LicensedNFT from 0xLICENSEDNFT
 
 import RaribleNFT from 0xRARIBLENFT
@@ -56,7 +56,7 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 }
 `,
-	templates.sell_fusd = `
+	sell_fusd = `
 import LicensedNFT from 0xLICENSEDNFT
 
 import RaribleNFT from 0xRARIBLENFT
@@ -113,7 +113,7 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 }
 `,
-	templates.update_flow = `
+	update_flow = `
 import LicensedNFT from 0xLICENSEDNFT
 
 import RaribleNFT from 0xRARIBLENFT
@@ -181,7 +181,7 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 }
 `,
-	templates.update_fusd = `
+	update_fusd = `
 import LicensedNFT from 0xLICENSEDNFT
 
 import RaribleNFT from 0xRARIBLENFT
@@ -249,7 +249,7 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 }
 `,
-	templates.buy_flow = `
+	buy_flow = `
 import RaribleNFT from 0xRARIBLENFT
 import RaribleOrder from 0xRARIBLEORDER
 import FlowToken from 0xFLOWTOKEN
@@ -306,7 +306,7 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 }
 `,
-	templates.buy_fusd = `
+	buy_fusd = `
 import RaribleNFT from 0xRARIBLENFT
 import RaribleOrder from 0xRARIBLEORDER
 import FUSD from 0xFUSD

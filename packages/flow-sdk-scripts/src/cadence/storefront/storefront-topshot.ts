@@ -1,5 +1,5 @@
 export const StorefrontTopShot = {
-	templates.sell_flow = `
+	sell_flow = `
 import RaribleFee from 0xRARIBLEFEE
 import TopShot from 0xTOPSHOT
 import RaribleOrder from 0xRARIBLEORDER
@@ -53,7 +53,7 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 }
 `,
-	templates.sell_fusd = `
+	sell_fusd = `
 import RaribleFee from 0xRARIBLEFEE
 import TopShot from 0xTOPSHOT
 import RaribleOrder from 0xRARIBLEORDER
@@ -107,7 +107,7 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 }
 `,
-	templates.update_flow = `
+	update_flow = `
 import RaribleFee from 0xRARIBLEFEE
 import TopShot from 0xTOPSHOT
 import RaribleOrder from 0xRARIBLEORDER
@@ -172,7 +172,7 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 }
 `,
-	templates.update_fusd = `
+	update_fusd = `
 import RaribleFee from 0xRARIBLEFEE
 import TopShot from 0xTOPSHOT
 import RaribleOrder from 0xRARIBLEORDER
@@ -237,7 +237,7 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 }
 `,
-	templates.buy_flow = `
+	buy_flow = `
 import TopShot from 0xTOPSHOT
 import RaribleOrder from 0xRARIBLEORDER
 import FlowToken from 0xFLOWTOKEN
@@ -294,7 +294,7 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 }
 `,
-	templates.buy_fusd = `
+	buy_fusd = `
 import TopShot from 0xTOPSHOT
 import RaribleOrder from 0xRARIBLEORDER
 import FUSD from 0xFUSD

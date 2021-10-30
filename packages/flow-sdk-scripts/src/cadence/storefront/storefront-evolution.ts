@@ -1,5 +1,5 @@
 export const StorefrontEvolution = {
-	templates.sell_flow = `
+	sell_flow = `
 import Evolution from 0xEVOLUTION
 import RaribleOrder from 0xRARIBLEORDER
 import FlowToken from 0xFLOWTOKEN
@@ -50,7 +50,7 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 }
 `,
-	templates.sell_fusd = `
+	sell_fusd = `
 import Evolution from 0xEVOLUTION
 import RaribleOrder from 0xRARIBLEORDER
 import FUSD from 0xFUSD
@@ -101,7 +101,7 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 }
 `,
-	templates.update_flow = `
+	update_flow = `
 import Evolution from 0xEVOLUTION
 import RaribleOrder from 0xRARIBLEORDER
 import FlowToken from 0xFLOWTOKEN
@@ -163,7 +163,7 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 }
 `,
-	templates.update_fusd = `
+	update_fusd = `
 import Evolution from 0xEVOLUTION
 import RaribleOrder from 0xRARIBLEORDER
 import FUSD from 0xFUSD
@@ -225,7 +225,7 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 }
 `,
-	templates.buy_flow = `
+	buy_flow = `
 import Evolution from 0xEVOLUTION
 import RaribleOrder from 0xRARIBLEORDER
 import FlowToken from 0xFLOWTOKEN
@@ -282,7 +282,7 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 }
 `,
-	templates.buy_fusd = `
+	buy_fusd = `
 import Evolution from 0xEVOLUTION
 import RaribleOrder from 0xRARIBLEORDER
 import FUSD from 0xFUSD
