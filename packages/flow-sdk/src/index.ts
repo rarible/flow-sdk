@@ -9,6 +9,7 @@ import { cancelOrder as cancelOrderTmeplate } from "./order/cancel-order"
 import { signUserMessage as signUserMessageTemplate } from "./signature/sign-user-message"
 import { Networks } from "./config"
 import { AuthWithPrivateKey, Currency } from "./types"
+import { updateOrder as updateOrderTemplate } from "./order/update-order"
 
 export { TxResult } from "./common/transaction"
 export { FlowMintResponse } from "./nft/mint"
@@ -54,6 +55,15 @@ export interface FlowOrderSdk {
 	sell(collection: string, currency: Currency, sellItemId: number, sellItemPrice: string): Promise<FlowTransaction>
 
 	/**
+	 * Update sell order
+	 * @param collection
+	 * @param currency
+	 * @param orderId
+	 * @param price
+	 */
+	updateOrder(collection: string, currency: Currency, orderId: number, price: string): Promise<FlowTransaction>
+
+	/**
 	 *
 	 * @param collection
 	 * @param itemId
@@ -93,6 +103,7 @@ export function createFlowSdk(fcl: Fcl, network: Networks, auth?: AuthWithPrivat
 	const sell = sellTemplate.bind(null, fcl, auth, network)
 	const buy = buyTemplate.bind(null, fcl, auth, network)
 	const cancelOrder = cancelOrderTmeplate.bind(null, fcl, auth, network)
+	const updateOrder = updateOrderTemplate.bind(null, fcl, auth, network)
 
 	const signUserMessage = signUserMessageTemplate.bind(null, fcl)
 
@@ -106,6 +117,7 @@ export function createFlowSdk(fcl: Fcl, network: Networks, auth?: AuthWithPrivat
 			sell,
 			buy,
 			cancelOrder,
+			updateOrder,
 		},
 		signUserMessage,
 	}

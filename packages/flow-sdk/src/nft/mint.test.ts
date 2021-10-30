@@ -1,12 +1,12 @@
 import * as fcl from "@onflow/fcl"
-import { afterTestWait, createTestAuth, TEST_ACCOUNT_1 } from "@rarible/flow-test-common"
+import { afterTestWait, createTestAuth, FLOW_TEST_ACCOUNT_3 } from "@rarible/flow-test-common"
 import { createFlowSdk, FlowSdk } from "../index"
 
 describe("Minting on testnet", () => {
 	let sdk: FlowSdk
 
 	beforeAll(async () => {
-		const auth = await createTestAuth(fcl, TEST_ACCOUNT_1.address, TEST_ACCOUNT_1.privKey, 0)
+		const auth = await createTestAuth(fcl, FLOW_TEST_ACCOUNT_3.address, FLOW_TEST_ACCOUNT_3.privKey, 0)
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
 	afterTestWait()

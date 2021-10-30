@@ -33,3 +33,28 @@ export function checkEvent(txResult: FlowTransaction, eventName: EventNames, con
 	})
 	expect(result).toBeTruthy()
 }
+
+type FlowSimpleOrderTest = {
+	orderId: number
+	price: string
+	collection: string
+	itemId: number
+	payments: any[]
+}
+
+export function getOrderFromOrderTx(tx: FlowTransaction): FlowSimpleOrderTest {
+	const { orderId, price, nftType, nftId, payments } = tx.events.find(e => {
+		const [_, __, ___, event] = e.type.split(".")
+		return event === "OrderAvailable"
+	})?.data
+	if (!orderId) {
+		throw Error("Invalid transaction response")
+	}
+	return {
+		orderId,
+		price,
+		collection: nftType,
+		itemId: nftId,
+		payments,
+	}
+}
