@@ -1,7 +1,7 @@
 import { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
-import { CommonNFT, CommonNftSources, Evolution, MotoGPCard, Royalty, TopShot } from "@rarible/flow-sdk-scripts"
-import { CollectionName } from "../types"
+import { Evolution, MotoGPCard, RaribleNFT, TopShot } from "@rarible/flow-sdk-scripts"
+import { CollectionName, Royalty } from "../types"
 import { convertRoyalties } from "../common/convert-royalties"
 
 type NftMethods = {
@@ -12,13 +12,9 @@ type NftMethods = {
 type NftCodeType = Record<CollectionName, NftMethods>
 
 export const nftCode: NftCodeType = {
-	Rarible: {
-		burn: CommonNFT.burn,
-		transfer: CommonNFT.transfer,
-	},
-	CommonNFT: {
-		burn: CommonNFT.burn,
-		transfer: CommonNFT.transfer,
+	RaribleNFT: {
+		burn: RaribleNFT.burn,
+		transfer: RaribleNFT.transfer,
 	},
 	TopShot: {
 		burn: TopShot.burn,
@@ -51,16 +47,16 @@ export function getNftCode(collection: CollectionName) {
 				}
 			},
 			mint: (fcl: Fcl, collectionAddress: string, metadata: string, royalties: Royalty[]) => {
-				if (collection === "Rarible" || collection === "CommonNFT") {
+				if (collection === "RaribleNFT") {
 					const RoyaltiesType = t.Array(t.Struct(
-						`A.${fcl.sansPrefix(collectionAddress)}.CommonNFT.Royalty`,
+						`A.${fcl.sansPrefix(collectionAddress)}.RaribleNFT.Royalty`,
 						[
 							{ value: t.Address },
 							{ value: t.UFix64 },
 						],
 					))
 					return {
-						cadence: CommonNftSources.mint,
+						cadence: RaribleNFT.mint,
 						args: fcl.args([fcl.arg(metadata, t.String), fcl.arg(convertRoyalties(royalties), RoyaltiesType)]),
 					}
 				}

@@ -2,9 +2,9 @@ import { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import {
 	StorefrontCommon,
-	StorefrontCommonNFT,
 	StorefrontEvolution,
 	StorefrontMotoGPCard,
+	StorefrontRaribleNFT,
 	StorefrontTopShot,
 } from "@rarible/flow-sdk-scripts"
 import { CollectionName, Currency } from "../types"
@@ -15,28 +15,16 @@ export type CodeByCurrency = Record<Currency, OrderMethods>
 type OrderCode = Record<CollectionName, CodeByCurrency>
 
 export const orderCode: OrderCode = {
-	Rarible: {
+	RaribleNFT: {
 		FLOW: {
-			buy: StorefrontCommonNFT.buy_flow,
-			sell: StorefrontCommonNFT.sell_flow,
-			update: StorefrontCommonNFT.update_flow,
+			buy: StorefrontRaribleNFT.buy_flow,
+			sell: StorefrontRaribleNFT.sell_flow,
+			update: StorefrontRaribleNFT.update_flow,
 		},
 		FUSD: {
-			buy: StorefrontCommonNFT.buy_fusd,
-			sell: StorefrontCommonNFT.sell_fusd,
-			update: StorefrontCommonNFT.update_fusd,
-		},
-	},
-	CommonNFT: {
-		FLOW: {
-			buy: StorefrontCommonNFT.buy_flow,
-			sell: StorefrontCommonNFT.sell_flow,
-			update: StorefrontCommonNFT.update_flow,
-		},
-		FUSD: {
-			buy: StorefrontCommonNFT.buy_fusd,
-			sell: StorefrontCommonNFT.sell_fusd,
-			update: StorefrontCommonNFT.update_fusd,
+			buy: StorefrontRaribleNFT.buy_fusd,
+			sell: StorefrontRaribleNFT.sell_fusd,
+			update: StorefrontRaribleNFT.update_fusd,
 		},
 	},
 	MotoGPCard: {

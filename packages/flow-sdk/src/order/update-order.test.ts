@@ -11,8 +11,8 @@ describe("Test update sell order on testnet", () => {
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
 	afterTestWait()
-	const collection = "A.0x01658d9b94068f3c.CommonNFT"
-	test("Should update CommonNFT sell order", async () => {
+	const collection = "A.0xebf4ae01d1284af8.RaribleNFT"
+	test("Should update RaribleNFT sell order", async () => {
 		const mintTx = await sdk.nft.mint(
 			collection,
 			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
@@ -20,7 +20,7 @@ describe("Test update sell order on testnet", () => {
 		)
 		const tx = await sdk.order.sell(collection, "FLOW", mintTx.tokenId, "0.1")
 		checkEvent(tx, "ListingAvailable", "NFTStorefront")
-		checkEvent(tx, "OrderAvailable", "CommonOrder")
+		checkEvent(tx, "OrderAvailable", "RaribleOrder")
 		const order = getOrderFromOrderTx(tx)
 		expect(order.price).toEqual("0.10000000")
 
