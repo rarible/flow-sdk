@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.94](https://github.com/rarible/flow-sdk/compare/v0.0.93...v0.0.94) (2021-10-31)
+
+**Note:** Version bump only for package @rarible/flow-sdk
+
+
+
+
+
 ## [0.0.93](https://github.com/rarible/flow-sdk/compare/v0.0.92...v0.0.93) (2021-10-31)
 
 **Note:** Version bump only for package @rarible/flow-sdk
