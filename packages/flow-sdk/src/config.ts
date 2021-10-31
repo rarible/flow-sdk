@@ -46,7 +46,7 @@ export const collectionsConfig: Record<CollectionName, ConfigData> = {
 	TopShot: topShotConfigData,
 }
 
-const MAINNET_RARIBLE_ADDRESS = "0x1ab36aaf654a13e"
+const MAINNET_RARIBLE_ADDRESS = "0x01ab36aaf654a13e"
 const TESTNET_RARIBLE_ADDRESS = "0xebf4ae01d1284af8"
 // todo move contracts address to fcl.config aliases  if it's possible
 export const CONFIGS: Record<Networks, Config> = {
@@ -155,7 +155,7 @@ export enum TestnetCollections {
 }
 
 export enum MainnetCollections {
-	RARIBLE = "A.0x1ab36aaf654a13e.RaribleNFT",
+	RARIBLE = "A.0x01ab36aaf654a13e.RaribleNFT",
 	MOTOGP = "A.0xa49cc0ee46c54bfb.MotoGPCard",
 	EVOLUTION = "A.f4264ac8f3256818.Evolution",
 	TOPSHOT = "A.0b2a3299cc857e29.TopShot",
