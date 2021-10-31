@@ -1,5 +1,5 @@
 export const StorefrontTopShot = {
-	sell_flow = `
+	sell_flow: `
 import RaribleFee from 0xRARIBLEFEE
 import TopShot from 0xTOPSHOT
 import RaribleOrder from 0xRARIBLEORDER
@@ -35,10 +35,10 @@ transaction(tokenId: UInt64, price: UFix64) {
     execute {
         let royalties: [RaribleOrder.PaymentPart] = []
         let extraCuts: [RaribleOrder.PaymentPart] = []
-        
-        
+
+
         extraCuts.append(RaribleOrder.PaymentPart(address: RaribleFee.feeAddress(), rate: 0.05))
-        
+
         RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
@@ -53,7 +53,7 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 }
 `,
-	sell_fusd = `
+	sell_fusd: `
 import RaribleFee from 0xRARIBLEFEE
 import TopShot from 0xTOPSHOT
 import RaribleOrder from 0xRARIBLEORDER
@@ -89,10 +89,10 @@ transaction(tokenId: UInt64, price: UFix64) {
     execute {
         let royalties: [RaribleOrder.PaymentPart] = []
         let extraCuts: [RaribleOrder.PaymentPart] = []
-        
-        
+
+
         extraCuts.append(RaribleOrder.PaymentPart(address: RaribleFee.feeAddress(), rate: 0.05))
-        
+
         RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
@@ -107,7 +107,7 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 }
 `,
-	update_flow = `
+	update_flow: `
 import RaribleFee from 0xRARIBLEFEE
 import TopShot from 0xTOPSHOT
 import RaribleOrder from 0xRARIBLEORDER
@@ -145,12 +145,12 @@ transaction(orderId: UInt64, price: UFix64) {
     execute {
         let royalties: [RaribleOrder.PaymentPart] = []
         let extraCuts: [RaribleOrder.PaymentPart] = []
-        let details = self.listing.getDetails() 
+        let details = self.listing.getDetails()
         let tokenId = details.nftID
-        
-        
+
+
         extraCuts.append(RaribleOrder.PaymentPart(address: RaribleFee.feeAddress(), rate: 0.05))
-        
+
         RaribleOrder.removeOrder(
             storefront: self.storefront,
             orderId: orderId,
@@ -172,7 +172,7 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 }
 `,
-	update_fusd = `
+	update_fusd: `
 import RaribleFee from 0xRARIBLEFEE
 import TopShot from 0xTOPSHOT
 import RaribleOrder from 0xRARIBLEORDER
@@ -210,12 +210,12 @@ transaction(orderId: UInt64, price: UFix64) {
     execute {
         let royalties: [RaribleOrder.PaymentPart] = []
         let extraCuts: [RaribleOrder.PaymentPart] = []
-        let details = self.listing.getDetails() 
+        let details = self.listing.getDetails()
         let tokenId = details.nftID
-        
-        
+
+
         extraCuts.append(RaribleOrder.PaymentPart(address: RaribleFee.feeAddress(), rate: 0.05))
-        
+
         RaribleOrder.removeOrder(
             storefront: self.storefront,
             orderId: orderId,
@@ -237,7 +237,7 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 }
 `,
-	buy_flow = `
+	buy_flow: `
 import TopShot from 0xTOPSHOT
 import RaribleOrder from 0xRARIBLEORDER
 import FlowToken from 0xFLOWTOKEN
@@ -294,7 +294,7 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 }
 `,
-	buy_fusd = `
+	buy_fusd: `
 import TopShot from 0xTOPSHOT
 import RaribleOrder from 0xRARIBLEORDER
 import FUSD from 0xFUSD
@@ -350,5 +350,5 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
         self.tokenReceiver.deposit(token: <-item)
     }
 }
-`
+`,
 }

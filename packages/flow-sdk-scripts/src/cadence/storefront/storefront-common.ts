@@ -35,7 +35,7 @@ pub fun main(address: Address): [UInt64] {
 }
 `,
 	remove_item: `
-import CommonOrder from 0xCOMMONORDER
+import RaribleOrder from 0xCOMMONORDER
 import NFTStorefront from 0xNFTSTOREFRONT
 
 transaction (orderId: UInt64) {
@@ -54,7 +54,7 @@ transaction (orderId: UInt64) {
     }
 
     execute {
-        CommonOrder.removeOrder(
+        RaribleOrder.removeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: self.orderAddress,

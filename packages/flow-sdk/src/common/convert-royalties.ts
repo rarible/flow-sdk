@@ -1,4 +1,4 @@
-import { Royalty } from "@rarible/flow-sdk-scripts"
+import { Royalty } from "../types"
 
 export const convertRoyalties = (royalties: Royalty[]) =>
 	royalties.map(royalty => ({

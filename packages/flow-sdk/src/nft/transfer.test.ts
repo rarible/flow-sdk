@@ -5,7 +5,7 @@ import { checkEvent } from "../common/tests-utils"
 
 describe("Test transfer on testnet", () => {
 	let sdk: FlowSdk
-	const collection = "A.0x01658d9b94068f3c.CommonNFT.NFT"
+	const collection = "A.0xebf4ae01d1284af8.RaribleNFT"
 	beforeAll(async () => {
 		const auth = await createTestAuth(fcl, FLOW_TEST_ACCOUNT_3.address, FLOW_TEST_ACCOUNT_3.privKey, 0)
 		sdk = createFlowSdk(fcl, "testnet", auth)
@@ -14,7 +14,7 @@ describe("Test transfer on testnet", () => {
 	test("Should transfer NFT", async () => {
 		const mintTx = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
 		const tx = await sdk.nft.transfer(collection, mintTx.tokenId, FLOW_TEST_ACCOUNT_3.address)
-		checkEvent(tx, "Withdraw", "CommonNFT")
-		checkEvent(tx, "Deposit", "CommonNFT")
+		checkEvent(tx, "Withdraw", "RaribleNFT")
+		checkEvent(tx, "Deposit", "RaribleNFT")
 	})
 })

@@ -9,18 +9,17 @@ type EventNames =
 	| "OrderAvailable"
 	| "ListingCompleted"
 type ContractNames =
-	"CommonNFT"
-	| "NonFungibleToken"
+	"NonFungibleToken"
 	| "FungibleToken"
 	| "FUSD"
 	| "FlowToken"
 	| "NFTStorefront"
-	| "CommonOrder"
+	| "RaribleOrder"
 	| "MotoGPCard"
 	| "Evolution"
-	| "CommonFee"
+	| "RaribleFee"
 	| "TopShot"
-	| "CommonNFT"
+	| "RaribleNFT"
 	| "LicensedNFT"
 
 export function checkEvent(txResult: FlowTransaction, eventName: EventNames, contractName?: ContractNames) {

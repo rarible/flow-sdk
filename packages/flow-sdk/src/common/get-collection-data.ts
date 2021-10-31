@@ -11,11 +11,8 @@ export function getCollectionData(collection: string): CollectionData {
 		throw Error("SDK error, unable to parse collection string")
 	}
 	switch (name) {
-		case "Rarible": {
-			return { name: "Rarible", address }
-		}
-		case "CommonNFT": {
-			return { name: "CommonNFT", address }
+		case "RaribleNFT": {
+			return { name: "RaribleNFT", address }
 		}
 		case "MotoGPCard": {
 			return { name: "MotoGPCard", address }
