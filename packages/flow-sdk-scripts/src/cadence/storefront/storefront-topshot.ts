@@ -1,8 +1,8 @@
 export const StorefrontTopShot = {
-	sell_flow: `
-import CommonFee from 0xCOMMONFEE
+	sell_flow = `
+import RaribleFee from 0xRARIBLEFEE
 import TopShot from 0xTOPSHOT
-import CommonOrder from 0xCOMMONORDER
+import RaribleOrder from 0xRARIBLEORDER
 import FlowToken from 0xFLOWTOKEN
 import FungibleToken from 0xFUNGIBLETOKEN
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
@@ -33,13 +33,13 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [CommonOrder.PaymentPart] = []
-        let extraCuts: [CommonOrder.PaymentPart] = []
-
-
-        extraCuts.append(CommonOrder.PaymentPart(address: CommonFee.feeAddress(), rate: 0.05))
-
-        CommonOrder.addOrder(
+        let royalties: [RaribleOrder.PaymentPart] = []
+        let extraCuts: [RaribleOrder.PaymentPart] = []
+        
+        
+        extraCuts.append(RaribleOrder.PaymentPart(address: RaribleFee.feeAddress(), rate: 0.05))
+        
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
             nftType: Type<@TopShot.NFT>(),
@@ -53,10 +53,10 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 }
 `,
-	sell_fusd: `
-import CommonFee from 0xCOMMONFEE
+	sell_fusd = `
+import RaribleFee from 0xRARIBLEFEE
 import TopShot from 0xTOPSHOT
-import CommonOrder from 0xCOMMONORDER
+import RaribleOrder from 0xRARIBLEORDER
 import FUSD from 0xFUSD
 import FungibleToken from 0xFUNGIBLETOKEN
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
@@ -87,13 +87,13 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [CommonOrder.PaymentPart] = []
-        let extraCuts: [CommonOrder.PaymentPart] = []
-
-
-        extraCuts.append(CommonOrder.PaymentPart(address: CommonFee.feeAddress(), rate: 0.05))
-
-        CommonOrder.addOrder(
+        let royalties: [RaribleOrder.PaymentPart] = []
+        let extraCuts: [RaribleOrder.PaymentPart] = []
+        
+        
+        extraCuts.append(RaribleOrder.PaymentPart(address: RaribleFee.feeAddress(), rate: 0.05))
+        
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
             nftType: Type<@TopShot.NFT>(),
@@ -107,10 +107,10 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 }
 `,
-	update_flow: `
-import CommonFee from 0xCOMMONFEE
+	update_flow = `
+import RaribleFee from 0xRARIBLEFEE
 import TopShot from 0xTOPSHOT
-import CommonOrder from 0xCOMMONORDER
+import RaribleOrder from 0xRARIBLEORDER
 import FlowToken from 0xFLOWTOKEN
 import FungibleToken from 0xFUNGIBLETOKEN
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
@@ -143,22 +143,22 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [CommonOrder.PaymentPart] = []
-        let extraCuts: [CommonOrder.PaymentPart] = []
-        let details = self.listing.getDetails()
+        let royalties: [RaribleOrder.PaymentPart] = []
+        let extraCuts: [RaribleOrder.PaymentPart] = []
+        let details = self.listing.getDetails() 
         let tokenId = details.nftID
-
-
-        extraCuts.append(CommonOrder.PaymentPart(address: CommonFee.feeAddress(), rate: 0.05))
-
-        CommonOrder.removeOrder(
+        
+        
+        extraCuts.append(RaribleOrder.PaymentPart(address: RaribleFee.feeAddress(), rate: 0.05))
+        
+        RaribleOrder.removeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: self.orderAddress,
             listing: self.listing,
         )
 
-        CommonOrder.addOrder(
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
             nftType: details.nftType,
@@ -172,10 +172,10 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 }
 `,
-	update_fusd: `
-import CommonFee from 0xCOMMONFEE
+	update_fusd = `
+import RaribleFee from 0xRARIBLEFEE
 import TopShot from 0xTOPSHOT
-import CommonOrder from 0xCOMMONORDER
+import RaribleOrder from 0xRARIBLEORDER
 import FUSD from 0xFUSD
 import FungibleToken from 0xFUNGIBLETOKEN
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
@@ -208,22 +208,22 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [CommonOrder.PaymentPart] = []
-        let extraCuts: [CommonOrder.PaymentPart] = []
-        let details = self.listing.getDetails()
+        let royalties: [RaribleOrder.PaymentPart] = []
+        let extraCuts: [RaribleOrder.PaymentPart] = []
+        let details = self.listing.getDetails() 
         let tokenId = details.nftID
-
-
-        extraCuts.append(CommonOrder.PaymentPart(address: CommonFee.feeAddress(), rate: 0.05))
-
-        CommonOrder.removeOrder(
+        
+        
+        extraCuts.append(RaribleOrder.PaymentPart(address: RaribleFee.feeAddress(), rate: 0.05))
+        
+        RaribleOrder.removeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: self.orderAddress,
             listing: self.listing,
         )
 
-        CommonOrder.addOrder(
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
             nftType: details.nftType,
@@ -237,9 +237,9 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 }
 `,
-	buy_flow: `
+	buy_flow = `
 import TopShot from 0xTOPSHOT
-import CommonOrder from 0xCOMMONORDER
+import RaribleOrder from 0xRARIBLEORDER
 import FlowToken from 0xFLOWTOKEN
 import FungibleToken from 0xFUNGIBLETOKEN
 import NFTStorefront from 0xNFTSTOREFRONT
@@ -282,7 +282,7 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 
     execute {
-        let item <- CommonOrder.closeOrder(
+        let item <- RaribleOrder.closeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: storefrontAddress,
@@ -294,9 +294,9 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 }
 `,
-	buy_fusd: `
+	buy_fusd = `
 import TopShot from 0xTOPSHOT
-import CommonOrder from 0xCOMMONORDER
+import RaribleOrder from 0xRARIBLEORDER
 import FUSD from 0xFUSD
 import FungibleToken from 0xFUNGIBLETOKEN
 import NFTStorefront from 0xNFTSTOREFRONT
@@ -339,7 +339,7 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 
     execute {
-        let item <- CommonOrder.closeOrder(
+        let item <- RaribleOrder.closeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: storefrontAddress,
@@ -350,5 +350,5 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
         self.tokenReceiver.deposit(token: <-item)
     }
 }
-`,
+`
 }

@@ -1,7 +1,7 @@
 export const StorefrontMotoGPCard = {
-	sell_flow: `
+	sell_flow = `
 import MotoGPCard from 0xMOTOGPCARD
-import CommonOrder from 0xCOMMONORDER
+import RaribleOrder from 0xRARIBLEORDER
 import FlowToken from 0xFLOWTOKEN
 import FungibleToken from 0xFUNGIBLETOKEN
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
@@ -32,11 +32,11 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [CommonOrder.PaymentPart] = []
-        let extraCuts: [CommonOrder.PaymentPart] = []
-
-
-        CommonOrder.addOrder(
+        let royalties: [RaribleOrder.PaymentPart] = []
+        let extraCuts: [RaribleOrder.PaymentPart] = []
+        
+        
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
             nftType: Type<@MotoGPCard.NFT>(),
@@ -50,9 +50,9 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 }
 `,
-	sell_fusd: `
+	sell_fusd = `
 import MotoGPCard from 0xMOTOGPCARD
-import CommonOrder from 0xCOMMONORDER
+import RaribleOrder from 0xRARIBLEORDER
 import FUSD from 0xFUSD
 import FungibleToken from 0xFUNGIBLETOKEN
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
@@ -83,11 +83,11 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [CommonOrder.PaymentPart] = []
-        let extraCuts: [CommonOrder.PaymentPart] = []
-
-
-        CommonOrder.addOrder(
+        let royalties: [RaribleOrder.PaymentPart] = []
+        let extraCuts: [RaribleOrder.PaymentPart] = []
+        
+        
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
             nftType: Type<@MotoGPCard.NFT>(),
@@ -101,9 +101,9 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 }
 `,
-	update_flow: `
+	update_flow = `
 import MotoGPCard from 0xMOTOGPCARD
-import CommonOrder from 0xCOMMONORDER
+import RaribleOrder from 0xRARIBLEORDER
 import FlowToken from 0xFLOWTOKEN
 import FungibleToken from 0xFUNGIBLETOKEN
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
@@ -136,20 +136,20 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [CommonOrder.PaymentPart] = []
-        let extraCuts: [CommonOrder.PaymentPart] = []
-        let details = self.listing.getDetails()
+        let royalties: [RaribleOrder.PaymentPart] = []
+        let extraCuts: [RaribleOrder.PaymentPart] = []
+        let details = self.listing.getDetails() 
         let tokenId = details.nftID
-
-
-        CommonOrder.removeOrder(
+        
+        
+        RaribleOrder.removeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: self.orderAddress,
             listing: self.listing,
         )
 
-        CommonOrder.addOrder(
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
             nftType: details.nftType,
@@ -163,9 +163,9 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 }
 `,
-	update_fusd: `
+	update_fusd = `
 import MotoGPCard from 0xMOTOGPCARD
-import CommonOrder from 0xCOMMONORDER
+import RaribleOrder from 0xRARIBLEORDER
 import FUSD from 0xFUSD
 import FungibleToken from 0xFUNGIBLETOKEN
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
@@ -198,20 +198,20 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [CommonOrder.PaymentPart] = []
-        let extraCuts: [CommonOrder.PaymentPart] = []
-        let details = self.listing.getDetails()
+        let royalties: [RaribleOrder.PaymentPart] = []
+        let extraCuts: [RaribleOrder.PaymentPart] = []
+        let details = self.listing.getDetails() 
         let tokenId = details.nftID
-
-
-        CommonOrder.removeOrder(
+        
+        
+        RaribleOrder.removeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: self.orderAddress,
             listing: self.listing,
         )
 
-        CommonOrder.addOrder(
+        RaribleOrder.addOrder(
             storefront: self.storefront,
             nftProvider: self.nftProvider,
             nftType: details.nftType,
@@ -225,9 +225,9 @@ transaction(orderId: UInt64, price: UFix64) {
     }
 }
 `,
-	buy_flow: `
+	buy_flow = `
 import MotoGPCard from 0xMOTOGPCARD
-import CommonOrder from 0xCOMMONORDER
+import RaribleOrder from 0xRARIBLEORDER
 import FlowToken from 0xFLOWTOKEN
 import FungibleToken from 0xFUNGIBLETOKEN
 import NFTStorefront from 0xNFTSTOREFRONT
@@ -270,7 +270,7 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 
     execute {
-        let item <- CommonOrder.closeOrder(
+        let item <- RaribleOrder.closeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: storefrontAddress,
@@ -282,9 +282,9 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 }
 `,
-	buy_fusd: `
+	buy_fusd = `
 import MotoGPCard from 0xMOTOGPCARD
-import CommonOrder from 0xCOMMONORDER
+import RaribleOrder from 0xRARIBLEORDER
 import FUSD from 0xFUSD
 import FungibleToken from 0xFUNGIBLETOKEN
 import NFTStorefront from 0xNFTSTOREFRONT
@@ -327,7 +327,7 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
     }
 
     execute {
-        let item <- CommonOrder.closeOrder(
+        let item <- RaribleOrder.closeOrder(
             storefront: self.storefront,
             orderId: orderId,
             orderAddress: storefrontAddress,
@@ -338,5 +338,5 @@ transaction (orderId: UInt64, storefrontAddress: Address) {
         self.tokenReceiver.deposit(token: <-item)
     }
 }
-`,
+`
 }

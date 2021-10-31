@@ -1,13 +1,13 @@
-export const CommonNFT = {
+export const RaribleNFT = {
 	get_ids: `
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import CommonNFT from 0xCOMMONNFT
+import RaribleNFT from 0xRARIBLENFT
 
-// Take CommonNFT ids by account address
+// Take RaribleNFT ids by account address
 //
 pub fun main(address: Address): [UInt64]? {
     let collection = getAccount(address)
-        .getCapability(CommonNFT.collectionPublicPath)
+        .getCapability(RaribleNFT.collectionPublicPath)
         .borrow<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>()
         ?? panic("NFT Collection not found")
     return collection.getIDs()
@@ -15,13 +15,13 @@ pub fun main(address: Address): [UInt64]? {
 `,
 	borrow_nft: `
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import CommonNFT from 0xCOMMONNFT
+import RaribleNFT from 0xRARIBLENFT
 
-// Take CommonNFT token props by account address and tokenId
+// Take RaribleNFT token props by account address and tokenId
 //
 pub fun main(address: Address, tokenId: UInt64): &AnyResource {
     let collection = getAccount(address)
-        .getCapability(CommonNFT.collectionPublicPath)
+        .getCapability(RaribleNFT.collectionPublicPath)
         .borrow<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>()
         ?? panic("NFT Collection not found")
     return collection.borrowNFT(id: tokenId)
@@ -29,47 +29,47 @@ pub fun main(address: Address, tokenId: UInt64): &AnyResource {
 `,
 	check: `
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
-    import CommonNFT from 0xCOMMONNFT
+    import RaribleNFT from 0xRARIBLENFT
 
-    // check CommonNFT collection is available on given address
+    // check RaribleNFT collection is available on given address
     //
     pub fun main(address: Address): Bool {
         return getAccount(address)
-            .getCapability<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath)
+            .getCapability<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(RaribleNFT.collectionPublicPath)
             .check()
     }
 `,
 	setup_account: `
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import CommonNFT from 0xCOMMONNFT
+import RaribleNFT from 0xRARIBLENFT
 
-// Setup storage for CommonNFT on signer account
+// Setup storage for RaribleNFT on signer account
 //
 transaction {
     prepare(acct: AuthAccount) {
-        if acct.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath) == nil {
-            let collection <- CommonNFT.createEmptyCollection() as! @CommonNFT.Collection
-            acct.save(<-collection, to: CommonNFT.collectionStoragePath)
-            acct.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath, target: CommonNFT.collectionStoragePath)
+        if acct.borrow<&RaribleNFT.Collection>(from: RaribleNFT.collectionStoragePath) == nil {
+            let collection <- RaribleNFT.createEmptyCollection() as! @RaribleNFT.Collection
+            acct.save(<-collection, to: RaribleNFT.collectionStoragePath)
+            acct.link<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(RaribleNFT.collectionPublicPath, target: RaribleNFT.collectionStoragePath)
         }
     }
 }
 `,
 	transfer: `
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import CommonNFT from 0xCOMMONNFT
+import RaribleNFT from 0xRARIBLENFT
 
-// transfer CommonNFT token with tokenId to given address
+// transfer RaribleNFT token with tokenId to given address
 //
 transaction(tokenId: UInt64, to: Address) {
     let token: @NonFungibleToken.NFT
     let receiver: Capability<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>
 
     prepare(acct: AuthAccount) {
-        let collection = acct.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath)
+        let collection = acct.borrow<&RaribleNFT.Collection>(from: RaribleNFT.collectionStoragePath)
             ?? panic("Missing NFT collection on signer account")
         self.token <- collection.withdraw(withdrawID: tokenId)
-        self.receiver = getAccount(to).getCapability<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(CommonNFT.collectionPublicPath)
+        self.receiver = getAccount(to).getCapability<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}>(RaribleNFT.collectionPublicPath)
     }
 
     execute {
@@ -80,13 +80,13 @@ transaction(tokenId: UInt64, to: Address) {
 `,
 	burn: `
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
-import CommonNFT from 0xCOMMONNFT
+import RaribleNFT from 0xRARIBLENFT
 
-// Burn CommonNFT on signer account by tokenId
+// Burn RaribleNFT on signer account by tokenId
 //
 transaction(tokenId: UInt64) {
     prepare(account: AuthAccount) {
-        let collection = account.borrow<&CommonNFT.Collection>(from: CommonNFT.collectionStoragePath)!
+        let collection = account.borrow<&RaribleNFT.Collection>(from: RaribleNFT.collectionStoragePath)!
         destroy collection.withdraw(withdrawID: tokenId)
     }
 }
