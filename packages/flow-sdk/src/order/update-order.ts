@@ -4,6 +4,7 @@ import { runTransaction, waitForSeal } from "../common/transaction"
 import { getOrderCode } from "../txCodeStore/order"
 import { AuthWithPrivateKey, Currency } from "../types"
 import { getCollectionConfig } from "../common/get-collection-config"
+import { fixAmount } from "../common/utils"
 
 export async function updateOrder(
 	fcl: Fcl,
@@ -19,7 +20,7 @@ export async function updateOrder(
 	const txId = await runTransaction(
 		fcl,
 		addressMap,
-		getOrderCode(collectionName).update(fcl, currency, orderId, sellItemPrice),
+		getOrderCode(collectionName).update(fcl, currency, orderId, fixAmount(sellItemPrice)),
 		auth,
 	)
 	return await waitForSeal(fcl, txId)
