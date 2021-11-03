@@ -1,5 +1,5 @@
 import { Fcl, FclArgs } from "@rarible/fcl-types"
-import { getBalanceScripts } from "@rarible/flow-sdk-scripts/src/wallet/balance"
+import { getBalanceScripts } from "@rarible/flow-sdk-scripts"
 import * as t from "@onflow/types"
 import { Currency } from "../types"
 

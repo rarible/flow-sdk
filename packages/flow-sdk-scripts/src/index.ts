@@ -7,3 +7,4 @@ export { StorefrontMotoGPCard } from "./cadence/storefront/storefront-motogp-car
 export { StorefrontRaribleNFT } from "./cadence/storefront/storefront-rarible-nft"
 export { StorefrontTopShot } from "./cadence/storefront/storefront-topshot"
 export { StorefrontEvolution } from "./cadence/storefront/storefront-evolution"
+export { getBalanceScripts } from "./wallet/balance"
