@@ -1,4 +1,5 @@
 import type { CommonFlowTransaction, Fcl } from "@rarible/fcl-types"
+import { BigNumber } from "@rarible/types"
 import { FlowMintResponse, mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
 import { transfer as transferTemplate } from "./nft/transfer"
@@ -6,6 +7,7 @@ import { sell as sellTemplate } from "./order/sell"
 import { buy as buyTemplate } from "./order/buy"
 import { cancelOrder as cancelOrderTmeplate } from "./order/cancel-order"
 import { signUserMessage as signUserMessageTemplate } from "./signature/sign-user-message"
+import { getFungibleBalance as getFungibleBalanceTemplate } from "./wallet/get-fungible-balance"
 import { Networks } from "./config"
 import { AuthWithPrivateKey, Currency, Royalty } from "./types"
 import { updateOrder as updateOrderTemplate } from "./order/update-order"
@@ -78,9 +80,14 @@ export interface FlowOrderSdk {
 	cancelOrder(collection: string, orderId: number): Promise<FlowTransaction>
 }
 
+export interface FlowWalletSdk {
+	getFungibleBalance(address: string, currency: Currency): Promise<BigNumber>
+}
+
 export interface FlowSdk {
 	nft: FlowNftSdk,
 	order: FlowOrderSdk,
+	wallet: FlowWalletSdk
 
 	signUserMessage(message: string): Promise<string>
 }
@@ -104,6 +111,8 @@ export function createFlowSdk(fcl: Fcl, network: Networks, auth?: AuthWithPrivat
 	const cancelOrder = cancelOrderTmeplate.bind(null, fcl, auth, network)
 	const updateOrder = updateOrderTemplate.bind(null, fcl, auth, network)
 
+	const getFungibleBalance = getFungibleBalanceTemplate.bind(null, fcl, network)
+
 	const signUserMessage = signUserMessageTemplate.bind(null, fcl)
 
 	return {
@@ -117,6 +126,9 @@ export function createFlowSdk(fcl: Fcl, network: Networks, auth?: AuthWithPrivat
 			buy,
 			cancelOrder,
 			updateOrder,
+		},
+		wallet: {
+			getFungibleBalance,
 		},
 		signUserMessage,
 	}

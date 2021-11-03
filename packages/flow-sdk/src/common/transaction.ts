@@ -8,9 +8,13 @@ export type MethodArgs = {
 	args?: any
 }
 
-export const runScript = async (fcl: Fcl, code: string, addressMap: AddressMap) => {
-	const cadence = replaceImportAddresses(code, addressMap)
-	const result = await fcl.send([fcl.script`${cadence}`])
+export const runScript = async (
+	fcl: Fcl,
+	params: MethodArgs,
+	addressMap: AddressMap,
+) => {
+	const cadence = replaceImportAddresses(params.cadence, addressMap)
+	const result = await fcl.send([fcl.script`${cadence}`, params.args])
 	return await fcl.decode(result)
 }
 
