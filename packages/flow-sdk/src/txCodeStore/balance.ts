@@ -19,7 +19,7 @@ export function getBalanceCode(fcl: Fcl, currency: Currency, address: string): G
 		}
 		case "FUSD": {
 			return {
-				cadence: getBalanceScripts.flow,
+				cadence: getBalanceScripts.fusd,
 				args,
 			}
 		}
