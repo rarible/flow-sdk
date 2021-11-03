@@ -17,8 +17,7 @@
   },
   "dependencies": {
     "@rarible/fcl-types": "^0.0.96",
-    "@rarible/flow-sdk-scripts": "^0.0.96",
-    "@rarible/types": "0.1.10"
+    "@rarible/flow-sdk-scripts": "^0.0.96"
   },
   "devDependencies": {
     "@babel/core": "7.11.0",

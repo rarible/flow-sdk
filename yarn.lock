@@ -2370,10 +2370,12 @@
     eslint-plugin-jest "24.4.0"
     eslint-plugin-unicorn "35.0.0"
 
-"@rarible/types@0.1.10":
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/@rarible/types/-/types-0.1.10.tgz#0e91b5727be6e228e4dc2c4a7f907065ed81858d"
-  integrity sha512-/eFNU2AeB7beMN9W0DYYNyfOEJtvppvFBzB7V3++fky2SL5S245/wxpqVjQvtkJcga8dQ81gCUZHooOlVLw7Zw==
+"@rarible/utils@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@rarible/utils/-/utils-0.0.7.tgz#9e5e83757fdb6572bda1e1ff3222990d33f684f6"
+  integrity sha512-Q48JeisVM63/ha+JLmtujTeR7/NIcM6EfZQXhB4+v8w6mtUOp3te5n4sPSS2hcxeYOZG4izXEM9nw6t6IzZbjA==
+  dependencies:
+    bignumber.js "9.0.1"
 
 "@roborox/eslint-config-default@2.2.0":
   version "2.2.0"
@@ -3290,6 +3292,11 @@ big.js@^3.1.3:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/big.js/-/big.js-3.2.0.tgz#a5fc298b81b9e0dca2e458824784b65c52ba588e"
   integrity sha512-+hN/Zh2D08Mx65pZ/4g5bsmNiZUuChDiQfTUQ7qJr4/kuopCr88xZsAXv6mBoZEsUI4OuGHlX59qE94K2mMW8Q==
+
+bignumber.js@9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.1.tgz#8d7ba124c882bfd8e43260c67475518d0689e4e5"
+  integrity sha512-IdZR9mh6ahOBv/hYGiXyVuyCetmGJhtYkqLBpTStdhEGjegpPlUawydyaF3pbIOFynJTpllEs+NP+CS9jKFLjA==
 
 bindings@^1.5.0:
   version "1.5.0"

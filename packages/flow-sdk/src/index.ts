@@ -1,5 +1,4 @@
 import type { CommonFlowTransaction, Fcl } from "@rarible/fcl-types"
-import { BigNumber } from "@rarible/types"
 import { FlowMintResponse, mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
 import { transfer as transferTemplate } from "./nft/transfer"
@@ -81,7 +80,7 @@ export interface FlowOrderSdk {
 }
 
 export interface FlowWalletSdk {
-	getFungibleBalance(address: string, currency: Currency): Promise<BigNumber>
+	getFungibleBalance(address: string, currency: Currency): Promise<string>
 }
 
 export interface FlowSdk {
