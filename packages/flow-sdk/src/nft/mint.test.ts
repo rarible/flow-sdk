@@ -10,7 +10,7 @@ describe("Minting on testnet", () => {
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
 	afterTestWait()
-	test("should mint nft", async () => {
+	test.skip("should mint nft", async () => {
 		const mintTx = await sdk.nft.mint("A.0xebf4ae01d1284af8.RaribleNFT", "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
 		expect(mintTx.tokenId).toBeGreaterThan(0)
 	})

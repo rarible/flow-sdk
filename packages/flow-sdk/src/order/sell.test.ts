@@ -12,7 +12,7 @@ describe("Test sell on testnet", () => {
 	})
 	afterTestWait()
 	const collection = "A.0xebf4ae01d1284af8.RaribleNFT"
-	test("Should create RaribleNFT sell order", async () => {
+	test.skip("Should create RaribleNFT sell order", async () => {
 		const mintTx = await sdk.nft.mint(
 			collection,
 			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",

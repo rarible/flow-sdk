@@ -11,7 +11,7 @@ describe("Test cancel order on testnet", () => {
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
 	afterTestWait()
-	test("Should cancel RaribleNFT order", async () => {
+	test.skip("Should cancel RaribleNFT order", async () => {
 		const mintTx = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
 		const tx = await sdk.order.sell(collection, "FLOW", mintTx.tokenId, "0.1")
 		const { orderId } = tx.events[1].data

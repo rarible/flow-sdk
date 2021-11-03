@@ -11,7 +11,7 @@ describe("Test burn on testnet", () => {
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
 	afterTestWait()
-	test("Should burn NFT", async () => {
+	test.skip("Should burn NFT", async () => {
 		const txMint = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
 		const txBurn = await sdk.nft.burn(collection, txMint.tokenId)
 		checkEvent(txBurn, "Withdraw", "RaribleNFT")

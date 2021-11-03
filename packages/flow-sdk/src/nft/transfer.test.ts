@@ -11,7 +11,7 @@ describe("Test transfer on testnet", () => {
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
 	afterTestWait()
-	test("Should transfer NFT", async () => {
+	test.skip("Should transfer NFT", async () => {
 		const mintTx = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
 		const tx = await sdk.nft.transfer(collection, mintTx.tokenId, FLOW_TEST_ACCOUNT_3.address)
 		checkEvent(tx, "Withdraw", "RaribleNFT")
