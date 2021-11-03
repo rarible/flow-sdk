@@ -63,6 +63,7 @@ export const CONFIGS: Record<Networks, Config> = {
 			MotoGPCard: "0x01cf0e2f2f715450",
 			Evolution: "0x01cf0e2f2f715450",
 			TopShot: "0x01cf0e2f2f715450",
+			TopShotFee: "0x01cf0e2f2f715450",
 			RaribleFee: "0x01cf0e2f2f715450",
 			RaribleOrder: "0x01cf0e2f2f715450",
 			LicensedNFT: "0x01cf0e2f2f715450",
@@ -82,6 +83,7 @@ export const CONFIGS: Record<Networks, Config> = {
 			MotoGPCard: "0x01658d9b94068f3c",
 			Evolution: "0x01658d9b94068f3c",
 			TopShot: "0x01658d9b94068f3c",
+			TopShotFee: TESTNET_RARIBLE_ADDRESS,
 			RaribleFee: TESTNET_RARIBLE_ADDRESS,
 			RaribleOrder: TESTNET_RARIBLE_ADDRESS,
 			RaribleNFT: TESTNET_RARIBLE_ADDRESS,
@@ -99,8 +101,9 @@ export const CONFIGS: Record<Networks, Config> = {
 			FlowToken: "0x1654653399040a61",
 			NFTStorefront: "0x4eb8a10cb9f87357",
 			MotoGPCard: "0xa49cc0ee46c54bfb",
-			Evolution: "f4264ac8f3256818",
+			Evolution: "0xf4264ac8f3256818",
 			TopShot: "0b2a3299cc857e29",
+			TopShotFee: "0xbd69b6abdfcf4539",
 			RaribleFee: MAINNET_RARIBLE_ADDRESS,
 			RaribleOrder: MAINNET_RARIBLE_ADDRESS,
 			RaribleNFT: MAINNET_RARIBLE_ADDRESS,
@@ -128,6 +131,7 @@ type Contracts =
 	| "RaribleOrder"
 	| "RaribleNFT"
 	| "LicensedNFT"
+	| "TopShotFee"
 type Config = {
 	walletDiscovery: string,
 	accessNode: string,
