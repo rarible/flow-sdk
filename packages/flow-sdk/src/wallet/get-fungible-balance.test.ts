@@ -9,7 +9,7 @@ describe("Test get balance functions", () => {
 	})
 	const address = "0x324c4173e0175672"
 	test("Should return flow balance for account 0x324c4173e0175672 on mainnet", async () => {
-		const balFlow = await getFungibleBalance(fcl, "mainnet", "FLOW", address)
+		const balFlow = await getFungibleBalance(fcl, "mainnet", address, "FLOW")
 		expect(balFlow.split(".")[1].length).toEqual(8)
 	})
 })

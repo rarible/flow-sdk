@@ -23,5 +23,8 @@ export function getBalanceCode(fcl: Fcl, currency: Currency, address: string): G
 				args,
 			}
 		}
+		default: {
+			throw Error("Flow-sdk Error: Unsupported currency")
+		}
 	}
 }

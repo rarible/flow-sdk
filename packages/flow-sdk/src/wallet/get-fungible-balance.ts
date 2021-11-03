@@ -5,7 +5,7 @@ import { getBalanceCode } from "../txCodeStore/balance"
 import { CONFIGS, Networks } from "../config"
 
 export async function getFungibleBalance(
-	fcl: Fcl, network: Networks, currency: Currency, address: string,
+	fcl: Fcl, network: Networks, address: string, currency: Currency,
 ): Promise<string> {
 	const params = getBalanceCode(fcl, currency, address)
 	try {
