@@ -8,8 +8,6 @@ npm i -S @rarible/flow-sdk
 
 ## Usage
 
-Under the hood Sdk use [@onflow/fcl-js](link:https://github.com/onflow/fcl-js)
-
 Quick start
 
 1. [Configure fcl](https://github.com/rarible/flow-sdk/tree/master/packages/flow-sdk#configure-fcl)
@@ -17,7 +15,7 @@ Quick start
 
 ### Configure fcl
 
-You can find configuration details for fcl
+Flow-sdk use [@onflow/fcl-js](link:https://github.com/onflow/fcl-js). You can find configuration details for fcl
 in [this page](https://docs.onflow.org/fcl/tutorials/flow-app-quickstart/#configuration)
 
 ```javascript
@@ -90,6 +88,30 @@ const {
 } = await sdk.nft.sell(collection, currency, tokenId, price)
 // supported currencies for now "FLOW" and "FUSD"
 // price must be a string of flow fungible token amount with 8 decimals,  for example: 1.123 or 0.1 or 0.00000001
+```
+
+#### Update order order
+
+```typescript
+const {
+  status,
+  statusCode,
+  errorMessage,
+  events,
+} = await sdk.nft.sell(collection, currency, orderId, price)
+// supported currencies for now "FLOW" and "FUSD"
+// price must be a string of flow fungible token amount with 8 decimals,  for example: 1.123 or 0.1 or 0.00000001
+```
+
+#### Cancel order
+
+```typescript
+const {
+  status,
+  statusCode,
+  errorMessage,
+  events,
+} = await sdk.nft.sell(collection, orderId)
 ```
 
 #### Buy an item
