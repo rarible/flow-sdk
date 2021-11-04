@@ -1,6 +1,6 @@
-import { Fcl } from "@rarible/fcl-types"
-import { AuthWithPrivateKey } from "../types"
-import { FlowTransaction } from "../index"
+import type { Fcl } from "@rarible/fcl-types"
+import type { AuthWithPrivateKey } from "../types"
+import type { FlowTransaction } from "../index"
 import { replaceImportAddresses } from "./replace-imports"
 
 export type MethodArgs = {
@@ -86,5 +86,7 @@ export function subscribeForTxResult(fcl: Fcl, txId: string, cb: (tx: FlowTransa
 		})
 }
 
-export const contractAddressHex = async (fcl: Fcl, label: string) =>
-	fcl.sansPrefix(await fcl.config().get(label))
+export const contractAddressHex = async <T extends Record<string, any>>(fcl: Fcl<T>, label: keyof T) => {
+	const contract = await fcl.config().get(label)
+	return fcl.sansPrefix(contract)
+}

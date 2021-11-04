@@ -1,47 +1,55 @@
-export interface Fcl {
+export interface Fcl<T extends Record<string, any> = {}> {
 	sansPrefix(address: string): null | string
-
-	send(args: any[], opts?: {}): Promise<FlowTransactionResponse>
-
-	getAccount(address: string): Promise<any>
-
-	account(address: string): Promise<FlowAccount>
-
-	config(): { put(c: string, a: string): any, get(label: string): Promise<string> }
-
-	transaction(...a: any): any
-
-	script(...a: any): any
-
-	decode(a: any): any
-
-	arg: FclArg
-
-	args: FclArgs
-
-	payer(...a: any): any
-
-	tx: FclTx
-
-	proposer(...a: any): any
-
-	limit(...a: any): any
-
+	send(args: unknown[], opts?: {}): Promise<FlowTransactionResponse>
+	authenticate(): Promise<FlowUserData>
+	unauthenticate(): Promise<void>
 	currentUser(): FlowCurrentUser
-
-	authz(): any
-
+	getAccount(address: string): Promise<FlowAccount>
+	account(address: string): Promise<FlowAccount>
+	config(): FlowConfig<FclConfigDictionary<T>>
+	transaction(...a: any): any
+	script(...a: any): any
+	decode(response: FlowTransactionResponse): Promise<any>
+	arg: FclArg
+	args: FclArgs
+	payer(...a: any): any
+	tx: FclTx
+	proposer(...a: any): any
+	limit(...a: any): any
+	authz(): FlowAuthorizationObject
 	authorizations(signature: any[]): any
-
 	verifyUserSignature(message: string, compositeSignatures: any[]): any
-
 	withPrefix(address: string): string
 }
 
-export interface FlowCurrentUser {
-	snapshot(): Promise<any>
+export type FclConfigDictionary<T extends Record<string, any>> = T & {
+	env: "local" | "canarynet" | "testnet" | "mainnet"
+	"accessNode.api": string
+	"discovery.wallet": string
+	"app.detail.title": string
+	"app.detail.icon": string
+	"challenge.handshake": string
+}
 
+export type FlowConfig<T extends Record<string, any>> = {
+	put<K extends keyof T>(key: K, value: any): FlowConfig<T>
+	get<K extends keyof T>(key: K): Promise<T[K]>
+}
+
+export type FlowAuthorizationObject = {
+	addr: string
+	signingFunction: Function
+	keyId: number
+	sequenceNum: number
+}
+
+export type FlowCurrentUser = {
+	authorization: FlowAuthorizationObject
+	snapshot(): Promise<FlowUserData>
 	signUserMessage(message: string): Promise<FlowSignature[]>
+	authenticate(): Promise<FlowUserData>
+	unauthenticate(): Promise<void>
+	subscribe(handler: (user: FlowUserData) => void): void
 }
 
 export type FlowSignature = {
@@ -62,50 +70,68 @@ interface FclTx extends FclTxExec {
 	isSealed(tx: CommonFlowTransaction): boolean
 }
 
-enum TxStatus {
+export enum FlowTxStatus {
 	UNKNOWN = 0,
 	PENDING = 1,
 	FINALIZED = 2,
 	EXECUTED = 3,
 	SEALED = 4,
-	EXPIRED = 5
+	EXPIRED = 5,
 }
 
-type TransactionEvent = {
-	type: string,
+export type TransactionEvent = {
+	type: string
 	[key: string]: any
 }
 
 export type CommonFlowTransaction = {
-	status: TxStatus,
-	statusCode: number,
-	errorMessage: string,
+	status: FlowTxStatus
+	statusCode: number
+	errorMessage: string
 	events: TransactionEvent[]
 }
 
+export enum FlowTransactionTag {
+	TRANSACTION = "TRANSACTION",
+	SCRIPT = "SCRIPT",
+}
 
-type FlowTransactionResponse = {
-	tag: "TRANSACTION" | "SCRIPT",
-	transaction: any,
-	transactionStatus: number,
-	transactionId: string,
-	encodedData: any,
-	events: any,
-	account: any,
-	block: any,
-	blockHeader: any,
-	latestBlock: any,
+/**
+ * In form `A.{AccountAddress}.{ContractName}.{EventName}`
+ * @example A.ba1132bc08f82fe2.Debug.Log
+ */
+export type FlowEventName = string & {
+	__IS_FLOW_EVENT_NAME__: true
+}
+
+export type FlowTransactionResponse = {
+	type: FlowEventName
+	tag: FlowTransactionTag
+	transaction: any
+	transactionStatus: number
+	transactionId: string
+	encodedData: any
+	events: any
+	account: any
+	block: any
+	blockHeader: any
+	latestBlock: any
 	collection: any
+}
+
+export type FlowCadanceContract = string & {
+	__IS_FLOW_CADANCE_CONTRACT__: true
 }
 
 export type FlowAccount = {
 	address: string
 	balance: number
 	code: string
-	contracts: { [key: string]: string }
+	contracts: Record<FlowCadanceContract, string>
 	keys: FlowAccountKey[]
 }
-type FlowAccountKey = {
+
+export type FlowAccountKey = {
 	hashAlgo: number
 	index: number
 	publicKey: string
@@ -115,6 +141,15 @@ type FlowAccountKey = {
 	weight: number
 }
 
-export type FclArg = (value: string | number | object, xform: any) => any
+export type FlowUserData = {
+	addr: undefined | string
+	cid: undefined | string
+	expiresAt: undefined | string
+	"f_type": "USER"
+	"f_vsn": string
+	loggedIn: boolean
+	services: Object[]
+}
 
+export type FclArg = (value: string | number | object, xform: any) => any
 export type FclArgs = (args: FclArg[]) => any[]
