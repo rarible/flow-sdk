@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/rarible/flow-sdk/compare/v0.0.101...v0.1.0) (2021-11-04)
+
+
+### Features
+
+* improve fcl types ([01ccefb](https://github.com/rarible/flow-sdk/commit/01ccefb800194865db03e670cd6ac47e1bef4f52))
+
+
+
+
+
 ## [0.0.101](https://github.com/rarible/flow-sdk/compare/v0.0.100...v0.0.101) (2021-11-03)
 
 **Note:** Version bump only for package @rarible/fcl-types
