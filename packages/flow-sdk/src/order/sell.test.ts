@@ -1,6 +1,7 @@
 import { afterTestWait, createTestAuth, FLOW_TEST_ACCOUNT_3 } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
-import { createFlowSdk, FlowSdk } from "../index"
+import type { FlowSdk } from "../index"
+import { createFlowSdk } from "../index"
 import { checkEvent } from "../common/tests-utils"
 
 describe("Test sell on testnet", () => {

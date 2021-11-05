@@ -1,7 +1,6 @@
 import { ec as EC } from "elliptic"
-
 import { SHA3 } from "sha3"
-import { Fcl } from "@rarible/fcl-types"
+import type { Fcl } from "@rarible/fcl-types"
 
 const ec = new EC("p256")
 

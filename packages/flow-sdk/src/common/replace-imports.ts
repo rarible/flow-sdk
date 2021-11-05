@@ -7,10 +7,10 @@ export const replaceImportAddresses = (code: string, addressMap: { [key: string]
 	const addTopShowFee = code.replace("0xTOPSHOTFEE", topShotFeeAddress)
 	return addTopShowFee.replace(REGEXP_IMPORT, (__, imp, contract, _, address) => {
 		const key = byName ? contract : address
-		const newAddress = addressMap instanceof Function ? addressMap(key) : addressMap[key]
-		const addressWithPrefix = withPrefix(newAddress)
+		const nextAddress = addressMap instanceof Function ? addressMap(key) : addressMap[key]
+		const addressWithPrefix = withPrefix(nextAddress)
 		if (!addressWithPrefix) {
-			throw Error("Invalid contract address for injecting in transaction")
+			throw new Error("Invalid contract address for injecting in transaction")
 		}
 		return `${imp}${contract} from ${addressWithPrefix}`
 	})

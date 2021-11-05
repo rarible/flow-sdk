@@ -1,4 +1,4 @@
-import { Royalty } from "../types"
+import type { Royalty } from "../types"
 
 export const convertRoyalties = (royalties: Royalty[]) =>
 	royalties.map(royalty => ({

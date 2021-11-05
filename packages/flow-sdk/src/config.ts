@@ -1,4 +1,4 @@
-import { CollectionName, FlowAddress } from "./types"
+import type { CollectionName, FlowAddress } from "./types"
 
 const blocktoWallet: BlocktoWallet = {
 	testnet: {

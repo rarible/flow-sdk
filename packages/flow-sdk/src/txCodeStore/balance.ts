@@ -1,7 +1,7 @@
-import { Fcl, FclArgs } from "@rarible/fcl-types"
+import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import { getBalanceScripts } from "@rarible/flow-sdk-scripts"
 import * as t from "@onflow/types"
-import { Currency } from "../types"
+import type { Currency } from "../types"
 
 type GetBalanceCode = {
 	cadence: string,
@@ -24,7 +24,7 @@ export function getBalanceCode(fcl: Fcl, currency: Currency, address: string): G
 			}
 		}
 		default: {
-			throw Error("Flow-sdk Error: Unsupported currency")
+			throw new Error("Flow-sdk Error: Unsupported currency")
 		}
 	}
 }

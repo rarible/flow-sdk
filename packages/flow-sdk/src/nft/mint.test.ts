@@ -1,6 +1,7 @@
 import * as fcl from "@onflow/fcl"
 import { afterTestWait, createTestAuth, FLOW_TEST_ACCOUNT_4 } from "@rarible/flow-test-common"
-import { createFlowSdk, FlowSdk } from "../index"
+import type { FlowSdk } from "../index"
+import { createFlowSdk } from "../index"
 
 describe("Minting on testnet", () => {
 	let sdk: FlowSdk
