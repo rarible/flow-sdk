@@ -1,13 +1,13 @@
 {
   "name": "@rarible/flow-test-common",
   "version": "0.1.0",
+  "repository": "https://github.com/rarible/flow-sdk",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "files": [
     "build",
     "typings.d.ts"
   ],
-  "repository": "https://github.com/rarible/flow-sdk",
   "scripts": {
     "build": "tsc --project tsconfig-build.json",
     "clean": "rimraf ./build",

@@ -2,7 +2,8 @@ node_modules/
 .idea
 *.iml
 .DS_Store
-
+lerna-debug.log
+.husky/_
 
 tsconfig.tsbuildinfo
 platforms/

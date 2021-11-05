@@ -2,13 +2,13 @@
   "name": "@rarible/flow-sdk",
   "version": "0.1.0",
   "description": "SDK for interact with flow blockchain and Rarible protocol",
+  "repository": "https://github.com/rarible/flow-sdk",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "files": [
     "build",
     "src/typings.d.ts"
   ],
-  "repository": "https://github.com/rarible/flow-sdk",
   "scripts": {
     "build": "tsc --project tsconfig-build.json",
     "clean": "rimraf ./build",
