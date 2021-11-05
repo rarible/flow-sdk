@@ -17,19 +17,18 @@
   },
   "dependencies": {
     "@rarible/fcl-types": "^0.1.0",
-    "@rarible/flow-sdk-scripts": "^0.1.0"
+    "@rarible/flow-sdk-scripts": "^0.1.0",
+    "@onflow/fcl": "~0.0.76"
   },
   "devDependencies": {
-    "@babel/core": "7.11.0",
-    "@onflow/fcl": "0.0.77",
+    "@babel/core": "^7.15.0",
     "@rarible/flow-test-common": "^0.1.0",
-    "@types/jest": "27.0.1",
-    "babel-jest": "^27.1.0",
-    "elliptic": "^6.5.4",
-    "flow-js-testing": "^0.1.13",
+    "@types/jest": "^27.0.2",
+    "flow-js-testing": "~0.1.13",
+    "google-protobuf": "^3.19.1",
     "jest": "^27.2.0",
-    "ts-jest": "27.0.5",
-    "typescript": "4.3.5"
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.4"
   },
   "publishConfig": {
     "access": "public",
