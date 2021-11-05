@@ -18,10 +18,10 @@
   "dependencies": {
     "@rarible/fcl-types": "^0.1.0",
     "@rarible/flow-sdk-scripts": "^0.1.0",
-    "@onflow/fcl": "~0.0.76"
+    "@onflow/fcl": "~0.0.76",
+    "@onflow/types": "~0.0.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.0",
     "@rarible/flow-test-common": "^0.1.0",
     "@types/jest": "^27.0.2",
     "flow-js-testing": "~0.1.13",

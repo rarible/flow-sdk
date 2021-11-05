@@ -14,9 +14,6 @@
     "test": "jest --passWithNoTests --maxWorkers=1",
     "verify": "tsc --noEmit"
   },
-  "dependencies": {
-    "@onflow/types": "^0.0.5"
-  },
   "devDependencies": {
     "typescript": "^4.4.4"
   },
