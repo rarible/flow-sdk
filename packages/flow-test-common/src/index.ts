@@ -73,6 +73,3 @@ export const FLOW_TEST_ACCOUNT_4: TestAccount = {
 	privKey: "3e45f87a2019d35c9aafae23c4ae731f42252d09a87828b012d06965e99ca9ab",
 	pubKey: "a4bf31c725662f2becfe63fe109c33d2e89bdcf399bb449692c9564a189b296ae1183b5b9422c42477f6f044fac7ca5aa2b4097aa35b4a5123e806529dcd0548",
 }
-
-
-export { afterTestWait } from "./common/after-test-wait"

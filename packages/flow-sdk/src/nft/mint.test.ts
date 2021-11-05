@@ -1,7 +1,8 @@
 import * as fcl from "@onflow/fcl"
-import { afterTestWait, createTestAuth, FLOW_TEST_ACCOUNT_4 } from "@rarible/flow-test-common"
+import { createTestAuth, FLOW_TEST_ACCOUNT_4 } from "@rarible/flow-test-common"
 import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
+import { TestnetCollections } from "../config"
 
 describe("Minting on testnet", () => {
 	let sdk: FlowSdk
@@ -10,11 +11,10 @@ describe("Minting on testnet", () => {
 		const auth = await createTestAuth(fcl, FLOW_TEST_ACCOUNT_4.address, FLOW_TEST_ACCOUNT_4.privKey, 0)
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
-	afterTestWait()
-	test.skip("should mint nft", async () => {
-		const mintTx = await sdk.nft.mint("A.0xebf4ae01d1284af8.RaribleNFT", "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
+	test("should mint nft", async () => {
+		const mintTx = await sdk.nft.mint(TestnetCollections.RARIBLE, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
 		expect(mintTx.tokenId).toBeGreaterThan(0)
-	})
+	}, 100000)
 
 	test("should throw error invalid collection", async () => {
 		expect.assertions(1)
