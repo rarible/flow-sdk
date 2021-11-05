@@ -14,7 +14,7 @@ export async function signUserMessage(fcl: Fcl, message: string): Promise<string
 		if (signature) {
 			return signature
 		}
-		throw Error(`Signature of user address "${address}" not found`)
+		throw new Error(`Signature of user address "${address}" not found`)
 	}
-	throw Error("Response of signUserMessage is empty")
+	throw new Error("Response of signUserMessage is empty")
 }

@@ -1,6 +1,6 @@
 import path from "path"
 import { emulator, getAccountAddress, init, mintFlow } from "flow-js-testing"
-import { Fcl } from "@rarible/fcl-types"
+import type { Fcl } from "@rarible/fcl-types"
 import { deployAll } from "./common/deploy-contracts"
 import { FlowService } from "./common/authorizer"
 

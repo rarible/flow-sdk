@@ -1,9 +1,9 @@
-import { Fcl } from "@rarible/fcl-types"
-import { Networks } from "../config"
+import type { Fcl } from "@rarible/fcl-types"
+import type { Networks } from "../config"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getCollectionConfig } from "../common/get-collection-config"
 import { getOrderCode } from "../txCodeStore/order"
-import { AuthWithPrivateKey } from "../types"
+import type { AuthWithPrivateKey } from "../types"
 
 export async function cancelOrder(
 	fcl: Fcl,

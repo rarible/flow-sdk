@@ -1,5 +1,6 @@
-import { CollectionName, FlowAddress } from "../types"
-import { AddressMap, collectionsConfig, ConfigData, CONFIGS, Networks } from "../config"
+import type { CollectionName, FlowAddress } from "../types"
+import type { AddressMap, ConfigData, Networks } from "../config"
+import { collectionsConfig, CONFIGS } from "../config"
 import { getCollectionData } from "./get-collection-data"
 
 type GetContractsConfig = {
@@ -23,6 +24,6 @@ export function getCollectionConfig(network: Networks, collection: string): GetC
 			collectionConfig: collectionsConfig[name],
 		}
 	} catch (e) {
-		throw Error(`Wrong collection: ${e}`)
+		throw new Error(`Wrong collection: ${e}`)
 	}
 }

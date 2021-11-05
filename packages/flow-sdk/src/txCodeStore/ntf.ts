@@ -1,7 +1,7 @@
-import { Fcl } from "@rarible/fcl-types"
+import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { Evolution, MotoGPCard, RaribleNFT, TopShot } from "@rarible/flow-sdk-scripts"
-import { CollectionName, Royalty } from "../types"
+import type { CollectionName, Royalty } from "../types"
 import { convertRoyalties } from "../common/convert-royalties"
 
 type NftMethods = {
@@ -60,10 +60,10 @@ export function getNftCode(collection: CollectionName) {
 						args: fcl.args([fcl.arg(metadata, t.String), fcl.arg(convertRoyalties(royalties), RoyaltiesType)]),
 					}
 				}
-				throw Error("This collection doesn't support minting")
+				throw new Error("This collection doesn't support minting")
 			},
 		}
 	} else {
-		throw Error(`Flow-sdk: Unsupported collection: ${collection}`)
+		throw new Error(`Flow-sdk: Unsupported collection: ${collection}`)
 	}
 }

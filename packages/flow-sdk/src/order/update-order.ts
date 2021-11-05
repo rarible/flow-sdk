@@ -1,8 +1,8 @@
-import { Fcl } from "@rarible/fcl-types"
-import { Networks } from "../config"
+import type { Fcl } from "@rarible/fcl-types"
+import type { Networks } from "../config"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getOrderCode } from "../txCodeStore/order"
-import { AuthWithPrivateKey, Currency } from "../types"
+import type { AuthWithPrivateKey, Currency } from "../types"
 import { getCollectionConfig } from "../common/get-collection-config"
 import { fixAmount } from "../common/utils"
 

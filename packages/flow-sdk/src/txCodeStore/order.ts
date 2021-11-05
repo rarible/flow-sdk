@@ -1,4 +1,4 @@
-import { Fcl, FclArgs } from "@rarible/fcl-types"
+import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import {
 	StorefrontCommon,
@@ -7,7 +7,7 @@ import {
 	StorefrontRaribleNFT,
 	StorefrontTopShot,
 } from "@rarible/flow-sdk-scripts"
-import { CollectionName, Currency } from "../types"
+import type { CollectionName, Currency } from "../types"
 
 
 type OrderMethods = Record<"buy" | "sell" | "update", string>

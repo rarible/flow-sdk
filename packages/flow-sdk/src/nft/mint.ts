@@ -1,10 +1,10 @@
-import { Fcl } from "@rarible/fcl-types"
-import { Networks } from "../config"
+import type { Fcl } from "@rarible/fcl-types"
+import type { Networks } from "../config"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getNftCode } from "../txCodeStore/ntf"
 import { getCollectionConfig } from "../common/get-collection-config"
-import { AuthWithPrivateKey, Royalty } from "../types"
-import { FlowTransaction } from "../index"
+import type { AuthWithPrivateKey, Royalty } from "../types"
+import type { FlowTransaction } from "../index"
 
 export interface FlowMintResponse extends FlowTransaction {
 	tokenId: number
@@ -20,22 +20,19 @@ export async function mint(
 		)
 		const txResult = await waitForSeal(fcl, txId)
 		if (txResult.events.length) {
-			const mintEvent = txResult.events.find(e => {
-				const [_, __, ___, event] = e.type.split(".")
-				return event === "Mint"
-			})
+			const mintEvent = txResult.events.find(e => e.type.split(".")[3] === "Mint")
 			if (mintEvent) {
 				return {
 					tokenId: mintEvent.data.id,
 					...txResult,
 				}
 			} else {
-				throw Error("Mint event not found in transaction response")
+				throw new Error("Mint event not found in transaction response")
 			}
 		} else {
-			throw Error("Something went wrong, transaction sent but events is empty")
+			throw new Error("Something went wrong, transaction sent but events is empty")
 		}
 	} else {
-		throw Error("This collection doesn't support 'mint'")
+		throw new Error("This collection doesn't support 'mint'")
 	}
 }

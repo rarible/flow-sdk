@@ -45,7 +45,7 @@ export const runTransaction = async (
 		const { transactionId } = tx
 		return transactionId
 	} catch (e) {
-		throw Error(`SDK:Transaction error: ${e}`)
+		throw new Error(`SDK:Transaction error: ${e}`)
 	}
 }
 
@@ -71,7 +71,7 @@ export const waitForSeal = async (fcl: Fcl, txId: string): Promise<FlowTransacti
 			txId,
 		}
 	} catch (e: any) {
-		throw Error(`SDK:Transactions error: ${e}`)
+		throw new Error(`SDK:Transactions error: ${e}`)
 	}
 }
 
