@@ -1,6 +1,6 @@
 import { StorefrontTopShot } from "@rarible/flow-sdk-scripts"
-import { CONFIGS } from "../config"
-import { replaceImportAddresses } from "./replace-imports"
+import { CONFIGS } from "../../config"
+import { replaceImportAddresses } from "."
 
 describe("replace import", () => {
 	test("test-emulator replace import", () => {

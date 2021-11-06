@@ -1,17 +1,16 @@
 import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { Evolution, MotoGPCard, RaribleNFT, TopShot } from "@rarible/flow-sdk-scripts"
-import type { CollectionName, Royalty } from "../types"
+import type { FlowRoyalty } from "../types"
 import { convertRoyalties } from "../common/convert-royalties"
+import type { FlowCollectionName } from "../common/collection"
 
 type NftMethods = {
 	burn: string
 	transfer: string
 }
 
-type NftCodeType = Record<CollectionName, NftMethods>
-
-export const nftCode: NftCodeType = {
+export const nftCode: Record<string, NftMethods> = {
 	RaribleNFT: {
 		burn: RaribleNFT.burn,
 		transfer: RaribleNFT.transfer,
@@ -30,26 +29,26 @@ export const nftCode: NftCodeType = {
 	},
 }
 
-export function getNftCode(collection: CollectionName) {
-	if (collection in nftCode) {
+export function getNftCode(name: FlowCollectionName) {
+	if (name in nftCode) {
 		return {
 			burn: (fcl: Fcl, tokenId: number) => {
 				return {
-					cadence: nftCode[collection].burn,
+					cadence: nftCode[name].burn,
 					args: fcl.args([fcl.arg(tokenId, t.UInt64)]),
 				}
 			},
 
 			transfer: (fcl: Fcl, tokenId: number, to: string) => {
 				return {
-					cadence: nftCode[collection].transfer,
+					cadence: nftCode[name].transfer,
 					args: fcl.args([fcl.arg(tokenId, t.UInt64), fcl.arg(to, t.Address)]),
 				}
 			},
-			mint: (fcl: Fcl, collectionAddress: string, metadata: string, royalties: Royalty[]) => {
-				if (collection === "RaribleNFT") {
+			mint: (fcl: Fcl, address: string, metadata: string, royalties: FlowRoyalty[]) => {
+				if (name === "RaribleNFT") {
 					const RoyaltiesType = t.Array(t.Struct(
-						`A.${fcl.sansPrefix(collectionAddress)}.RaribleNFT.Royalty`,
+						`A.${fcl.sansPrefix(address)}.RaribleNFT.Royalty`,
 						[
 							{ value: t.Address },
 							{ value: t.UFix64 },
@@ -63,7 +62,6 @@ export function getNftCode(collection: CollectionName) {
 				throw new Error("This collection doesn't support minting")
 			},
 		}
-	} else {
-		throw new Error(`Flow-sdk: Unsupported collection: ${collection}`)
 	}
+	throw new Error(`Flow-sdk: Unsupported collection: ${name}`)
 }
