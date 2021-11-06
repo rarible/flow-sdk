@@ -1,4 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
+import type { Maybe } from "@rarible/types/build/maybe"
 import type { FlowNetwork, FlowTransaction } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getNftCode } from "../tx-code-store/nft"
@@ -11,13 +12,16 @@ export interface FlowMintResponse extends FlowTransaction {
 }
 
 export async function mint(
-	fcl: Fcl,
+	fcl: Maybe<Fcl>,
 	auth: AuthWithPrivateKey,
 	network: FlowNetwork,
 	collection: FlowContractAddress,
 	metadata: string,
 	royalties: FlowRoyalty[]
 ): Promise<FlowMintResponse> {
+	if (!fcl) {
+		throw new Error("Fcl is required for mint")
+	}
 	const { map, address, config, name } = getCollectionConfig(
 		network,
 		collection
