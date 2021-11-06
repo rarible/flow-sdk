@@ -1,4 +1,4 @@
-import type { CommonFlowTransaction } from "packages/fcl-types/build"
+import type { CommonFlowTransaction } from "@rarible/fcl-types/build"
 
 export type FlowCurrency = "FLOW" | "FUSD"
 export type FlowNetwork = "emulator" | "testnet" | "mainnet"
