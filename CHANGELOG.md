@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/rarible/flow-sdk/compare/v0.1.1...v0.2.0) (2021-11-06)
+
+
+### Features
+
+* better typings, flow addresses, opaques, configs ([6335066](https://github.com/rarible/flow-sdk/commit/633506695a86071663aaa83f7944c026b5bf64a2))
+
+
+
+
+
 ## [0.1.1](https://github.com/rarible/flow-sdk/compare/v0.1.0...v0.1.1) (2021-11-05)
 
 
