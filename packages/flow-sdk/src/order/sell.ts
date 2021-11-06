@@ -1,26 +1,26 @@
 import type { Fcl } from "@rarible/fcl-types"
-import type { Networks } from "../config"
+import type { FlowNetwork } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
-import { getOrderCode } from "../txCodeStore/order"
-import type { AuthWithPrivateKey, Currency } from "../types"
-import { getCollectionConfig } from "../common/get-collection-config"
-import { fixAmount } from "../common/utils"
+import { getOrderCode } from "../tx-code-store/order"
+import type { AuthWithPrivateKey, FlowCurrency } from "../types"
+import { fixAmount } from "../common/fix-amount"
+import type { FlowContractAddress } from "../common/flow-address"
+import { getCollectionConfig } from "../common/collection/get-config"
 
 export async function sell(
 	fcl: Fcl,
 	auth: AuthWithPrivateKey,
-	network:
-	Networks,
-	collection: string,
-	currency: Currency,
+	network: FlowNetwork,
+	collection: FlowContractAddress,
+	currency: FlowCurrency,
 	sellItemId: number,
 	sellItemPrice: string,
 ) {
-	const { collectionName, addressMap } = getCollectionConfig(network, collection)
+	const { name, map } = getCollectionConfig(network, collection)
 	const txId = await runTransaction(
 		fcl,
-		addressMap,
-		getOrderCode(collectionName).sell(fcl, currency, sellItemId, fixAmount(sellItemPrice)),
+		map,
+		getOrderCode(name).sell(fcl, currency, sellItemId, fixAmount(sellItemPrice)),
 		auth,
 	)
 	return await waitForSeal(fcl, txId)

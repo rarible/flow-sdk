@@ -1,4 +1,5 @@
 import * as fcl from "@onflow/fcl"
+import { toFlowAddress } from "../common/flow-address"
 import { getFungibleBalance } from "./get-fungible-balance"
 
 describe("Test get balance functions", () => {
@@ -7,7 +8,7 @@ describe("Test get balance functions", () => {
 			.put("accessNode.api", "https://flow-access-mainnet.portto.io")
 			.put("challenge.handshake", "https://flow-wallet.blocto.app/authn")
 	})
-	const address = "0x324c4173e0175672"
+	const address = toFlowAddress("0x324c4173e0175672")
 	test("Should return flow balance for account 0x324c4173e0175672 on mainnet", async () => {
 		const balFlow = await getFungibleBalance(fcl, "mainnet", address, "FLOW")
 		expect(balFlow.split(".")[1].length).toEqual(8)

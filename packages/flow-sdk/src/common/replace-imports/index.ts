@@ -1,4 +1,4 @@
-import { withPrefix } from "./utils"
+import { withPrefix } from "../prefix"
 
 const REGEXP_IMPORT = /(\s*import\s*)([\w\d]+)(\s+from\s*)([\w\d".\\/]+)/g
 

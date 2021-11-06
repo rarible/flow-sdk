@@ -1,23 +1,24 @@
 import type { Fcl } from "@rarible/fcl-types"
-import type { Networks } from "../config"
+import type { FlowNetwork, FlowTransaction } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
-import { getCollectionConfig } from "../common/get-collection-config"
-import { getOrderCode } from "../txCodeStore/order"
+import { getOrderCode } from "../tx-code-store/order"
 import type { AuthWithPrivateKey } from "../types"
+import { getCollectionConfig } from "../common/collection/get-config"
+import type { FlowContractAddress } from "../common/flow-address"
 
 export async function cancelOrder(
 	fcl: Fcl,
 	auth: AuthWithPrivateKey,
-	network: Networks,
-	collection: string,
+	network: FlowNetwork,
+	collection: FlowContractAddress,
 	orderId: number
-) {
-	const { collectionName, addressMap } = getCollectionConfig(network, collection)
+): Promise<FlowTransaction> {
+	const { name, map } = getCollectionConfig(network, collection)
 	const txId = await runTransaction(
 		fcl,
-		addressMap,
-		getOrderCode(collectionName).cancelOrder(fcl, orderId),
+		map,
+		getOrderCode(name).cancelOrder(fcl, orderId),
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }

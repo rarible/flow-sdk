@@ -1,25 +1,26 @@
 import type { Fcl } from "@rarible/fcl-types"
-import type { Networks } from "../config"
+import type { FlowNetwork, FlowTransaction } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
-import { getOrderCode } from "../txCodeStore/order"
-import type { AuthWithPrivateKey, Currency } from "../types"
-import { getCollectionConfig } from "../common/get-collection-config"
+import { getOrderCode } from "../tx-code-store/order"
+import type { AuthWithPrivateKey, FlowCurrency } from "../types"
+import { getCollectionConfig } from "../common/collection/get-config"
+import type { FlowContractAddress } from "../common/flow-address"
 
 export async function buy(
 	fcl: Fcl,
 	auth: AuthWithPrivateKey,
-	network: Networks,
-	collection: string,
-	currency: Currency,
+	network: FlowNetwork,
+	collection: FlowContractAddress,
+	currency: FlowCurrency,
 	orderId: number,
 	owner: string,
-) {
-	const { collectionName, addressMap } = getCollectionConfig(network, collection)
+): Promise<FlowTransaction> {
+	const { name, map } = getCollectionConfig(network, collection)
 	const txId = await runTransaction(
 		fcl,
-		addressMap,
-		getOrderCode(collectionName).buy(fcl, currency, orderId, owner),
+		map,
+		getOrderCode(name).buy(fcl, currency, orderId, owner),
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
