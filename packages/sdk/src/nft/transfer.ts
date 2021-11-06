@@ -1,8 +1,7 @@
 import type { Fcl } from "@rarible/fcl-types"
-import type { FlowNetwork } from "../types"
+import type { AuthWithPrivateKey, FlowNetwork } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getNftCode } from "../tx-code-store/nft"
-import type { AuthWithPrivateKey } from "../types"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getCollectionConfig } from "../common/collection/get-config"
 
@@ -14,11 +13,7 @@ export async function transfer(
 	tokenId: number,
 	to: string,
 ) {
-	const { map, config, name } = getCollectionConfig(network, collection)
-	if (config.mintable) {
-		const txId = await runTransaction(fcl, map, getNftCode(name).transfer(fcl, tokenId, to), auth)
-		return await waitForSeal(fcl, txId)
-	} else {
-		throw new Error("This collection doesn't support 'transfer'")
-	}
+	const { map, name } = getCollectionConfig(network, collection)
+	const txId = await runTransaction(fcl, map, getNftCode(name).transfer(fcl, tokenId, to), auth)
+	return await waitForSeal(fcl, txId)
 }
