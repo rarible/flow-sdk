@@ -2,14 +2,15 @@ import { createTestAuth, FLOW_TEST_ACCOUNT_3 } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
 import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
-import { checkEvent, getOrderFromOrderTx } from "../common/tests-utils"
 import { TestnetCollections } from "../config"
+import { extractOrder } from "../test/extract-order"
+import { checkEvent } from "../test/check-event"
 
 describe("Test update sell order on testnet", () => {
 	let sdk: FlowSdk
 
 	beforeAll(async () => {
-		const auth = await createTestAuth(fcl, FLOW_TEST_ACCOUNT_3.address, FLOW_TEST_ACCOUNT_3.privKey, 0)
+		const auth = createTestAuth(fcl, FLOW_TEST_ACCOUNT_3.address, FLOW_TEST_ACCOUNT_3.privKey, 0)
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
 	const collection = TestnetCollections.RARIBLE
@@ -22,11 +23,11 @@ describe("Test update sell order on testnet", () => {
 		const tx = await sdk.order.sell(collection, "FLOW", mintTx.tokenId, "0.1")
 		checkEvent(tx, "ListingAvailable", "NFTStorefront")
 		checkEvent(tx, "OrderAvailable", "RaribleOrder")
-		const order = getOrderFromOrderTx(tx)
+		const order = extractOrder(tx)
 		expect(order.price).toEqual("0.10000000")
 
 		const updateTx = await sdk.order.updateOrder(collection, "FLOW", order.orderId, "0.2")
-		const updatedOrder = getOrderFromOrderTx(updateTx)
+		const updatedOrder = extractOrder(updateTx)
 		expect(updatedOrder.price).toEqual("0.20000000")
 	})
 })

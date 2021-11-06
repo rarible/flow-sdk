@@ -1,30 +1,27 @@
 import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import { getBalanceScripts } from "@rarible/flow-sdk-scripts"
 import * as t from "@onflow/types"
-import type { Currency } from "../types"
+import type { FlowCurrency } from "../types"
 
 type GetBalanceCode = {
-	cadence: string,
+	cadence: string
 	args: ReturnType<FclArgs>
 }
 
-export function getBalanceCode(fcl: Fcl, currency: Currency, address: string): GetBalanceCode {
+export function getBalanceCode(fcl: Fcl, currency: FlowCurrency, address: string): GetBalanceCode {
 	const args = fcl.args([fcl.arg(address, t.Address)])
 	switch (currency) {
-		case "FLOW": {
+		case "FLOW":
 			return {
 				cadence: getBalanceScripts.flow,
 				args,
 			}
-		}
-		case "FUSD": {
+		case "FUSD":
 			return {
 				cadence: getBalanceScripts.fusd,
 				args,
 			}
-		}
-		default: {
+		default:
 			throw new Error("Flow-sdk Error: Unsupported currency")
-		}
 	}
 }

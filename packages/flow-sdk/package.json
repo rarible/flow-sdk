@@ -19,7 +19,8 @@
     "@onflow/fcl": "~0.0.76",
     "@onflow/types": "~0.0.5",
     "@rarible/fcl-types": "^0.1.1",
-    "@rarible/flow-sdk-scripts": "^0.1.1"
+    "@rarible/flow-sdk-scripts": "^0.1.1",
+    "@rarible/types": "~0.5.0"
   },
   "devDependencies": {
     "@rarible/flow-test-common": "^0.1.1",

@@ -1,6 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
-import type { AuthWithPrivateKey } from "../types"
-import type { FlowTransaction } from "../index"
+import type { AuthWithPrivateKey, FlowTransaction } from "../types"
 import { replaceImportAddresses } from "./replace-imports"
 
 export type MethodArgs = {
@@ -11,23 +10,20 @@ export type MethodArgs = {
 export const runScript = async (
 	fcl: Fcl,
 	params: MethodArgs,
-	addressMap: AddressMap,
+	addressMap: Record<string, string>,
 ) => {
 	const cadence = replaceImportAddresses(params.cadence, addressMap)
 	const result = await fcl.send([fcl.script`${cadence}`, params.args])
 	return await fcl.decode(result)
 }
 
-export type AddressMap = { [key: string]: string }
-
 export const runTransaction = async (
 	fcl: Fcl,
-	addressMap: AddressMap,
+	addressMap: Record<string, string>,
 	params: MethodArgs,
 	signature: AuthWithPrivateKey,
 	gasLimit: number = 999,
 ): Promise<string> => {
-
 	const code = replaceImportAddresses(params.cadence, addressMap)
 	const ix = [fcl.limit(gasLimit)]
 	ix.push(
@@ -40,13 +36,8 @@ export const runTransaction = async (
 		ix.push(params.args)
 	}
 	ix.push(fcl.transaction(code))
-	try {
-		const tx = await fcl.send(ix)
-		const { transactionId } = tx
-		return transactionId
-	} catch (e) {
-		throw new Error(`SDK:Transaction error: ${e}`)
-	}
+	const tx = await fcl.send(ix)
+	return tx.transactionId
 }
 
 type TxEvent = {
@@ -64,14 +55,10 @@ export type TxResult = {
 }
 
 export const waitForSeal = async (fcl: Fcl, txId: string): Promise<FlowTransaction> => {
-	try {
-		const sealed = await fcl.tx(txId).onceSealed()
-		return {
-			...sealed,
-			txId,
-		}
-	} catch (e: any) {
-		throw new Error(`SDK:Transactions error: ${e}`)
+	const sealed = await fcl.tx(txId).onceSealed()
+	return {
+		...sealed,
+		txId,
 	}
 }
 

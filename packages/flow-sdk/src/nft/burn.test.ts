@@ -2,7 +2,7 @@ import { createTestAuth, FLOW_TEST_ACCOUNT_3 } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
 import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
-import { checkEvent } from "../common/tests-utils"
+import { checkEvent } from "../test/check-event"
 import { TestnetCollections } from "../config"
 
 describe("Test burn on testnet", () => {
