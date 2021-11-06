@@ -13,11 +13,7 @@ export async function transfer(
 	tokenId: number,
 	to: string,
 ) {
-	const { addressMap, collectionConfig, collectionName } = getCollectionConfig(network, collection)
-	if (collectionConfig.mintable) {
-		const txId = await runTransaction(fcl, addressMap, getNftCode(collectionName).transfer(fcl, tokenId, to), auth)
-		return await waitForSeal(fcl, txId)
-	} else {
-		throw new Error("This collection doesn't support 'transfer'")
-	}
+	const { addressMap, collectionName } = getCollectionConfig(network, collection)
+	const txId = await runTransaction(fcl, addressMap, getNftCode(collectionName).transfer(fcl, tokenId, to), auth)
+	return await waitForSeal(fcl, txId)
 }
