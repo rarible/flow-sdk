@@ -1,5 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
-import type { FlowMintResponse} from "./nft/mint"
+import type { FlowMintResponse } from "./nft/mint"
 import { mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
 import { transfer as transferTemplate } from "./nft/transfer"
@@ -11,41 +11,47 @@ import { getFungibleBalance as getFungibleBalanceTemplate } from "./wallet/get-f
 import type { FlowNetwork, FlowTransaction } from "./types"
 import type { AuthWithPrivateKey, FlowCurrency, FlowRoyalty } from "./types"
 import { updateOrder as updateOrderTemplate } from "./order/update-order"
+import type { FlowAddress, FlowContractAddress } from "./common/flow-address"
 
 export interface FlowNftSdk {
 	/**
-	 *
+	 * Mint new NFT in specific collection
 	 * @param collection
 	 * @param metadata
 	 * @param royalties
 	 * @return token id
 	 */
-	mint(collection: string, metadata: string, royalties: FlowRoyalty[]): Promise<FlowMintResponse>
+	mint(collection: FlowContractAddress, metadata: string, royalties: FlowRoyalty[]): Promise<FlowMintResponse>
 
 	/**
-	 *
+	 * Transfer NFT to flow user
 	 * @param collection
 	 * @param tokenId
 	 * @param to
 	 */
-	transfer(collection: string, tokenId: number, to: string): Promise<FlowTransaction>
+	transfer(collection: FlowContractAddress, tokenId: number, to: FlowAddress): Promise<FlowTransaction>
 
 	/**
-	 *
+	 * Burn specific NFT token
 	 * @param collection
 	 * @param tokenId
 	 */
-	burn(collection: string, tokenId: number): Promise<FlowTransaction>
+	burn(collection: FlowContractAddress, tokenId: number): Promise<FlowTransaction>
 }
 
 export interface FlowOrderSdk {
 	/**
-	 *
+	 * Create sell order for NFT token
 	 * @param collection
 	 * @param sellItemId
 	 * @param sellItemPrice
 	 */
-	sell(collection: string, currency: FlowCurrency, sellItemId: number, sellItemPrice: string): Promise<FlowTransaction>
+	sell(
+		collection: FlowContractAddress,
+		currency: FlowCurrency,
+		sellItemId: number,
+		sellItemPrice: string
+	): Promise<FlowTransaction>
 
 	/**
 	 * Update sell order
@@ -54,74 +60,64 @@ export interface FlowOrderSdk {
 	 * @param orderId
 	 * @param price
 	 */
-	updateOrder(collection: string, currency: FlowCurrency, orderId: number, price: string): Promise<FlowTransaction>
+	updateOrder(
+		collection: FlowContractAddress,
+		currency: FlowCurrency,
+		orderId: number,
+		price: string
+	): Promise<FlowTransaction>
 
 	/**
-	 *
+	 * Initiate NFT purchase
 	 * @param collection
 	 * @param itemId
 	 * @param owner
 	 */
-	buy(collection: string, currency: FlowCurrency, orderId: number, owner: string): Promise<FlowTransaction>
+	buy(collection: FlowContractAddress, currency: FlowCurrency, orderId: number, owner: string): Promise<FlowTransaction>
 
 	/**
-	 *
+	 * Cancel sell order
 	 * @param collection
 	 * @param orderId
 	 */
-	cancelOrder(collection: string, orderId: number): Promise<FlowTransaction>
+	cancelOrder(collection: FlowContractAddress, orderId: number): Promise<FlowTransaction>
 }
 
 export interface FlowWalletSdk {
-	getFungibleBalance(address: string, currency: FlowCurrency): Promise<string>
+	getFungibleBalance(address: FlowAddress, currency: FlowCurrency): Promise<string>
 }
 
 export interface FlowSdk {
-	nft: FlowNftSdk,
-	order: FlowOrderSdk,
+	nft: FlowNftSdk
+	order: FlowOrderSdk
 	wallet: FlowWalletSdk
 
 	signUserMessage(message: string): Promise<string>
 }
 
-
-// todo may be add config param for wallet discovery
+// @todo may be add config param for wallet discovery
 /**
  *
  * @param fcl
  * @param network
- * @param auth  - optional, only for testing purposes
+ * @param auth - optional, only for testing purposes
  */
 export function createFlowSdk(fcl: Fcl, network: FlowNetwork, auth?: AuthWithPrivateKey): FlowSdk {
-
-	const mint = mintTemplate.bind(null, fcl, auth, network)
-	const transfer = transferTemplate.bind(null, fcl, auth, network)
-	const burn = burnTemplate.bind(null, fcl, auth, network)
-
-	const sell = sellTemplate.bind(null, fcl, auth, network)
-	const buy = buyTemplate.bind(null, fcl, auth, network)
-	const cancelOrder = cancelOrderTmeplate.bind(null, fcl, auth, network)
-	const updateOrder = updateOrderTemplate.bind(null, fcl, auth, network)
-
-	const getFungibleBalance = getFungibleBalanceTemplate.bind(null, fcl, network)
-
-	const signUserMessage = signUserMessageTemplate.bind(null, fcl)
-
 	return {
 		nft: {
-			mint,
-			burn,
-			transfer,
+			mint: mintTemplate.bind(null, fcl, auth, network),
+			burn: burnTemplate.bind(null, fcl, auth, network),
+			transfer: transferTemplate.bind(null, fcl, auth, network),
 		},
 		order: {
-			sell,
-			buy,
-			cancelOrder,
-			updateOrder,
+			sell: sellTemplate.bind(null, fcl, auth, network),
+			buy: buyTemplate.bind(null, fcl, auth, network),
+			cancelOrder: cancelOrderTmeplate.bind(null, fcl, auth, network),
+			updateOrder: updateOrderTemplate.bind(null, fcl, auth, network),
 		},
 		wallet: {
-			getFungibleBalance,
+			getFungibleBalance: getFungibleBalanceTemplate.bind(null, fcl, network),
 		},
-		signUserMessage,
+		signUserMessage: signUserMessageTemplate.bind(null, fcl),
 	}
 }

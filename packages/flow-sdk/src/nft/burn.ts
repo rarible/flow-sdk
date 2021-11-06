@@ -1,7 +1,7 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { FlowNetwork } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
-import { getNftCode } from "../tx-code-store/ntf"
+import { getNftCode } from "../tx-code-store/nft"
 import type { AuthWithPrivateKey } from "../types"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getCollectionConfig } from "../common/collection/get-config"
