@@ -4,15 +4,17 @@ import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
 import { checkEvent } from "../test/check-event"
 import { TestnetCollections } from "../config"
+import { toFlowContractAddress } from "../common/flow-address"
 
 describe("Test sell on testnet", () => {
 	let sdk: FlowSdk
+	const collection = toFlowContractAddress(TestnetCollections.RARIBLE)
 
-	beforeAll(async () => {
-		const auth = await createTestAuth(fcl, FLOW_TEST_ACCOUNT_3.address, FLOW_TEST_ACCOUNT_3.privKey, 0)
+	beforeAll(() => {
+		const auth = createTestAuth(fcl, FLOW_TEST_ACCOUNT_3.address, FLOW_TEST_ACCOUNT_3.privKey, 0)
 		sdk = createFlowSdk(fcl, "testnet", auth)
 	})
-	const collection = TestnetCollections.RARIBLE
+
 	test("Should create RaribleNFT sell order", async () => {
 		const mintTx = await sdk.nft.mint(
 			collection,
