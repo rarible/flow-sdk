@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "description": "SDK for interact with flow blockchain and Rarible protocol",
   "repository": "https://github.com/rarible/flow-sdk",
+  "license": "MIT",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "files": [
