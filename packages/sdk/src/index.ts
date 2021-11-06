@@ -1,4 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
+import type { Maybe } from "@rarible/types/build/maybe"
 import type { FlowMintResponse } from "./nft/mint"
 import { mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
@@ -97,12 +98,12 @@ export interface FlowSdk {
 
 // @todo may be add config param for wallet discovery
 /**
- *
+ * Creates new instance of FlowSdk
  * @param fcl
  * @param network
  * @param auth - optional, only for testing purposes
  */
-export function createFlowSdk(fcl: Fcl, network: FlowNetwork, auth?: AuthWithPrivateKey): FlowSdk {
+export function createFlowSdk(fcl: Maybe<Fcl>, network: FlowNetwork, auth?: AuthWithPrivateKey): FlowSdk {
 	return {
 		nft: {
 			mint: mintTemplate.bind(null, fcl, auth, network),
