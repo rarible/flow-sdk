@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/rarible/flow-sdk/compare/v0.2.0...v0.3.0) (2021-11-06)
+
+
+### Bug Fixes
+
+* support burn/transfer for secondary collections ([e576d40](https://github.com/rarible/flow-sdk/commit/e576d4076b5d2574853ca0130ad3a229a07cd51a))
+
+
+### Features
+
+* make fcl optional for creating sdk instance ([6656506](https://github.com/rarible/flow-sdk/commit/66565068f93eb3ad859bbff35302adbc1b609259))
+
+
+
+
+
 # [0.2.0](https://github.com/rarible/flow-sdk/compare/v0.1.1...v0.2.0) (2021-11-06)
 
 
