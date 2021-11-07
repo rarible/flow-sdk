@@ -1,22 +1,27 @@
 import * as fcl from "@onflow/fcl"
-import { createTestAuth, FLOW_TEST_ACCOUNT_4 } from "@rarible/flow-test-common"
+import { createTestAuth } from "@rarible/flow-test-common"
+import { createEmulatorAccount, createFlowEmulator } from "@rarible/flow-test-common/src"
 import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
-import { TestnetCollections } from "../config"
+import { EmulatorCollections } from "../config"
 import { toFlowContractAddress } from "../common/flow-address"
 
-describe("Minting on testnet", () => {
+describe("Minting on emulator", () => {
 	let sdk: FlowSdk
+	createFlowEmulator({})
 
-	beforeAll(() => {
-		const auth = createTestAuth(fcl, FLOW_TEST_ACCOUNT_4.address, FLOW_TEST_ACCOUNT_4.privKey, 0)
-		sdk = createFlowSdk(fcl, "testnet", auth)
+	beforeAll(async () => {
+		const { address, pk } = await createEmulatorAccount("accountName")
+		const auth = createTestAuth(fcl, "emulator", address, pk, 0)
+		sdk = createFlowSdk(fcl, "emulator", auth)
 	})
+
 	test("should mint nft", async () => {
-		const contract = toFlowContractAddress(TestnetCollections.RARIBLE)
-		const mintTx = await sdk.nft.mint(contract, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
-		expect(mintTx.tokenId).toBeGreaterThan(0)
-	}, 100000)
+		const contract = toFlowContractAddress(EmulatorCollections.RARIBLE)
+		const mintTx = await sdk.nft.mint(
+			contract, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
+		expect(mintTx.status).toEqual(4)
+	})
 
 	test("should throw error invalid collection", async () => {
 		expect.assertions(1)

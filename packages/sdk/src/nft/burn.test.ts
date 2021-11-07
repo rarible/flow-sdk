@@ -1,18 +1,21 @@
-import { createTestAuth, FLOW_TEST_ACCOUNT_3 } from "@rarible/flow-test-common"
+import { createTestAuth } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
+import { createEmulatorAccount, createFlowEmulator } from "@rarible/flow-test-common/src"
 import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
 import { checkEvent } from "../test/check-event"
-import { TestnetCollections } from "../config"
+import { EmulatorCollections } from "../config"
 import { toFlowContractAddress } from "../common/flow-address"
 
-describe("Test burn on testnet", () => {
+describe("Test burn on emulator", () => {
 	let sdk: FlowSdk
-	const collection = toFlowContractAddress(TestnetCollections.RARIBLE)
+	const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
+	createFlowEmulator({})
 
-	beforeAll(() => {
-		const auth = createTestAuth(fcl, FLOW_TEST_ACCOUNT_3.address, FLOW_TEST_ACCOUNT_3.privKey, 0)
-		sdk = createFlowSdk(fcl, "testnet", auth)
+	beforeAll(async () => {
+		const { address, pk } = await createEmulatorAccount("accountName")
+		const auth = createTestAuth(fcl, "emulator", address, pk, 0)
+		sdk = createFlowSdk(fcl, "emulator", auth)
 	})
 
 	test("Should burn NFT", async () => {
