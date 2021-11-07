@@ -573,9 +573,17 @@ pub contract Evolution: NonFungibleToken {
         }
     }
 
+
     pub fun getSets(): [UInt32] {
         return Evolution.sets.keys
     }
+
+
+
+        pub fun borrowSet(setId: UInt32): &Set {
+            pre {
+                Evolution.sets[setId] != nil: "Cannot borrow set: The set doesn't exist."
+            }
 
             return &Evolution.sets[setId] as &Set
         }
