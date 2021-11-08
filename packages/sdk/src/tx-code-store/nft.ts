@@ -1,4 +1,4 @@
-import type { Fcl } from "@rarible/fcl-types"
+import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { Evolution, MotoGPCard, RaribleNFT, TopShot } from "@rarible/flow-sdk-scripts"
 import type { FlowRoyalty } from "../types"
@@ -8,28 +8,48 @@ import type { FlowCollectionName } from "../common/collection"
 type NftMethods = {
 	burn: string
 	transfer: string
+	check: string
 }
 
 export const nftCode: Record<string, NftMethods> = {
 	RaribleNFT: {
 		burn: RaribleNFT.burn,
 		transfer: RaribleNFT.transfer,
+		check: RaribleNFT.check,
 	},
 	TopShot: {
 		burn: TopShot.burn,
 		transfer: TopShot.transfer,
+		check: TopShot.check,
 	},
 	Evolution: {
 		burn: Evolution.burn,
 		transfer: Evolution.transfer,
+		check: Evolution.check,
 	},
 	MotoGPCard: {
 		burn: MotoGPCard.burn,
 		transfer: MotoGPCard.transfer,
+		check: MotoGPCard.check,
 	},
 }
 
-export function getNftCode(name: FlowCollectionName) {
+type NftCodeReturnData = {
+	cadence: string
+	args: ReturnType<FclArgs>
+}
+
+interface GetNftCode {
+	burn(fcl: Fcl, tokenId: number): NftCodeReturnData
+
+	transfer(fcl: Fcl, tokenId: number, to: string): NftCodeReturnData
+
+	mint(fcl: Fcl, address: string, metadata: string, royalties: FlowRoyalty[]): NftCodeReturnData
+
+	check(fcl: Fcl, address: string): NftCodeReturnData
+}
+
+export function getNftCode(name: FlowCollectionName): GetNftCode {
 	if (name in nftCode) {
 		return {
 			burn: (fcl: Fcl, tokenId: number) => {
@@ -60,6 +80,12 @@ export function getNftCode(name: FlowCollectionName) {
 					}
 				}
 				throw new Error("This collection doesn't support minting")
+			},
+			check: (fcl: Fcl, address: string) => {
+				return {
+					cadence: nftCode[name].check,
+					args: fcl.args([fcl.arg(address, t.Address)]),
+				}
 			},
 		}
 	}
