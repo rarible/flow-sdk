@@ -21,12 +21,12 @@ describe("Test transfer on testnet", () => {
 		checkEvent(tx, "Withdraw", "RaribleNFT")
 		checkEvent(tx, "Deposit", "RaribleNFT")
 	})
-	test("Shoult throw error, recepient has't initialize collection", async () => {
+	test("Should throw error, recipient has't initialize collection", async () => {
 		const mintTx = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
 		try {
 			await sdk.nft.transfer(collection, mintTx.tokenId, toFlowAddress("0xdd05e3acd01cf833"))
 		} catch (e: unknown) {
 			expect((e as Error).message).toBe("The recipient has't yet initialized this collection on their account, and can't receive NFT from this collection")
 		}
-	}, 100000)
+	})
 })
