@@ -8,6 +8,7 @@ import { EmulatorCollections } from "../config"
 import { toFlowContractAddress } from "../common/flow-address"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { extractOrder } from "../test/extract-order"
+import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 
 describe("Test cancel order on emulator", () => {
 	let sdk: FlowSdk
@@ -46,6 +47,26 @@ describe("Test cancel order on emulator", () => {
 		expect(order.price).toEqual("0.00000100")
 
 		const cancelTx = await acc1.sdk.order.cancelOrder(evolutionCollection, order.orderId)
+		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
+	})
+
+	test("Should cancel sell order from TopShot nft", async () => {
+		const topShotColletion = toFlowContractAddress(EmulatorCollections.TOPSHOT)
+		const { acc1, serviceAcc } = await createTopShotTestEnvironment(fcl)
+
+		const [result] = await getTopShotIds(fcl, serviceAcc.address, acc1.address)
+		expect(result).toEqual(1)
+
+		const sellTx = await acc1.sdk.order.sell(
+			topShotColletion, "FLOW", 1, "0.000001",
+		)
+		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
+		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
+
+		const order = extractOrder(sellTx)
+		expect(order.price).toEqual("0.00000100")
+
+		const cancelTx = await acc1.sdk.order.cancelOrder(topShotColletion, order.orderId)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 })

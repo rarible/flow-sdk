@@ -8,6 +8,7 @@ import { extractOrder } from "../test/extract-order"
 import { checkEvent } from "../test/check-event"
 import { toFlowContractAddress } from "../common/flow-address"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
+import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 
 describe("Test update sell order on emulator", () => {
 	let sdk: FlowSdk
@@ -54,6 +55,27 @@ describe("Test update sell order on emulator", () => {
 		expect(order.price).toEqual("0.00000100")
 
 		const updateTx = await acc1.sdk.order.updateOrder(evolutionCollection, "FLOW", order.orderId, "0.00000002")
+		const updatedOrder = extractOrder(updateTx)
+		expect(updatedOrder.price).toEqual("0.00000002")
+	})
+
+	test("Should update sell order from TopShot nft", async () => {
+		const topShotColletion = toFlowContractAddress(EmulatorCollections.TOPSHOT)
+		const { acc1, serviceAcc } = await createTopShotTestEnvironment(fcl)
+
+		const [result] = await getTopShotIds(fcl, serviceAcc.address, acc1.address)
+		expect(result).toEqual(1)
+
+		const sellTx = await acc1.sdk.order.sell(
+			topShotColletion, "FLOW", result, "0.000001",
+		)
+		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
+		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
+
+		const order = extractOrder(sellTx)
+		expect(order.price).toEqual("0.00000100")
+
+		const updateTx = await acc1.sdk.order.updateOrder(topShotColletion, "FLOW", order.orderId, "0.00000002")
 		const updatedOrder = extractOrder(updateTx)
 		expect(updatedOrder.price).toEqual("0.00000002")
 	})

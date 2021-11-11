@@ -89,6 +89,7 @@ transaction(setId: UInt32, itemIds: [UInt32]) {
         set.addItems(itemIds: itemIds)
     }
 }`
+
 const motoGpInit = `
 import MotoGPCard from "MotoGPCard.cdc"
 import MotoGPPack from "MotoGPPack.cdc"
@@ -174,6 +175,7 @@ transaction(recipients: [Address], packTypes: [UInt64], packNumbers: [[UInt64]])
     }
 }
 `
+
 const topShotInit = `
 import TopShot from "TopShot.cdc"
 
@@ -238,6 +240,109 @@ transaction(setID: UInt32, playID: UInt32, recipientAddr: Address) {
         receiverRef.deposit(token: <-moment1)
     }
 }`
+const topShotCreatePlay = `
+import TopShot from "TopShot.cdc"
+
+// This transaction creates a new play struct
+// and stores it in the Top Shot smart contract
+// We currently stringify the metadata and insert it into the
+// transaction string, but want to use transaction arguments soon
+
+// Parameters:
+//
+// metadata: A dictionary of all the play metadata associated
+
+transaction(metadata: {String: String}) {
+
+    // Local variable for the topshot Admin object
+    let adminRef: &TopShot.Admin
+    let currPlayID: UInt32
+
+    prepare(acct: AuthAccount) {
+
+        // borrow a reference to the admin resource
+        self.currPlayID = TopShot.nextPlayID;
+        self.adminRef = acct.borrow<&TopShot.Admin>(from: /storage/TopShotAdmin)
+            ?? panic("No admin resource in storage")
+    }
+
+    execute {
+
+        // Create a play with the specified metadata
+        self.adminRef.createPlay(metadata: metadata)
+    }
+
+    post {
+
+        TopShot.getPlayMetaData(playID: self.currPlayID) != nil:
+            "playID doesnt exist"
+    }
+}`
+const topShotCreateSet = `
+import TopShot from "TopShot.cdc"
+
+// This transaction is for the admin to create a new set resource
+// and store it in the top shot smart contract
+
+// Parameters:
+//
+// setName: the name of a new Set to be created
+
+transaction(setName: String) {
+
+    // Local variable for the topshot Admin object
+    let adminRef: &TopShot.Admin
+    let currSetID: UInt32
+
+    prepare(acct: AuthAccount) {
+
+        // borrow a reference to the Admin resource in storage
+        self.adminRef = acct.borrow<&TopShot.Admin>(from: /storage/TopShotAdmin)
+            ?? panic("Could not borrow a reference to the Admin resource")
+        self.currSetID = TopShot.nextSetID;
+    }
+
+    execute {
+
+        // Create a set with the specified name
+        self.adminRef.createSet(name: setName)
+    }
+
+    post {
+
+        TopShot.getSetName(setID: self.currSetID) == setName:
+          "Could not find the specified set"
+    }
+}`
+const topShotAddPlaysToSet = `
+import TopShot from "TopShot.cdc"
+
+// This transaction adds multiple plays to a set
+// Parameters:
+//
+// setID: the ID of the set to which multiple plays are added
+// plays: an array of play IDs being added to the set
+
+transaction(setID: UInt32, plays: [UInt32]) {
+
+    // Local variable for the topshot Admin object
+    let adminRef: &TopShot.Admin
+
+    prepare(acct: AuthAccount) {
+
+        // borrow a reference to the Admin resource in storage
+        self.adminRef = acct.borrow<&TopShot.Admin>(from: /storage/TopShotAdmin)!
+    }
+
+    execute {
+
+        // borrow a reference to the set to be added to
+        let setRef = self.adminRef.borrowSet(setID: setID)
+
+        // Add the specified play IDs
+        setRef.addPlays(playIDs: plays)
+    }
+}`
 
 // export type SecondaryCollections = "MotoGPCard" | "Evolution" | "TopShot"
 // type TestTransactions = Record<SecondaryCollections, { init: string, mint: string }>
@@ -250,14 +355,19 @@ const evolution = {
 	addItemToSet: evolutionAddItemToSet,
 }
 
+const topShot = {
+	init: topShotInit,
+	mint: topShotMint,
+	createPlay: topShotCreatePlay,
+	createSet: topShotCreateSet,
+	addPlaysToSet: topShotAddPlaysToSet,
+}
+
 export const testTransactions = {
 	evolution,
 	MotoGPCard: {
 		init: motoGpInit,
 		mint: motoGpMint,
 	},
-	TopShot: {
-		init: topShotInit,
-		mint: topShotMint,
-	},
+	topShot,
 }

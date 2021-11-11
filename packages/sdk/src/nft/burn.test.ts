@@ -7,6 +7,7 @@ import { checkEvent } from "../test/check-event"
 import { EmulatorCollections } from "../config"
 import { toFlowContractAddress } from "../common/flow-address"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
+import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 
 describe("Test burn on emulator", () => {
 	let sdk: FlowSdk
@@ -38,5 +39,17 @@ describe("Test burn on emulator", () => {
 		expect(burnTx.status).toEqual(4)
 		checkEvent(burnTx, "Withdraw", "Evolution")
 		checkEvent(burnTx, "CollectibleDestroyed", "Evolution")
+	})
+
+	test("should burn TopShot nft", async () => {
+		const topShotColletion = toFlowContractAddress(EmulatorCollections.TOPSHOT)
+		const { acc1, serviceAcc } = await createTopShotTestEnvironment(fcl)
+
+		const [result] = await getTopShotIds(fcl, serviceAcc.address, acc1.address)
+		expect(result).toEqual(1)
+
+		const burnTx = await acc1.sdk.nft.burn(topShotColletion, result)
+		checkEvent(burnTx, "Withdraw", "TopShot")
+		checkEvent(burnTx, "MomentDestroyed", "TopShot")
 	})
 })
