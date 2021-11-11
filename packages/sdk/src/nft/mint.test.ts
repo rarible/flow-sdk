@@ -5,6 +5,7 @@ import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
 import { EmulatorCollections } from "../config"
 import { toFlowContractAddress } from "../common/flow-address"
+import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 
 describe("Minting on emulator", () => {
 	let sdk: FlowSdk
@@ -31,5 +32,12 @@ describe("Minting on emulator", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error)
 		}
+	})
+
+	test("should mint evolution nft", async () => {
+		const { acc1, serviceAcc } = await createEvolutionTestEnvironment(fcl)
+
+		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
+		expect(result.data.itemId).toEqual(1)
 	})
 })

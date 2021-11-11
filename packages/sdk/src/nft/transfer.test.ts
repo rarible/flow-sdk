@@ -6,6 +6,7 @@ import { createFlowSdk } from "../index"
 import { checkEvent } from "../test/check-event"
 import { EmulatorCollections } from "../config"
 import { toFlowAddress, toFlowContractAddress } from "../common/flow-address"
+import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 
 describe("Test transfer on emulator", () => {
 	let sdk: FlowSdk
@@ -22,5 +23,19 @@ describe("Test transfer on emulator", () => {
 
 		checkEvent(tx, "Withdraw", "RaribleNFT")
 		checkEvent(tx, "Deposit", "RaribleNFT")
+	})
+
+	test("Should transfer evolution nft", async () => {
+		const { acc1, acc2, serviceAcc } = await createEvolutionTestEnvironment(fcl)
+
+		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
+		expect(result.data.itemId).toEqual(1)
+
+		const transferTx = await acc1.sdk.nft.transfer(
+			toFlowContractAddress(EmulatorCollections.EVOLUTION), 1, toFlowAddress(acc2.address),
+		)
+		expect(transferTx.status).toEqual(4)
+		checkEvent(transferTx, "Withdraw", "Evolution")
+		checkEvent(transferTx, "Deposit", "Evolution")
 	})
 })

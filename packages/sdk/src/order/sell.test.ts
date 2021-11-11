@@ -6,6 +6,7 @@ import { createFlowSdk } from "../index"
 import { checkEvent } from "../test/check-event"
 import { EmulatorCollections } from "../config"
 import { toFlowContractAddress } from "../common/flow-address"
+import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 
 describe("Test sell on emulator", () => {
 	let sdk: FlowSdk
@@ -29,6 +30,17 @@ describe("Test sell on emulator", () => {
 		checkEvent(tx, "OrderAvailable", "RaribleOrder")
 		expect(tx.status).toEqual(4)
 	})
-})
 
-//todo write tests for sell by collections, evolution, topShot, motoGP
+	test("Should creste sell order from evolution nft", async () => {
+		const { acc1, serviceAcc } = await createEvolutionTestEnvironment(fcl)
+
+		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
+		expect(result.data.itemId).toEqual(1)
+
+		const sellTx = await acc1.sdk.order.sell(
+			toFlowContractAddress(EmulatorCollections.EVOLUTION), "FLOW", 1, "0.000001",
+		)
+		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
+		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
+	})
+})

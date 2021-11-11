@@ -7,6 +7,7 @@ import { EmulatorCollections } from "../config"
 import { extractOrder } from "../test/extract-order"
 import { checkEvent } from "../test/check-event"
 import { toFlowContractAddress } from "../common/flow-address"
+import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 
 describe("Test update sell order on emulator", () => {
 	let sdk: FlowSdk
@@ -35,6 +36,25 @@ describe("Test update sell order on emulator", () => {
 		const updatedOrder = extractOrder(updateTx)
 		expect(updatedOrder.price).toEqual("0.20000000")
 	})
-})
 
-//todo write tests for sell by collections, evolution, topShot, motoGP
+	test("Should update sell order from evolution nft", async () => {
+		const evolutionCollection = toFlowContractAddress(EmulatorCollections.EVOLUTION)
+		const { acc1, serviceAcc } = await createEvolutionTestEnvironment(fcl)
+
+		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
+		expect(result.data.itemId).toEqual(1)
+
+		const sellTx = await acc1.sdk.order.sell(
+			evolutionCollection, "FLOW", 1, "0.000001",
+		)
+		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
+		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
+
+		const order = extractOrder(sellTx)
+		expect(order.price).toEqual("0.00000100")
+
+		const updateTx = await acc1.sdk.order.updateOrder(evolutionCollection, "FLOW", order.orderId, "0.00000002")
+		const updatedOrder = extractOrder(updateTx)
+		expect(updatedOrder.price).toEqual("0.00000002")
+	})
+})

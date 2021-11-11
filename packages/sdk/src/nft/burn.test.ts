@@ -6,6 +6,7 @@ import { createFlowSdk } from "../index"
 import { checkEvent } from "../test/check-event"
 import { EmulatorCollections } from "../config"
 import { toFlowContractAddress } from "../common/flow-address"
+import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 
 describe("Test burn on emulator", () => {
 	let sdk: FlowSdk
@@ -23,5 +24,19 @@ describe("Test burn on emulator", () => {
 		const txBurn = await sdk.nft.burn(collection, txMint.tokenId)
 		checkEvent(txBurn, "Withdraw", "RaribleNFT")
 		checkEvent(txBurn, "Destroy", "RaribleNFT")
+	})
+
+	test("Should burn evolution nft", async () => {
+		const { acc1, serviceAcc } = await createEvolutionTestEnvironment(fcl)
+
+		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
+		expect(result.data.itemId).toEqual(1)
+
+		const burnTx = await acc1.sdk.nft.burn(
+			toFlowContractAddress(EmulatorCollections.EVOLUTION), 1,
+		)
+		expect(burnTx.status).toEqual(4)
+		checkEvent(burnTx, "Withdraw", "Evolution")
+		checkEvent(burnTx, "CollectibleDestroyed", "Evolution")
 	})
 })

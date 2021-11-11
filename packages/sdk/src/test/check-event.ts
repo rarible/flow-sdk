@@ -8,6 +8,7 @@ type EventNames =
 	| "ListingAvailable"
 	| "OrderAvailable"
 	| "ListingCompleted"
+	| "CollectibleDestroyed"
 
 export function checkEvent(txResult: FlowTransaction, eventName: EventNames, contractName?: FlowContractName) {
 	const result = !!txResult.events.find(e => {

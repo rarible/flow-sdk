@@ -6,6 +6,8 @@ import { createFlowSdk } from "../index"
 import { checkEvent } from "../test/check-event"
 import { EmulatorCollections } from "../config"
 import { toFlowContractAddress } from "../common/flow-address"
+import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
+import { extractOrder } from "../test/extract-order"
 
 describe("Test cancel order on emulator", () => {
 	let sdk: FlowSdk
@@ -24,6 +26,26 @@ describe("Test cancel order on emulator", () => {
 		const { orderId } = tx.events[2].data
 		expect(tx.status).toEqual(4)
 		const cancelTx = await sdk.order.cancelOrder(collection, orderId)
+		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
+	})
+
+	test("Should cancel sell order from evolution nft", async () => {
+		const evolutionCollection = toFlowContractAddress(EmulatorCollections.EVOLUTION)
+		const { acc1, serviceAcc } = await createEvolutionTestEnvironment(fcl)
+
+		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
+		expect(result.data.itemId).toEqual(1)
+
+		const sellTx = await acc1.sdk.order.sell(
+			evolutionCollection, "FLOW", 1, "0.000001",
+		)
+		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
+		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
+
+		const order = extractOrder(sellTx)
+		expect(order.price).toEqual("0.00000100")
+
+		const cancelTx = await acc1.sdk.order.cancelOrder(evolutionCollection, order.orderId)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 })
