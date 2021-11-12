@@ -111,7 +111,20 @@ transaction {
     execute {
     }
 }`
-const motoGpMint = `
+const motoGpAddPackType = `
+import MotoGPAdmin from "MotoGPAdmin.cdc"
+
+transaction(pt: UInt64) {
+    prepare(acct: AuthAccount) {
+        let admin = acct.borrow<&MotoGPAdmin.Admin>(from: /storage/motogpAdmin)!
+        admin.addPackType(packType: pt, numberOfCards: 10)
+    }
+
+    execute {
+    }
+}
+`
+const motoGpMintPackToAddress = `
 import MotoGPAdmin from "MotoGPAdmin.cdc"
 import MotoGPPack from "MotoGPPack.cdc"
 import MotoGPTransfer from "MotoGPTransfer.cdc"
@@ -175,6 +188,56 @@ transaction(recipients: [Address], packTypes: [UInt64], packNumbers: [[UInt64]])
     }
 }
 `
+const motoGpTransferPackToOpener = `
+import PackOpener from "PackOpener.cdc"
+import MotoGPCard from "MotoGPCard.cdc"
+import MotoGPPack from "MotoGPPack.cdc"
+import MotoGPTransfer from "MotoGPTransfer.cdc"
+
+transaction(id: UInt64, toAddress: Address) {
+    var packCollectionRef: &MotoGPPack.Collection
+    var packOpenerCollectionRef: &PackOpener.Collection
+
+    prepare(acct: AuthAccount) {
+        self.packCollectionRef = acct.borrow<&MotoGPPack.Collection>(from: /storage/motogpPackCollection)
+            ?? panic("Could not borrow AuthAccount''s Pack collection")
+        if acct.borrow<&PackOpener.Collection>(from: /storage/motogpPackOpenerCollection) == nil {
+            let cardCollectionCap: Capability<&MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}> = acct.getCapability<&MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}>(/public/motogpCardCollection)
+            let packOpenerCollection <- PackOpener.createEmptyCollection(cardCollectionCap: cardCollectionCap)
+            acct.save(<- packOpenerCollection, to: PackOpener.packOpenerStoragePath)
+            acct.link<&PackOpener.Collection{PackOpener.IPackOpenerPublic}>(PackOpener.packOpenerPublicPath, target: PackOpener.packOpenerStoragePath)
+        }
+
+        self.packOpenerCollectionRef = acct.borrow<&PackOpener.Collection>(from: PackOpener.packOpenerStoragePath)
+            ?? panic("Could not borrow AuthAccount''s PackOpener collection")
+    }
+
+    execute {
+        let pack <- self.packCollectionRef.withdraw(withdrawID: id) as! @MotoGPPack.NFT
+        MotoGPTransfer.transferPackToPackOpenerCollection(pack: <- pack, toCollection: self.packOpenerCollectionRef, toAddress: toAddress)
+    }
+}
+`
+const motoGpOpenPack = `
+import MotoGPAdmin from "MotoGPAdmin.cdc"
+import PackOpener from "PackOpener.cdc"
+import MotoGPCard from "MotoGPCard.cdc"
+import MotoGPTransfer from "MotoGPTransfer.cdc"
+
+transaction(recipientAddress: Address, packId: UInt64, cardIDs: [UInt64], serials: [UInt64]) {
+  prepare(acct: AuthAccount) {
+    let adminRef = acct.borrow<&MotoGPAdmin.Admin>(from: /storage/motogpAdmin)
+    ?? panic("Could not borrow AuthAccount''s Admin reference")
+    let packOpenerCollectionRef = getAccount(recipientAddress).getCapability(/public/motogpPackOpenerCollection)!.borrow<&PackOpener.Collection{PackOpener.IPackOpenerPublic}>()
+    ?? panic("Could not borrow recipient''s PackOpener collection")
+    packOpenerCollectionRef.openPack(adminRef:adminRef, id: packId, cardIDs: cardIDs, serials: serials)
+    MotoGPTransfer.topUpFlowForAccount(adminRef: adminRef, toAddress: recipientAddress)
+  }
+  execute {
+  }
+}
+`
+
 
 const topShotInit = `
 import TopShot from "TopShot.cdc"
@@ -363,11 +426,16 @@ const topShot = {
 	addPlaysToSet: topShotAddPlaysToSet,
 }
 
+const motoGpCard = {
+	init: motoGpInit,
+	addPackType: motoGpAddPackType,
+	mintPackToAddress: motoGpMintPackToAddress,
+	transferPackToOpener: motoGpTransferPackToOpener,
+	openPack: motoGpOpenPack,
+}
+
 export const testTransactions = {
 	evolution,
-	MotoGPCard: {
-		init: motoGpInit,
-		mint: motoGpMint,
-	},
+	motoGpCard,
 	topShot,
 }

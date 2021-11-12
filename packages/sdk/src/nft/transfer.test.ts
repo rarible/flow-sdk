@@ -8,6 +8,7 @@ import { EmulatorCollections } from "../config"
 import { toFlowAddress, toFlowContractAddress } from "../common/flow-address"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
+import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
 
 describe("Test transfer on emulator", () => {
 	let sdk: FlowSdk
@@ -50,5 +51,17 @@ describe("Test transfer on emulator", () => {
 		const transferTx = await acc1.sdk.nft.transfer(topShotColletion, result, toFlowAddress(acc2.address))
 		checkEvent(transferTx, "Withdraw", "TopShot")
 		checkEvent(transferTx, "Deposit", "TopShot")
+	})
+
+	test("should burn MotoCpCard nft", async () => {
+		const motoGpColletion = toFlowContractAddress(EmulatorCollections.MOTOGP)
+		const { acc1, acc2, serviceAcc } = await createMotoGpTestEnvironment(fcl)
+
+		const result = await borrowMotoGpCardId(fcl, serviceAcc.address, acc1.address, 1)
+		expect(result.cardID).toEqual(1)
+
+		const transferTx = await acc1.sdk.nft.transfer(motoGpColletion, result.cardID, toFlowAddress(acc2.address))
+		checkEvent(transferTx, "Withdraw", "MotoGPCard")
+		checkEvent(transferTx, "Deposit", "MotoGPCard")
 	})
 })

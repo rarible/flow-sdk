@@ -1,4 +1,4 @@
-export const borrowEvolutionId = `
+const borrowEvolutionId = `
 	import NonFungibleToken from "NonFungibleToken.cdc"
 import Evolution from "Evolution.cdc"
 
@@ -8,7 +8,7 @@ pub fun main(address: Address, tokenId: UInt64): &AnyResource {
     return collection.borrowNFT(id: tokenId)
 }`
 
-export const getTopShotSetIds = `
+const getTopShotSetIds = `
 import TopShot from "TopShot.cdc"
 
 // This is the script to get a list of all the moments' ids an account owns
@@ -35,6 +35,17 @@ pub fun main(account: Address): [UInt64] {
     return collectionRef.getIDs()
 }`
 
+const borrowMotoGpCardId = `
+import NonFungibleToken from "NonFungibleToken.cdc"
+import MotoGPCard from "MotoGPCard.cdc"
+
+pub fun main(address: Address, tokenId: UInt64): &AnyResource {
+    let account = getAccount(address)
+    let collection = getAccount(address).getCapability<&{MotoGPCard.ICardCollectionPublic}>(/public/motogpCardCollection).borrow()!
+    return collection.borrowNFT(id: tokenId)
+}
+`
+
 const evolution = {
 	borrowId: borrowEvolutionId,
 }
@@ -42,7 +53,12 @@ const evolution = {
 const topShot = {
 	getSetIds: getTopShotSetIds,
 }
+
+const motoGp = {
+	borrowCardId: borrowMotoGpCardId,
+}
 export const testScripts = {
 	evolution,
 	topShot,
+	motoGp,
 }

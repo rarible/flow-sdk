@@ -170,15 +170,10 @@ export async function createTopShotTestEnvironment(fcl: Fcl): Promise<TopShotTes
 	await initAccountTopShot(fcl, testAuth2, serviceAddress)
 
 	//mint topShot to test account 1
-	debugger
 	await createTopShotItem(fcl, serviceAuth, serviceAddress)
-	debugger
 	await createTopShotSet(fcl, serviceAuth, serviceAddress)
-	debugger
 	await addTopShotItemsToSet(fcl, serviceAuth, serviceAddress, 1, [1])
-	debugger
 	await mintTopShotToAccount(fcl, serviceAuth, serviceAddress, testAddress1)
-	debugger
 
 	return {
 		acc1: {

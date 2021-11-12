@@ -8,6 +8,7 @@ import { EmulatorCollections } from "../config"
 import { toFlowContractAddress } from "../common/flow-address"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
+import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
 
 describe("Test burn on emulator", () => {
 	let sdk: FlowSdk
@@ -51,5 +52,17 @@ describe("Test burn on emulator", () => {
 		const burnTx = await acc1.sdk.nft.burn(topShotColletion, result)
 		checkEvent(burnTx, "Withdraw", "TopShot")
 		checkEvent(burnTx, "MomentDestroyed", "TopShot")
+	})
+
+	test("should burn MotoCpCard nft", async () => {
+		const motoGpColletion = toFlowContractAddress(EmulatorCollections.MOTOGP)
+		const { acc1, serviceAcc } = await createMotoGpTestEnvironment(fcl)
+
+		const result = await borrowMotoGpCardId(fcl, serviceAcc.address, acc1.address, 1)
+		expect(result.cardID).toEqual(1)
+
+		const burnTx = await acc1.sdk.nft.burn(motoGpColletion, result.cardID)
+		checkEvent(burnTx, "Withdraw", "MotoGPCard")
+		checkEvent(burnTx, "Burn", "MotoGPCard")
 	})
 })

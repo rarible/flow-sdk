@@ -7,6 +7,7 @@ import { EmulatorCollections } from "../config"
 import { toFlowContractAddress } from "../common/flow-address"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
+import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
 
 describe("Minting on emulator", () => {
 	let sdk: FlowSdk
@@ -47,5 +48,12 @@ describe("Minting on emulator", () => {
 
 		const result = await getTopShotIds(fcl, serviceAcc.address, acc1.address)
 		expect(result[0]).toEqual(1)
+	})
+
+	test("should mint MotoCpCard nft", async () => {
+		const { acc1, serviceAcc } = await createMotoGpTestEnvironment(fcl)
+
+		const result = await borrowMotoGpCardId(fcl, serviceAcc.address, acc1.address, 1)
+		expect(result.cardID).toEqual(1)
 	})
 })

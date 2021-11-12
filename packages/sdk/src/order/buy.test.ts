@@ -9,6 +9,7 @@ import { toFlowContractAddress } from "../common/flow-address"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { extractOrder } from "../test/extract-order"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
+import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
 
 describe("Test buy on emulator", () => {
 	let sdk: FlowSdk
@@ -72,5 +73,25 @@ describe("Test buy on emulator", () => {
 		checkEvent(buyTx, "ListingCompleted", "NFTStorefront")
 		const [checkNft] = await getTopShotIds(fcl, serviceAcc.address, acc2.address)
 		expect(checkNft).toEqual(1)
+	})
+
+	test("Should buy MotoCpCard nft", async () => {
+		const motoGpColletion = toFlowContractAddress(EmulatorCollections.MOTOGP)
+		const { acc1, acc2, serviceAcc } = await createMotoGpTestEnvironment(fcl)
+
+		const result = await borrowMotoGpCardId(fcl, serviceAcc.address, acc1.address, 1)
+		expect(result.cardID).toEqual(1)
+
+		const sellTx = await acc1.sdk.order.sell(motoGpColletion, "FLOW", result.cardID, "0.0001")
+		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
+		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
+
+		const order = extractOrder(sellTx)
+		expect(order.price).toEqual("0.00010000")
+
+		const buyTx = await acc2.sdk.order.buy(motoGpColletion, "FLOW", order.orderId, acc1.address)
+		checkEvent(buyTx, "ListingCompleted", "NFTStorefront")
+		const buyResult = await borrowMotoGpCardId(fcl, serviceAcc.address, acc2.address, 1)
+		expect(buyResult.cardID).toEqual(1)
 	})
 })

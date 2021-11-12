@@ -9,6 +9,7 @@ import { toFlowContractAddress } from "../common/flow-address"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { extractOrder } from "../test/extract-order"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
+import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
 
 describe("Test cancel order on emulator", () => {
 	let sdk: FlowSdk
@@ -67,6 +68,24 @@ describe("Test cancel order on emulator", () => {
 		expect(order.price).toEqual("0.00000100")
 
 		const cancelTx = await acc1.sdk.order.cancelOrder(topShotColletion, order.orderId)
+		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
+	})
+
+	test("Should cancel order from MotoCpCard nft", async () => {
+		const motoGpColletion = toFlowContractAddress(EmulatorCollections.MOTOGP)
+		const { acc1, serviceAcc } = await createMotoGpTestEnvironment(fcl)
+
+		const result = await borrowMotoGpCardId(fcl, serviceAcc.address, acc1.address, 1)
+		expect(result.cardID).toEqual(1)
+
+		const sellTx = await acc1.sdk.order.sell(motoGpColletion, "FLOW", result.cardID, "0.0001")
+		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
+		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
+
+		const order = extractOrder(sellTx)
+		expect(order.price).toEqual("0.00010000")
+
+		const cancelTx = await acc1.sdk.order.cancelOrder(motoGpColletion, order.orderId)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 })
