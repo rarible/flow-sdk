@@ -20,6 +20,7 @@
     "@onflow/fcl": "~0.0.76",
     "@onflow/types": "~0.0.5",
     "@rarible/fcl-types": "^0.3.0",
+    "@rarible/utils": "~0.5.0",
     "@rarible/flow-sdk-scripts": "^0.3.0",
     "@rarible/types": "~0.5.0"
   },

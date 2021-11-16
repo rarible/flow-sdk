@@ -1,12 +1,12 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
-import type { FlowNetwork, FlowTransaction } from "../types"
+import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork, FlowTransaction } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getOrderCode } from "../tx-code-store/order"
-import type { AuthWithPrivateKey, FlowCurrency } from "../types"
 import { fixAmount } from "../common/fix-amount"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getCollectionConfig } from "../common/collection/get-config"
+import { checkPrice } from "../common/check-price"
 
 export async function sell(
 	fcl: Maybe<Fcl>,
@@ -17,6 +17,7 @@ export async function sell(
 	sellItemId: number,
 	sellItemPrice: string,
 ): Promise<FlowTransaction> {
+	checkPrice(sellItemPrice)
 	if (fcl) {
 		const { name, map } = getCollectionConfig(network, collection)
 		const txId = await runTransaction(
