@@ -10,6 +10,7 @@ import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evoluti
 import { extractOrder } from "../test/extract-order"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
+import { createFusdTestEnvironment } from "../test/setup-fusd-env"
 
 describe("Test cancel order on emulator", () => {
 	let sdk: FlowSdk
@@ -28,6 +29,20 @@ describe("Test cancel order on emulator", () => {
 		const { orderId } = tx.events[2].data
 		expect(tx.status).toEqual(4)
 		const cancelTx = await sdk.order.cancelOrder(collection, orderId)
+		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
+	})
+
+	test("Should cancel RaribleNFT sell order for FUSD", async () => {
+		const { acc1 } = await createFusdTestEnvironment(fcl, "emulator")
+		const mintTx = await acc1.sdk.nft.mint(
+			collection,
+			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
+			[],
+		)
+		const tx = await acc1.sdk.order.sell(collection, "FUSD", mintTx.tokenId, "0.1")
+		const order = extractOrder(tx)
+		expect(tx.status).toEqual(4)
+		const cancelTx = await acc1.sdk.order.cancelOrder(collection, order.orderId)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 

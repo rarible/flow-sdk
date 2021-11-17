@@ -10,6 +10,7 @@ import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evoluti
 import { extractOrder } from "../test/extract-order"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
+import { createFusdTestEnvironment } from "../test/setup-fusd-env"
 
 describe("Test buy on emulator", () => {
 	let sdk: FlowSdk
@@ -27,6 +28,19 @@ describe("Test buy on emulator", () => {
 		const { orderId } = tx.events[2].data
 		expect(orderId).toBeGreaterThan(0)
 		const buyTx = await sdk.order.buy(collection, "FLOW", orderId, address)
+		checkEvent(buyTx, "Withdraw")
+		checkEvent(buyTx, "Deposit", "RaribleNFT")
+	})
+
+	test("Should buy RaribleNFT order for FUSD tokens", async () => {
+		const { acc1, acc2 } = await createFusdTestEnvironment(fcl, "emulator")
+
+		const mintTx = await acc1.sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
+		expect(mintTx.status).toEqual(4)
+		const tx = await acc1.sdk.order.sell(collection, "FUSD", mintTx.tokenId, "0.001")
+		const order = extractOrder(tx)
+
+		const buyTx = await acc2.sdk.order.buy(collection, "FUSD", order.orderId, acc1.address)
 		checkEvent(buyTx, "Withdraw")
 		checkEvent(buyTx, "Deposit", "RaribleNFT")
 	})

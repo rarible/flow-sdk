@@ -10,6 +10,7 @@ import { toFlowContractAddress } from "../common/flow-address"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
+import { createFusdTestEnvironment } from "../test/setup-fusd-env"
 
 describe("Test update sell order on emulator", () => {
 	let sdk: FlowSdk
@@ -37,6 +38,25 @@ describe("Test update sell order on emulator", () => {
 		const updateTx = await sdk.order.updateOrder(collection, "FLOW", order.orderId, "0.2")
 		const updatedOrder = extractOrder(updateTx)
 		expect(updatedOrder.price).toEqual("0.20000000")
+	})
+
+	test("Should update RaribleNFT sell FUSD order", async () => {
+		const { acc1 } = await createFusdTestEnvironment(fcl, "emulator")
+		const mintTx = await acc1.sdk.nft.mint(
+			collection,
+			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
+			[],
+		)
+		const tx = await acc1.sdk.order.sell(collection, "FUSD", mintTx.tokenId, "0.1")
+		checkEvent(tx, "ListingAvailable", "NFTStorefront")
+		checkEvent(tx, "OrderAvailable", "RaribleOrder")
+		const order = extractOrder(tx)
+		expect(order.price).toEqual("0.10000000")
+
+		const updateTx = await acc1.sdk.order.updateOrder(collection, "FLOW", order.orderId, "0.2")
+		const updatedOrder = extractOrder(updateTx)
+		expect(updatedOrder.price).toEqual("0.20000000")
+		expect(updatedOrder.vaultType).toEqual("FlowToken")
 	})
 
 	test("Should update sell order from evolution nft", async () => {

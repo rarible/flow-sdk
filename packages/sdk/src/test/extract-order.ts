@@ -6,12 +6,13 @@ type FlowSimpleOrderTest = {
 	collection: string
 	itemId: number
 	payments: any[]
+	vaultType: string
 }
 
 export function extractOrder(tx: FlowTransaction): FlowSimpleOrderTest {
 	const event = tx.events.find(e => e.type.split(".")[3] === "OrderAvailable")
 	if (event && isObject(event.data)) {
-		const { orderId, price, nftType, nftId, payments } = event.data
+		const { orderId, price, nftType, nftId, payments, vaultType } = event.data
 		if (!orderId) {
 			throw new Error("Invalid transaction response")
 		}
@@ -21,6 +22,7 @@ export function extractOrder(tx: FlowTransaction): FlowSimpleOrderTest {
 			collection: nftType,
 			itemId: nftId,
 			payments,
+			vaultType: vaultType.split(".")[2],
 		}
 	}
 	throw new Error("Event not found - OrderAvailable")

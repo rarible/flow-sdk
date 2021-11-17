@@ -407,8 +407,168 @@ transaction(setID: UInt32, plays: [UInt32]) {
     }
 }`
 
-// export type SecondaryCollections = "MotoGPCard" | "Evolution" | "TopShot"
-// type TestTransactions = Record<SecondaryCollections, { init: string, mint: string }>
+const setupFusdMinter = `
+// This transaction creates a new minter proxy resource and
+// stores it in the signer's account.
+//
+// After running this transaction, the FUSD administrator
+// must run deposit_fusd_minter.cdc to deposit a minter resource
+// inside the minter proxy.
+
+import FUSD from "FUSD.cdc"
+
+transaction {
+
+    prepare(minter: AuthAccount) {
+
+        let minterProxy <- FUSD.createMinterProxy()
+
+        minter.save(
+            <- minterProxy,
+            to: FUSD.MinterProxyStoragePath,
+        )
+
+        minter.link<&FUSD.MinterProxy{FUSD.MinterProxyPublic}>(
+            FUSD.MinterProxyPublicPath,
+            target: FUSD.MinterProxyStoragePath
+        )
+    }
+}
+`
+
+const mintFusd = `
+// This transaction mints new FUSD and increases the total supply.
+// The minted FUSD is deposited into the recipient account.
+//
+// Parameters:
+// - amount: The amount of FUSD to transfer (e.g. 10.0)
+// - to: The recipient account address.
+//
+// This transaction will fail if the authorizer does not have and FUSD.MinterProxy
+// resource. Use the setup_fusd_minter.cdc and deposit_fusd_minter.cdc transactions
+// to configure the minter proxy.
+//
+// This transaction will fail if the recipient does not have
+// an FUSD vault stored in their account. To check if an account has a vault
+// or initialize a new vault, use check_fusd_vault_setup.cdc and setup_fusd_vault.cdc
+// respectively.
+
+import FungibleToken from "FungibleToken.cdc"
+import FUSD from "FUSD.cdc"
+
+transaction(amount: UFix64, to: Address) {
+
+    let tokenMinter: &FUSD.MinterProxy
+    let tokenReceiver: &{FungibleToken.Receiver}
+
+    prepare(minterAccount: AuthAccount) {
+        self.tokenMinter = minterAccount
+            .borrow<&FUSD.MinterProxy>(from: FUSD.MinterProxyStoragePath)
+            ?? panic("No minter available")
+
+        self.tokenReceiver = getAccount(to)
+            .getCapability(/public/fusdReceiver)!
+            .borrow<&{FungibleToken.Receiver}>()
+            ?? panic("Unable to borrow receiver reference")
+    }
+
+    execute {
+        let mintedVault <- self.tokenMinter.mintTokens(amount: amount)
+
+        self.tokenReceiver.deposit(from: <-mintedVault)
+    }
+}
+`
+
+const depositFusdMinter = `
+// This transaction creates a new FUSD minter and deposits
+// it into an existing minter proxy resource on the specified account.
+//
+// Parameters:
+// - minterAddress: The minter account address.
+//
+// This transaction will fail if the authorizer does not have the FUSD.Administrator
+// resource.
+//
+// This transaction will fail if the minter account does not have
+// an FUSD.MinterProxy resource. Use the setup_fusd_minter.cdc transaction to
+// create a minter proxy in the minter account.
+
+import FUSD from "FUSD.cdc"
+
+transaction(minterAddress: Address) {
+
+    let resourceStoragePath: StoragePath
+    let capabilityPrivatePath: CapabilityPath
+    let minterCapability: Capability<&FUSD.Minter>
+
+    prepare(adminAccount: AuthAccount) {
+
+        // These paths must be unique within the FUSD contract account's storage
+        self.resourceStoragePath = /storage/minter_01
+        self.capabilityPrivatePath = /private/minter_01
+
+        // Create a reference to the admin resource in storage.
+        let tokenAdmin = adminAccount.borrow<&FUSD.Administrator>(from: FUSD.AdminStoragePath)
+            ?? panic("Could not borrow a reference to the admin resource")
+
+        // Create a new minter resource and a private link to a capability for it in the admin's storage.
+        let minter <- tokenAdmin.createNewMinter()
+        adminAccount.save(<- minter, to: self.resourceStoragePath)
+        self.minterCapability = adminAccount.link<&FUSD.Minter>(
+            self.capabilityPrivatePath,
+            target: self.resourceStoragePath
+        ) ?? panic("Could not link minter")
+
+    }
+
+    execute {
+        // This is the account that the capability will be given to
+        let minterAccount = getAccount(minterAddress)
+
+        let capabilityReceiver = minterAccount.getCapability
+            <&FUSD.MinterProxy{FUSD.MinterProxyPublic}>
+            (FUSD.MinterProxyPublicPath)!
+            .borrow() ?? panic("Could not borrow capability receiver reference")
+
+        capabilityReceiver.setMinterCapability(cap: self.minterCapability)
+    }
+
+}
+`
+
+const setupFusdVault = `
+
+import FungibleToken from "FungibleToken.cdc"
+import FUSD from "FUSD.cdc"
+
+transaction {
+
+  prepare(signer: AuthAccount) {
+
+    // It's OK if the account already has a Vault, but we don't want to replace it
+    if(signer.borrow<&FUSD.Vault>(from: /storage/fusdVault) != nil) {
+      return
+    }
+
+    // Create a new FUSD Vault and put it in storage
+    signer.save(<-FUSD.createEmptyVault(), to: /storage/fusdVault)
+
+    // Create a public capability to the Vault that only exposes
+    // the deposit function through the Receiver interface
+    signer.link<&FUSD.Vault{FungibleToken.Receiver}>(
+      /public/fusdReceiver,
+      target: /storage/fusdVault
+    )
+
+    // Create a public capability to the Vault that only exposes
+    // the balance field through the Balance interface
+    signer.link<&FUSD.Vault{FungibleToken.Balance}>(
+      /public/fusdBalance,
+      target: /storage/fusdVault
+    )
+  }
+}`
 
 const evolution = {
 	init: evolutionInit,
@@ -434,8 +594,16 @@ const motoGpCard = {
 	openPack: motoGpOpenPack,
 }
 
+const fusd = {
+	setupFusdMinter,
+	setupFusdVault,
+	mintFusd,
+	depositFusdMinter,
+}
+
 export const testTransactions = {
 	evolution,
 	motoGpCard,
 	topShot,
+	fusd,
 }

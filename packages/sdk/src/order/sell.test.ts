@@ -9,6 +9,7 @@ import { toFlowContractAddress } from "../common/flow-address"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
+import { createFusdTestEnvironment } from "../test/setup-fusd-env"
 
 describe("Test sell on emulator", () => {
 	let sdk: FlowSdk
@@ -28,6 +29,19 @@ describe("Test sell on emulator", () => {
 			[],
 		)
 		const tx = await sdk.order.sell(collection, "FLOW", mintTx.tokenId, "0.1")
+		checkEvent(tx, "ListingAvailable", "NFTStorefront")
+		checkEvent(tx, "OrderAvailable", "RaribleOrder")
+		expect(tx.status).toEqual(4)
+	})
+
+	test("Should create RaribleNFT sell order for FUSD", async () => {
+		const { acc1 } = await createFusdTestEnvironment(fcl, "emulator")
+		const mintTx = await acc1.sdk.nft.mint(
+			collection,
+			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
+			[],
+		)
+		const tx = await acc1.sdk.order.sell(collection, "FUSD", mintTx.tokenId, "0.1")
 		checkEvent(tx, "ListingAvailable", "NFTStorefront")
 		checkEvent(tx, "OrderAvailable", "RaribleOrder")
 		expect(tx.status).toEqual(4)

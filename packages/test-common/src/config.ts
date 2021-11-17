@@ -1,3 +1,5 @@
+export const EMULATOR_SERVICE_ACCOUNT_PK = "9929788f279238828e7da0592d87f1ada84b6bc373a50639bdff13a483e04fd4"
+
 export const CONTRACTS: Record<Contracts, string> = {
 	NonFungibleToken: "NonFungibleToken",
 	FUSD: "FUSD",
