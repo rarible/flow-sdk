@@ -54,7 +54,7 @@ describe("Test sell on emulator", () => {
 		expect(result.data.itemId).toEqual(1)
 
 		const sellTx = await acc1.sdk.order.sell(
-			toFlowContractAddress(EmulatorCollections.EVOLUTION), "FLOW", 1, "0.000001",
+			toFlowContractAddress(EmulatorCollections.EVOLUTION), "FLOW", 1, "0.0001",
 		)
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
@@ -68,7 +68,7 @@ describe("Test sell on emulator", () => {
 		expect(result).toEqual(1)
 
 		const sellTx = await acc1.sdk.order.sell(
-			topShotColletion, "FLOW", result, "0.000001",
+			topShotColletion, "FLOW", result, "0.0001",
 		)
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")

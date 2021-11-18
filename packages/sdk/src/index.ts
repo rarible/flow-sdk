@@ -9,8 +9,7 @@ import { buy as buyTemplate } from "./order/buy"
 import { cancelOrder as cancelOrderTmeplate } from "./order/cancel-order"
 import { signUserMessage as signUserMessageTemplate } from "./signature/sign-user-message"
 import { getFungibleBalance as getFungibleBalanceTemplate } from "./wallet/get-fungible-balance"
-import type { FlowNetwork, FlowTransaction } from "./types"
-import type { AuthWithPrivateKey, FlowCurrency, FlowRoyalty } from "./types"
+import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork, FlowRoyalty, FlowTransaction } from "./types"
 import { updateOrder as updateOrderTemplate } from "./order/update-order"
 import type { FlowAddress, FlowContractAddress } from "./common/flow-address"
 
@@ -51,7 +50,7 @@ export interface FlowOrderSdk {
 		collection: FlowContractAddress,
 		currency: FlowCurrency,
 		sellItemId: number,
-		sellItemPrice: string
+		sellItemPrice: string,
 	): Promise<FlowTransaction>
 
 	/**
@@ -65,7 +64,7 @@ export interface FlowOrderSdk {
 		collection: FlowContractAddress,
 		currency: FlowCurrency,
 		orderId: number,
-		price: string
+		price: string,
 	): Promise<FlowTransaction>
 
 	/**

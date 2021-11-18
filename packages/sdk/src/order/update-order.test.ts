@@ -67,17 +67,17 @@ describe("Test update sell order on emulator", () => {
 		expect(result.data.itemId).toEqual(1)
 
 		const sellTx = await acc1.sdk.order.sell(
-			evolutionCollection, "FLOW", 1, "0.000001",
+			evolutionCollection, "FLOW", 1, "0.0001",
 		)
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
 
 		const order = extractOrder(sellTx)
-		expect(order.price).toEqual("0.00000100")
+		expect(order.price).toEqual("0.00010000")
 
-		const updateTx = await acc1.sdk.order.updateOrder(evolutionCollection, "FLOW", order.orderId, "0.00000002")
+		const updateTx = await acc1.sdk.order.updateOrder(evolutionCollection, "FLOW", order.orderId, "0.0002")
 		const updatedOrder = extractOrder(updateTx)
-		expect(updatedOrder.price).toEqual("0.00000002")
+		expect(updatedOrder.price).toEqual("0.00020000")
 	})
 
 	test("Should update sell order from TopShot nft", async () => {
@@ -88,17 +88,17 @@ describe("Test update sell order on emulator", () => {
 		expect(result).toEqual(1)
 
 		const sellTx = await acc1.sdk.order.sell(
-			topShotColletion, "FLOW", result, "0.000001",
+			topShotColletion, "FLOW", result, "0.0001",
 		)
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
 
 		const order = extractOrder(sellTx)
-		expect(order.price).toEqual("0.00000100")
+		expect(order.price).toEqual("0.00010000")
 
-		const updateTx = await acc1.sdk.order.updateOrder(topShotColletion, "FLOW", order.orderId, "0.00000002")
+		const updateTx = await acc1.sdk.order.updateOrder(topShotColletion, "FLOW", order.orderId, "0.0002")
 		const updatedOrder = extractOrder(updateTx)
-		expect(updatedOrder.price).toEqual("0.00000002")
+		expect(updatedOrder.price).toEqual("0.00020000")
 	})
 
 	test("Should update order from MotoCpCard nft", async () => {
