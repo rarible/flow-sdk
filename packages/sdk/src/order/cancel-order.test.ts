@@ -54,13 +54,13 @@ describe("Test cancel order on emulator", () => {
 		expect(result.data.itemId).toEqual(1)
 
 		const sellTx = await acc1.sdk.order.sell(
-			evolutionCollection, "FLOW", 1, "0.000001",
+			evolutionCollection, "FLOW", 1, "0.0001",
 		)
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
 
 		const order = extractOrder(sellTx)
-		expect(order.price).toEqual("0.00000100")
+		expect(order.price).toEqual("0.00010000")
 
 		const cancelTx = await acc1.sdk.order.cancelOrder(evolutionCollection, order.orderId)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
@@ -74,13 +74,13 @@ describe("Test cancel order on emulator", () => {
 		expect(result).toEqual(1)
 
 		const sellTx = await acc1.sdk.order.sell(
-			topShotColletion, "FLOW", 1, "0.000001",
+			topShotColletion, "FLOW", 1, "0.0001",
 		)
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
 
 		const order = extractOrder(sellTx)
-		expect(order.price).toEqual("0.00000100")
+		expect(order.price).toEqual("0.00010000")
 
 		const cancelTx = await acc1.sdk.order.cancelOrder(topShotColletion, order.orderId)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
