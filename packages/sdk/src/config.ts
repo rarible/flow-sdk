@@ -2,6 +2,8 @@ import type { FlowAddress, FlowContractAddressName } from "./common/flow-address
 import { toFlowAddress } from "./common/flow-address"
 import type { FlowContractName, FlowNetwork } from "./types"
 
+export const MIN_ORDER_PRICE = "0.0001"
+
 type BlocktoWalletData = {
 	accessNode: string
 	wallet: string
