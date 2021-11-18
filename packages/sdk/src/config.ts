@@ -56,6 +56,7 @@ export const flowCollectionsConfig: Record<string, FlowConfigData> = {
 
 const MAINNET_RARIBLE_ADDRESS = toFlowAddress("0x01ab36aaf654a13e")
 const TESTNET_RARIBLE_ADDRESS = toFlowAddress("0xebf4ae01d1284af8")
+const EMULATOR_ADDRESS = toFlowAddress("0xf8d6e0586b0a20c7")
 
 // todo move contracts address to fcl.config aliases  if it's possible
 export const CONFIGS: Record<FlowNetwork, Config> = {
@@ -64,19 +65,19 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 		accessNode: "127.0.0.1:3569",
 		challengeHandshake: "",
 		mainAddressMap: {
-			NonFungibleToken: toFlowAddress("0x01cf0e2f2f715450"),
+			NonFungibleToken: toFlowAddress(EMULATOR_ADDRESS),
 			FungibleToken: toFlowAddress("0xee82856bf20e2aa6"),
 			FlowToken: toFlowAddress("0x0ae53cb6e3f42a79"),
-			FUSD: toFlowAddress("0x01cf0e2f2f715450"),
-			NFTStorefront: toFlowAddress("0x01cf0e2f2f715450"),
-			MotoGPCard: toFlowAddress("0x01cf0e2f2f715450"),
-			Evolution: toFlowAddress("0x01cf0e2f2f715450"),
-			TopShot: toFlowAddress("0x01cf0e2f2f715450"),
-			TopShotFee: toFlowAddress("0x01cf0e2f2f715450"),
-			RaribleFee: toFlowAddress("0x01cf0e2f2f715450"),
-			RaribleOrder: toFlowAddress("0x01cf0e2f2f715450"),
-			LicensedNFT: toFlowAddress("0x01cf0e2f2f715450"),
-			RaribleNFT: toFlowAddress("0x01cf0e2f2f715450"),
+			FUSD: toFlowAddress(EMULATOR_ADDRESS),
+			NFTStorefront: toFlowAddress(EMULATOR_ADDRESS),
+			MotoGPCard: toFlowAddress(EMULATOR_ADDRESS),
+			Evolution: toFlowAddress(EMULATOR_ADDRESS),
+			TopShot: toFlowAddress(EMULATOR_ADDRESS),
+			TopShotFee: toFlowAddress(EMULATOR_ADDRESS),
+			RaribleFee: toFlowAddress(EMULATOR_ADDRESS),
+			RaribleOrder: toFlowAddress(EMULATOR_ADDRESS),
+			LicensedNFT: toFlowAddress(EMULATOR_ADDRESS),
+			RaribleNFT: toFlowAddress(EMULATOR_ADDRESS),
 		},
 	},
 	testnet: {
@@ -129,10 +130,10 @@ type Config = {
 }
 
 export enum EmulatorCollections {
-	RARIBLE = "A.0x01cf0e2f2f715450.RaribleNFT",
-	MOTOGP = "A.0x01cf0e2f2f715450.MotoGPCard",
-	EVOLUTION = "A.0x01cf0e2f2f715450.Evolution",
-	TOPSHOT = "A.0x01cf0e2f2f715450.TopShot",
+	RARIBLE = "A.0xf8d6e0586b0a20c7.RaribleNFT",
+	MOTOGP = "A.0xf8d6e0586b0a20c7.MotoGPCard",
+	EVOLUTION = "A.0xf8d6e0586b0a20c7.Evolution",
+	TOPSHOT = "A.0xf8d6e0586b0a20c7.TopShot",
 }
 
 export enum TestnetCollections {

@@ -1,21 +1,55 @@
 {
-	"emulators": {
-		"default": {
-			"port": 3569,
-			"serviceAccount": "emulator-account"
-		}
-	},
-	"contracts": {},
-	"networks": {
-		"emulator": "127.0.0.1:3569",
-		"mainnet": "access.mainnet.nodes.onflow.org:9000",
-		"testnet": "access.devnet.nodes.onflow.org:9000"
-	},
-	"accounts": {
-		"emulator-account": {
-			"address": "f8d6e0586b0a20c7",
-			"key": "ae1b44c0f5e8f6992ef2348898a35e50a8b0b9684000da8b1dade1b3bcd6ebee"
-		}
-	},
-	"deployments": {}
+  "emulators": {
+    "default": {
+      "port": 3569,
+      "serviceAccount": "emulator-account"
+    }
+  },
+  "contracts": {
+    "NonFungibleToken": "./cadence/contracts/NonFungibleToken.cdc",
+    "FUSD": "./cadence/contracts/FUSD.cdc",
+    "NFTStorefront": "./cadence/contracts/NFTStorefront.cdc",
+    "MotoGPCard": "./cadence/contracts/MotoGPCard.cdc",
+    "Evolution": "./cadence/contracts/Evolution.cdc",
+    "TopShot": "./cadence/contracts/TopShot.cdc",
+    "RaribleFee": "./cadence/contracts/RaribleFee.cdc",
+    "RaribleOrder": "./cadence/contracts/RaribleOrder.cdc",
+    "RaribleNFT": "./cadence/contracts/RaribleNFT.cdc",
+    "LicensedNFT": "./cadence/contracts/LicensedNFT.cdc"
+  },
+  "networks": {
+    "emulator": "127.0.0.1:3569",
+    "mainnet": "access.mainnet.nodes.onflow.org:9000",
+    "testnet": "access.devnet.nodes.onflow.org:9000"
+  },
+  "accounts": {
+    "user1-account": {
+      "address": "3ae53cb6e3f42a79",
+      "key": "12332967fd2bd75234ae9037dd4694c1f00baad63a10c35172bf65fbb8ad1111"
+    },
+    "user2-account": {
+      "address": "e2a8b7f23e8b548f",
+      "key": "22232967fd2bd75234ae9037dd4694c1f00baad63a10c35172bf65fbb8ad1111"
+    },
+    "emulator-account": {
+      "address": "f8d6e0586b0a20c7",
+      "key": "9929788f279238828e7da0592d87f1ada84b6bc373a50639bdff13a483e04fd4"
+    }
+  },
+  "deployments": {
+    "emulator": {
+      "emulator-account": [
+        "NonFungibleToken",
+        "FUSD",
+        "NFTStorefront",
+        "MotoGPCard",
+        "Evolution",
+        "TopShot",
+        "RaribleFee",
+        "RaribleOrder",
+        "RaribleNFT",
+        "LicensedNFT"
+      ]
+    }
+  }
 }

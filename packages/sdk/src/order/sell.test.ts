@@ -1,31 +1,88 @@
-import { createTestAuth, FLOW_TEST_ACCOUNT_3 } from "@rarible/flow-test-common"
+import { createTestAuth } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
+import { createEmulatorAccount, createFlowEmulator } from "@rarible/flow-test-common/src"
 import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
 import { checkEvent } from "../test/check-event"
-import { TestnetCollections } from "../config"
+import { EmulatorCollections } from "../config"
 import { toFlowContractAddress } from "../common/flow-address"
+import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
+import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
+import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
+import { createFusdTestEnvironment } from "../test/setup-fusd-env"
 
-describe("Test sell on testnet", () => {
+describe("Test sell on emulator", () => {
 	let sdk: FlowSdk
-	const collection = toFlowContractAddress(TestnetCollections.RARIBLE)
+	createFlowEmulator({})
+	const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
 
-	beforeAll(() => {
-		const auth = createTestAuth(fcl, FLOW_TEST_ACCOUNT_3.address, FLOW_TEST_ACCOUNT_3.privKey, 0)
-		sdk = createFlowSdk(fcl, "testnet", auth)
+	beforeAll(async () => {
+		const { address, pk } = await createEmulatorAccount("accountName")
+		const auth = createTestAuth(fcl, "emulator", address, pk, 0)
+		sdk = createFlowSdk(fcl, "emulator", auth)
 	})
 
 	test("Should create RaribleNFT sell order", async () => {
 		const mintTx = await sdk.nft.mint(
 			collection,
 			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
-			[{ account: FLOW_TEST_ACCOUNT_3.address, value: "0.1" }],
+			[],
 		)
 		const tx = await sdk.order.sell(collection, "FLOW", mintTx.tokenId, "0.1")
 		checkEvent(tx, "ListingAvailable", "NFTStorefront")
 		checkEvent(tx, "OrderAvailable", "RaribleOrder")
-		expect(tx.events[1].data.orderId).toBeGreaterThan(0)
+		expect(tx.status).toEqual(4)
+	})
+
+	test("Should create RaribleNFT sell order for FUSD", async () => {
+		const { acc1 } = await createFusdTestEnvironment(fcl, "emulator")
+		const mintTx = await acc1.sdk.nft.mint(
+			collection,
+			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
+			[],
+		)
+		const tx = await acc1.sdk.order.sell(collection, "FUSD", mintTx.tokenId, "0.1")
+		checkEvent(tx, "ListingAvailable", "NFTStorefront")
+		checkEvent(tx, "OrderAvailable", "RaribleOrder")
+		expect(tx.status).toEqual(4)
+	})
+
+	test("Should create sell order from evolution nft", async () => {
+		const { acc1, serviceAcc } = await createEvolutionTestEnvironment(fcl)
+
+		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
+		expect(result.data.itemId).toEqual(1)
+
+		const sellTx = await acc1.sdk.order.sell(
+			toFlowContractAddress(EmulatorCollections.EVOLUTION), "FLOW", 1, "0.000001",
+		)
+		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
+		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
+	})
+
+	test("Should create sell order from TopShot nft", async () => {
+		const topShotColletion = toFlowContractAddress(EmulatorCollections.TOPSHOT)
+		const { acc1, serviceAcc } = await createTopShotTestEnvironment(fcl)
+
+		const [result] = await getTopShotIds(fcl, serviceAcc.address, acc1.address)
+		expect(result).toEqual(1)
+
+		const sellTx = await acc1.sdk.order.sell(
+			topShotColletion, "FLOW", result, "0.000001",
+		)
+		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
+		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
+	})
+
+	test("Should create sell order from MotoCpCard nft", async () => {
+		const motoGpColletion = toFlowContractAddress(EmulatorCollections.MOTOGP)
+		const { acc1, serviceAcc } = await createMotoGpTestEnvironment(fcl)
+
+		const result = await borrowMotoGpCardId(fcl, serviceAcc.address, acc1.address, 1)
+		expect(result.cardID).toEqual(1)
+
+		const sellTx = await acc1.sdk.order.sell(motoGpColletion, "FLOW", result.cardID, "0.0001")
+		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
+		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
 	})
 })
-
-//todo write tests for sell by collections, evolution, topShot, motoGP
