@@ -11,6 +11,7 @@ import { extractOrder } from "../test/extract-order"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
 import { createFusdTestEnvironment } from "../test/setup-fusd-env"
+import { getTestFtCurrencyFromOrder } from "../test/get-test-currency-from-order"
 
 describe("Test buy on emulator", () => {
 	let sdk: FlowSdk
@@ -27,7 +28,9 @@ describe("Test buy on emulator", () => {
 		const tx = await sdk.order.sell(collection, "FLOW", mintTx.tokenId, "0.001")
 		const { orderId } = tx.events[2].data
 		expect(orderId).toBeGreaterThan(0)
-		const buyTx = await sdk.order.buy(collection, "FLOW", orderId, address)
+
+		const currency = await getTestFtCurrencyFromOrder(fcl, address, orderId)
+		const buyTx = await sdk.order.buy(collection, currency, orderId, address)
 		checkEvent(buyTx, "Withdraw")
 		checkEvent(buyTx, "Deposit", "RaribleNFT")
 	})

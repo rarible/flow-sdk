@@ -61,6 +61,7 @@ const EMULATOR_ADDRESS = toFlowAddress("0xf8d6e0586b0a20c7")
 // todo move contracts address to fcl.config aliases  if it's possible
 export const CONFIGS: Record<FlowNetwork, Config> = {
 	emulator: {
+		flowApiBasePath: "127.0.0.1:3569",
 		walletDiscovery: "",
 		accessNode: "127.0.0.1:3569",
 		challengeHandshake: "",
@@ -81,6 +82,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 		},
 	},
 	testnet: {
+		flowApiBasePath: "https://flow-api-dev.rarible.com",
 		walletDiscovery: "",
 		accessNode: blocktoWallet.testnet.accessNode,
 		challengeHandshake: blocktoWallet.testnet.wallet,
@@ -101,6 +103,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 		},
 	},
 	mainnet: {
+		flowApiBasePath: "https://flow-api.rarible.com",
 		walletDiscovery: "",
 		accessNode: blocktoWallet.mainnet.accessNode,
 		challengeHandshake: blocktoWallet.mainnet.wallet,
@@ -123,6 +126,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 }
 
 type Config = {
+	flowApiBasePath: string
 	walletDiscovery: string
 	accessNode: string
 	challengeHandshake: string

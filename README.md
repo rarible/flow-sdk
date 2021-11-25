@@ -2,9 +2,12 @@
 
 Documentation for Flow SDK located [here](https://github.com/rarible/flow-sdk/tree/master/packages/flow-sdk)
 
+Install mono-repository dependencies `yarn`
 To install dependencies and add linking run `yarn bootstrap`
-
 To build all packages use `yarn build-all`
+
+NOTE: If you haven't declared the `NPM_TOKEN` variable in the environment variables, add it with any value or export it
+temporarily for the current session `export NPM_TOKEN="123"`, otherwise the `yarn` commands will not work.
 
 ### Testing
 

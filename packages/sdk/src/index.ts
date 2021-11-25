@@ -1,5 +1,7 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
+import type { ConfigurationParameters } from "@rarible/flow-api-client"
+import * as ApiClient from "@rarible/flow-api-client"
 import type { FlowMintResponse } from "./nft/mint"
 import { mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
@@ -12,6 +14,14 @@ import { getFungibleBalance as getFungibleBalanceTemplate } from "./wallet/get-f
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork, FlowRoyalty, FlowTransaction } from "./types"
 import { updateOrder as updateOrderTemplate } from "./order/update-order"
 import type { FlowAddress, FlowContractAddress } from "./common/flow-address"
+import { CONFIGS } from "./config"
+
+export interface FlowApisSdk {
+	order: ApiClient.FlowOrderControllerApi
+	collection: ApiClient.FlowNftCollectionControllerApi
+	item: ApiClient.FlowNftItemControllerApi
+	ownership: ApiClient.FlowNftOwnershipControllerApi
+}
 
 export interface FlowNftSdk {
 	/**
@@ -88,6 +98,7 @@ export interface FlowWalletSdk {
 }
 
 export interface FlowSdk {
+	apis: FlowApisSdk
 	nft: FlowNftSdk
 	order: FlowOrderSdk
 	wallet: FlowWalletSdk
@@ -95,7 +106,23 @@ export interface FlowSdk {
 	signUserMessage(message: string): Promise<string>
 }
 
-// @todo may be add config param for wallet discovery
+export function createFlowApisSdk(
+	env: FlowNetwork,
+	params: ConfigurationParameters = {},
+): FlowApisSdk {
+	const config = CONFIGS[env]
+	const configuration = new ApiClient.Configuration({
+		basePath: config.flowApiBasePath,
+		...params,
+	})
+	return {
+		collection: new ApiClient.FlowNftCollectionControllerApi(configuration),
+		item: new ApiClient.FlowNftItemControllerApi(configuration),
+		ownership: new ApiClient.FlowNftOwnershipControllerApi(configuration),
+		order: new ApiClient.FlowOrderControllerApi(configuration),
+	}
+}
+
 /**
  * Creates new instance of FlowSdk
  * @param fcl
@@ -104,6 +131,7 @@ export interface FlowSdk {
  */
 export function createFlowSdk(fcl: Maybe<Fcl>, network: FlowNetwork, auth?: AuthWithPrivateKey): FlowSdk {
 	return {
+		apis: createFlowApisSdk(network),
 		nft: {
 			mint: mintTemplate.bind(null, fcl, auth, network),
 			burn: burnTemplate.bind(null, fcl, auth, network),

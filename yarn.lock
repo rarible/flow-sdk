@@ -2181,10 +2181,22 @@
     eslint-plugin-jest "^25.2.3"
     eslint-plugin-unicorn "^38.0.0"
 
+"@rarible/flow-api-client@~0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@rarible/flow-api-client/-/flow-api-client-0.0.2.tgz#ca220b488cda9e088d231d977842478db1743389"
+  integrity sha512-s9Kkj+qhNywbIorihcfZbub90RC4aNWTq8+UpFVm0DCJ/8f4x65Dimwew7JhVscz+9QedDPQGR2RvA0MRM4yqA==
+  dependencies:
+    "@rarible/types" "~0.5.4"
+
 "@rarible/types@~0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@rarible/types/-/types-0.5.0.tgz#7922cf982d401b9b77ddb87af662103af3dbf13c"
   integrity sha512-o58EFUPTy2YRDUZOJlbg3hiKDpLut/qA6ehhPj6TLCHhQr+mg1+UMPAVyiBKyMrm7otECh348cJEPvMf5i+1/g==
+
+"@rarible/types@~0.5.4":
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/@rarible/types/-/types-0.5.4.tgz#67b8130ba7823797e3a05e33c434056ffe0005a9"
+  integrity sha512-86bDNIuSJ79nWObE+oesHcmxUfcwVS82Ur26SUuOaOg1HI2wP74B7LtmuhMdmSYbJq6J3O9gfPdsPmgXehB5qg==
 
 "@rarible/utils@~0.5.0":
   version "0.5.0"
