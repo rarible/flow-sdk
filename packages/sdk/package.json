@@ -22,7 +22,7 @@
     "@rarible/fcl-types": "^0.3.0",
     "@rarible/flow-api-client": "~0.0.2",
     "@rarible/flow-sdk-scripts": "^0.3.3",
-    "@rarible/types": "~0.5.0",
+    "@rarible/types": "~0.5.4",
     "@rarible/utils": "~0.5.0"
   },
   "devDependencies": {

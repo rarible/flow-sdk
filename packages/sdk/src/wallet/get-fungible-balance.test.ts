@@ -1,5 +1,5 @@
 import * as fcl from "@onflow/fcl"
-import { toFlowAddress } from "../common/flow-address"
+import { toFlowAddress } from "@rarible/types"
 import { getFungibleBalance } from "./get-fungible-balance"
 
 describe("Test get balance functions", () => {

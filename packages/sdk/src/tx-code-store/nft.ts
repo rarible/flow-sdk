@@ -1,7 +1,7 @@
 import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { Evolution, MotoGPCard, RaribleNFT, TopShot } from "@rarible/flow-sdk-scripts"
-import type { FlowRoyalty } from "../types"
+import type { FlowRoyalty } from "@rarible/flow-api-client"
 import { convertRoyalties } from "../common/convert-royalties"
 import type { FlowCollectionName } from "../common/collection"
 

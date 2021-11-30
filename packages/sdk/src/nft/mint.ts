@@ -1,14 +1,16 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
-import type { FlowNetwork, FlowTransaction } from "../types"
+import type { FlowContractAddress } from "@rarible/types"
+import type { FlowRoyalty } from "@rarible/flow-api-client"
+import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getNftCode } from "../tx-code-store/nft"
-import type { AuthWithPrivateKey, FlowRoyalty } from "../types"
 import { getCollectionConfig } from "../common/collection/get-config"
-import type { FlowContractAddress } from "../common/flow-address"
+import type { FlowItemId} from "../common/item"
+import { toFlowItemId } from "../common/item"
 
 export interface FlowMintResponse extends FlowTransaction {
-	tokenId: number
+	tokenId: FlowItemId
 }
 
 export async function mint(
@@ -17,28 +19,28 @@ export async function mint(
 	network: FlowNetwork,
 	collection: FlowContractAddress,
 	metadata: string,
-	royalties: FlowRoyalty[]
+	royalties: FlowRoyalty[],
 ): Promise<FlowMintResponse> {
 	if (!fcl) {
 		throw new Error("Fcl is required for mint")
 	}
 	const { map, address, config, name } = getCollectionConfig(
 		network,
-		collection
+		collection,
 	)
 	if (config.mintable) {
 		const txId = await runTransaction(
 			fcl,
 			map,
 			getNftCode(name).mint(fcl, address, metadata, royalties),
-			auth
+			auth,
 		)
 		const txResult = await waitForSeal(fcl, txId)
 		if (txResult.events.length) {
 			const mintEvent = txResult.events.find(e => e.type.split(".")[3] === "Mint")
 			if (mintEvent) {
 				return {
-					tokenId: mintEvent.data.id,
+					tokenId: toFlowItemId(`${collection}:${mintEvent.data.id}`),
 					...txResult,
 				}
 			}

@@ -1,4 +1,4 @@
-import type { FlowRoyalty } from "../types"
+import type { FlowRoyalty } from "@rarible/flow-api-client"
 
 export function convertRoyalties(royalties: FlowRoyalty[]) {
 	return royalties.map(royalty => ({

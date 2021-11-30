@@ -1,10 +1,10 @@
 import * as fcl from "@onflow/fcl"
 import { createTestAuth } from "@rarible/flow-test-common"
 import { createEmulatorAccount, createFlowEmulator } from "@rarible/flow-test-common/src"
+import { toFlowContractAddress } from "@rarible/types"
 import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
 import { EmulatorCollections } from "../config"
-import { toFlowContractAddress } from "../common/flow-address"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
@@ -16,7 +16,7 @@ describe("Minting on emulator", () => {
 	beforeAll(async () => {
 		const { address, pk } = await createEmulatorAccount("accountName")
 		const auth = createTestAuth(fcl, "emulator", address, pk, 0)
-		sdk = createFlowSdk(fcl, "emulator", auth)
+		sdk = createFlowSdk(fcl, "emulator", {}, auth)
 	})
 
 	test("should mint nft", async () => {

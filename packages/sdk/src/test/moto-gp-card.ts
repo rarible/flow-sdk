@@ -169,13 +169,13 @@ export async function createMotoGpTestEnvironment(fcl: Fcl): Promise<TopShotTest
 	return {
 		acc1: {
 			address: testAddress1,
-			sdk: createFlowSdk(fcl, "emulator", testAuth1),
+			sdk: createFlowSdk(fcl, "emulator", {}, testAuth1),
 			packId: 0,
 			cardIds: [1, 2, 3],
 		},
 		acc2: {
 			address: testAddress2,
-			sdk: createFlowSdk(fcl, "emulator", testAuth2),
+			sdk: createFlowSdk(fcl, "emulator", {}, testAuth2),
 		},
 		serviceAcc: {
 			address: serviceAddress,

@@ -149,12 +149,12 @@ export async function createEvolutionTestEnvironment(fcl: Fcl): Promise<Evolutio
 	return {
 		acc1: {
 			address: testAddress1,
-			sdk: createFlowSdk(fcl, "emulator", testAuth1),
+			sdk: createFlowSdk(fcl, "emulator", {}, testAuth1),
 			tokenId: 1,
 		},
 		acc2: {
 			address: testAddress2,
-			sdk: createFlowSdk(fcl, "emulator", testAuth2),
+			sdk: createFlowSdk(fcl, "emulator", {}, testAuth2),
 		},
 		serviceAcc: {
 			address: serviceAddress,

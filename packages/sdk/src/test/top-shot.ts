@@ -178,12 +178,12 @@ export async function createTopShotTestEnvironment(fcl: Fcl): Promise<TopShotTes
 	return {
 		acc1: {
 			address: testAddress1,
-			sdk: createFlowSdk(fcl, "emulator", testAuth1),
+			sdk: createFlowSdk(fcl, "emulator", {}, testAuth1),
 			tokenId: 1,
 		},
 		acc2: {
 			address: testAddress2,
-			sdk: createFlowSdk(fcl, "emulator", testAuth2),
+			sdk: createFlowSdk(fcl, "emulator", {}, testAuth2),
 		},
 		serviceAcc: {
 			address: serviceAddress,

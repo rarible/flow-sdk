@@ -1,14 +1,15 @@
 import { createTestAuth } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
 import { createEmulatorAccount, createFlowEmulator } from "@rarible/flow-test-common/src"
+import { toFlowContractAddress } from "@rarible/types"
 import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
 import { checkEvent } from "../test/check-event"
 import { EmulatorCollections } from "../config"
-import { toFlowContractAddress } from "../common/flow-address"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
+import { extractTokenId } from "../common/item"
 
 describe("Test burn on emulator", () => {
 	let sdk: FlowSdk
@@ -18,12 +19,12 @@ describe("Test burn on emulator", () => {
 	beforeAll(async () => {
 		const { address, pk } = await createEmulatorAccount("accountName")
 		const auth = createTestAuth(fcl, "emulator", address, pk, 0)
-		sdk = createFlowSdk(fcl, "emulator", auth)
+		sdk = createFlowSdk(fcl, "emulator", {}, auth)
 	})
 
 	test("Should burn NFT", async () => {
 		const txMint = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
-		const txBurn = await sdk.nft.burn(collection, txMint.tokenId)
+		const txBurn = await sdk.nft.burn(collection, extractTokenId(txMint.tokenId))
 		checkEvent(txBurn, "Withdraw", "RaribleNFT")
 		checkEvent(txBurn, "Destroy", "RaribleNFT")
 	})
