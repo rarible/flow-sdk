@@ -25,8 +25,8 @@ export type FlowSellRequest = {
 	currency: FlowCurrency,
 	itemId: FlowItemId,
 	sellItemPrice: string,
-	originFees?: FlowOriginFees[],
-	payouts?: FlowPayouts[],
+	originFees?: FlowOriginFees,
+	payouts?: FlowPayouts,
 }
 
 export interface FlowSellResponse extends FlowTransaction {

@@ -71,7 +71,7 @@ export interface FlowOrderSdk {
 		currency: FlowCurrency,
 		orderId: number,
 		owner: string,
-		fees: FlowOriginFees[],
+		fees: FlowOriginFees,
 	): Promise<FlowTransaction>
 
 	/**
@@ -144,3 +144,6 @@ export function createFlowSdk(
 		signUserMessage: signUserMessageTemplate.bind(null, fcl),
 	}
 }
+
+export type { FlowNetwork, FlowCurrency } from "./types"
+export type { FlowRoyalty } from "@rarible/flow-api-client"

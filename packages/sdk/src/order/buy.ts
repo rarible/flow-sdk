@@ -14,7 +14,7 @@ export async function buy(
 	currency: FlowCurrency,
 	orderId: number,
 	owner: string,
-	fees: FlowOriginFees[],
+	fees: FlowOriginFees,
 ): Promise<FlowTransaction> {
 	if (fcl) {
 		const { name, map } = getCollectionConfig(network, collection)

@@ -7,8 +7,8 @@ export type FlowNetwork = "emulator" | "testnet" | "mainnet"
 export interface FlowFee extends FlowRoyalty {
 }
 
-export type FlowOriginFees = FlowFee
-export type FlowPayouts = FlowFee
+export type FlowOriginFees = FlowFee[]
+export type FlowPayouts = FlowFee[]
 
 export type FlowContractName =
 	| NonFungibleTokenType

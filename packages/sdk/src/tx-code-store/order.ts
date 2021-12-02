@@ -22,19 +22,19 @@ type GenerateCodeResponse = {
 		currency: FlowCurrency,
 		tokenId: number,
 		price: string,
-		originFees: FlowOriginFees[],
+		originFees: FlowOriginFees,
 		royalties: FlowRoyalty[],
-		payouts: FlowPayouts[],
+		payouts: FlowPayouts,
 	) => GenerateCodeMEthodResponse
-	buy: (currency: FlowCurrency, orderId: number, address: string, fees: FlowOriginFees[]) => GenerateCodeMEthodResponse
+	buy: (currency: FlowCurrency, orderId: number, address: string, fees: FlowOriginFees) => GenerateCodeMEthodResponse
 	update: (
 		currency: FlowCurrency,
 		orderId: number,
 		price: string,
 		tokenId: number,
-		originFees: FlowOriginFees[],
+		originFees: FlowOriginFees,
 		royalties: FlowRoyalty[],
-		payouts: FlowPayouts[],
+		payouts: FlowPayouts,
 	) => GenerateCodeMEthodResponse
 	cancelOrder: (orderId: number) => GenerateCodeMEthodResponse
 }
@@ -45,9 +45,9 @@ export function getOrderCode(fcl: Fcl, collection: FlowCollectionName): Generate
 			currency: FlowCurrency,
 			tokenId: number,
 			price: string,
-			originFees: FlowOriginFees[],
+			originFees: FlowOriginFees,
 			royalties: FlowRoyalty[],
-			payouts: FlowPayouts[],
+			payouts: FlowPayouts,
 		) => {
 			return {
 				cadence: getCreateUpdateOrderCode("create", currency, collection),
@@ -60,7 +60,7 @@ export function getOrderCode(fcl: Fcl, collection: FlowCollectionName): Generate
 				]),
 			}
 		},
-		buy: (currency: FlowCurrency, orderId: number, address: string, fees: FlowOriginFees[]) => {
+		buy: (currency: FlowCurrency, orderId: number, address: string, fees: FlowOriginFees) => {
 			return {
 				cadence: getBuyCode(currency, collection),
 				args: fcl.args([
@@ -75,9 +75,9 @@ export function getOrderCode(fcl: Fcl, collection: FlowCollectionName): Generate
 			orderId: number,
 			price: string,
 			tokenId: number,
-			originFees: FlowOriginFees[],
+			originFees: FlowOriginFees,
 			royalties: FlowRoyalty[],
-			payouts: FlowPayouts[],
+			payouts: FlowPayouts,
 		) => {
 			return {
 				cadence: getCreateUpdateOrderCode("update", currency, collection),
