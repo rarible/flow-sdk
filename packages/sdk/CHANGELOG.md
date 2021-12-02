@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.2](https://github.com/rarible/flow-sdk/compare/v0.4.1...v0.4.2) (2021-12-02)
+
+
+### Bug Fixes
+
+* fix fees types, add exports for some types ([937203a](https://github.com/rarible/flow-sdk/commit/937203a48c7268a78223b191f36228f04b90c7f3))
+
+
+
+
+
 ## [0.4.1](https://github.com/rarible/flow-sdk/compare/v0.4.0...v0.4.1) (2021-12-02)
 
 
