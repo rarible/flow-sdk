@@ -1,13 +1,14 @@
 import { createTestAuth } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
 import { createEmulatorAccount, createFlowEmulator } from "@rarible/flow-test-common/src"
+import { toFlowAddress, toFlowContractAddress } from "@rarible/types"
 import { createFlowSdk } from "../index"
 import { checkEvent } from "../test/check-event"
 import { EmulatorCollections } from "../config"
-import { toFlowAddress, toFlowContractAddress } from "../common/flow-address"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
+import { extractTokenId } from "../common/item"
 
 describe("Test transfer on emulator", () => {
 	const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
@@ -16,10 +17,10 @@ describe("Test transfer on emulator", () => {
 	test("Should transfer NFT", async () => {
 		const { address, pk } = await createEmulatorAccount("accountName")
 		const auth = createTestAuth(fcl, "emulator", address, pk, 0)
-		const sdk = createFlowSdk(fcl, "emulator", auth)
+		const sdk = createFlowSdk(fcl, "emulator", {}, auth)
 
 		const mintTx = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
-		const tx = await sdk.nft.transfer(collection, mintTx.tokenId, toFlowAddress(address))
+		const tx = await sdk.nft.transfer(collection, extractTokenId(mintTx.tokenId), toFlowAddress(address))
 
 		checkEvent(tx, "Withdraw", "RaribleNFT")
 		checkEvent(tx, "Deposit", "RaribleNFT")
@@ -27,10 +28,10 @@ describe("Test transfer on emulator", () => {
 	test("Should throw error, recipient has't initialize collection", async () => {
 		const { address, pk } = await createEmulatorAccount("accountName")
 		const auth = createTestAuth(fcl, "emulator", address, pk, 0)
-		const sdk = createFlowSdk(fcl, "emulator", auth)
+		const sdk = createFlowSdk(fcl, "emulator", {}, auth)
 		const mintTx = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
 		try {
-			await sdk.nft.transfer(collection, mintTx.tokenId, toFlowAddress("0xdd05e3acd01cf833"))
+			await sdk.nft.transfer(collection, extractTokenId(mintTx.tokenId), toFlowAddress("0xdd05e3acd01cf833"))
 		} catch (e: unknown) {
 			expect((e as Error).message).toBe("The recipient has't yet initialized this collection on their account, and can't receive NFT from this collection")
 		}

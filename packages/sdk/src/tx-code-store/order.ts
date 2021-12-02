@@ -1,99 +1,97 @@
 import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
-import {
-	StorefrontCommon,
-	StorefrontEvolution,
-	StorefrontMotoGPCard,
-	StorefrontRaribleNFT,
-	StorefrontTopShot,
-} from "@rarible/flow-sdk-scripts"
-import type { FlowCurrency } from "../types"
+import { StorefrontCommon } from "@rarible/flow-sdk-scripts"
+import type { FlowRoyalty } from "@rarible/flow-api-client"
+import type { FlowCurrency, FlowOriginFees, FlowPayouts } from "../types"
+import { fixAmount } from "../common/fix-amount"
 import type { FlowCollectionName } from "../common/collection"
+import { getCreateUpdateOrderCode, prepareFees } from "./order/get-create-order-code"
+import { getBuyCode } from "./order/get-buy-code"
 
 
 type OrderMethods = Record<"buy" | "sell" | "update", string>
 export type CodeByCurrency = Record<FlowCurrency, OrderMethods>
 
-export const orderCode: Record<string, CodeByCurrency> = {
-	RaribleNFT: {
-		FLOW: {
-			buy: StorefrontRaribleNFT.buy_flow,
-			sell: StorefrontRaribleNFT.sell_flow,
-			update: StorefrontRaribleNFT.update_flow,
-		},
-		FUSD: {
-			buy: StorefrontRaribleNFT.buy_fusd,
-			sell: StorefrontRaribleNFT.sell_fusd,
-			update: StorefrontRaribleNFT.update_fusd,
-		},
-	},
-	MotoGPCard: {
-		FLOW: {
-			buy: StorefrontMotoGPCard.buy_flow,
-			sell: StorefrontMotoGPCard.sell_flow,
-			update: StorefrontMotoGPCard.update_flow,
-		},
-		FUSD: {
-			buy: StorefrontMotoGPCard.buy_fusd,
-			sell: StorefrontMotoGPCard.sell_fusd,
-			update: StorefrontMotoGPCard.update_fusd,
-		},
-	},
-	Evolution: {
-		FLOW: {
-			buy: StorefrontEvolution.buy_flow,
-			sell: StorefrontEvolution.sell_flow,
-			update: StorefrontEvolution.update_flow,
-		},
-		FUSD: {
-			buy: StorefrontEvolution.buy_fusd,
-			sell: StorefrontEvolution.sell_fusd,
-			update: StorefrontEvolution.update_fusd,
-		},
-	},
-	TopShot: {
-		FLOW: {
-			buy: StorefrontTopShot.buy_flow,
-			sell: StorefrontTopShot.sell_flow,
-			update: StorefrontTopShot.update_flow,
-		},
-		FUSD: {
-			buy: StorefrontTopShot.buy_fusd,
-			sell: StorefrontTopShot.sell_fusd,
-			update: StorefrontTopShot.update_fusd,
-		},
-	},
-}
-
 type GenerateCodeMEthodResponse = {
 	cadence: string,
 	args: ReturnType<FclArgs>
 }
-type GenerateCodeMethod = (...args: any) => GenerateCodeMEthodResponse
 
-type GenerateCodeResponse = Record<"sell" | "buy" | "update" | "cancelOrder", GenerateCodeMethod>
+type GenerateCodeResponse = {
+	sell: (
+		currency: FlowCurrency,
+		tokenId: number,
+		price: string,
+		originFees: FlowOriginFees[],
+		royalties: FlowRoyalty[],
+		payouts: FlowPayouts[],
+	) => GenerateCodeMEthodResponse
+	buy: (currency: FlowCurrency, orderId: number, address: string, fees: FlowOriginFees[]) => GenerateCodeMEthodResponse
+	update: (
+		currency: FlowCurrency,
+		orderId: number,
+		price: string,
+		tokenId: number,
+		originFees: FlowOriginFees[],
+		royalties: FlowRoyalty[],
+		payouts: FlowPayouts[],
+	) => GenerateCodeMEthodResponse
+	cancelOrder: (orderId: number) => GenerateCodeMEthodResponse
+}
 
-export function getOrderCode(collection: FlowCollectionName): GenerateCodeResponse {
+export function getOrderCode(fcl: Fcl, collection: FlowCollectionName): GenerateCodeResponse {
 	return {
-		sell: (fcl: Fcl, currency: FlowCurrency, tokenId: number, price: string) => {
+		sell: (
+			currency: FlowCurrency,
+			tokenId: number,
+			price: string,
+			originFees: FlowOriginFees[],
+			royalties: FlowRoyalty[],
+			payouts: FlowPayouts[],
+		) => {
 			return {
-				cadence: orderCode[collection][currency].sell,
-				args: fcl.args([fcl.arg(tokenId, t.UInt64), fcl.arg(price, t.UFix64)]),
+				cadence: getCreateUpdateOrderCode("create", currency, collection),
+				args: fcl.args([
+					fcl.arg(tokenId, t.UInt64),
+					fcl.arg(fixAmount(price), t.UFix64),
+					fcl.arg(prepareFees(originFees), t.Dictionary({ key: t.Address, value: t.UFix64 })),
+					fcl.arg(prepareFees(royalties), t.Dictionary({ key: t.Address, value: t.UFix64 })),
+					fcl.arg(prepareFees(payouts), t.Dictionary({ key: t.Address, value: t.UFix64 })),
+				]),
 			}
 		},
-		buy: (fcl: Fcl, currency: FlowCurrency, orderId: number, address: string) => {
+		buy: (currency: FlowCurrency, orderId: number, address: string, fees: FlowOriginFees[]) => {
 			return {
-				cadence: orderCode[collection][currency].buy,
-				args: fcl.args([fcl.arg(orderId, t.UInt64), fcl.arg(address, t.Address)]),
+				cadence: getBuyCode(currency, collection),
+				args: fcl.args([
+					fcl.arg(orderId, t.UInt64),
+					fcl.arg(address, t.Address),
+					fcl.arg(prepareFees(fees), t.Dictionary({ key: t.Address, value: t.UFix64 })),
+				]),
 			}
 		},
-		update: (fcl: Fcl, currency: FlowCurrency, orderId: number, price: string) => {
+		update: (
+			currency: FlowCurrency,
+			orderId: number,
+			price: string,
+			tokenId: number,
+			originFees: FlowOriginFees[],
+			royalties: FlowRoyalty[],
+			payouts: FlowPayouts[],
+		) => {
 			return {
-				cadence: orderCode[collection][currency].update,
-				args: fcl.args([fcl.arg(orderId, t.UInt64), fcl.arg(price, t.UFix64)]),
+				cadence: getCreateUpdateOrderCode("update", currency, collection),
+				args: fcl.args([
+					fcl.arg(orderId, t.UInt64),
+					fcl.arg(tokenId, t.UInt64),
+					fcl.arg(price, t.UFix64),
+					fcl.arg(prepareFees(originFees), t.Dictionary({ key: t.Address, value: t.UFix64 })),
+					fcl.arg(prepareFees(royalties), t.Dictionary({ key: t.Address, value: t.UFix64 })),
+					fcl.arg(prepareFees(payouts), t.Dictionary({ key: t.Address, value: t.UFix64 })),
+				]),
 			}
 		},
-		cancelOrder: (fcl: Fcl, orderId: number) => {
+		cancelOrder: (orderId: number) => {
 			return {
 				cadence: StorefrontCommon.remove_item,
 				args: fcl.args([fcl.arg(orderId, t.UInt64)]),

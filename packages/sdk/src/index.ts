@@ -1,19 +1,21 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
-import type { ConfigurationParameters } from "@rarible/flow-api-client"
+import type { ConfigurationParameters, FlowRoyalty } from "@rarible/flow-api-client"
 import * as ApiClient from "@rarible/flow-api-client"
+import type { FlowAddress, FlowContractAddress } from "@rarible/types"
 import type { FlowMintResponse } from "./nft/mint"
 import { mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
 import { transfer as transferTemplate } from "./nft/transfer"
+import type { FlowSellRequest, FlowSellResponse } from "./order/sell"
 import { sell as sellTemplate } from "./order/sell"
 import { buy as buyTemplate } from "./order/buy"
 import { cancelOrder as cancelOrderTmeplate } from "./order/cancel-order"
 import { signUserMessage as signUserMessageTemplate } from "./signature/sign-user-message"
 import { getFungibleBalance as getFungibleBalanceTemplate } from "./wallet/get-fungible-balance"
-import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork, FlowRoyalty, FlowTransaction } from "./types"
+import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork, FlowOriginFees, FlowTransaction } from "./types"
+import type { FlowUpdateOrderRequest } from "./order/update-order"
 import { updateOrder as updateOrderTemplate } from "./order/update-order"
-import type { FlowAddress, FlowContractAddress } from "./common/flow-address"
 import { CONFIGS } from "./config"
 
 export interface FlowApisSdk {
@@ -29,7 +31,6 @@ export interface FlowNftSdk {
 	 * @param collection
 	 * @param metadata
 	 * @param royalties
-	 * @return token id
 	 */
 	mint(collection: FlowContractAddress, metadata: string, royalties: FlowRoyalty[]): Promise<FlowMintResponse>
 
@@ -52,38 +53,26 @@ export interface FlowNftSdk {
 export interface FlowOrderSdk {
 	/**
 	 * Create sell order for NFT token
-	 * @param collection
-	 * @param sellItemId
-	 * @param sellItemPrice
 	 */
-	sell(
-		collection: FlowContractAddress,
-		currency: FlowCurrency,
-		sellItemId: number,
-		sellItemPrice: string,
-	): Promise<FlowTransaction>
+	sell(sellRequest: FlowSellRequest): Promise<FlowSellResponse>
 
 	/**
 	 * Update sell order
-	 * @param collection
-	 * @param currency
-	 * @param orderId
-	 * @param price
 	 */
 	updateOrder(
-		collection: FlowContractAddress,
-		currency: FlowCurrency,
-		orderId: number,
-		price: string,
+		updateRequest: FlowUpdateOrderRequest,
 	): Promise<FlowTransaction>
 
 	/**
 	 * Initiate NFT purchase
-	 * @param collection
-	 * @param itemId
-	 * @param owner
 	 */
-	buy(collection: FlowContractAddress, currency: FlowCurrency, orderId: number, owner: string): Promise<FlowTransaction>
+	buy(
+		collection: FlowContractAddress,
+		currency: FlowCurrency,
+		orderId: number,
+		owner: string,
+		fees: FlowOriginFees[],
+	): Promise<FlowTransaction>
 
 	/**
 	 * Cancel sell order
@@ -129,19 +118,25 @@ export function createFlowApisSdk(
  * @param network
  * @param auth - optional, only for testing purposes
  */
-export function createFlowSdk(fcl: Maybe<Fcl>, network: FlowNetwork, auth?: AuthWithPrivateKey): FlowSdk {
+export function createFlowSdk(
+	fcl: Maybe<Fcl>,
+	network: FlowNetwork,
+	params?: ConfigurationParameters,
+	auth?: AuthWithPrivateKey,
+): FlowSdk {
+	const apis = createFlowApisSdk(network, params)
 	return {
-		apis: createFlowApisSdk(network),
+		apis,
 		nft: {
 			mint: mintTemplate.bind(null, fcl, auth, network),
 			burn: burnTemplate.bind(null, fcl, auth, network),
 			transfer: transferTemplate.bind(null, fcl, auth, network),
 		},
 		order: {
-			sell: sellTemplate.bind(null, fcl, auth, network),
+			sell: sellTemplate.bind(null, fcl, apis.item, auth, network),
 			buy: buyTemplate.bind(null, fcl, auth, network),
 			cancelOrder: cancelOrderTmeplate.bind(null, fcl, auth, network),
-			updateOrder: updateOrderTemplate.bind(null, fcl, auth, network),
+			updateOrder: updateOrderTemplate.bind(null, fcl, apis.item, apis.order, auth).bind(null, network),
 		},
 		wallet: {
 			getFungibleBalance: getFungibleBalanceTemplate.bind(null, fcl, network),

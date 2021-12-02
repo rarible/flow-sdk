@@ -1,16 +1,16 @@
-import { createTestAuth } from "@rarible/flow-test-common"
+import { createTestAuth, FLOW_TESTNET_ACCOUNT_2, FLOW_TESTNET_ACCOUNT_3 } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
 import { createEmulatorAccount, createFlowEmulator } from "@rarible/flow-test-common/src"
+import { toBigNumber, toFlowAddress, toFlowContractAddress } from "@rarible/types"
 import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
-import { EmulatorCollections } from "../config"
-import { extractOrder } from "../test/extract-order"
+import { EmulatorCollections, TestnetCollections } from "../config"
 import { checkEvent } from "../test/check-event"
-import { toFlowContractAddress } from "../common/flow-address"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
 import { createFusdTestEnvironment } from "../test/setup-fusd-env"
+import { toFlowItemId } from "../common/item"
 
 describe("Test update sell order on emulator", () => {
 	let sdk: FlowSdk
@@ -20,8 +20,31 @@ describe("Test update sell order on emulator", () => {
 	beforeAll(async () => {
 		const { address, pk } = await createEmulatorAccount("accountName")
 		const auth = createTestAuth(fcl, "emulator", address, pk, 0)
-		sdk = createFlowSdk(fcl, "emulator", auth)
+		sdk = createFlowSdk(fcl, "emulator", {}, auth)
 	})
+
+	test.skip("Should update RaribleNFT sell order on testnet", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_3.address, FLOW_TESTNET_ACCOUNT_3.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.RARIBLE)
+		const mintTx = await testnetSdk.nft.mint(
+			testnetCollection,
+			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
+			[{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_3.address), value: toBigNumber("0.1") }],
+		)
+		const orderTx = await testnetSdk.order.sell({
+			collection: testnetCollection,
+			currency: "FLOW",
+			itemId: mintTx.tokenId,
+			sellItemPrice: "1",
+			originFees: [{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_2.address), value: toBigNumber("0.05") }],
+		})
+
+		const updateTx = await testnetSdk.order.updateOrder({
+			collection, currency: "FLOW", orderId: orderTx.orderId, sellItemPrice: "0.2",
+		})
+		checkEvent(updateTx, "ListingAvailable", "NFTStorefront")
+	}, 1000000)
 
 	test("Should update RaribleNFT sell order", async () => {
 		const mintTx = await sdk.nft.mint(
@@ -29,15 +52,18 @@ describe("Test update sell order on emulator", () => {
 			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
 			[],
 		)
-		const tx = await sdk.order.sell(collection, "FLOW", mintTx.tokenId, "0.1")
+		const tx = await sdk.order.sell({
+			collection,
+			currency: "FLOW",
+			itemId: mintTx.tokenId,
+			sellItemPrice: "0.1",
+		})
 		checkEvent(tx, "ListingAvailable", "NFTStorefront")
-		checkEvent(tx, "OrderAvailable", "RaribleOrder")
-		const order = extractOrder(tx)
-		expect(order.price).toEqual("0.10000000")
 
-		const updateTx = await sdk.order.updateOrder(collection, "FLOW", order.orderId, "0.2")
-		const updatedOrder = extractOrder(updateTx)
-		expect(updatedOrder.price).toEqual("0.20000000")
+		const updateTx = await sdk.order.updateOrder({
+			collection, currency: "FLOW", orderId: tx.orderId, sellItemPrice: "0.2",
+		})
+		checkEvent(updateTx, "ListingAvailable", "NFTStorefront")
 	})
 
 	test("Should update RaribleNFT sell FUSD order", async () => {
@@ -47,16 +73,18 @@ describe("Test update sell order on emulator", () => {
 			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
 			[],
 		)
-		const tx = await acc1.sdk.order.sell(collection, "FUSD", mintTx.tokenId, "0.1")
+		const tx = await acc1.sdk.order.sell({
+			collection,
+			currency: "FLOW",
+			itemId: mintTx.tokenId,
+			sellItemPrice: "0.1",
+		})
 		checkEvent(tx, "ListingAvailable", "NFTStorefront")
-		checkEvent(tx, "OrderAvailable", "RaribleOrder")
-		const order = extractOrder(tx)
-		expect(order.price).toEqual("0.10000000")
 
-		const updateTx = await acc1.sdk.order.updateOrder(collection, "FLOW", order.orderId, "0.2")
-		const updatedOrder = extractOrder(updateTx)
-		expect(updatedOrder.price).toEqual("0.20000000")
-		expect(updatedOrder.vaultType).toEqual("FlowToken")
+		const updateTx = await acc1.sdk.order.updateOrder({
+			collection, currency: "FLOW", orderId: tx.orderId, sellItemPrice: "0.2",
+		})
+		checkEvent(updateTx, "ListingAvailable", "NFTStorefront")
 	})
 
 	test("Should update sell order from evolution nft", async () => {
@@ -66,18 +94,18 @@ describe("Test update sell order on emulator", () => {
 		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
 		expect(result.data.itemId).toEqual(1)
 
-		const sellTx = await acc1.sdk.order.sell(
-			evolutionCollection, "FLOW", 1, "0.0001",
-		)
+		const sellTx = await acc1.sdk.order.sell({
+			collection: evolutionCollection,
+			currency: "FLOW",
+			itemId: toFlowItemId(`${evolutionCollection}:1`),
+			sellItemPrice: "0.0001",
+		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
-		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
 
-		const order = extractOrder(sellTx)
-		expect(order.price).toEqual("0.00010000")
-
-		const updateTx = await acc1.sdk.order.updateOrder(evolutionCollection, "FLOW", order.orderId, "0.0002")
-		const updatedOrder = extractOrder(updateTx)
-		expect(updatedOrder.price).toEqual("0.00020000")
+		const updateTx = await acc1.sdk.order.updateOrder({
+			collection: evolutionCollection, currency: "FLOW", orderId: sellTx.orderId, sellItemPrice: "0.0002",
+		})
+		checkEvent(updateTx, "ListingAvailable", "NFTStorefront")
 	})
 
 	test("Should update sell order from TopShot nft", async () => {
@@ -87,18 +115,21 @@ describe("Test update sell order on emulator", () => {
 		const [result] = await getTopShotIds(fcl, serviceAcc.address, acc1.address)
 		expect(result).toEqual(1)
 
-		const sellTx = await acc1.sdk.order.sell(
-			topShotColletion, "FLOW", result, "0.0001",
-		)
+		const sellTx = await acc1.sdk.order.sell({
+			collection: topShotColletion,
+			currency: "FLOW",
+			itemId: toFlowItemId(`${topShotColletion}:${result}`),
+			sellItemPrice: "0.0001",
+		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
-		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
 
-		const order = extractOrder(sellTx)
-		expect(order.price).toEqual("0.00010000")
-
-		const updateTx = await acc1.sdk.order.updateOrder(topShotColletion, "FLOW", order.orderId, "0.0002")
-		const updatedOrder = extractOrder(updateTx)
-		expect(updatedOrder.price).toEqual("0.00020000")
+		const updateTx = await acc1.sdk.order.updateOrder({
+			collection: topShotColletion,
+			currency: "FLOW",
+			orderId: sellTx.orderId,
+			sellItemPrice: "0.0002",
+		})
+		checkEvent(updateTx, "ListingAvailable", "NFTStorefront")
 	})
 
 	test("Should update order from MotoCpCard nft", async () => {
@@ -108,15 +139,20 @@ describe("Test update sell order on emulator", () => {
 		const result = await borrowMotoGpCardId(fcl, serviceAcc.address, acc1.address, 1)
 		expect(result.cardID).toEqual(1)
 
-		const sellTx = await acc1.sdk.order.sell(motoGpColletion, "FLOW", result.cardID, "0.0001")
+		const sellTx = await acc1.sdk.order.sell({
+			collection: motoGpColletion,
+			currency: "FLOW",
+			itemId: toFlowItemId(`${motoGpColletion}:${result.cardID}`),
+			sellItemPrice: "0.0001",
+		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
-		checkEvent(sellTx, "OrderAvailable", "RaribleOrder")
 
-		const order = extractOrder(sellTx)
-		expect(order.price).toEqual("0.00010000")
-
-		const updateTx = await acc1.sdk.order.updateOrder(motoGpColletion, "FLOW", order.orderId, "0.001")
-		const updatedOrder = extractOrder(updateTx)
-		expect(updatedOrder.price).toEqual("0.00100000")
+		const updateTx = await acc1.sdk.order.updateOrder({
+			collection: motoGpColletion,
+			currency: "FLOW",
+			orderId: sellTx.orderId,
+			sellItemPrice: "0.001",
+		})
+		checkEvent(updateTx, "ListingAvailable", "NFTStorefront")
 	})
 })

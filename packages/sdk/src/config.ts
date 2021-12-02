@@ -1,5 +1,6 @@
-import type { FlowAddress, FlowContractAddressName } from "./common/flow-address"
-import { toFlowAddress } from "./common/flow-address"
+import type { FlowAddress } from "@rarible/types"
+import { toFlowAddress } from "@rarible/types"
+import type { FlowContractAddressName } from "./common/flow-address"
 import type { FlowContractName, FlowNetwork } from "./types"
 
 export const MIN_ORDER_PRICE = "0.0001"
@@ -141,15 +142,54 @@ export enum EmulatorCollections {
 }
 
 export enum TestnetCollections {
-	RARIBLE = "A.0xebf4ae01d1284af8.RaribleNFT",
-	MOTOGP = "A.0x01658d9b94068f3c.MotoGPCard",
-	EVOLUTION = "A.0x01658d9b94068f3c.Evolution",
-	TOPSHOT = "A.0x01658d9b94068f3c.TopShot",
+	RARIBLE = "A.ebf4ae01d1284af8.RaribleNFT",
+	MOTOGP = "A.01658d9b94068f3c.MotoGPCard",
+	EVOLUTION = "A.01658d9b94068f3c.Evolution",
+	TOPSHOT = "A.01658d9b94068f3c.TopShot",
 }
 
 export enum MainnetCollections {
-	RARIBLE = "A.0x01ab36aaf654a13e.RaribleNFT",
-	MOTOGP = "A.0xa49cc0ee46c54bfb.MotoGPCard",
+	RARIBLE = "A.01ab36aaf654a13e.RaribleNFT",
+	MOTOGP = "A.a49cc0ee46c54bfb.MotoGPCard",
 	EVOLUTION = "A.f4264ac8f3256818.Evolution",
 	TOPSHOT = "A.0b2a3299cc857e29.TopShot",
+}
+
+export const orderCodeConfig: Record<string,
+{
+	nftProviderPath: string
+	collectionPath: string
+	collectionPublicPath: string
+	nftReceiver: string
+	linkArg: string
+}> = {
+	TopShot: {
+		nftProviderPath: "TopShotProviderForNFTStorefront",
+		collectionPath: "/storage/MomentCollection",
+		collectionPublicPath: "/public/MomentCollection",
+		nftReceiver: "{TopShot.MomentCollectionPublic}",
+		linkArg: "{TopShot.MomentCollectionPublic}",
+
+	},
+	Evolution: {
+		nftProviderPath: "EvolutionProviderForNFTStorefront",
+		collectionPath: "/storage/f4264ac8f3256818_Evolution_Collection",
+		collectionPublicPath: "/public/f4264ac8f3256818_Evolution_Collection",
+		nftReceiver: "{Evolution.EvolutionCollectionPublic}",
+		linkArg: "{Evolution.EvolutionCollectionPublic}",
+	},
+	MotoGPCard: {
+		nftProviderPath: "MotoGPCardProviderForNFTStorefront",
+		collectionPath: "/storage/motogpCardCollection",
+		collectionPublicPath: "/public/motogpCardCollection",
+		nftReceiver: "MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}",
+		linkArg: "MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}",
+	},
+	RaribleNFT: {
+		nftProviderPath: "RaribleNFTProviderForNFTStorefront",
+		collectionPath: "RaribleNFT.collectionStoragePath",
+		collectionPublicPath: "RaribleNFT.collectionPublicPath",
+		nftReceiver: "{NonFungibleToken.Receiver}",
+		linkArg: "{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}",
+	},
 }
