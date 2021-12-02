@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/rarible/flow-sdk/compare/v0.4.0...v0.4.1) (2021-12-02)
+
+
+### Bug Fixes
+
+* update deps ([d1d67c3](https://github.com/rarible/flow-sdk/commit/d1d67c353c615983989857a2131d9c6c281b640e))
+
+
+### Features
+
+* use new universal transaction for storefront ([ece56c9](https://github.com/rarible/flow-sdk/commit/ece56c93a671bdbac2b2c144262b89fc4c43d621))
+
+
+
+
+
 # [0.4.0](https://github.com/rarible/flow-sdk/compare/v0.3.4...v0.4.0) (2021-12-01)
 
 
