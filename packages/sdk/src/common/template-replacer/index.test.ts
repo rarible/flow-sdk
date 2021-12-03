@@ -1,4 +1,4 @@
-import { replaceImportAddresses } from "."
+import { fillCodeTemplate, replaceImportAddresses } from "."
 
 describe("replace import", () => {
 	test("test-emulator replace import", () => {
@@ -18,5 +18,18 @@ describe("replace import", () => {
 			import Contract2Name from 0x01
 			some other code
 			`)
+	})
+	test("replace by map", () => {
+		const fillResult = fillCodeTemplate(
+			"@s @n @t @w @v, @s @n @t @w @v",
+			{
+				"@s": "some",
+				"@n": "new",
+				"@t": "template",
+				"@w": "with",
+				"@v": "variables",
+			},
+		)
+		expect(fillResult).toEqual("some new template with variables, some new template with variables")
 	})
 })

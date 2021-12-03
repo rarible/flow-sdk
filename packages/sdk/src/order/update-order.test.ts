@@ -4,7 +4,7 @@ import { createEmulatorAccount, createFlowEmulator } from "@rarible/flow-test-co
 import { toBigNumber, toFlowAddress, toFlowContractAddress } from "@rarible/types"
 import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
-import { EmulatorCollections, TestnetCollections } from "../config"
+import { EmulatorCollections, TestnetCollections } from "../config/config"
 import { checkEvent } from "../test/check-event"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"

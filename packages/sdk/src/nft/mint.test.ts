@@ -4,7 +4,7 @@ import { createEmulatorAccount, createFlowEmulator } from "@rarible/flow-test-co
 import { toFlowContractAddress } from "@rarible/types"
 import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
-import { EmulatorCollections } from "../config"
+import { EmulatorCollections } from "../config/config"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"

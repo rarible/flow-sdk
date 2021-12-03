@@ -1,16 +1,17 @@
 import { createTestAuth } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
 import { createEmulatorAccount, createFlowEmulator } from "@rarible/flow-test-common/src"
-import { toFlowContractAddress } from "@rarible/types"
+import { toBigNumber, toFlowContractAddress } from "@rarible/types"
 import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
 import { checkEvent } from "../test/check-event"
-import { EmulatorCollections } from "../config"
+import { EmulatorCollections } from "../config/config"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
 import { createFusdTestEnvironment } from "../test/setup-fusd-env"
 import { toFlowItemId } from "../common/item"
+import { getTestOrderTmplate } from "../test/order-template"
 
 describe("Test cancel order on emulator", () => {
 	let sdk: FlowSdk
@@ -31,6 +32,18 @@ describe("Test cancel order on emulator", () => {
 		expect(tx.status).toEqual(4)
 		const cancelTx = await sdk.order.cancelOrder(collection, tx.orderId)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
+	})
+
+	test("Should cancel RaribleNFT bid order", async () => {
+		const price = toBigNumber("0.1")
+		const mintTx = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
+		const tx = await sdk.order.bid(
+			collection, "FLOW", mintTx.tokenId, price,
+		)
+		expect(tx.status).toEqual(4)
+		const order = getTestOrderTmplate("bid", tx.orderId, mintTx.tokenId, price)
+		const cancelTx = await sdk.order.cancelOrder(collection, order)
+		checkEvent(cancelTx, "BidCompleted", "RaribleOpenBid")
 	})
 
 	test("Should cancel RaribleNFT sell order for FUSD", async () => {

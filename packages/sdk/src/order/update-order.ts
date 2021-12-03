@@ -38,7 +38,7 @@ export async function updateOrder(
 		const { name, map } = getCollectionConfig(network, collection)
 		switch (network) {
 			case "emulator": {
-				const order = await getOrderDetailsFromBlockchain(fcl, network, from, orderId)
+				const order = await getOrderDetailsFromBlockchain(fcl, network, "sell", from, orderId)
 				const itemId = toFlowItemId(`${collection}:${order.nftID}`)
 				const txId = await runTransaction(
 					fcl,

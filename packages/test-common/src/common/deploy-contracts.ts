@@ -130,4 +130,12 @@ export async function deployAll(address: string) {
 			PackOpener: address,
 		},
 	})
+	await deployContractByName({
+		name: CONTRACTS.RaribleOpenBid,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			FungibleToken: "0xee82856bf20e2aa6",
+		},
+	})
 }

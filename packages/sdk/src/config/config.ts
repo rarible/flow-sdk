@@ -1,29 +1,10 @@
 import type { FlowAddress } from "@rarible/types"
-import { toFlowAddress } from "@rarible/types"
-import type { FlowContractAddressName } from "./common/flow-address"
-import type { FlowContractName, FlowNetwork } from "./types"
+import { FLOW_ZERO_ADDRESS, toFlowAddress } from "@rarible/types"
+import type { FlowContractAddressName } from "../common/flow-address"
+import type { FlowContractName, FlowNetwork } from "../types"
+import { blocktoWallet } from "./network"
 
 export const MIN_ORDER_PRICE = "0.0001"
-
-type BlocktoWalletData = {
-	accessNode: string
-	wallet: string
-}
-
-const blocktoWallet: Record<FlowNetwork, BlocktoWalletData> = {
-	testnet: {
-		accessNode: "https://access-testnet.onflow.org",
-		wallet: "https://flow-wallet-testnet.blocto.app/authn",
-	},
-	mainnet: {
-		accessNode: "https://flow-access-mainnet.portto.io",
-		wallet: "https://flow-wallet.blocto.app/authn",
-	},
-	emulator: {
-		accessNode: "127.0.0.1:3569",
-		wallet: "",
-	},
-}
 
 export type FlowConfigData = {
 	/**
@@ -80,6 +61,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			RaribleOrder: toFlowAddress(EMULATOR_ADDRESS),
 			LicensedNFT: toFlowAddress(EMULATOR_ADDRESS),
 			RaribleNFT: toFlowAddress(EMULATOR_ADDRESS),
+			RaribleOpenBid: toFlowAddress(EMULATOR_ADDRESS),
 		},
 	},
 	testnet: {
@@ -101,6 +83,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			RaribleOrder: TESTNET_RARIBLE_ADDRESS,
 			RaribleNFT: TESTNET_RARIBLE_ADDRESS,
 			LicensedNFT: TESTNET_RARIBLE_ADDRESS,
+			RaribleOpenBid: TESTNET_RARIBLE_ADDRESS,
 		},
 	},
 	mainnet: {
@@ -122,6 +105,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			RaribleOrder: MAINNET_RARIBLE_ADDRESS,
 			RaribleNFT: MAINNET_RARIBLE_ADDRESS,
 			LicensedNFT: MAINNET_RARIBLE_ADDRESS,
+			RaribleOpenBid: toFlowAddress(FLOW_ZERO_ADDRESS), //todo fill when being deployed
 		},
 	},
 }
@@ -153,43 +137,4 @@ export enum MainnetCollections {
 	MOTOGP = "A.a49cc0ee46c54bfb.MotoGPCard",
 	EVOLUTION = "A.f4264ac8f3256818.Evolution",
 	TOPSHOT = "A.0b2a3299cc857e29.TopShot",
-}
-
-export const orderCodeConfig: Record<string,
-{
-	nftProviderPath: string
-	collectionPath: string
-	collectionPublicPath: string
-	nftReceiver: string
-	linkArg: string
-}> = {
-	TopShot: {
-		nftProviderPath: "TopShotProviderForNFTStorefront",
-		collectionPath: "/storage/MomentCollection",
-		collectionPublicPath: "/public/MomentCollection",
-		nftReceiver: "{TopShot.MomentCollectionPublic}",
-		linkArg: "{TopShot.MomentCollectionPublic}",
-
-	},
-	Evolution: {
-		nftProviderPath: "EvolutionProviderForNFTStorefront",
-		collectionPath: "/storage/f4264ac8f3256818_Evolution_Collection",
-		collectionPublicPath: "/public/f4264ac8f3256818_Evolution_Collection",
-		nftReceiver: "{Evolution.EvolutionCollectionPublic}",
-		linkArg: "{Evolution.EvolutionCollectionPublic}",
-	},
-	MotoGPCard: {
-		nftProviderPath: "MotoGPCardProviderForNFTStorefront",
-		collectionPath: "/storage/motogpCardCollection",
-		collectionPublicPath: "/public/motogpCardCollection",
-		nftReceiver: "MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}",
-		linkArg: "MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}",
-	},
-	RaribleNFT: {
-		nftProviderPath: "RaribleNFTProviderForNFTStorefront",
-		collectionPath: "RaribleNFT.collectionStoragePath",
-		collectionPublicPath: "RaribleNFT.collectionPublicPath",
-		nftReceiver: "{NonFungibleToken.Receiver}",
-		linkArg: "{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}",
-	},
 }

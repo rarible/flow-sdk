@@ -1,22 +1,24 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
-import type { ConfigurationParameters, FlowRoyalty } from "@rarible/flow-api-client"
+import type { ConfigurationParameters, FlowOrder, FlowRoyalty } from "@rarible/flow-api-client"
 import * as ApiClient from "@rarible/flow-api-client"
-import type { FlowAddress, FlowContractAddress } from "@rarible/types"
+import type { BigNumber, FlowAddress, FlowContractAddress } from "@rarible/types"
 import type { FlowMintResponse } from "./nft/mint"
 import { mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
 import { transfer as transferTemplate } from "./nft/transfer"
 import type { FlowSellRequest, FlowSellResponse } from "./order/sell"
 import { sell as sellTemplate } from "./order/sell"
-import { buy as buyTemplate } from "./order/buy"
+import { fill as buyTemplate } from "./order/fill/fill"
 import { cancelOrder as cancelOrderTmeplate } from "./order/cancel-order"
 import { signUserMessage as signUserMessageTemplate } from "./signature/sign-user-message"
 import { getFungibleBalance as getFungibleBalanceTemplate } from "./wallet/get-fungible-balance"
+import { bid as bidTemplate } from "./order/bid"
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork, FlowOriginFees, FlowTransaction } from "./types"
 import type { FlowUpdateOrderRequest } from "./order/update-order"
 import { updateOrder as updateOrderTemplate } from "./order/update-order"
-import { CONFIGS } from "./config"
+import { CONFIGS } from "./config/config"
+import type { FlowItemId } from "./common/item"
 
 export interface FlowApisSdk {
 	order: ApiClient.FlowOrderControllerApi
@@ -66,10 +68,10 @@ export interface FlowOrderSdk {
 	/**
 	 * Initiate NFT purchase
 	 */
-	buy(
+	fill(
 		collection: FlowContractAddress,
 		currency: FlowCurrency,
-		orderId: number,
+		orderId: number | FlowOrder,
 		owner: string,
 		fees: FlowOriginFees,
 	): Promise<FlowTransaction>
@@ -79,7 +81,23 @@ export interface FlowOrderSdk {
 	 * @param collection
 	 * @param orderId
 	 */
-	cancelOrder(collection: FlowContractAddress, orderId: number): Promise<FlowTransaction>
+	cancelOrder(collection: FlowContractAddress, orderId: number | FlowOrder): Promise<FlowTransaction>
+
+	/**
+	 * Create bid
+	 * @param collection
+	 * @param currency
+	 * @param itemId
+	 * @param price
+	 * @param originFee
+	 */
+	bid(
+		collection: FlowContractAddress,
+		currency: FlowCurrency,
+		itemId: FlowItemId,
+		price: BigNumber,
+		originFee?: FlowOriginFees,
+	): Promise<FlowSellResponse>
 }
 
 export interface FlowWalletSdk {
@@ -134,9 +152,10 @@ export function createFlowSdk(
 		},
 		order: {
 			sell: sellTemplate.bind(null, fcl, apis.item, auth, network),
-			buy: buyTemplate.bind(null, fcl, auth, network),
-			cancelOrder: cancelOrderTmeplate.bind(null, fcl, auth, network),
+			fill: buyTemplate.bind(null, fcl, auth, network, apis.order).bind(null, apis.item),
+			cancelOrder: cancelOrderTmeplate.bind(null, fcl, auth, network, apis.order),
 			updateOrder: updateOrderTemplate.bind(null, fcl, apis.item, apis.order, auth).bind(null, network),
+			bid: bidTemplate.bind(null, fcl, auth, network),
 		},
 		wallet: {
 			getFungibleBalance: getFungibleBalanceTemplate.bind(null, fcl, network),

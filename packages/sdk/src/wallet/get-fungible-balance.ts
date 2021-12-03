@@ -4,7 +4,7 @@ import type { FlowAddress } from "@rarible/types"
 import type { FlowCurrency, FlowNetwork } from "../types"
 import { runScript } from "../common/transaction"
 import { getBalanceCode } from "../tx-code-store/balance"
-import { CONFIGS } from "../config"
+import { CONFIGS } from "../config/config"
 
 export async function getFungibleBalance(
 	fcl: Maybe<Fcl>,
