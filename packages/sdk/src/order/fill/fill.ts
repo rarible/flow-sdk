@@ -14,6 +14,7 @@ import type {
 import { getCollectionConfig } from "../../common/collection/get-config"
 import { getProtocolFee } from "../../tx-code-store/get-protocol-fee"
 import { getPreparedOrder } from "../common/get-prepared-order"
+import { calculateFees } from "../../common/calculate-fees"
 import { fillSellOrder } from "./fill-sell-order"
 import { fillBidOrder } from "./fill-bid-order"
 
@@ -47,18 +48,31 @@ export async function fill(
 				const protocolFee = await getProtocolFee(fcl, network)
 				const { payouts: orderPayouts, originalFees: orderOriginFees } = preparedOrder.data
 				const payouts: FlowFee[] = !!orderPayouts.length ? orderPayouts : [{ account: from, value: toBigNumber("1.0") }]
+				/**
+				 * remove owner from payouts, owner receive the rest of the money
+				 */
+				const filteredPayouts = payouts.filter(p => p.account !== owner)
 				const { royalties } = network === "emulator" ?
 					{ royalties: [] } : await itemApi.getNftItemById({ itemId: preparedOrder.itemId })
+				/**
+				 * fees included in price, royalties, originFees, protocolFees
+				 */
 				const includedFees: FlowFee[] = [
+					...filteredPayouts,
 					...orderOriginFees,
 					...royalties,
 					protocolFee.sellerFee,
 				]
-				const extraFees: FlowFee[] = [
-					...originFee,
-					protocolFee.sellerFee,
-				]
-				return fillBidOrder(fcl, auth, currency, name, map, preparedOrder.id, owner, payouts, includedFees, extraFees)
+				return fillBidOrder(
+					fcl,
+					auth,
+					currency,
+					name,
+					map,
+					preparedOrder.id,
+					owner,
+					calculateFees(preparedOrder.make.value, includedFees),
+				)
 			default:
 				throw new Error(`Unsupported order type: ${preparedOrder.type}`)
 		}

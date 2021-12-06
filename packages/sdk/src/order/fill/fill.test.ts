@@ -25,7 +25,7 @@ describe("Test fill on emulator", () => {
 	createFlowEmulator({})
 	const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
 
-	test.skip("Should create new sell order on testnet", async () => {
+	test.skip("Should fill order on testnet", async () => {
 		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_3.address, FLOW_TESTNET_ACCOUNT_3.privKey)
 		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
 		const testnetAuth2 = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_4.address, FLOW_TESTNET_ACCOUNT_4.privKey)
@@ -83,21 +83,29 @@ describe("Test fill on emulator", () => {
 	})
 
 	test("Should fill RaribleNFT bid order for FLOW tokens", async () => {
+		const { address: address0 } = await createEmulatorAccount("accountName1")
 		const { address, pk } = await createEmulatorAccount("accountName")
 		const auth = createTestAuth(fcl, "emulator", address, pk, 0)
 		sdk = createFlowSdk(fcl, "emulator", {}, auth)
-		const mintTx = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
+		const mintTx = await sdk.nft.mint(
+			collection,
+			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
+			[{ account: toFlowAddress(address0), value: toBigNumber("0.2") }],
+		)
 		expect(mintTx.status).toEqual(4)
 		const tx = await sdk.order.bid(
 			collection,
 			"FLOW",
 			mintTx.tokenId,
-			toBigNumber("0.001"),
-			[{ account: toFlowAddress(address), value: toBigNumber("0.1") }],
+			toBigNumber("0.0001"),
+			[{ account: toFlowAddress(address0), value: toBigNumber("0.1") }],
 		)
-		const order = getTestOrderTmplate("bid", tx.orderId, mintTx.tokenId, toBigNumber("0.001"))
+		const order = getTestOrderTmplate("bid", tx.orderId, mintTx.tokenId, toBigNumber("0.0001"))
 		const blockchainBidDetails = await getOrderDetailsFromBlockchain(fcl, "emulator", "bid", address, tx.orderId)
-		const buyTx = await sdk.order.fill(collection, blockchainBidDetails.currency, order, address, [])
+		const buyTx = await sdk.order.fill(collection, blockchainBidDetails.currency, order, address, [{
+			account: toFlowAddress(address0),
+			value: toBigNumber("0.2"),
+		}])
 		expect(buyTx.status).toEqual(4)
 	})
 
@@ -114,7 +122,8 @@ describe("Test fill on emulator", () => {
 			originFees: [],
 		})
 
-		const buyTx = await acc2.sdk.order.fill(collection, "FUSD", tx.orderId, acc1.address, [])
+		const order = getTestOrderTmplate("sell", tx.orderId, mintTx.tokenId, toBigNumber("0.0001"))
+		const buyTx = await acc2.sdk.order.fill(collection, "FUSD", order, acc1.address, [])
 		checkEvent(buyTx, "ListingCompleted", "NFTStorefront")
 	})
 
@@ -125,17 +134,19 @@ describe("Test fill on emulator", () => {
 		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
 		expect(result.data.itemId).toEqual(1)
 
+		const itemId = toFlowItemId(`${evolutionCollection}:1`)
+
 		const sellTx = await acc1.sdk.order.sell(
 			{
 				collection: evolutionCollection,
 				currency: "FLOW",
-				itemId: toFlowItemId(`${evolutionCollection}:1`),
+				itemId,
 				sellItemPrice: "0.0001",
 			},
 		)
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
-
-		const buyTx = await acc2.sdk.order.fill(evolutionCollection, "FLOW", sellTx.orderId, acc1.address, [])
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.0001"))
+		const buyTx = await acc2.sdk.order.fill(evolutionCollection, "FLOW", order, acc1.address, [])
 		checkEvent(buyTx, "ListingCompleted", "NFTStorefront")
 		const checkNft = await getEvolutionIds(fcl, serviceAcc.address, acc2.address, acc1.tokenId)
 		expect(checkNft.data.itemId).toEqual(1)
@@ -148,18 +159,20 @@ describe("Test fill on emulator", () => {
 		const [result] = await getTopShotIds(fcl, serviceAcc.address, acc1.address)
 		expect(result).toEqual(1)
 
+		const itemId = toFlowItemId(`${topShotColletion}:${result}`)
+
 		const sellTx = await acc1.sdk.order.sell(
 			{
 				collection: topShotColletion,
 				currency: "FLOW",
-				itemId: toFlowItemId(`${topShotColletion}:${result}`),
+				itemId,
 				sellItemPrice: "0.0001",
 			},
 		)
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 
-
-		const buyTx = await acc2.sdk.order.fill(topShotColletion, "FLOW", sellTx.orderId, acc1.address, [])
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.0001"))
+		const buyTx = await acc2.sdk.order.fill(topShotColletion, "FLOW", order, acc1.address, [])
 		checkEvent(buyTx, "ListingCompleted", "NFTStorefront")
 		const [checkNft] = await getTopShotIds(fcl, serviceAcc.address, acc2.address)
 		expect(checkNft).toEqual(1)
@@ -172,15 +185,18 @@ describe("Test fill on emulator", () => {
 		const result = await borrowMotoGpCardId(fcl, serviceAcc.address, acc1.address, 1)
 		expect(result.cardID).toEqual(1)
 
+		const itemId = toFlowItemId(`${motoGpColletion}:${result.cardID}`)
+
 		const sellTx = await acc1.sdk.order.sell({
 			collection: motoGpColletion,
 			currency: "FLOW",
-			itemId: toFlowItemId(`${motoGpColletion}:${result.cardID}`),
+			itemId,
 			sellItemPrice: "0.0001",
 		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 
-		const buyTx = await acc2.sdk.order.fill(motoGpColletion, "FLOW", sellTx.orderId, acc1.address, [])
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.0001"))
+		const buyTx = await acc2.sdk.order.fill(motoGpColletion, "FLOW", order, acc1.address, [])
 		checkEvent(buyTx, "ListingCompleted", "NFTStorefront")
 		const buyResult = await borrowMotoGpCardId(fcl, serviceAcc.address, acc2.address, 1)
 		expect(buyResult.cardID).toEqual(1)

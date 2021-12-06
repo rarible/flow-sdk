@@ -13,17 +13,12 @@ export async function fillBidOrder(
 	map: Record<string, string>,
 	orderId: number,
 	owner: FlowAddress,
-	payouts: FlowFee[],
-	includedFees: FlowFee[],
-	extraFee: FlowFee[],
+	fees: FlowFee[],
 ): Promise<FlowTransaction> {
-	console.log("payouts", payouts)
-	console.log("includedFees", includedFees)
-	console.log("extraFee", extraFee)
 	const txId = await runTransaction(
 		fcl,
 		map,
-		getBidCode(fcl, name).close(currency, orderId, owner),
+		getBidCode(fcl, name).close(currency, orderId, owner, fees),
 		auth,
 	)
 	return waitForSeal(fcl, txId)

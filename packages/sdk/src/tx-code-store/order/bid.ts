@@ -12,20 +12,17 @@ type GenerateCodeMethodResponse = {
 }
 
 type GenerateBidCodeResponse = {
-	create: (
-		currency: FlowCurrency,
-		itemId: number,
-		price: string,
-		fees: FlowFee[],
-	) => GenerateCodeMethodResponse
-	close: (currency: FlowCurrency, bidId: number, address: string) => GenerateCodeMethodResponse
+	create: (currency: FlowCurrency, itemId: number, price: string, fees: FlowFee[]) => GenerateCodeMethodResponse
+	close: (currency: FlowCurrency, bidId: number, address: string, fees: FlowFee[]) => GenerateCodeMethodResponse
+	update: (currency: FlowCurrency, bidId: number, price: string, fees: FlowFee[]) => GenerateCodeMethodResponse
+	cancel: (bidId: number) => GenerateCodeMethodResponse
 }
 
 export function getBidCode(fcl: Fcl, collectionName: FlowCollectionName): GenerateBidCodeResponse {
 	return {
 		create(currency, itemId, price, fees) {
 			return {
-				cadence: prepareBidCode("create", collectionName, currency),
+				cadence: prepareBidCode(openBidTransactionCode.openBid, collectionName, currency),
 				args: fcl.args([
 					fcl.arg(itemId, t.UInt64), fcl.arg(price, t.UFix64), fcl.arg(prepareFees(fees), t.Dictionary({
 						key: t.Address,
@@ -34,18 +31,35 @@ export function getBidCode(fcl: Fcl, collectionName: FlowCollectionName): Genera
 				]),
 			}
 		},
-		close(currency, bidId, openBidAddress) {
+		update(currency, bidId, price, fees) {
 			return {
-				cadence: prepareBidCode("close", collectionName, currency),
-				args: fcl.args([fcl.arg(bidId, t.UInt64), fcl.arg(openBidAddress, t.Address)]),
+				cadence: prepareBidCode(openBidTransactionCode.updateBid, collectionName, currency),
+				args: fcl.args([
+					fcl.arg(bidId, t.UInt64),
+					fcl.arg(price, t.UFix64),
+					fcl.arg(prepareFees(fees), t.Dictionary({
+						key: t.Address,
+						value: t.UFix64,
+					})),
+				]),
 			}
 		},
-	}
-}
-
-export function getCancelBidCode(fcl: Fcl, bidId: number): GenerateCodeMethodResponse {
-	return {
-		cadence: openBidTransactionCode.cancelBid.code,
-		args: fcl.args([fcl.arg(bidId, t.UInt64)]),
+		close(currency, bidId, openBidAddress, fees) {
+			return {
+				cadence: prepareBidCode(openBidTransactionCode.closeBid, collectionName, currency),
+				args: fcl.args([
+					fcl.arg(bidId, t.UInt64), fcl.arg(openBidAddress, t.Address), fcl.arg(prepareFees(fees), t.Dictionary({
+						key: t.Address,
+						value: t.UFix64,
+					})),
+				]),
+			}
+		},
+		cancel(bidId: number) {
+			return {
+				cadence: openBidTransactionCode.cancelBid,
+				args: fcl.args([fcl.arg(bidId, t.UInt64)]),
+			}
+		},
 	}
 }

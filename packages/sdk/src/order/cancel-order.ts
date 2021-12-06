@@ -7,7 +7,7 @@ import type { MethodArgs } from "../common/transaction"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getOrderCode } from "../tx-code-store/order"
 import { getCollectionConfig } from "../common/collection/get-config"
-import { getCancelBidCode } from "../tx-code-store/order/bid"
+import { getBidCode } from "../tx-code-store/order/bid"
 import { getPreparedOrder } from "./common/get-prepared-order"
 
 export async function cancelOrder(
@@ -27,7 +27,7 @@ export async function cancelOrder(
 				params = getOrderCode(fcl, name).cancelOrder(order.id)
 				break
 			case "BID":
-				params = getCancelBidCode(fcl, order.id)
+				params = getBidCode(fcl, name).cancel(order.id)
 				break
 			default:
 				throw new Error(`Unknown order type: ${order.type}`)

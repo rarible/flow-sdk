@@ -30,7 +30,9 @@ describe("Test cancel order on emulator", () => {
 			collection, currency: "FLOW", itemId: mintTx.tokenId, sellItemPrice: "0.1",
 		})
 		expect(tx.status).toEqual(4)
-		const cancelTx = await sdk.order.cancelOrder(collection, tx.orderId)
+
+		const order = getTestOrderTmplate("sell", tx.orderId, mintTx.tokenId, toBigNumber("0.1"))
+		const cancelTx = await sdk.order.cancelOrder(collection, order)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 
@@ -60,7 +62,9 @@ describe("Test cancel order on emulator", () => {
 			sellItemPrice: "0.1",
 		})
 		expect(tx.status).toEqual(4)
-		const cancelTx = await acc1.sdk.order.cancelOrder(collection, tx.orderId)
+
+		const order = getTestOrderTmplate("sell", tx.orderId, mintTx.tokenId, toBigNumber("0.1"))
+		const cancelTx = await acc1.sdk.order.cancelOrder(collection, order)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 
@@ -71,15 +75,18 @@ describe("Test cancel order on emulator", () => {
 		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
 		expect(result.data.itemId).toEqual(1)
 
+		const itemId = toFlowItemId(`${evolutionCollection}:1`)
+
 		const sellTx = await acc1.sdk.order.sell({
 			collection: evolutionCollection,
 			currency: "FLOW",
-			itemId: toFlowItemId(`${evolutionCollection}:1`),
+			itemId,
 			sellItemPrice: "0.0001",
 		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 
-		const cancelTx = await acc1.sdk.order.cancelOrder(evolutionCollection, sellTx.orderId)
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.1"))
+		const cancelTx = await acc1.sdk.order.cancelOrder(evolutionCollection, order)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 
@@ -90,15 +97,18 @@ describe("Test cancel order on emulator", () => {
 		const [result] = await getTopShotIds(fcl, serviceAcc.address, acc1.address)
 		expect(result).toEqual(1)
 
+		const itemId = toFlowItemId(`${topShotColletion}:1`)
+
 		const sellTx = await acc1.sdk.order.sell({
 			collection: topShotColletion,
 			currency: "FLOW",
-			itemId: toFlowItemId(`${topShotColletion}:1`),
+			itemId,
 			sellItemPrice: "0.0001",
 		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 
-		const cancelTx = await acc1.sdk.order.cancelOrder(topShotColletion, sellTx.orderId)
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.1"))
+		const cancelTx = await acc1.sdk.order.cancelOrder(topShotColletion, order)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 
@@ -109,15 +119,18 @@ describe("Test cancel order on emulator", () => {
 		const result = await borrowMotoGpCardId(fcl, serviceAcc.address, acc1.address, 1)
 		expect(result.cardID).toEqual(1)
 
+		const itemId = toFlowItemId(`${motoGpColletion}:${result.cardID}`)
+
 		const sellTx = await acc1.sdk.order.sell({
 			collection: motoGpColletion,
 			currency: "FLOW",
-			itemId: toFlowItemId(`${motoGpColletion}:${result.cardID}`),
+			itemId,
 			sellItemPrice: "0.0001",
 		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 
-		const cancelTx = await acc1.sdk.order.cancelOrder(motoGpColletion, sellTx.orderId)
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.1"))
+		const cancelTx = await acc1.sdk.order.cancelOrder(motoGpColletion, order)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 })
