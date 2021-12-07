@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/rarible/flow-sdk/compare/v0.4.2...v0.5.0) (2021-12-07)
+
+
+### Features
+
+* implement bid feature ([29407c4](https://github.com/rarible/flow-sdk/commit/29407c498a6f986c7b94206d09434503727c37a3))
+* start impleent bid functionality ([5eec473](https://github.com/rarible/flow-sdk/commit/5eec473cf42ac9223e79ee9a3c97f0bb5bf4d406))
+
+
+
+
+
 ## [0.4.2](https://github.com/rarible/flow-sdk/compare/v0.4.1...v0.4.2) (2021-12-02)
 
 
