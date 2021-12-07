@@ -3,14 +3,16 @@ import type { Maybe } from "@rarible/types/build/maybe"
 import type { BigNumber, FlowContractAddress } from "@rarible/types"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import type { FlowNftItemControllerApi, FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
-import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork, FlowTransaction } from "../types"
+import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getOrderCode } from "../tx-code-store/order"
 import { fixAmount } from "../common/fix-amount"
 import { getCollectionConfig } from "../common/collection/get-config"
 import { checkPrice } from "../common/check-price"
 import { extractTokenId, toFlowItemId } from "../common/item"
+import { parseEvents } from "../common/parse-tx-events"
 import { getPreparedOrder } from "./common/get-prepared-order"
+import type { FlowSellResponse } from "./sell"
 
 export type FlowUpdateOrderRequest = {
 	collection: FlowContractAddress,
@@ -26,7 +28,7 @@ export async function updateOrder(
 	auth: AuthWithPrivateKey,
 	network: FlowNetwork,
 	request: FlowUpdateOrderRequest,
-): Promise<FlowTransaction> {
+): Promise<FlowSellResponse> {
 	const { collection, currency, sellItemPrice, order } = request
 	checkPrice(sellItemPrice)
 	if (fcl) {
@@ -53,7 +55,12 @@ export async function updateOrder(
 			),
 			auth,
 		)
-		return await waitForSeal(fcl, txId)
+		const tx = await waitForSeal(fcl, txId)
+		const simpleOrderId = parseEvents<string>(tx.events, "ListingAvailable", "listingResourceID")
+		return {
+			...tx,
+			orderId: parseInt(simpleOrderId),
+		}
 	}
 	throw new Error("Fcl is required for updating order")
 }
