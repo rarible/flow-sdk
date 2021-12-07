@@ -14,6 +14,7 @@ import { cancelOrder as cancelOrderTmeplate } from "./order/cancel-order"
 import { signUserMessage as signUserMessageTemplate } from "./signature/sign-user-message"
 import { getFungibleBalance as getFungibleBalanceTemplate } from "./wallet/get-fungible-balance"
 import { bid as bidTemplate } from "./order/bid"
+import { bidUpdate as bidUpdateTemplate } from "./order/bid-update"
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork, FlowOriginFees, FlowTransaction } from "./types"
 import type { FlowUpdateOrderRequest } from "./order/update-order"
 import { updateOrder as updateOrderTemplate } from "./order/update-order"
@@ -98,6 +99,19 @@ export interface FlowOrderSdk {
 		price: BigNumber,
 		originFee?: FlowOriginFees,
 	): Promise<FlowSellResponse>
+
+	/**
+	 * @param collection
+	 * @param currency
+	 * @param order
+	 * @param price
+	 */
+	bidUpdate(
+		collection: FlowContractAddress,
+		currency: FlowCurrency,
+		order: number | FlowOrder,
+		price: BigNumber,
+	): Promise<FlowSellResponse>
 }
 
 export interface FlowWalletSdk {
@@ -156,6 +170,7 @@ export function createFlowSdk(
 			cancelOrder: cancelOrderTmeplate.bind(null, fcl, auth, network, apis.order),
 			updateOrder: updateOrderTemplate.bind(null, fcl, apis.item, apis.order, auth).bind(null, network),
 			bid: bidTemplate.bind(null, fcl, auth, network),
+			bidUpdate: bidUpdateTemplate.bind(null, fcl, auth, network, apis.order),
 		},
 		wallet: {
 			getFungibleBalance: getFungibleBalanceTemplate.bind(null, fcl, network),

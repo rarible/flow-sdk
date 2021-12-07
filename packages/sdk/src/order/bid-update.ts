@@ -1,43 +1,39 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { BigNumber, FlowContractAddress } from "@rarible/types"
-import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork, FlowOriginFees } from "../types"
+import type { FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
+import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getCollectionConfig } from "../common/collection/get-config"
 import { getBidCode } from "../tx-code-store/order/bid"
-import { parseEvents } from "../common/parse-tx-events"
 import { getProtocolFee } from "../tx-code-store/get-protocol-fee"
-import type { FlowItemId } from "../common/item"
-import { extractTokenId } from "../common/item"
 import { calculateFees } from "../common/calculate-fees"
+import { parseEvents } from "../common/parse-tx-events"
 import type { FlowSellResponse } from "./sell"
+import { getPreparedOrder } from "./common/get-prepared-order"
 
-export async function bid(
+export async function bidUpdate(
 	fcl: Maybe<Fcl>,
 	auth: AuthWithPrivateKey,
 	network: FlowNetwork,
+	orderApi: FlowOrderControllerApi,
 	collection: FlowContractAddress,
 	currency: FlowCurrency,
-	itemId: FlowItemId,
+	order: number | FlowOrder,
 	price: BigNumber,
-	originFee?: FlowOriginFees,
 ): Promise<FlowSellResponse> {
 	if (fcl) {
+		const preparedOrder = await getPreparedOrder(orderApi, order)
 		const { name, map } = getCollectionConfig(network, collection)
 		const protocolFees = await getProtocolFee(fcl, network)
-		const requestFees = originFee || []
 		const txId = await runTransaction(
 			fcl,
 			map,
-			getBidCode(fcl, name).create(
-				currency,
-				extractTokenId(itemId),
-				price,
+			getBidCode(fcl, name).update(currency, preparedOrder.id, price,
 				[
 					...calculateFees(price, [protocolFees.buyerFee]),
-					...calculateFees(price, requestFees),
-				],
-			),
+					...calculateFees(price, preparedOrder.data.originalFees || []),
+				]),
 			auth,
 		)
 		const txResponse = await waitForSeal(fcl, txId)

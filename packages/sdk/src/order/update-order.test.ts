@@ -62,32 +62,6 @@ describe("Test update sell order on emulator", () => {
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefront")
 	})
 
-	test("Should update RaribleNFT bid order", async () => {
-		const { address, pk } = await createEmulatorAccount("accountName")
-		const auth = createTestAuth(fcl, "emulator", address, pk, 0)
-		const sdk = createFlowSdk(fcl, "emulator", {}, auth)
-		const { address: address1, pk: pk1 } = await createEmulatorAccount("accountName")
-		const auth1 = createTestAuth(fcl, "emulator", address1, pk1, 0)
-		const sdk1 = createFlowSdk(fcl, "emulator", {}, auth1)
-
-		const mintTx = await sdk.nft.mint(
-			collection,
-			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
-			[],
-		)
-		const tx = await sdk1.order.bid(
-			collection,
-			"FLOW",
-			mintTx.tokenId,
-			toBigNumber("0.01"),
-		)
-		const order = getTestOrderTmplate("bid", tx.orderId, mintTx.tokenId, toBigNumber("0.01"))
-		const updateTx = await sdk1.order.updateOrder({
-			collection, currency: "FLOW", order, sellItemPrice: toBigNumber("0.02"),
-		})
-		checkEvent(updateTx, "BidAvailable", "RaribleOpenBid")
-	})
-
 	test("Should update RaribleNFT sell FUSD order", async () => {
 		const { acc1 } = await createFusdTestEnvironment(fcl, "emulator")
 		const mintTx = await acc1.sdk.nft.mint(

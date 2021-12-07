@@ -10,9 +10,6 @@ import { fixAmount } from "../common/fix-amount"
 import { getCollectionConfig } from "../common/collection/get-config"
 import { checkPrice } from "../common/check-price"
 import { extractTokenId, toFlowItemId } from "../common/item"
-import { getProtocolFee } from "../tx-code-store/get-protocol-fee"
-import { getBidCode } from "../tx-code-store/order/bid"
-import { calculateFees } from "../common/calculate-fees"
 import { getPreparedOrder } from "./common/get-prepared-order"
 
 export type FlowUpdateOrderRequest = {
@@ -39,43 +36,24 @@ export async function updateOrder(
 		}
 		const preparedOrder = await getPreparedOrder(orderApi, order)
 		const { name, map } = getCollectionConfig(network, collection)
-		switch (preparedOrder.type) {
-			case "LIST": {
-				const { royalties } = network === "emulator" ?
-					{ royalties: [] } : await itemApi.getNftItemById({ itemId: preparedOrder.itemId })
-				const txId = await runTransaction(
-					fcl,
-					map,
-					getOrderCode(fcl, name).update(
-						currency,
-						preparedOrder.id,
-						fixAmount(sellItemPrice),
-						extractTokenId(toFlowItemId(preparedOrder.itemId)),
-						preparedOrder.data.originalFees || [],
-						royalties || [],
-						preparedOrder.data.payouts || [{ account: from, value: toBigNumber("1.0") }],
-					),
-					auth,
-				)
-				return await waitForSeal(fcl, txId)
-			}
-			case "BID": {
-				const protocolFees = await getProtocolFee(fcl, network)
-				const txId = await runTransaction(
-					fcl,
-					map,
-					getBidCode(fcl, name).update(currency, preparedOrder.id, sellItemPrice,
-						[
-							...calculateFees(sellItemPrice, [protocolFees.buyerFee]),
-							...calculateFees(sellItemPrice, preparedOrder.data.originalFees || []),
-						]),
-					auth,
-				)
-				return await waitForSeal(fcl, txId)
-			}
-			default:
-				throw new Error(`Unsupported order type: ${preparedOrder.type}`)
-		}
+
+		const { royalties } = network === "emulator" ?
+			{ royalties: [] } : await itemApi.getNftItemById({ itemId: preparedOrder.itemId })
+		const txId = await runTransaction(
+			fcl,
+			map,
+			getOrderCode(fcl, name).update(
+				currency,
+				preparedOrder.id,
+				fixAmount(sellItemPrice),
+				extractTokenId(toFlowItemId(preparedOrder.itemId)),
+				preparedOrder.data.originalFees || [],
+				royalties || [],
+				preparedOrder.data.payouts || [{ account: from, value: toBigNumber("1.0") }],
+			),
+			auth,
+		)
+		return await waitForSeal(fcl, txId)
 	}
 	throw new Error("Fcl is required for updating order")
 }
