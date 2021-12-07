@@ -9,7 +9,7 @@ declare module "flow-js-testing" {
 
 	function getContractAddress(name: string, useDefaults: boolean): Promise<string>
 
-	function deployContractByName(props: object): Promise<any>
+	function deployContractByName(props: { name: string, to: string, addressMap?: object }): Promise<any>
 
 	const emulator: any
 

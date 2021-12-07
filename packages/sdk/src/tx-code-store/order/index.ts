@@ -2,11 +2,11 @@ import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { StorefrontCommon } from "@rarible/flow-sdk-scripts"
 import type { FlowRoyalty } from "@rarible/flow-api-client"
-import type { FlowCurrency, FlowOriginFees, FlowPayouts } from "../types"
-import { fixAmount } from "../common/fix-amount"
-import type { FlowCollectionName } from "../common/collection"
-import { getCreateUpdateOrderCode, prepareFees } from "./order/get-create-order-code"
-import { getBuyCode } from "./order/get-buy-code"
+import type { FlowCurrency, FlowOriginFees, FlowPayouts } from "../../types"
+import { fixAmount } from "../../common/fix-amount"
+import type { FlowCollectionName } from "../../common/collection"
+import { getCreateUpdateOrderCode, prepareFees } from "./get-create-order-code"
+import { getBuyCode } from "./get-buy-code"
 
 
 type OrderMethods = Record<"buy" | "sell" | "update", string>

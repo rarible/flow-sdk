@@ -1,7 +1,7 @@
 import { Storefront } from "@rarible/flow-sdk-scripts"
 import type { FlowCurrency, FungibleContracts } from "../../types"
-import { orderCodeConfig } from "../../config"
 import type { FlowCollectionName } from "../../common/collection"
+import { orderCodeConfig } from "../../config/cadence-code-config"
 
 export function getBuyCode(
 	currency: FlowCurrency,

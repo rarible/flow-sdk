@@ -18,6 +18,7 @@ export const CONTRACTS: Record<Contracts, string> = {
 	MotoGPTransfer: "MotoGPTransfer",
 	PackOpener: "PackOpener",
 	ContractVersion: "ContractVersion",
+	RaribleOpenBid: "RaribleOpenBid",
 }
 type Contracts =
 	"NonFungibleToken" |
@@ -36,7 +37,8 @@ type Contracts =
 	"MotoGPPack" |
 	"MotoGPTransfer" |
 	"PackOpener" |
-	"ContractVersion"
+	"ContractVersion" |
+	"RaribleOpenBid"
 
 type TestAccount = {
 	address: string

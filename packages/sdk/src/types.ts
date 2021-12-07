@@ -24,6 +24,7 @@ export type FlowContractName =
 	| RaribleNFTType
 	| LicensedNFTType
 	| TopShotFeeType
+	| RaribleOpenBid
 
 export type FungibleContracts = FUSDType | FlowTokenType
 export type NonFungibleContracts = RaribleNFTType | EvolutionType | MotoGPCardType | TopShotType
@@ -47,3 +48,4 @@ export type RaribleOrderType = "RaribleOrder"
 export type RaribleNFTType = "RaribleNFT"
 export type LicensedNFTType = "LicensedNFT"
 export type TopShotFeeType = "TopShotFee"
+export type RaribleOpenBid = "RaribleOpenBid"

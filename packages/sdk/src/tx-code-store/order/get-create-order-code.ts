@@ -1,8 +1,8 @@
 import { Storefront } from "@rarible/flow-sdk-scripts"
 import type { FlowCurrency, FlowFee, FungibleContracts } from "../../types"
-import { orderCodeConfig } from "../../config"
 import { fixAmount } from "../../common/fix-amount"
 import type { FlowCollectionName } from "../../common/collection"
+import { orderCodeConfig } from "../../config/cadence-code-config"
 
 export function getCreateUpdateOrderCode(
 	type: "create" | "update",

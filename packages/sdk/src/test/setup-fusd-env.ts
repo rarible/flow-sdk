@@ -7,7 +7,7 @@ import { runScript, runTransaction, waitForSeal } from "../common/transaction"
 import type { AuthWithPrivateKey, FlowNetwork } from "../types"
 import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
-import { CONFIGS } from "../config"
+import { CONFIGS } from "../config/config"
 
 async function runFusdTransaction(
 	fcl: Fcl, network: FlowNetwork, auth: AuthWithPrivateKey, contractOwner: string, code: string,

@@ -122,6 +122,6 @@ const {
   statusCode,
   errorMessage,
   events,
-} = await sdk.nft.buy(collection, orderId, owner)
+} = await sdk.nft.fill(collection, orderId, owner)
 ```
 

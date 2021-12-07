@@ -5,7 +5,7 @@ import { toBigNumber, toFlowAddress, toFlowContractAddress } from "@rarible/type
 import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
 import { checkEvent } from "../test/check-event"
-import { EmulatorCollections, TestnetCollections } from "../config"
+import { EmulatorCollections, TestnetCollections } from "../config/config"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"

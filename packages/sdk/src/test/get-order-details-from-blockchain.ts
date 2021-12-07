@@ -1,9 +1,9 @@
 import type { Fcl } from "@rarible/fcl-types"
 import t from "@onflow/types"
-import { StorefrontCommon } from "@rarible/flow-sdk-scripts"
+import { openBidCommon, StorefrontCommon } from "@rarible/flow-sdk-scripts"
 import { runScript } from "../common/transaction"
 import type { FlowCurrency, FlowNetwork } from "../types"
-import { CONFIGS } from "../config"
+import { CONFIGS } from "../config/config"
 
 type FlowOrderDetails = {
 	storefrontID: number
@@ -19,12 +19,26 @@ type FlowOrderDetails = {
 export async function getOrderDetailsFromBlockchain(
 	fcl: Fcl,
 	network: FlowNetwork,
+	orderType: "bid" | "sell",
 	address: string,
 	orderId: number,
 ): Promise<FlowOrderDetails> {
-	const cadence = StorefrontCommon.read_listing_details
-	const map = {
-		NFTStorefront: CONFIGS[network].mainAddressMap.NFTStorefront,
+	let cadence: string, map: Record<string, string>
+	switch (orderType) {
+		case "sell":
+			cadence = StorefrontCommon.read_listing_details
+			map = {
+				NFTStorefront: CONFIGS[network].mainAddressMap.NFTStorefront,
+			}
+			break
+		case "bid":
+			cadence = openBidCommon.readBidDetails
+			map = {
+				RaribleOpenBid: CONFIGS[network].mainAddressMap.RaribleOpenBid,
+			}
+			break
+		default:
+			throw new Error("Unsupported order type")
 	}
 	const args = fcl.args([fcl.arg(address, t.Address), fcl.arg(orderId, t.UInt64)])
 	const details = await runScript(
@@ -35,7 +49,7 @@ export async function getOrderDetailsFromBlockchain(
 		},
 		map,
 	)
-	const fungibleContract = details.salePaymentVaultType.split(".")[2]
+	const fungibleContract = "vaultType" in details ? details.vaultType.split(".")[2] : details.salePaymentVaultType.split(".")[2]
 	switch (fungibleContract) {
 		case "FlowToken":
 			return {
