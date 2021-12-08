@@ -186,3 +186,5 @@ export function createFlowSdk(
 
 export type { FlowNetwork, FlowCurrency, FlowTransaction, AuthWithPrivateKey } from "./types"
 export type { FlowRoyalty } from "@rarible/flow-api-client"
+export { toFlowItemId, isFlowItemId } from "./common/item/index"
+export type { FlowItemId } from "./common/item/index"
