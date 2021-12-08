@@ -12,7 +12,7 @@ import type {
 	FlowTransaction,
 } from "../../types"
 import { getCollectionConfig } from "../../common/collection/get-config"
-import { getProtocolFee } from "../../tx-code-store/get-protocol-fee"
+import { getProtocolFee } from "../get-protocol-fee"
 import { getPreparedOrder } from "../common/get-prepared-order"
 import { calculateFees } from "../../common/calculate-fees"
 import { fillSellOrder } from "./fill-sell-order"

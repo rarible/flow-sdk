@@ -6,10 +6,10 @@ import { runTransaction, waitForSeal } from "../common/transaction"
 import { getCollectionConfig } from "../common/collection/get-config"
 import { getBidCode } from "../tx-code-store/order/bid"
 import { parseEvents } from "../common/parse-tx-events"
-import { getProtocolFee } from "../tx-code-store/get-protocol-fee"
 import type { FlowItemId } from "../common/item"
 import { extractTokenId } from "../common/item"
 import { calculateFees } from "../common/calculate-fees"
+import { getProtocolFee } from "./get-protocol-fee"
 import type { FlowSellResponse } from "./sell"
 
 export async function bid(

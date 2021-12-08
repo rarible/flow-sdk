@@ -15,6 +15,8 @@ import { signUserMessage as signUserMessageTemplate } from "./signature/sign-use
 import { getFungibleBalance as getFungibleBalanceTemplate } from "./wallet/get-fungible-balance"
 import { bid as bidTemplate } from "./order/bid"
 import { bidUpdate as bidUpdateTemplate } from "./order/bid-update"
+import type { ProtocolFees } from "./order/get-protocol-fee"
+import { getProtocolFee as getProtocolFeeUpdateTemplate } from "./order/get-protocol-fee"
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork, FlowOriginFees, FlowTransaction } from "./types"
 import type { FlowUpdateOrderRequest } from "./order/update-order"
 import { updateOrder as updateOrderTemplate } from "./order/update-order"
@@ -64,7 +66,7 @@ export interface FlowOrderSdk {
 	 */
 	updateOrder(
 		updateRequest: FlowUpdateOrderRequest,
-	): Promise<FlowTransaction>
+	): Promise<FlowSellResponse>
 
 	/**
 	 * Initiate NFT purchase
@@ -112,6 +114,8 @@ export interface FlowOrderSdk {
 		order: number | FlowOrder,
 		price: BigNumber,
 	): Promise<FlowSellResponse>
+
+	getProtocolFee(): Promise<ProtocolFees>
 }
 
 export interface FlowWalletSdk {
@@ -171,6 +175,7 @@ export function createFlowSdk(
 			updateOrder: updateOrderTemplate.bind(null, fcl, apis.item, apis.order, auth).bind(null, network),
 			bid: bidTemplate.bind(null, fcl, auth, network),
 			bidUpdate: bidUpdateTemplate.bind(null, fcl, auth, network, apis.order),
+			getProtocolFee: getProtocolFeeUpdateTemplate.bind(null, fcl, network),
 		},
 		wallet: {
 			getFungibleBalance: getFungibleBalanceTemplate.bind(null, fcl, network),
