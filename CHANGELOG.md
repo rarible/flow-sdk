@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.5](https://github.com/rarible/flow-sdk/compare/v0.5.4...v0.5.5) (2021-12-08)
+
+
+### Bug Fixes
+
+* add FlowContractAddress type ([9038df2](https://github.com/rarible/flow-sdk/commit/9038df22506e3dfee2316d0fba912a76a8e3b244))
+
+
+
+
+
 ## [0.5.4](https://github.com/rarible/flow-sdk/compare/v0.5.3...v0.5.4) (2021-12-08)
 
 
