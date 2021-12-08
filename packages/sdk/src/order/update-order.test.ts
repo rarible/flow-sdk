@@ -1,6 +1,11 @@
-import { createTestAuth, FLOW_TESTNET_ACCOUNT_2, FLOW_TESTNET_ACCOUNT_3 } from "@rarible/flow-test-common"
+import {
+	createEmulatorAccount,
+	createFlowEmulator,
+	createTestAuth,
+	FLOW_TESTNET_ACCOUNT_2,
+	FLOW_TESTNET_ACCOUNT_3,
+} from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
-import { createEmulatorAccount, createFlowEmulator } from "@rarible/flow-test-common/src"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import { EmulatorCollections, TestnetCollections } from "../config/config"
 import { checkEvent } from "../test/check-event"

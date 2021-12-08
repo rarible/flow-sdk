@@ -1,8 +1,12 @@
-import { createTestAuth, getServiceAccountAddress, testTransactions } from "@rarible/flow-test-common"
+import {
+	createEmulatorAccount,
+	createTestAuth,
+	getServiceAccountAddress,
+	testTransactions,
+} from "@rarible/flow-test-common"
 import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { testScripts } from "@rarible/flow-test-common/build/common/scripts"
-import { createEmulatorAccount } from "@rarible/flow-test-common/src"
 import { runScript, runTransaction, waitForSeal } from "../common/transaction"
 import type { AuthWithPrivateKey, FlowNetwork } from "../types"
 import type { FlowSdk } from "../index"

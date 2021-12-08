@@ -1,6 +1,6 @@
 import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
-import { openBidTransactionCode } from "@rarible/flow-sdk-scripts/src"
+import { openBidTransactionCode } from "@rarible/flow-sdk-scripts"
 import type { FlowCollectionName } from "../../common/collection"
 import type { FlowCurrency, FlowFee } from "../../types"
 import { prepareBidCode } from "./prepare-bid-code"

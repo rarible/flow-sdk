@@ -1,6 +1,5 @@
 import * as fcl from "@onflow/fcl"
-import { createTestAuth } from "@rarible/flow-test-common"
-import { createEmulatorAccount, createFlowEmulator } from "@rarible/flow-test-common/src"
+import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
 import type { FlowSdk } from "../index"
 import { createFlowSdk, toFlowContractAddress } from "../index"
 import { EmulatorCollections } from "../config/config"

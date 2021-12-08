@@ -1,6 +1,5 @@
-import { createTestAuth } from "@rarible/flow-test-common"
+import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
-import { createEmulatorAccount, createFlowEmulator } from "@rarible/flow-test-common/src"
 import { toBigNumber } from "@rarible/types"
 import type { FlowSdk } from "../index"
 import { createFlowSdk, toFlowContractAddress } from "../index"
