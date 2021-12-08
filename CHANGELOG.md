@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.3](https://github.com/rarible/flow-sdk/compare/v0.5.2...v0.5.3) (2021-12-08)
+
+
+### Features
+
+* add getProtocolFee to sdk order ([62e3cf6](https://github.com/rarible/flow-sdk/commit/62e3cf6f4e33f6079199be2ca9901b0b91c65e6b))
+
+
+
+
+
 ## [0.5.2](https://github.com/rarible/flow-sdk/compare/v0.5.1...v0.5.2) (2021-12-07)
 
 
