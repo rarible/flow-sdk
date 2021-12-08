@@ -1,10 +1,10 @@
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { Fcl } from "@rarible/fcl-types"
-import type { FlowContractAddress } from "@rarible/types"
 import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getNftCode } from "../tx-code-store/nft"
 import { getCollectionConfig } from "../common/collection/get-config"
+import type { FlowContractAddress } from "../common/flow-address"
 
 export async function burn(
 	fcl: Maybe<Fcl>,

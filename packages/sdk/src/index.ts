@@ -2,7 +2,7 @@ import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { ConfigurationParameters, FlowOrder, FlowRoyalty } from "@rarible/flow-api-client"
 import * as ApiClient from "@rarible/flow-api-client"
-import type { BigNumber, FlowAddress, FlowContractAddress } from "@rarible/types"
+import type { BigNumber, FlowAddress } from "@rarible/types"
 import type { FlowMintResponse } from "./nft/mint"
 import { mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
@@ -22,6 +22,7 @@ import type { FlowUpdateOrderRequest } from "./order/update-order"
 import { updateOrder as updateOrderTemplate } from "./order/update-order"
 import { CONFIGS } from "./config/config"
 import type { FlowItemId } from "./common/item"
+import type { FlowContractAddress } from "./common/flow-address/index"
 
 export interface FlowApisSdk {
 	order: ApiClient.FlowOrderControllerApi
@@ -188,3 +189,5 @@ export type { FlowNetwork, FlowCurrency, FlowTransaction, AuthWithPrivateKey } f
 export type { FlowRoyalty } from "@rarible/flow-api-client"
 export { toFlowItemId, isFlowItemId } from "./common/item/index"
 export type { FlowItemId } from "./common/item/index"
+export type { FlowContractAddress } from "./common/flow-address/index"
+export { toFlowContractAddress, isFlowContractAddress } from "./common/flow-address/index"

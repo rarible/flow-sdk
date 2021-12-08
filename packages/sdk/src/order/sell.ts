@@ -1,6 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
-import type { FlowContractAddress } from "@rarible/types"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import type { FlowNftItemControllerApi } from "@rarible/flow-api-client"
 import type {
@@ -19,6 +18,7 @@ import { getOrderCode } from "../tx-code-store/order"
 import type { FlowItemId } from "../common/item"
 import { extractTokenId } from "../common/item"
 import { retry } from "../common/retry"
+import type { FlowContractAddress } from "../common/flow-address"
 
 export type FlowSellRequest = {
 	collection: FlowContractAddress,

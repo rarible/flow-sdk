@@ -1,4 +1,4 @@
-import { toFlowContractAddress } from "@rarible/types"
+import { toFlowContractAddress } from "../flow-address"
 import { getCollectionData, isFlowCollection } from "."
 
 describe("collection", () => {

@@ -1,6 +1,6 @@
-import type { FlowContractAddress } from "@rarible/types"
 import type { FlowCurrency } from "../types"
 import { getCollectionData } from "./collection"
+import type { FlowContractAddress } from "./flow-address"
 
 export function getCurrencyFromContract(contract: FlowContractAddress): FlowCurrency {
 	const { name } = getCollectionData(contract)

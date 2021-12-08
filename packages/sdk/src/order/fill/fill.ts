@@ -1,6 +1,6 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
-import type { FlowAddress, FlowContractAddress } from "@rarible/types"
+import type { FlowAddress } from "@rarible/types"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import type { FlowNftItemControllerApi, FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
 import type {
@@ -15,6 +15,7 @@ import { getCollectionConfig } from "../../common/collection/get-config"
 import { getProtocolFee } from "../get-protocol-fee"
 import { getPreparedOrder } from "../common/get-prepared-order"
 import { calculateFees } from "../../common/calculate-fees"
+import type { FlowContractAddress } from "../../common/flow-address"
 import { fillSellOrder } from "./fill-sell-order"
 import { fillBidOrder } from "./fill-bid-order"
 

@@ -1,9 +1,10 @@
 import type { FlowAsset, FlowOrder } from "@rarible/flow-api-client"
 import { FlowOrderStatusEnum } from "@rarible/flow-api-client"
 import type { BigNumber } from "@rarible/types"
-import { FLOW_ZERO_ADDRESS, toBigNumber, toFlowContractAddress } from "@rarible/types"
+import { FLOW_ZERO_ADDRESS, toBigNumber } from "@rarible/types"
 import type { FlowItemId } from "../common/item"
 import { extractTokenId } from "../common/item"
+import { toFlowContractAddress } from "../common/flow-address"
 
 export function getTestOrderTmplate(type: "sell" | "bid", orderId: number, itemId: FlowItemId, price: BigNumber): FlowOrder {
 	const left: FlowAsset = {

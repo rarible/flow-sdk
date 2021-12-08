@@ -1,8 +1,8 @@
 import { createTestAuth } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
 import { createEmulatorAccount, createFlowEmulator } from "@rarible/flow-test-common/src"
-import { toBigNumber, toFlowContractAddress } from "@rarible/types"
-import { createFlowSdk } from "../index"
+import { toBigNumber } from "@rarible/types"
+import { createFlowSdk, toFlowContractAddress } from "../index"
 import { EmulatorCollections } from "../config/config"
 
 describe("Test bid on emulator", () => {

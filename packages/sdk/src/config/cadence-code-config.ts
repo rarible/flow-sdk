@@ -59,6 +59,8 @@ export function getFtCodeConfig(contract: FungibleContracts): FtCodeConfig {
 				"@ftPrivatePath": `/private/${contract}_vaultRef`,
 				"@ftStoragePath": "/storage/flowTokenVault",
 			}
+		default:
+			throw new Error(`Unsupported fungible contract: ${contract}`)
 	}
 }
 
