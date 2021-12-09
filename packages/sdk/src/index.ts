@@ -116,7 +116,7 @@ export interface FlowOrderSdk {
 		price: BigNumber,
 	): Promise<FlowSellResponse>
 
-	getProtocolFee(): Promise<ProtocolFees>
+	getProtocolFee(): ProtocolFees
 }
 
 export interface FlowWalletSdk {
@@ -176,7 +176,7 @@ export function createFlowSdk(
 			updateOrder: updateOrderTemplate.bind(null, fcl, apis.item, apis.order, auth).bind(null, network),
 			bid: bidTemplate.bind(null, fcl, auth, network),
 			bidUpdate: bidUpdateTemplate.bind(null, fcl, auth, network, apis.order),
-			getProtocolFee: getProtocolFeeUpdateTemplate.bind(null, fcl, network),
+			getProtocolFee: getProtocolFeeUpdateTemplate.bind(null, network),
 		},
 		wallet: {
 			getFungibleBalance: getFungibleBalanceTemplate.bind(null, fcl, network),

@@ -1,7 +1,7 @@
-import type { FlowAddress } from "@rarible/types"
-import { FLOW_ZERO_ADDRESS, toFlowAddress } from "@rarible/types"
+import type { BigNumber, FlowAddress } from "@rarible/types"
+import { toBigNumber, toFlowAddress } from "@rarible/types"
 import type { FlowContractAddressName } from "../common/flow-address"
-import type { FlowContractName, FlowNetwork } from "../types"
+import type { FlowContractName, FlowFee, FlowNetwork } from "../types"
 import { blocktoWallet } from "./network"
 
 export const MIN_ORDER_PRICE = "0.0001"
@@ -40,6 +40,8 @@ const MAINNET_RARIBLE_ADDRESS = toFlowAddress("0x01ab36aaf654a13e")
 const TESTNET_RARIBLE_ADDRESS = toFlowAddress("0xebf4ae01d1284af8")
 const EMULATOR_ADDRESS = toFlowAddress("0xf8d6e0586b0a20c7")
 
+// protocol fee in base points
+const PROTOCOL_FEE: BigNumber = toBigNumber("500")
 // todo move contracts address to fcl.config aliases  if it's possible
 export const CONFIGS: Record<FlowNetwork, Config> = {
 	emulator: {
@@ -47,6 +49,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 		walletDiscovery: "",
 		accessNode: "127.0.0.1:3569",
 		challengeHandshake: "",
+		protocolFee: { account: EMULATOR_ADDRESS, value: PROTOCOL_FEE },
 		mainAddressMap: {
 			NonFungibleToken: toFlowAddress(EMULATOR_ADDRESS),
 			FungibleToken: toFlowAddress("0xee82856bf20e2aa6"),
@@ -66,6 +69,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 	},
 	testnet: {
 		flowApiBasePath: "https://flow-api-dev.rarible.com",
+		protocolFee: { account: TESTNET_RARIBLE_ADDRESS, value: PROTOCOL_FEE },
 		walletDiscovery: "",
 		accessNode: blocktoWallet.testnet.accessNode,
 		challengeHandshake: blocktoWallet.testnet.wallet,
@@ -91,6 +95,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 		walletDiscovery: "",
 		accessNode: blocktoWallet.mainnet.accessNode,
 		challengeHandshake: blocktoWallet.mainnet.wallet,
+		protocolFee: { account: toFlowAddress("0x7f599d6dd7fd7e7b"), value: PROTOCOL_FEE },
 		mainAddressMap: {
 			NonFungibleToken: toFlowAddress("0x1d7e57aa55817448"),
 			FungibleToken: toFlowAddress("0xf233dcee88fe0abe"),
@@ -105,7 +110,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			RaribleOrder: MAINNET_RARIBLE_ADDRESS,
 			RaribleNFT: MAINNET_RARIBLE_ADDRESS,
 			LicensedNFT: MAINNET_RARIBLE_ADDRESS,
-			RaribleOpenBid: toFlowAddress(FLOW_ZERO_ADDRESS), //todo fill when being deployed
+			RaribleOpenBid: MAINNET_RARIBLE_ADDRESS, //todo check when being deployed
 		},
 	},
 }
@@ -115,6 +120,7 @@ type Config = {
 	walletDiscovery: string
 	accessNode: string
 	challengeHandshake: string
+	protocolFee: FlowFee,
 	mainAddressMap: Record<FlowContractName, FlowAddress>
 }
 

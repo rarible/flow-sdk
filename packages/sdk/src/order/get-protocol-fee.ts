@@ -1,33 +1,33 @@
-import type { Fcl } from "@rarible/fcl-types"
-import { raribleFee } from "@rarible/flow-sdk-scripts"
-import { toBigNumber, toFlowAddress } from "@rarible/types"
-import * as t from "@onflow/types"
-import type { Maybe } from "@rarible/types/build/maybe"
+import { toBigNumber } from "@rarible/types"
+import { toBn } from "@rarible/utils"
 import type { FlowFee, FlowNetwork } from "../types"
 import { CONFIGS } from "../config/config"
-import { runScript } from "../common/transaction"
 
 export type ProtocolFees = {
 	buyerFee: FlowFee
 	sellerFee: FlowFee
 }
 
-export async function getProtocolFee(fcl: Maybe<Fcl>, network: FlowNetwork): Promise<ProtocolFees> {
-	if (fcl) {
-		const map = CONFIGS[network].mainAddressMap
-		const { buyerFee, sellerFee } = await runScript(
-			fcl,
-			{ cadence: raribleFee.getFees },
-			map,
-		)
-		const feeAddress = await runScript(fcl, {
-			cadence: raribleFee.getFeesAddressByName,
-			args: fcl.args([fcl.arg("rarible", t.String)]),
-		}, map)
-		return {
-			buyerFee: { account: toFlowAddress(feeAddress), value: toBigNumber(buyerFee) },
-			sellerFee: { account: toFlowAddress(feeAddress), value: toBigNumber(sellerFee) },
-		}
+/**
+ * returns fees object with value format in basis points 10000
+ * @param network
+ */
+export function getProtocolFee(network: FlowNetwork): ProtocolFees {
+	return {
+		buyerFee: CONFIGS[network].protocolFee,
+		sellerFee: CONFIGS[network].protocolFee,
 	}
-	throw new Error("Fcl is required for get protocol fee")
+}
+
+/**
+ * returns fees object with value in format floating points
+ * @param network
+ */
+getProtocolFee.percents = (network: FlowNetwork): ProtocolFees => {
+	const { account, value } = CONFIGS[network].protocolFee
+	const percentsValue = toBigNumber(toBn(value).div(10000).toString())
+	return {
+		buyerFee: { account, value: percentsValue },
+		sellerFee: { account, value: percentsValue },
+	}
 }

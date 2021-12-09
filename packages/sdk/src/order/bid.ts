@@ -25,7 +25,7 @@ export async function bid(
 ): Promise<FlowSellResponse> {
 	if (fcl) {
 		const { name, map } = getCollectionConfig(network, collection)
-		const protocolFees = await getProtocolFee(fcl, network)
+		const protocolFees = getProtocolFee(network)
 		const requestFees = originFee || []
 		const txId = await runTransaction(
 			fcl,
