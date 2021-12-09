@@ -26,7 +26,7 @@ export async function bidUpdate(
 	if (fcl) {
 		const preparedOrder = await getPreparedOrder(orderApi, order)
 		const { name, map } = getCollectionConfig(network, collection)
-		const protocolFees = getProtocolFee(network)
+		const protocolFees = getProtocolFee.percents(network)
 		const txId = await runTransaction(
 			fcl,
 			map,

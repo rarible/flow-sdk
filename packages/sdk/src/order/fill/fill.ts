@@ -46,7 +46,7 @@ export async function fill(
 			case "LIST":
 				return fillSellOrder(fcl, auth, currency, name, map, preparedOrder.id, owner, originFee)//todo fees
 			case "BID":
-				const protocolFee = getProtocolFee(network)
+				const protocolFee = getProtocolFee.percents(network)
 				const { payouts: orderPayouts, originalFees: orderOriginFees } = preparedOrder.data
 				const payouts: FlowFee[] = !!orderPayouts.length ? orderPayouts : [{ account: from, value: toBigNumber("1.0") }]
 				/**
