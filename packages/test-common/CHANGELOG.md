@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.9](https://github.com/rarible/flow-sdk/compare/v0.5.8...v0.5.9) (2021-12-10)
+
+
+### Features
+
+* add MugenNFT support ([9ef1885](https://github.com/rarible/flow-sdk/commit/9ef18857fb7c301a605d9751179d90f9fd4fe6df))
+
+
+
+
+
 # [0.5.0](https://github.com/rarible/flow-sdk/compare/v0.4.2...v0.5.0) (2021-12-07)
 
 

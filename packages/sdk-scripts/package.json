@@ -1,6 +1,6 @@
 {
   "name": "@rarible/flow-sdk-scripts",
-  "version": "0.5.0",
+  "version": "0.5.9",
   "description": "",
   "license": "MIT",
   "main": "build/index.js",
