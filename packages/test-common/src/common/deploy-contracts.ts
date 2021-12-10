@@ -138,4 +138,11 @@ export async function deployAll(address: string) {
 			FungibleToken: "0xee82856bf20e2aa6",
 		},
 	})
+	await deployContractByName({
+		name: CONTRACTS.MugenNFT,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
 }

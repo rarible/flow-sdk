@@ -11,7 +11,7 @@ export const orderCodeConfig: Record<string, {
 		nftProviderPath: "TopShotProviderForNFTStorefront",
 		collectionPath: "/storage/MomentCollection",
 		collectionPublicPath: "/public/MomentCollection",
-		nftReceiver: "{TopShot.MomentCollectionPublic}",
+		nftReceiver: "&{TopShot.MomentCollectionPublic}",
 		linkArg: "{TopShot.MomentCollectionPublic}",
 
 	},
@@ -19,22 +19,29 @@ export const orderCodeConfig: Record<string, {
 		nftProviderPath: "EvolutionProviderForNFTStorefront",
 		collectionPath: "/storage/f4264ac8f3256818_Evolution_Collection",
 		collectionPublicPath: "/public/f4264ac8f3256818_Evolution_Collection",
-		nftReceiver: "{Evolution.EvolutionCollectionPublic}",
+		nftReceiver: "&{Evolution.EvolutionCollectionPublic}",
 		linkArg: "{Evolution.EvolutionCollectionPublic}",
 	},
 	MotoGPCard: {
 		nftProviderPath: "MotoGPCardProviderForNFTStorefront",
 		collectionPath: "/storage/motogpCardCollection",
 		collectionPublicPath: "/public/motogpCardCollection",
-		nftReceiver: "MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}",
+		nftReceiver: "&MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}",
 		linkArg: "MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}",
 	},
 	RaribleNFT: {
 		nftProviderPath: "RaribleNFTProviderForNFTStorefront",
 		collectionPath: "RaribleNFT.collectionStoragePath",
 		collectionPublicPath: "RaribleNFT.collectionPublicPath",
-		nftReceiver: "{NonFungibleToken.Receiver}",
+		nftReceiver: "&{NonFungibleToken.Receiver}",
 		linkArg: "{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}",
+	},
+	MugenNFT: {
+		nftProviderPath: "MugenNFTProviderForNFTStorefront",
+		collectionPath: "MugenNFT.CollectionStoragePath",
+		collectionPublicPath: "MugenNFT.CollectionPublicPath",
+		nftReceiver: "&{NonFungibleToken.CollectionPublic}",
+		linkArg: "{NonFungibleToken.CollectionPublic}",
 	},
 }
 
@@ -84,6 +91,11 @@ const nftCodeConfig: Record<NonFungibleContracts, Record<"@nftPublicPath" | "@nf
 		"@nftPublicPath": "/public/MomentCollection",
 		"@nftPublicType": "&{TopShot.MomentCollectionPublic}",
 		"@nftStoragePath": "/storage/MomentCollection",
+	},
+	MugenNFT: {
+		"@nftPublicPath": "MugenNFT.CollectionPublicPath",
+		"@nftPublicType": "&{NonFungibleToken.CollectionPublic}",
+		"@nftStoragePath": "MugenNFT.CollectionStoragePath",
 	},
 }
 type NftCodeTmplateAlases = "@nftPublicType" |

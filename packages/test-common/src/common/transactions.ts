@@ -407,6 +407,41 @@ transaction(setID: UInt32, plays: [UInt32]) {
     }
 }`
 
+const mugenArtSetupAccount = `import NonFungibleToken from "NonFungibleToken.cdc"
+import MugenNFT from "MugenNFT.cdc"
+
+// Setup storage for MugenNFT on signer account
+//
+transaction {
+    prepare(account: AuthAccount) {
+        if account.borrow<&MugenNFT.Collection>(from: MugenNFT.CollectionStoragePath) == nil {
+            let collection <- MugenNFT.createEmptyCollection() as! @MugenNFT.Collection
+            account.save(<-collection, to: MugenNFT.CollectionStoragePath)
+            account.link<&{NonFungibleToken.CollectionPublic}>(MugenNFT.CollectionPublicPath, target: MugenNFT.CollectionStoragePath)
+        }
+    }
+}`
+
+const mugenArtMint = `import NonFungibleToken from "NonFungibleToken.cdc"
+import MugenNFT from ".MugenNFT.cdc"
+
+// Mint MugenNFT token
+//
+transaction(address: Address, typeId: UInt64) {
+    let minter: &MugenNFT.NFTMinter
+    let receiver: Capability<&{NonFungibleToken.CollectionPublic}>
+
+    prepare(acct: AuthAccount) {
+        self.minter = acct.borrow<&MugenNFT.NFTMinter>(from: MugenNFT.MinterStoragePath)!
+        self.receiver = getAccount(address).getCapability<&{NonFungibleToken.CollectionPublic}>(MugenNFT.CollectionPublicPath)
+    }
+
+    execute {
+        self.minter.mintNFT(recipient: self.receiver.borrow()!, typeID: typeId)
+    }
+}
+`
+
 const setupFusdMinter = `
 // This transaction creates a new minter proxy resource and
 // stores it in the signer's account.
@@ -594,6 +629,11 @@ const motoGpCard = {
 	openPack: motoGpOpenPack,
 }
 
+const mugenArt = {
+	init: mugenArtSetupAccount,
+	mint: mugenArtMint,
+}
+
 const fusd = {
 	setupFusdMinter,
 	setupFusdVault,
@@ -605,5 +645,6 @@ export const testTransactions = {
 	evolution,
 	motoGpCard,
 	topShot,
+	mugenArt,
 	fusd,
 }

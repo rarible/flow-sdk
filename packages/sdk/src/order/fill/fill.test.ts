@@ -20,6 +20,7 @@ import { createTopShotTestEnvironment, getTopShotIds } from "../../test/top-shot
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../../test/moto-gp-card"
 import { getOrderDetailsFromBlockchain } from "../../test/get-order-details-from-blockchain"
 import { getTestOrderTmplate } from "../../test/order-template"
+import { createMugenArtTestEnvironment, getMugenArtIds } from "../../test/mugen-art"
 
 describe("Test fill on emulator", () => {
 	let sdk: FlowSdk
@@ -201,5 +202,29 @@ describe("Test fill on emulator", () => {
 		checkEvent(buyTx, "ListingCompleted", "NFTStorefront")
 		const buyResult = await borrowMotoGpCardId(fcl, serviceAcc.address, acc2.address, 1)
 		expect(buyResult.cardID).toEqual(1)
+	})
+
+	test("Should fill sell order, MugenArt nft", async () => {
+		const mugenArtCollection = toFlowContractAddress(EmulatorCollections.MUGENNFT)
+		const { acc1, acc2, serviceAcc } = await createMugenArtTestEnvironment(fcl)
+
+		const [id] = await getMugenArtIds(fcl, serviceAcc.address, acc1.address)
+		expect(id).toEqual(0)
+
+		const itemId = toFlowItemId(`${mugenArtCollection}:${id}`)
+
+		const sellTx = await acc1.sdk.order.sell({
+			collection: mugenArtCollection,
+			currency: "FLOW",
+			itemId,
+			sellItemPrice: "0.0001",
+		})
+		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
+
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.0001"))
+		const buyTx = await acc2.sdk.order.fill(mugenArtCollection, "FLOW", order, acc1.address, [])
+		checkEvent(buyTx, "ListingCompleted", "NFTStorefront")
+		const [buyItemId] = await getMugenArtIds(fcl, serviceAcc.address, acc2.address)
+		expect(buyItemId).toEqual(0)
 	})
 })

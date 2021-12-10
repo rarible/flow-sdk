@@ -46,6 +46,20 @@ pub fun main(address: Address, tokenId: UInt64): &AnyResource {
 }
 `
 
+const mugenArtGetIds = `
+import NonFungibleToken from "NonFungibleToken.cdc"
+import MugenNFT from "MugenNFT.cdc"
+
+// Take MugenNFT ids by account address
+//
+pub fun main(address: Address): [UInt64]? {
+    let collection = getAccount(address)
+        .getCapability(MugenNFT.CollectionPublicPath)
+        .borrow<&{NonFungibleToken.CollectionPublic}>()
+        ?? panic("MugenNFT Collection not found")
+    return collection.getIDs()
+}`
+
 const evolution = {
 	borrowId: borrowEvolutionId,
 }
@@ -57,8 +71,14 @@ const topShot = {
 const motoGp = {
 	borrowCardId: borrowMotoGpCardId,
 }
+
+const mugenArt = {
+	getIds: mugenArtGetIds,
+}
+
 export const testScripts = {
 	evolution,
 	topShot,
 	motoGp,
+	mugenArt,
 }
