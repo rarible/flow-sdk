@@ -27,7 +27,7 @@ describe("Test fill on emulator", () => {
 	createFlowEmulator({})
 	const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
 
-	test("Should fill order on testnet", async () => {
+	test.skip("Should fill order on testnet", async () => {
 		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_3.address, FLOW_TESTNET_ACCOUNT_3.privKey)
 		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
 		const testnetAuth2 = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_4.address, FLOW_TESTNET_ACCOUNT_4.privKey)
