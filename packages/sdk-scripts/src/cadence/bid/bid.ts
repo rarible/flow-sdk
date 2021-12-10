@@ -6,21 +6,13 @@ import RaribleOpenBid from address
 import @ftContract from address
 import @nftContract from address
 
-transaction(nftId: UInt64, amount: UFix64, parts: {Address:UFix64}) {
+transaction(nftId: UInt64, price: UFix64, parts: {Address:UFix64}) {
     let openBid: &RaribleOpenBid.OpenBid
     let vault: @FungibleToken.Vault
     let nftReceiver: Capability<&{NonFungibleToken.CollectionPublic}>
     let vaultRef: Capability<@ftPrivateType>
 
     prepare(account: AuthAccount) {
-        if account.borrow<&RaribleOpenBid.OpenBid>(from: RaribleOpenBid.OpenBidStoragePath) == nil {
-            let openBid <- RaribleOpenBid.createOpenBid()
-            account.save(<-openBid, to: RaribleOpenBid.OpenBidStoragePath)
-            account.link<&RaribleOpenBid.OpenBid{RaribleOpenBid.OpenBidPublic}>(RaribleOpenBid.OpenBidPublicPath, target: RaribleOpenBid.OpenBidStoragePath)
-        }
-
-        let vaultRefPrivatePath = /private/FlowTokenVaultRefForRaribleOpenBid
-
         if account.borrow<&@nftStorageType>(from: @nftStoragePath) == nil {
             let collection <- @nftContract.createEmptyCollection() as! @@nftStorageType
             account.save(<-collection, to: @nftStoragePath)
@@ -37,8 +29,19 @@ transaction(nftId: UInt64, amount: UFix64, parts: {Address:UFix64}) {
         self.vaultRef = account.getCapability<@ftPrivateType>(@ftPrivatePath)!
         assert(self.vaultRef.check(), message: "Missing or mis-typed fungible token vault ref")
 
+        if account.borrow<&RaribleOpenBid.OpenBid>(from: RaribleOpenBid.OpenBidStoragePath) == nil {
+            let openBid <- RaribleOpenBid.createOpenBid()
+            account.save(<-openBid, to: RaribleOpenBid.OpenBidStoragePath)
+            account.link<&RaribleOpenBid.OpenBid{RaribleOpenBid.OpenBidPublic}>(RaribleOpenBid.OpenBidPublicPath, target: RaribleOpenBid.OpenBidStoragePath)
+        }
+
         self.openBid = account.borrow<&RaribleOpenBid.OpenBid>(from: RaribleOpenBid.OpenBidStoragePath)
             ?? panic("Missing or mis-typed RaribleOpenBid OpenBid")
+
+        var amount = price
+        for key in parts.keys {
+            amount = amount + parts[key]!
+        }
 
         self.vault <- self.vaultRef.borrow()!.withdraw(amount: amount)
     }
@@ -131,7 +134,7 @@ import RaribleOpenBid from address
 import @ftContract from address
 import @nftContract from address
 
-transaction(bidId: UInt64, amount: UFix64, parts: {Address:UFix64}) {
+transaction(bidId: UInt64, price: UFix64, parts: {Address:UFix64}) {
     let openBid: &RaribleOpenBid.OpenBid
     let bid: &RaribleOpenBid.Bid{RaribleOpenBid.BidPublic}
     let vault: @FungibleToken.Vault
@@ -160,6 +163,11 @@ transaction(bidId: UInt64, amount: UFix64, parts: {Address:UFix64}) {
         self.vaultRef = account.getCapability<@ftPrivateType>(@ftPrivatePath)!
         assert(self.vaultRef.check(), message: "Missing or mis-typed fungible token vault ref")
 
+        var amount = price
+        for key in parts.keys {
+            amount = amount + parts[key]!
+        }
+
         self.vault <- self.vaultRef.borrow()!.withdraw(amount: amount)
     }
 
@@ -187,6 +195,5 @@ transaction(bidId: UInt64, amount: UFix64, parts: {Address:UFix64}) {
         )
     }
 }
-
 		`,
 }

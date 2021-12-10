@@ -8,7 +8,7 @@ type EmulatorAccount = {
 
 export async function createEmulatorAccount(accountName: string): Promise<EmulatorAccount> {
 	const address = await getAccountAddress(accountName)
-	await mintFlow(address, "0.1")
+	await mintFlow(address, "10.1")
 
 	return {
 		address,
