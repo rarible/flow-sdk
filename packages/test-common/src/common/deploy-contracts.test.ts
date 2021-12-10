@@ -40,6 +40,7 @@ import MotoGPPack from 0xf8d6e0586b0a20c7
 import MotoGPTransfer from 0xf8d6e0586b0a20c7
 import PackOpener from 0xf8d6e0586b0a20c7
 import ContractVersion from 0xf8d6e0586b0a20c7
+import MugenNFT from 0xf8d6e0586b0a20c7
 
 transaction {
   prepare(account: AuthAccount) {

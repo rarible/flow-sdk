@@ -34,6 +34,10 @@ export const flowCollectionsConfig: Record<string, FlowConfigData> = {
 		contractsNames: ["TopShot"] as FlowContractAddressName[],
 		mintable: false,
 	},
+	MugenNFT: {
+		contractsNames: ["MugenNFT"] as FlowContractAddressName[],
+		mintable: false,
+	},
 }
 
 const MAINNET_RARIBLE_ADDRESS = toFlowAddress("0x01ab36aaf654a13e")
@@ -51,20 +55,21 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 		challengeHandshake: "",
 		protocolFee: { account: EMULATOR_ADDRESS, value: PROTOCOL_FEE },
 		mainAddressMap: {
-			NonFungibleToken: toFlowAddress(EMULATOR_ADDRESS),
+			NonFungibleToken: EMULATOR_ADDRESS,
 			FungibleToken: toFlowAddress("0xee82856bf20e2aa6"),
 			FlowToken: toFlowAddress("0x0ae53cb6e3f42a79"),
-			FUSD: toFlowAddress(EMULATOR_ADDRESS),
-			NFTStorefront: toFlowAddress(EMULATOR_ADDRESS),
-			MotoGPCard: toFlowAddress(EMULATOR_ADDRESS),
-			Evolution: toFlowAddress(EMULATOR_ADDRESS),
-			TopShot: toFlowAddress(EMULATOR_ADDRESS),
-			TopShotFee: toFlowAddress(EMULATOR_ADDRESS),
-			RaribleFee: toFlowAddress(EMULATOR_ADDRESS),
-			RaribleOrder: toFlowAddress(EMULATOR_ADDRESS),
-			LicensedNFT: toFlowAddress(EMULATOR_ADDRESS),
-			RaribleNFT: toFlowAddress(EMULATOR_ADDRESS),
-			RaribleOpenBid: toFlowAddress(EMULATOR_ADDRESS),
+			FUSD: EMULATOR_ADDRESS,
+			NFTStorefront: EMULATOR_ADDRESS,
+			MotoGPCard: EMULATOR_ADDRESS,
+			Evolution: EMULATOR_ADDRESS,
+			TopShot: EMULATOR_ADDRESS,
+			TopShotFee: EMULATOR_ADDRESS,
+			RaribleFee: EMULATOR_ADDRESS,
+			RaribleOrder: EMULATOR_ADDRESS,
+			LicensedNFT: EMULATOR_ADDRESS,
+			RaribleNFT: EMULATOR_ADDRESS,
+			RaribleOpenBid: EMULATOR_ADDRESS,
+			MugenNFT: EMULATOR_ADDRESS,
 		},
 	},
 	testnet: {
@@ -88,6 +93,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			RaribleNFT: TESTNET_RARIBLE_ADDRESS,
 			LicensedNFT: TESTNET_RARIBLE_ADDRESS,
 			RaribleOpenBid: TESTNET_RARIBLE_ADDRESS,
+			MugenNFT: TESTNET_RARIBLE_ADDRESS,
 		},
 	},
 	mainnet: {
@@ -111,6 +117,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			RaribleNFT: MAINNET_RARIBLE_ADDRESS,
 			LicensedNFT: MAINNET_RARIBLE_ADDRESS,
 			RaribleOpenBid: MAINNET_RARIBLE_ADDRESS, //todo check when being deployed
+			MugenNFT: toFlowAddress("0x2cd46d41da4ce262"),
 		},
 	},
 }
@@ -129,6 +136,7 @@ export enum EmulatorCollections {
 	MOTOGP = "A.0xf8d6e0586b0a20c7.MotoGPCard",
 	EVOLUTION = "A.0xf8d6e0586b0a20c7.Evolution",
 	TOPSHOT = "A.0xf8d6e0586b0a20c7.TopShot",
+	MUGENNFT = "A.0xf8d6e0586b0a20c7.MugenNFT"
 }
 
 export enum TestnetCollections {
@@ -136,6 +144,7 @@ export enum TestnetCollections {
 	MOTOGP = "A.01658d9b94068f3c.MotoGPCard",
 	EVOLUTION = "A.01658d9b94068f3c.Evolution",
 	TOPSHOT = "A.01658d9b94068f3c.TopShot",
+	MUGENNFT = "A.ebf4ae01d1284af8.MugenNFT",
 }
 
 export enum MainnetCollections {
@@ -143,4 +152,5 @@ export enum MainnetCollections {
 	MOTOGP = "A.a49cc0ee46c54bfb.MotoGPCard",
 	EVOLUTION = "A.f4264ac8f3256818.Evolution",
 	TOPSHOT = "A.0b2a3299cc857e29.TopShot",
+	MUGENNFT = "A.2cd46d41da4ce262.MugenNFT",
 }

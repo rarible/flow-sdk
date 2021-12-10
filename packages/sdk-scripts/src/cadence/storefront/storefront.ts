@@ -128,7 +128,7 @@ transaction(orderId: UInt64, storefrontAddress: Address, fees: {Address: UFix64}
     let paymentVault: @FungibleToken.Vault
     let feeVault: @FungibleToken.Vault
     let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
-    let tokenReceiver: &0XTOKENRECEIVERTYPE
+    let tokenReceiver: 0XTOKENRECEIVERTYPE
     let feePayments: {Address: UFix64}
 
     prepare(acct: AuthAccount) {
@@ -161,7 +161,7 @@ transaction(orderId: UInt64, storefrontAddress: Address, fees: {Address: UFix64}
 				}
 
 				self.tokenReceiver = acct.getCapability(0XNFTCOLLECTIONPUBLICPATH)
-						.borrow<&0XTOKENRECEIVERTYPE>()
+						.borrow<0XTOKENRECEIVERTYPE>()
 						?? panic("Cannot borrow NFT collection receiver from acct")
 
     }
