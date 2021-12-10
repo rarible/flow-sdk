@@ -44,7 +44,15 @@ export async function fill(
 		const { name, map } = getCollectionConfig(network, collection)
 		switch (preparedOrder.type) {
 			case "LIST":
-				return fillSellOrder(fcl, auth, currency, name, map, preparedOrder.id, owner, originFee)//todo fees
+				return fillSellOrder(
+					fcl,
+					auth,
+					currency,
+					name,
+					map,
+					preparedOrder.id,
+					owner,
+					[...originFee, getProtocolFee.percents(network).buyerFee])
 			case "BID":
 				const protocolFee = getProtocolFee.percents(network)
 				const { payouts: orderPayouts, originalFees: orderOriginFees } = preparedOrder.data

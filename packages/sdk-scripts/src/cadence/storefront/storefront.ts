@@ -21,7 +21,6 @@ export const Storefront = {
 	import FungibleToken from "FungibleToken.cdc"
 	import NonFungibleToken from "NonFungibleToken.cdc"
 	import NFTStorefront from "NFTStorefront.cdc"
-	import RaribleFee from "NoMatterWhat"
 
 transaction(
     tokenId: UInt64,
@@ -56,15 +55,9 @@ transaction(
         execute {
             let saleCuts: [NFTStorefront.SaleCut] = []
             let owner = self.storefront.owner!.address
-            let sellerFee = price * RaribleFee.sellerFee
             let vaultPath = /public/0XVAULTPATHReceiver
             var netto = price
-            let receiver = getAccount(RaribleFee.feeAddress()).getCapability<&{FungibleToken.Receiver}>(vaultPath)
-            assert(receiver.borrow() != nil, message: "Missing or mis-typed fungible token receiver")
 
-            saleCuts.append(NFTStorefront.SaleCut(receiver: receiver, amount: sellerFee))
-
-            netto = netto - sellerFee
             for k in originFees.keys {
                 let amount = price * originFees[k]!
                 let receiver = getAccount(k).getCapability<&{FungibleToken.Receiver}>(vaultPath)
@@ -126,7 +119,6 @@ import 0XFTCONTRACTNAME from "NoMatterWhat"
 import FungibleToken from "FungibleToken.cdc"
 import NFTStorefront from "NFTStorefront.cdc"
 import NonFungibleToken from "NonFungibleToken.cdc"
-import RaribleFee from "NoMatterWhat"
 
 /*
  * Buy item
@@ -156,10 +148,6 @@ transaction(orderId: UInt64, storefrontAddress: Address, fees: {Address: UFix64}
             self.feePayments.insert(key: k, amount)
             feesAmount = feesAmount + amount
         }
-
-        let protocolFee = price * RaribleFee.buyerFee
-        self.feePayments.insert(key: RaribleFee.feeAddress(), protocolFee)
-        feesAmount = feesAmount + protocolFee
 
         let mainVault = acct.borrow<&0XFTCONTRACTNAME.Vault>(from: /storage/0XVAULTPATHVault) //template
             ?? panic("Cannot borrow FlowToken vault from acct storage")
@@ -231,7 +219,6 @@ transaction(orderId: UInt64) {
 		import FungibleToken from "FungibleToken.cdc"
 		import NonFungibleToken from "NonFungibleToken.cdc"
 		import NFTStorefront from "NFTStorefront.cdc"
-		import RaribleFee from "NoMatterWhat"
 
 transaction(
     orderId: UInt64,
@@ -266,15 +253,8 @@ transaction(
 
         execute {
             let saleCuts: [NFTStorefront.SaleCut] = []
-            let sellerFee = price * RaribleFee.sellerFee
             let vaultPath = /public/0XVAULTPATHReceiver //template
             var netto = price
-            let receiver = getAccount(RaribleFee.feeAddress()).getCapability<&{FungibleToken.Receiver}>(vaultPath)
-            assert(receiver.borrow() != nil, message: "Missing or mis-typed fungible token receiver")
-
-            saleCuts.append(NFTStorefront.SaleCut(receiver: receiver, amount: sellerFee))
-
-            netto = netto - sellerFee
 
             for k in originFees.keys {
                 let amount = price * originFees[k]!

@@ -14,6 +14,7 @@ import { parseEvents } from "../common/parse-tx-events"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getPreparedOrder } from "./common/get-prepared-order"
 import type { FlowSellResponse } from "./sell"
+import { getProtocolFee } from "./get-protocol-fee"
 
 export type FlowUpdateOrderRequest = {
 	collection: FlowContractAddress,
@@ -50,9 +51,14 @@ export async function updateOrder(
 				preparedOrder.id,
 				fixAmount(sellItemPrice),
 				extractTokenId(toFlowItemId(preparedOrder.itemId)),
-				preparedOrder.data.originalFees || [],
+				preparedOrder.data.originalFees.length ? preparedOrder.data.originalFees : [
+					getProtocolFee.percents(network).sellerFee,
+				],
 				royalties || [],
-				preparedOrder.data.payouts || [{ account: from, value: toBigNumber("1.0") }],
+				preparedOrder.data.payouts.length ? preparedOrder.data.payouts : [{
+					account: from,
+					value: toBigNumber("1.0"),
+				}],
 			),
 			auth,
 		)

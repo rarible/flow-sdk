@@ -19,6 +19,7 @@ import type { FlowItemId } from "../common/item"
 import { extractTokenId } from "../common/item"
 import { retry } from "../common/retry"
 import type { FlowContractAddress } from "../common/flow-address"
+import { getProtocolFee } from "./get-protocol-fee"
 
 export type FlowSellRequest = {
 	collection: FlowContractAddress,
@@ -60,7 +61,7 @@ export async function sell(
 				currency,
 				extractTokenId(itemId),
 				sellItemPrice,
-				originFees || [],
+				[...originFees || [], getProtocolFee.percents(network).sellerFee],
 				item.royalties,
 				preparePayouts,
 			),
