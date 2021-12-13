@@ -145,4 +145,11 @@ export async function deployAll(address: string) {
 			NonFungibleToken: address,
 		},
 	})
+	await deployContractByName({
+		name: CONTRACTS.CNN_NFT,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
 }

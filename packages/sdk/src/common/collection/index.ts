@@ -6,7 +6,14 @@ export type FlowCollectionName = FlowContractAddressName & {
 	__IS_FLOW_COLLECTION_NAME__: true
 }
 
-export const flowCollections = ["MotoGPCard", "Evolution", "TopShot", "RaribleNFT", "MugenNFT"] as FlowContractAddressName[]
+export const flowCollections = [
+	"MotoGPCard",
+	"Evolution",
+	"TopShot",
+	"RaribleNFT",
+	"MugenNFT",
+	"CNN_NFT",
+] as FlowContractAddressName[]
 
 export type FlowCollectionAddress = FlowContractAddress & {
 	__IS_FLOW_KNOWN_COLLECTION_ADDRESS__: true

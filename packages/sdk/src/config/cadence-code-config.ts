@@ -43,6 +43,13 @@ export const orderCodeConfig: Record<string, {
 		nftReceiver: "&{NonFungibleToken.CollectionPublic}",
 		linkArg: "{NonFungibleToken.CollectionPublic}",
 	},
+	CNN_NFT: {
+		nftProviderPath: "CNN_NFTProviderForNFTStorefront",
+		collectionPath: "CNN_NFT.CollectionStoragePath",
+		collectionPublicPath: "CNN_NFT.CollectionPublicPath",
+		nftReceiver: "&{NonFungibleToken.CollectionPublic}",
+		linkArg: "{NonFungibleToken.CollectionPublic}",
+	},
 }
 
 export type FtCodeConfig = Record<"@ftPublicPath" | "@ftPrivateType" | "@ftPrivatePath" | "@ftStoragePath" | "@ftContract", string>
@@ -97,6 +104,11 @@ const nftCodeConfig: Record<NonFungibleContracts, Record<"@nftPublicPath" | "@nf
 		"@nftPublicType": "&{NonFungibleToken.CollectionPublic}",
 		"@nftStoragePath": "MugenNFT.CollectionStoragePath",
 	},
+	CNN_NFT: {
+		"@nftPublicPath": "CNN_NFT.CollectionPublicPath",
+		"@nftPublicType": "&{NonFungibleToken.CollectionPublic}",
+		"@nftStoragePath": "CNN_NFT.CollectionStoragePath",
+	},
 }
 type NftCodeTmplateAlases = "@nftPublicType" |
 "@nftContract" |
@@ -113,6 +125,8 @@ export function getNftCodeConfig(contract: FlowContractName): NftCodeConfig {
 		case "TopShot":
 		case "MotoGPCard":
 		case "Evolution":
+		case "MugenNFT":
+		case "CNN_NFT":
 			return {
 				...nftCodeConfig[contract],
 				"@nftContract": contract,

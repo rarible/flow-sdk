@@ -38,6 +38,10 @@ export const flowCollectionsConfig: Record<string, FlowConfigData> = {
 		contractsNames: ["MugenNFT"] as FlowContractAddressName[],
 		mintable: false,
 	},
+	CNN_NFT: {
+		contractsNames: ["CNN_NFT"] as FlowContractAddressName[],
+		mintable: false,
+	},
 }
 
 const MAINNET_RARIBLE_ADDRESS = toFlowAddress("0x01ab36aaf654a13e")
@@ -70,6 +74,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			RaribleNFT: EMULATOR_ADDRESS,
 			RaribleOpenBid: EMULATOR_ADDRESS,
 			MugenNFT: EMULATOR_ADDRESS,
+			CNN_NFT: EMULATOR_ADDRESS,
 		},
 	},
 	testnet: {
@@ -94,6 +99,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			LicensedNFT: TESTNET_RARIBLE_ADDRESS,
 			RaribleOpenBid: TESTNET_RARIBLE_ADDRESS,
 			MugenNFT: TESTNET_RARIBLE_ADDRESS,
+			CNN_NFT: TESTNET_RARIBLE_ADDRESS,
 		},
 	},
 	mainnet: {
@@ -116,8 +122,9 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			RaribleOrder: MAINNET_RARIBLE_ADDRESS,
 			RaribleNFT: MAINNET_RARIBLE_ADDRESS,
 			LicensedNFT: MAINNET_RARIBLE_ADDRESS,
-			RaribleOpenBid: MAINNET_RARIBLE_ADDRESS, //todo check when being deployed
+			RaribleOpenBid: MAINNET_RARIBLE_ADDRESS,
 			MugenNFT: toFlowAddress("0x2cd46d41da4ce262"),
+			CNN_NFT: toFlowAddress("0x329feb3ab062d289"),
 		},
 	},
 }
@@ -136,7 +143,8 @@ export enum EmulatorCollections {
 	MOTOGP = "A.0xf8d6e0586b0a20c7.MotoGPCard",
 	EVOLUTION = "A.0xf8d6e0586b0a20c7.Evolution",
 	TOPSHOT = "A.0xf8d6e0586b0a20c7.TopShot",
-	MUGENNFT = "A.0xf8d6e0586b0a20c7.MugenNFT"
+	MUGENNFT = "A.0xf8d6e0586b0a20c7.MugenNFT",
+	CNNNFT = "A.0xf8d6e0586b0a20c7.CNN_NFT"
 }
 
 export enum TestnetCollections {
@@ -145,6 +153,7 @@ export enum TestnetCollections {
 	EVOLUTION = "A.01658d9b94068f3c.Evolution",
 	TOPSHOT = "A.01658d9b94068f3c.TopShot",
 	MUGENNFT = "A.ebf4ae01d1284af8.MugenNFT",
+	CNNNFT = "A.ebf4ae01d1284af8.CNN_NFT"
 }
 
 export enum MainnetCollections {
@@ -153,4 +162,5 @@ export enum MainnetCollections {
 	EVOLUTION = "A.f4264ac8f3256818.Evolution",
 	TOPSHOT = "A.0b2a3299cc857e29.TopShot",
 	MUGENNFT = "A.2cd46d41da4ce262.MugenNFT",
+	CNNNFT = "A.329feb3ab062d289.CNN_NFT"
 }
