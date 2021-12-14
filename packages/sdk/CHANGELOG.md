@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.10](https://github.com/rarible/flow-sdk/compare/v0.5.9...v0.5.10) (2021-12-14)
+
+
+### Features
+
+* add CNN_CDC collection, add setup collection on account method ([5e3948f](https://github.com/rarible/flow-sdk/commit/5e3948faeaca2f4fd77885adf87a20e37114ea9d))
+
+
+
+
+
 ## [0.5.9](https://github.com/rarible/flow-sdk/compare/v0.5.8...v0.5.9) (2021-12-10)
 
 
