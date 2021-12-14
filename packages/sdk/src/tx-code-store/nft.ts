@@ -1,42 +1,17 @@
 import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
-import { Evolution, MotoGPCard, RaribleNFT, TopShot } from "@rarible/flow-sdk-scripts"
+import { commonNft, RaribleNFT } from "@rarible/flow-sdk-scripts"
 import type { FlowRoyalty } from "@rarible/flow-api-client"
 import { convertRoyalties } from "../common/convert-royalties"
 import type { FlowCollectionName } from "../common/collection"
-
-type NftMethods = {
-	burn: string
-	transfer: string
-	check: string
-}
-
-export const nftCode: Record<string, NftMethods> = {
-	RaribleNFT: {
-		burn: RaribleNFT.burn,
-		transfer: RaribleNFT.transfer,
-		check: RaribleNFT.check,
-	},
-	TopShot: {
-		burn: TopShot.burn,
-		transfer: TopShot.transfer,
-		check: TopShot.check,
-	},
-	Evolution: {
-		burn: Evolution.burn,
-		transfer: Evolution.transfer,
-		check: Evolution.check,
-	},
-	MotoGPCard: {
-		burn: MotoGPCard.burn,
-		transfer: MotoGPCard.transfer,
-		check: MotoGPCard.check,
-	},
-}
+import { flowCollections } from "../common/collection"
+import { getNftCodeConfig } from "../config/cadence-code-config"
+import type { FlowContractName } from "../types"
+import { fillCodeTemplate } from "../common/template-replacer"
 
 type NftCodeReturnData = {
 	cadence: string
-	args: ReturnType<FclArgs>
+	args?: ReturnType<FclArgs>
 }
 
 interface GetNftCode {
@@ -47,21 +22,24 @@ interface GetNftCode {
 	mint(fcl: Fcl, address: string, metadata: string, royalties: FlowRoyalty[]): NftCodeReturnData
 
 	check(fcl: Fcl, address: string): NftCodeReturnData
+
+	setupAccount(): NftCodeReturnData
 }
 
 export function getNftCode(name: FlowCollectionName): GetNftCode {
-	if (name in nftCode) {
+	if (flowCollections.includes(name)) {
+		const map = getNftCodeConfig(name as FlowContractName)
 		return {
 			burn: (fcl: Fcl, tokenId: number) => {
 				return {
-					cadence: nftCode[name].burn,
+					cadence: fillCodeTemplate(commonNft.burn, map),
 					args: fcl.args([fcl.arg(tokenId, t.UInt64)]),
 				}
 			},
 
 			transfer: (fcl: Fcl, tokenId: number, to: string) => {
 				return {
-					cadence: nftCode[name].transfer,
+					cadence: fillCodeTemplate(commonNft.transfer, map),
 					args: fcl.args([fcl.arg(tokenId, t.UInt64), fcl.arg(to, t.Address)]),
 				}
 			},
@@ -83,8 +61,13 @@ export function getNftCode(name: FlowCollectionName): GetNftCode {
 			},
 			check: (fcl: Fcl, address: string) => {
 				return {
-					cadence: nftCode[name].check,
+					cadence: fillCodeTemplate(commonNft.check, map),
 					args: fcl.args([fcl.arg(address, t.Address)]),
+				}
+			},
+			setupAccount: () => {
+				return {
+					cadence: fillCodeTemplate(commonNft.setupAccount, map),
 				}
 			},
 		}

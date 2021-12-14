@@ -6,6 +6,7 @@ import { EmulatorCollections } from "../config/config"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
+import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/mugen-art"
 
 describe("Minting on emulator", () => {
 	let sdk: FlowSdk
@@ -53,5 +54,13 @@ describe("Minting on emulator", () => {
 
 		const result = await borrowMotoGpCardId(fcl, serviceAcc.address, acc1.address, 1)
 		expect(result.cardID).toEqual(1)
+	})
+
+
+	test("should init accounts and mint nft item to acc1", async () => {
+		const { acc1, serviceAcc } = await createMugenArtTestEnvironment(fcl)
+		const ids = await getMugenArtIds(fcl, serviceAcc.address, acc1.address)
+		expect(ids.length).toEqual(1)
+		expect(ids[0]).toEqual(0)
 	})
 })

@@ -15,6 +15,7 @@ import { signUserMessage as signUserMessageTemplate } from "./signature/sign-use
 import { getFungibleBalance as getFungibleBalanceTemplate } from "./wallet/get-fungible-balance"
 import { bid as bidTemplate } from "./order/bid"
 import { bidUpdate as bidUpdateTemplate } from "./order/bid-update"
+import { setupAccount as setupAccountTemplate } from "./collection/setup-account"
 import type { ProtocolFees } from "./order/get-protocol-fee"
 import { getProtocolFee as getProtocolFeeUpdateTemplate } from "./order/get-protocol-fee"
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork, FlowOriginFees, FlowTransaction } from "./types"
@@ -123,10 +124,15 @@ export interface FlowWalletSdk {
 	getFungibleBalance(address: FlowAddress, currency: FlowCurrency): Promise<string>
 }
 
+export interface FlowCollectionSdk {
+	setupAccount(collection: FlowContractAddress): Promise<FlowTransaction>
+}
+
 export interface FlowSdk {
 	apis: FlowApisSdk
 	nft: FlowNftSdk
 	order: FlowOrderSdk
+	collection: FlowCollectionSdk
 	wallet: FlowWalletSdk
 
 	signUserMessage(message: string): Promise<string>
@@ -180,6 +186,9 @@ export function createFlowSdk(
 		},
 		wallet: {
 			getFungibleBalance: getFungibleBalanceTemplate.bind(null, fcl, network),
+		},
+		collection: {
+			setupAccount: setupAccountTemplate.bind(null, fcl, auth, network),
 		},
 		signUserMessage: signUserMessageTemplate.bind(null, fcl),
 	}
