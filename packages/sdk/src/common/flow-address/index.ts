@@ -5,7 +5,7 @@ export type FlowContractAddress = string & {
 	__IS_FLOW_CONTRACT_ADDRESS__: true
 }
 
-export const flowContractRegExp = /^A\.0*x*[0-9a-f]{16}\.[A-Za-z]{3,}/
+export const flowContractRegExp = /^A\.0*x*[0-9a-f]{16}\.[0-9A-Za-z_]{3,}/
 
 export function toFlowContractAddress(str: string): FlowContractAddress {
 	if (isFlowContractAddress(str)) {
@@ -17,7 +17,6 @@ export function toFlowContractAddress(str: string): FlowContractAddress {
 export function isFlowContractAddress(x: string): x is FlowContractAddress {
 	return flowContractRegExp.test(x)
 }
-
 
 export const flowAddressRegExp = /^0*x*[0-9a-f]{16}/
 
