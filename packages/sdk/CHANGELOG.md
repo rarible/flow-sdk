@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.11](https://github.com/rarible/flow-sdk/compare/v0.5.10...v0.5.11) (2021-12-14)
+
+
+### Bug Fixes
+
+* **MP-2238:** flow address parsing ([65fdd5d](https://github.com/rarible/flow-sdk/commit/65fdd5dbefded30c246a62aeff2f8175a27925b3))
+
+
+
+
+
 ## [0.5.10](https://github.com/rarible/flow-sdk/compare/v0.5.9...v0.5.10) (2021-12-14)
 
 
