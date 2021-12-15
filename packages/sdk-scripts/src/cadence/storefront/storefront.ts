@@ -1,100 +1,57 @@
 export const Storefront = {
-	/**
-	 * Sell Placeholders
-	 * 0XNFTCONTRACTNAME - nft contract name to import
-	 * 0XFTCONTRACTNAME - ft contract name to import
-	 * 0XNFTPROVIDERPATH - nftProviderPath
-	 * 0XVAULTPATH - vaultPath
-	 * 0XCOLLECTIONSTORAGEPATH - collectionPath
-	 */
-	createSellOrder: {
-		placeholders: {
-			nftContractName: "0XNFTCONTRACTNAME",
-			ftContractName: "0XFTCONTRACTNAME",
-			vaultPath: "0XVAULTPATH",
-			nftProviderPath: "0XNFTPROVIDERPATH",
-			collectionStoragePath: "0XCOLLECTIONSTORAGEPATH",
-		},
-		code: `
-	import 0XNFTCONTRACTNAME from "NoMatterWhat"
-	import 0XFTCONTRACTNAME from "NoMatterWhat"
-	import FungibleToken from "FungibleToken.cdc"
-	import NonFungibleToken from "NonFungibleToken.cdc"
-	import NFTStorefront from "NFTStorefront.cdc"
+	createSellOrder: `
+	import FungibleToken from address
+import NonFungibleToken from address
+import NFTStorefront from address
+import @ftContract from address
+import @nftContract from address
 
-transaction(
-    tokenId: UInt64,
-    price: UFix64,
-    originFees: {Address: UFix64}, //additional fees from other marketplace etc.
-    royalties: {Address: UFix64},
-    payments: {Address: UFix64}
-) {
-        let storefront: &NFTStorefront.Storefront
-        let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>
+// List @nftContract item
+//
+//   tokenId - @nftContract item id for sale
+//   parts - all payments after complete order {address:amount}
+//
+transaction(tokenId: UInt64, parts: {Address: UFix64}) {
+    let storefront: &NFTStorefront.Storefront
+    let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>
 
-        prepare(seller: AuthAccount) {
+    prepare(account: AuthAccount) {
+        if !account.getCapability<@nftPrivateType>(@nftPrivatePath)!.check() {
+            account.link<@nftPrivateType>(@nftPrivatePath, target: @nftStoragePath)
+        }
+        self.nftProvider = account.getCapability<@nftPrivateType>(@nftPrivatePath)
+        assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed nft collection provider")
 
-            let nftProviderPath = /private/0XNFTPROVIDERPATH
-            if !seller.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>(nftProviderPath)!.check() {
-                seller.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>(nftProviderPath, target: 0XCOLLECTIONSTORAGEPATH )
-            }
+        if let storefront = account.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath) {
+            self.storefront = storefront
+        } else {
+            let storefront <- NFTStorefront.createStorefront()
+            self.storefront = &storefront as &NFTStorefront.Storefront
+            account.save(<-storefront, to: NFTStorefront.StorefrontStoragePath)
+            account.link<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>(NFTStorefront.StorefrontPublicPath, target: NFTStorefront.StorefrontStoragePath)
+        }
+    }
 
-            self.nftProvider = seller.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>(nftProviderPath)!
-            assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed nft collection provider")
-
-            if seller.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath) == nil {
-                let storefront <- NFTStorefront.createStorefront() as! @NFTStorefront.Storefront
-                seller.save(<-storefront, to: NFTStorefront.StorefrontStoragePath)
-                seller.link<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>(NFTStorefront.StorefrontPublicPath, target: NFTStorefront.StorefrontStoragePath)
-            }
-
-            self.storefront = seller.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath)
-                ?? panic("Missing or mis-typed NFTStorefront Storefront")
+    execute {
+        let cuts: [NFTStorefront.SaleCut] = []
+        for address in parts.keys {
+            let receiver = getAccount(address).getCapability<&{FungibleToken.Receiver}>(@ftPublicPath)
+            assert(receiver.check(), message: "Missing or mis-typed fungible token receiver")
+            let cut = NFTStorefront.SaleCut(receiver: receiver, amount: parts[address]!)
+            cuts.append(cut)
         }
 
-        execute {
-            let saleCuts: [NFTStorefront.SaleCut] = []
-            let owner = self.storefront.owner!.address
-            let vaultPath = /public/0XVAULTPATHReceiver
-            var netto = price
-
-            for k in originFees.keys {
-                let amount = price * originFees[k]!
-                let receiver = getAccount(k).getCapability<&{FungibleToken.Receiver}>(vaultPath)
-                assert(receiver.borrow() != nil, message: "Missing or mis-typed fungible token receiver for originFee")
-                saleCuts.append(NFTStorefront.SaleCut(receiver: receiver, amount: amount))
-                netto = netto - amount
-            }
-
-            for k in royalties.keys {
-                let amount = price * royalties[k]!
-                let receiver = getAccount(k).getCapability<&{FungibleToken.Receiver}>(vaultPath)
-                assert(receiver.borrow() != nil, message: "Missing or mis-typed fungible token receiver for royalty")
-                saleCuts.append(NFTStorefront.SaleCut(receiver: receiver, amount: amount))
-                netto = netto - amount
-            }
-
-            for k in payments.keys {
-                let amount = netto * payments[k]!
-                let receiver = getAccount(k).getCapability<&{FungibleToken.Receiver}>(vaultPath)
-                assert(receiver.borrow() != nil, message: "Missing or mis-typed fungible token receiver for payment")
-                saleCuts.append(NFTStorefront.SaleCut(receiver: receiver, amount: amount))
-            }
-
-
-
-            self.storefront.createListing(
-                nftProviderCapability: self.nftProvider,
-                nftType: Type<@0XNFTCONTRACTNAME.NFT>(),
-                nftID: tokenId,
-                salePaymentVaultType: Type<@0XFTCONTRACTNAME.Vault>(),
-                saleCuts: saleCuts
-            )
-
-        }
+        self.storefront.createListing(
+            nftProviderCapability: self.nftProvider,
+            nftType: Type<@@nftContract.NFT>(),
+            nftID: tokenId,
+            salePaymentVaultType: Type<@@ftContract.Vault>(),
+            saleCuts: cuts
+        )
+    }
 }
+
 	`,
-	},
 	/**
 	 * Buy Placeholders
 	 * 0XNFTCONTRACTNAME - nft contract name to import
@@ -103,88 +60,66 @@ transaction(
 	 * 0XNFTCOLLECTIONPUBLICPATH - nftCollectionPublicPath
 	 * 0XCOLLECTIONSTORAGEPATH - collectionPath
 	 */
-	buy: {
-		placeholders: {
-			nftContractName: "0XNFTCONTRACTNAME",
-			ftContractName: "0XFTCONTRACTNAME",
-			vaultPath: "0XVAULTPATH",
-			nftCollectionPublicPath: "0XNFTCOLLECTIONPUBLICPATH",
-			collectionStoragePath: "0XCOLLECTIONSTORAGEPATH",
-			tokenReceiver: "0XTOKENRECEIVERTYPE",
-			linkArg: "0XLINKARG",
-		},
-		code: `
-		import 0XNFTCONTRACTNAME from "NoMatterWhat"
-import 0XFTCONTRACTNAME from "NoMatterWhat"
-import FungibleToken from "FungibleToken.cdc"
-import NFTStorefront from "NFTStorefront.cdc"
-import NonFungibleToken from "NonFungibleToken.cdc"
+	buy: `
+	import FungibleToken from address
+import NonFungibleToken from address
+import NFTStorefront from address
+import @ftContract from address
+import @nftContract from address
 
-/*
- * Buy item
- *
- */
-transaction(orderId: UInt64, storefrontAddress: Address, fees: {Address: UFix64}) {
-    let paymentVault: @FungibleToken.Vault
-    let feeVault: @FungibleToken.Vault
+// Buy @nftContract item
+//
+//   orderId - NFTStorefront listingResourceID
+//   storefrontAddress - seller address
+//   parts - buyer payments {address:amount}
+//
+transaction(orderId: UInt64, storefrontAddress: Address, parts: {Address:UFix64}) {
     let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
-    let tokenReceiver: 0XTOKENRECEIVERTYPE
-    let feePayments: {Address: UFix64}
+    let listing: &NFTStorefront.Listing{NFTStorefront.ListingPublic}
+    let paymentVault: @FungibleToken.Vault
+    let nftCollection: &{NonFungibleToken.Receiver}
 
-    prepare(acct: AuthAccount) {
+    prepare(account: AuthAccount) {
+        if account.borrow<&@nftStorageType>(from: @nftStoragePath) == nil {
+            let collection <- @nftContract.createEmptyCollection() as! @@nftStorageType
+            account.save(<-collection, to: @nftStoragePath)
+            account.link<@nftPublicType>(@nftPublicPath, target: @nftStoragePath)
+        }
         self.storefront = getAccount(storefrontAddress)
-            .getCapability(NFTStorefront.StorefrontPublicPath)!
+            .getCapability(NFTStorefront.StorefrontPublicPath)
             .borrow<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>()
             ?? panic("Could not borrow Storefront from provided address")
 
-        let listing = self.storefront.borrowListing(listingResourceID: orderId)
+        self.listing = self.storefront.borrowListing(listingResourceID: orderId)
                     ?? panic("No Offer with that ID in Storefront")
-        let price = listing.getDetails().salePrice
-        var feesAmount = 0.0
-				self.feePayments = {}
-
-        for k in fees.keys {
-            let amount = price * fees[k]!
-            self.feePayments.insert(key: k, amount)
-            feesAmount = feesAmount + amount
+        var amount = self.listing.getDetails().salePrice
+        for address in parts.keys {
+            amount = amount + parts[address]!
         }
 
-        let mainVault = acct.borrow<&0XFTCONTRACTNAME.Vault>(from: /storage/0XVAULTPATHVault) //template
-            ?? panic("Cannot borrow FlowToken vault from acct storage")
-        self.paymentVault <- mainVault.withdraw(amount: price)
-        self.feeVault <- mainVault.withdraw(amount: feesAmount)
+        let mainVault = account.borrow<&FungibleToken.Vault>(from: @ftStoragePath)
+            ?? panic("Cannot borrow @ftContract vault from account storage")
+        self.paymentVault <- mainVault.withdraw(amount: amount)
 
-				if acct.borrow<&0XNFTCONTRACTNAME.Collection>(from: 0XCOLLECTIONSTORAGEPATH) == nil {
-						let collection <- 0XNFTCONTRACTNAME.createEmptyCollection() as! @0XNFTCONTRACTNAME.Collection
-						acct.save(<-collection, to: 0XCOLLECTIONSTORAGEPATH)
-						acct.link<&0XLINKARG>(0XNFTCOLLECTIONPUBLICPATH, target: 0XCOLLECTIONSTORAGEPATH)
-				}
-
-				self.tokenReceiver = acct.getCapability(0XNFTCOLLECTIONPUBLICPATH)
-						.borrow<0XTOKENRECEIVERTYPE>()
-						?? panic("Cannot borrow NFT collection receiver from acct")
-
+        self.nftCollection = account.borrow<&{NonFungibleToken.Receiver}>(from: @nftStoragePath)
+            ?? panic("Cannot borrow NFT collection receiver from account")
     }
 
     execute {
-				let vaultPath = /public/0XVAULTPATHReceiver //template
-
-        // pay fee's
-        for k in self.feePayments.keys {
-            let receiver = getAccount(k).getCapability<&{FungibleToken.Receiver}>(vaultPath).borrow() ?? panic("Can't borrow receiver for fee payment")
-            let payment <- self.feeVault.withdraw(amount: self.feePayments[k]!)
-            receiver.deposit(from: <- payment)
+        for address in parts.keys {
+            let receiver = getAccount(address).getCapability<&{FungibleToken.Receiver}>(@ftPublicPath)
+            assert(receiver.check(), message: "Cannot borrow @ftContract receiver")
+            let part <- self.paymentVault.withdraw(amount: parts[address]!)
+            receiver.borrow()!.deposit(from: <- part)
         }
 
-        // purchase item
-        let item <- self.storefront.borrowListing(listingResourceID: orderId)!.purchase(payment: <- self.paymentVault)
-        // transfer item to buyer
-        self.tokenReceiver.deposit(token: <- item)
-        destroy self.feeVault
+        let item <- self.listing.purchase(payment: <-self.paymentVault)
+        self.nftCollection.deposit(token: <-item)
+        self.storefront.cleanup(listingResourceID: orderId)
     }
 }
-		`,
-	},
+
+	`,
 	cancelOrder: {
 		code: `
 import NFTStorefront from "NFTStorefront.cdc"
@@ -205,93 +140,64 @@ transaction(orderId: UInt64) {
 }
 		`,
 	},
-	updateOrder: {
-		placeholders: {
-			nftContractName: "0XNFTCONTRACTNAME",
-			ftContractName: "0XFTCONTRACTNAME",
-			nftProviderPath: "0XNFTPROVIDERPATH",
-			vaultPath: "0XVAULTPATH",
-			collectionStoragePath: "0XCOLLECTIONSTORAGEPATH",
-		},
-		code: `
-		import 0XNFTCONTRACTNAME from "RaribleNFT.cdc" //template
-		import 0XFTCONTRACTNAME from "FlowToken.cdc" //template
-		import FungibleToken from "FungibleToken.cdc"
-		import NonFungibleToken from "NonFungibleToken.cdc"
-		import NFTStorefront from "NFTStorefront.cdc"
+	updateOrder: `
+	import FungibleToken from address
+import NonFungibleToken from address
+import NFTStorefront from address
+import @ftContract from address
+import @nftContract from address
 
-transaction(
-    orderId: UInt64,
-    tokenId: UInt64,
-    price: UFix64,
-    originFees: {Address: UFix64}, //additional fees from other marketplace etc.
-    royalties: {Address: UFix64},
-    payments: {Address: UFix64}
-) {
-        let storefront: &NFTStorefront.Storefront
-        let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>
+// Relist @nftContract item
+//
+//   orderId - replacing NFTStorefront listingResourceID
+//   parts - all payments after complete order {address:amount}
+//
+transaction(orderId: UInt64, parts: {Address: UFix64}) {
+    let storefront: &NFTStorefront.Storefront
+    let details: NFTStorefront.ListingDetails
+    let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>
 
-        prepare(seller: AuthAccount) {
+    prepare(account: AuthAccount) {
+        if !account.getCapability<@nftPrivateType>(@nftPrivatePath)!.check() {
+            account.link<@nftPrivateType>(@nftPrivatePath, target: @nftStoragePath)
+        }
+        self.nftProvider = account.getCapability<@nftPrivateType>(@nftPrivatePath)
+        assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed nft collection provider")
 
-            let nftProviderPath = /private/0XNFTPROVIDERPATH // template
-            if !seller.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>(nftProviderPath)!.check() {
-                seller.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>(nftProviderPath, target: 0XCOLLECTIONSTORAGEPATH /*template*/)
-            }
-
-            self.nftProvider = seller.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>(nftProviderPath)!
-            assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed nft collection provider")
-
-            if seller.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath) == nil {
-                let storefront <- NFTStorefront.createStorefront() as! @NFTStorefront.Storefront
-                seller.save(<-storefront, to: NFTStorefront.StorefrontStoragePath)
-                seller.link<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>(NFTStorefront.StorefrontPublicPath, target: NFTStorefront.StorefrontStoragePath)
-            }
-
-            self.storefront = seller.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath)
-                ?? panic("Missing or mis-typed NFTStorefront Storefront")
+        if let storefront = account.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath) {
+            self.storefront = storefront
+        } else {
+            let storefront <- NFTStorefront.createStorefront()
+            self.storefront = &storefront as &NFTStorefront.Storefront
+            account.save(<-storefront, to: NFTStorefront.StorefrontStoragePath)
+            account.link<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>(NFTStorefront.StorefrontPublicPath, target: NFTStorefront.StorefrontStoragePath)
         }
 
-        execute {
-            let saleCuts: [NFTStorefront.SaleCut] = []
-            let vaultPath = /public/0XVAULTPATHReceiver //template
-            var netto = price
+        let listing = self.storefront.borrowListing(listingResourceID: orderId)
+            ?? panic("No Offer with that ID in Storefront")
+        self.details = listing.getDetails()
+    }
 
-            for k in originFees.keys {
-                let amount = price * originFees[k]!
-                let receiver = getAccount(k).getCapability<&{FungibleToken.Receiver}>(vaultPath)
-                assert(receiver.borrow() != nil, message: "Missing or mis-typed fungible token receiver for originFee")
-                saleCuts.append(NFTStorefront.SaleCut(receiver: receiver, amount: amount))
-                netto = netto - amount
-            }
+    execute {
+        self.storefront.removeListing(listingResourceID: orderId)
 
-            for k in royalties.keys {
-                let amount = price * royalties[k]!
-                let receiver = getAccount(k).getCapability<&{FungibleToken.Receiver}>(vaultPath)
-                assert(receiver.borrow() != nil, message: "Missing or mis-typed fungible token receiver for royalty")
-                saleCuts.append(NFTStorefront.SaleCut(receiver: receiver, amount: amount))
-                netto = netto - amount
-            }
-
-            for k in payments.keys {
-                let amount = netto * payments[k]!
-                let receiver = getAccount(k).getCapability<&{FungibleToken.Receiver}>(vaultPath)
-                assert(receiver.borrow() != nil, message: "Missing or mis-typed fungible token receiver for payment")
-                saleCuts.append(NFTStorefront.SaleCut(receiver: receiver, amount: amount))
-            }
-
-
-            //remove prev order
-            self.storefront.removeListing(listingResourceID: orderId)
-            //create new order with new price
-            self.storefront.createListing(
-                nftProviderCapability: self.nftProvider,
-                nftType: Type<@0XNFTCONTRACTNAME.NFT>(), //template
-                nftID: tokenId,
-                salePaymentVaultType: Type<@0XFTCONTRACTNAME.Vault>(), //template
-                saleCuts: saleCuts
-            )
-
+        let cuts: [NFTStorefront.SaleCut] = []
+        for address in parts.keys {
+            let receiver = getAccount(address).getCapability<&{FungibleToken.Receiver}>(@ftPublicPath)
+            assert(receiver.check(), message: "Missing or mis-typed fungible token receiver")
+            let cut = NFTStorefront.SaleCut(receiver: receiver, amount: parts[address]!)
+            cuts.append(cut)
         }
-}`,
-	},
+
+        self.storefront.createListing(
+            nftProviderCapability: self.nftProvider,
+            nftType: self.details.nftType,
+            nftID: self.details.nftID,
+            salePaymentVaultType: Type<@@ftContract.Vault>(),
+            saleCuts: cuts
+        )
+    }
+}
+
+	`,
 }

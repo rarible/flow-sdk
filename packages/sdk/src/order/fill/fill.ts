@@ -16,7 +16,8 @@ import { getProtocolFee } from "../get-protocol-fee"
 import { getPreparedOrder } from "../common/get-prepared-order"
 import { calculateFees } from "../../common/calculate-fees"
 import type { FlowContractAddress } from "../../common/flow-address"
-import { fillSellOrder } from "./fill-sell-order"
+import { runTransaction, waitForSeal } from "../../common/transaction"
+import { getOrderCode } from "../../tx-code-store/order/storefront"
 import { fillBidOrder } from "./fill-bid-order"
 
 export type FlowOrderType = "LIST" | "BID"
@@ -44,19 +45,37 @@ export async function fill(
 		const { name, map } = getCollectionConfig(network, collection)
 		switch (preparedOrder.type) {
 			case "LIST":
-				return fillSellOrder(
+				const fees = calculateFees(preparedOrder.take.value, [
+					...(originFee || []),
+					getProtocolFee.percents(network).buyerFee,
+				])
+				const txId = await runTransaction(
 					fcl,
-					auth,
-					currency,
-					name,
 					map,
-					preparedOrder.id,
-					owner,
-					[...originFee, getProtocolFee.percents(network).buyerFee])
+					getOrderCode(fcl, name).buy(
+						currency,
+						preparedOrder.id,
+						owner,
+						fees
+					),
+					auth,
+				)
+				return waitForSeal(fcl, txId)
+			// return fillSellOrder(
+			// 	fcl,
+			// 	auth,
+			// 	currency,
+			// 	name,
+			// 	map,
+			// 	preparedOrder.id,
+			// 	owner,
+			// 	[...originFee, getProtocolFee.percents(network).buyerFee])
 			case "BID":
 				const protocolFee = getProtocolFee.percents(network)
 				const { payouts: orderPayouts, originalFees: orderOriginFees } = preparedOrder.data
-				const payouts: FlowFee[] = !!orderPayouts.length ? orderPayouts : [{ account: from, value: toBigNumber("1.0") }]
+				const payouts: FlowFee[] = !!orderPayouts.length ?
+					orderPayouts :
+					[{ account: from, value: toBigNumber("1.0") }]
 				/**
 				 * remove owner from payouts, owner receive the rest of the money
 				 */

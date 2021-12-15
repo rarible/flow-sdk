@@ -1,20 +1,19 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { BigNumber } from "@rarible/types"
-import { toBigNumber, toFlowAddress } from "@rarible/types"
+import { toFlowAddress } from "@rarible/types"
 import type { FlowNftItemControllerApi, FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
-import { getOrderCode } from "../tx-code-store/order"
-import { fixAmount } from "../common/fix-amount"
 import { getCollectionConfig } from "../common/collection/get-config"
 import { checkPrice } from "../common/check-price"
-import { extractTokenId, toFlowItemId } from "../common/item"
 import { parseEvents } from "../common/parse-tx-events"
 import type { FlowContractAddress } from "../common/flow-address"
+import { getOrderCode } from "../tx-code-store/order/storefront"
 import { getPreparedOrder } from "./common/get-prepared-order"
 import type { FlowSellResponse } from "./sell"
 import { getProtocolFee } from "./get-protocol-fee"
+import { calculateSaleCuts } from "./common/calculate-sale-cuts"
 
 export type FlowUpdateOrderRequest = {
 	collection: FlowContractAddress,
@@ -49,16 +48,14 @@ export async function updateOrder(
 			getOrderCode(fcl, name).update(
 				currency,
 				preparedOrder.id,
-				fixAmount(sellItemPrice),
-				extractTokenId(toFlowItemId(preparedOrder.itemId)),
-				preparedOrder.data.originalFees.length ? preparedOrder.data.originalFees : [
-					getProtocolFee.percents(network).sellerFee,
-				],
-				royalties || [],
-				preparedOrder.data.payouts.length ? preparedOrder.data.payouts : [{
-					account: from,
-					value: toBigNumber("1.0"),
-				}],
+				calculateSaleCuts(
+					from,
+					sellItemPrice, [
+						...(preparedOrder.data.payouts || []),
+						getProtocolFee.percents(network).sellerFee,
+						...(preparedOrder.data.originalFees || []),
+						...(royalties || []),
+					]),
 			),
 			auth,
 		)

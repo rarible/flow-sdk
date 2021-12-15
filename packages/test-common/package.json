@@ -22,7 +22,7 @@
     "sha3": "^2.1.4"
   },
   "devDependencies": {
-    "@onflow/fcl": "^0.0.77",
+    "@onflow/fcl": "~0.0.77",
     "@types/elliptic": "^6.4.13",
     "@types/jest": "^27.0.2",
     "jest": "^27.3.1",

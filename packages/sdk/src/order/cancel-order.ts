@@ -24,7 +24,7 @@ export async function cancelOrder(
 		let params: MethodArgs
 		switch (order.type) {
 			case "LIST":
-				params = getOrderCode(fcl, name).cancelOrder(order.id)
+				params = getOrderCode(fcl).cancelOrder(order.id)
 				break
 			case "BID":
 				params = getBidCode(fcl, name).cancel(order.id)

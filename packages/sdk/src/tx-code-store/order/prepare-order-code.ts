@@ -4,7 +4,7 @@ import type { FtCodeConfig, NftCodeConfig } from "../../config/cadence-code-conf
 import { getFtCodeConfig, getNftCodeConfig } from "../../config/cadence-code-config"
 import { fillCodeTemplate } from "../../common/template-replacer"
 
-export function prepareBidCode(code: string, collectionName: FlowCollectionName, currency: FlowCurrency) {
+export function prepareOrderCode(code: string, collectionName: FlowCollectionName, currency: FlowCurrency) {
 	let ftData: FtCodeConfig
 	switch (currency) {
 		case "FLOW":
@@ -22,6 +22,8 @@ export function prepareBidCode(code: string, collectionName: FlowCollectionName,
 		case "TopShot":
 		case "MotoGPCard":
 		case "Evolution":
+		case "MugenNFT":
+		case "CNN_NFT":
 			nftCodeData = getNftCodeConfig(collectionName as FlowContractName)
 			break
 		default:
