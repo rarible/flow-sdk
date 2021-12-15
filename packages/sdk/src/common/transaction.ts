@@ -25,7 +25,6 @@ export const runTransaction = async (
 	gasLimit: number = 999,
 ): Promise<string> => {
 	const code = replaceImportAddresses(params.cadence, addressMap)
-	console.log("code", code)
 	const ix = [fcl.limit(gasLimit)]
 	ix.push(
 		fcl.payer(signature || fcl.authz),

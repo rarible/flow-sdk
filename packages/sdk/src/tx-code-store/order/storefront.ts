@@ -15,6 +15,7 @@ type GenerateBidCodeResponse = {
 	create: (currency: FlowCurrency, itemId: number, fees: FlowFee[]) => GenerateCodeMethodResponse
 	update: (currency: FlowCurrency, orderId: number, fees: FlowFee[]) => GenerateCodeMethodResponse
 	buy: (currency: FlowCurrency, orderId: number, address: string, fees: FlowFee[]) => GenerateCodeMethodResponse
+	cancel: (orderId: number) => GenerateCodeMethodResponse
 }
 
 export function getOrderCode(fcl: Fcl, collectionName: FlowCollectionName): GenerateBidCodeResponse {
@@ -49,6 +50,12 @@ export function getOrderCode(fcl: Fcl, collectionName: FlowCollectionName): Gene
 					fcl.arg(address, t.Address),
 					fcl.arg(prepareFees(fees), t.Dictionary({ key: t.Address, value: t.UFix64 })),
 				]),
+			}
+		},
+		cancel(orderId) {
+			return {
+				cadence: Storefront.cancelOrder,
+				args: fcl.args([fcl.arg(orderId, t.UInt64)]),
 			}
 		},
 	}

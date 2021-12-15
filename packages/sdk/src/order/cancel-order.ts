@@ -4,10 +4,10 @@ import type { FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client
 import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../types"
 import type { MethodArgs } from "../common/transaction"
 import { runTransaction, waitForSeal } from "../common/transaction"
-import { getOrderCode } from "../tx-code-store/order"
 import { getCollectionConfig } from "../common/collection/get-config"
 import { getBidCode } from "../tx-code-store/order/bid"
 import type { FlowContractAddress } from "../common/flow-address"
+import { getOrderCode } from "../tx-code-store/order/storefront"
 import { getPreparedOrder } from "./common/get-prepared-order"
 
 export async function cancelOrder(
@@ -24,7 +24,7 @@ export async function cancelOrder(
 		let params: MethodArgs
 		switch (order.type) {
 			case "LIST":
-				params = getOrderCode(fcl).cancelOrder(order.id)
+				params = getOrderCode(fcl, name).cancel(order.id)
 				break
 			case "BID":
 				params = getBidCode(fcl, name).cancel(order.id)

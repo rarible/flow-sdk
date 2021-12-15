@@ -120,18 +120,16 @@ transaction(orderId: UInt64, storefrontAddress: Address, parts: {Address:UFix64}
 }
 
 	`,
-	cancelOrder: {
-		code: `
-import NFTStorefront from "NFTStorefront.cdc"
+	cancelOrder: `
+import NFTStorefront from address
 
 transaction(orderId: UInt64) {
 
-    let storefront: &NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}
+    let storefront: &NFTStorefront.Storefront
 
-    prepare(acct: AuthAccount) {
-        self.storefront = acct.getCapability(NFTStorefront.StorefrontPublicPath)!
-            .borrow<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>()
-            ?? panic("Could not borrow Storefront from provided address")
+    prepare(account: AuthAccount) {
+        self.storefront = account.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath)
+            ?? panic("Could not borrow Storefront from account")
     }
 
     execute {
@@ -139,7 +137,6 @@ transaction(orderId: UInt64) {
     }
 }
 		`,
-	},
 	updateOrder: `
 	import FungibleToken from address
 import NonFungibleToken from address
