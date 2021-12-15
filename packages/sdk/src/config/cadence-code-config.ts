@@ -56,21 +56,22 @@ export type FtCodeConfig = Record<"@ftPublicPath" | "@ftPrivateType" | "@ftPriva
 
 export function getFtCodeConfig(contract: FungibleContracts): FtCodeConfig {
 	const ftPrivateType = "&{FungibleToken.Provider,FungibleToken.Balance,FungibleToken.Receiver}"
+	const knownConf = {
+		"@ftContract": contract,
+		"@ftPrivateType": ftPrivateType,
+		"@ftPrivatePath": `/private/${contract}_vaultRef`,
+	}
 	switch (contract) {
 		case "FUSD":
 			return {
-				"@ftContract": contract,
+				...knownConf,
 				"@ftPublicPath": "/public/fusdReceiver",
-				"@ftPrivateType": ftPrivateType,
-				"@ftPrivatePath": `/private/${contract}_vaultRef`,
 				"@ftStoragePath": "/storage/fusdVault",
 			}
 		case "FlowToken":
 			return {
-				"@ftContract": contract,
+				...knownConf,
 				"@ftPublicPath": "/public/flowTokenReceiver",
-				"@ftPrivateType": ftPrivateType,
-				"@ftPrivatePath": `/private/${contract}_vaultRef`,
 				"@ftStoragePath": "/storage/flowTokenVault",
 			}
 		default:
@@ -130,9 +131,9 @@ export function getNftCodeConfig(contract: FlowContractName): NftCodeConfig {
 			return {
 				...nftCodeConfig[contract],
 				"@nftContract": contract,
-				"@nftPrivatePath": `${contract}.Collection`,
-				"@nftPrivateType": `/private/{${contract}}_collectionRef`,
-				"@nftStorageType": "{NonFungibleToken.CollectionPublic,NonFungibleToken.Provider,NonFungibleToken.Receiver}",
+				"@nftPrivatePath": `/private/${contract}_collectionRef`,
+				"@nftPrivateType": "&{NonFungibleToken.CollectionPublic,NonFungibleToken.Provider,NonFungibleToken.Receiver}",
+				"@nftStorageType": `${contract}.Collection`,
 			}
 		default:
 			throw new Error(`Unsupported contract: ${contract}`)
