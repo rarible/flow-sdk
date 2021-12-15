@@ -14,14 +14,14 @@ export const ENV_CONFIG: Record<FlowEnv, FlowEnvConfig> = {
 	},
 	dev: {
 		basePath: "https://flow-api-dev.rarible.com",
-		network: "emulator",
+		network: "testnet",
 	},
 	staging: {
 		basePath: "https://flow-api-staging.rarible.com",
-		network: "emulator",
+		network: "testnet",
 	},
 	mainnet: {
 		basePath: "https://flow-api.rarible.com",
-		network: "emulator",
+		network: "mainnet",
 	},
 }
