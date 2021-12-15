@@ -18,12 +18,13 @@ import { bidUpdate as bidUpdateTemplate } from "./order/bid-update"
 import { setupAccount as setupAccountTemplate } from "./collection/setup-account"
 import type { ProtocolFees } from "./order/get-protocol-fee"
 import { getProtocolFee as getProtocolFeeUpdateTemplate } from "./order/get-protocol-fee"
-import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork, FlowOriginFees, FlowTransaction } from "./types"
+import type { AuthWithPrivateKey, FlowCurrency, FlowEnv, FlowNetwork, FlowOriginFees, FlowTransaction } from "./types"
 import type { FlowUpdateOrderRequest } from "./order/update-order"
 import { updateOrder as updateOrderTemplate } from "./order/update-order"
 import { CONFIGS } from "./config/config"
 import type { FlowItemId } from "./common/item"
 import type { FlowContractAddress } from "./common/flow-address/index"
+import { ENV_CONFIG } from "./config/env"
 
 export interface FlowApisSdk {
 	order: ApiClient.FlowOrderControllerApi
@@ -163,32 +164,38 @@ export function createFlowApisSdk(
  */
 export function createFlowSdk(
 	fcl: Maybe<Fcl>,
-	network: FlowNetwork,
+	network: FlowEnv,
 	params?: ConfigurationParameters,
 	auth?: AuthWithPrivateKey,
 ): FlowSdk {
-	const apis = createFlowApisSdk(network, params)
+	const blockchainNetwork = ENV_CONFIG[network].network
+	const apis = createFlowApisSdk(
+		blockchainNetwork,
+		{ basePath: ENV_CONFIG[network].basePath, ...params },
+	)
 	return {
 		apis,
 		nft: {
-			mint: mintTemplate.bind(null, fcl, auth, network),
-			burn: burnTemplate.bind(null, fcl, auth, network),
-			transfer: transferTemplate.bind(null, fcl, auth, network),
+			mint: mintTemplate.bind(null, fcl, auth, blockchainNetwork),
+			burn: burnTemplate.bind(null, fcl, auth, blockchainNetwork),
+			transfer: transferTemplate.bind(null, fcl, auth, blockchainNetwork),
 		},
 		order: {
-			sell: sellTemplate.bind(null, fcl, apis.item, auth, network),
-			fill: buyTemplate.bind(null, fcl, auth, network, apis.order).bind(null, apis.item),
-			cancelOrder: cancelOrderTmeplate.bind(null, fcl, auth, network, apis.order),
-			updateOrder: updateOrderTemplate.bind(null, fcl, apis.item, apis.order, auth).bind(null, network),
-			bid: bidTemplate.bind(null, fcl, auth, network),
-			bidUpdate: bidUpdateTemplate.bind(null, fcl, auth, network, apis.order),
-			getProtocolFee: getProtocolFeeUpdateTemplate.bind(null, network),
+			sell: sellTemplate.bind(null, fcl, apis.item, auth, blockchainNetwork),
+			fill: buyTemplate.bind(null, fcl, auth, blockchainNetwork, apis.order).bind(null, apis.item),
+			cancelOrder: cancelOrderTmeplate.bind(null, fcl, auth, blockchainNetwork, apis.order),
+			updateOrder: updateOrderTemplate.bind(
+				null, fcl, apis.item, apis.order, auth).bind(null, blockchainNetwork,
+			),
+			bid: bidTemplate.bind(null, fcl, auth, blockchainNetwork),
+			bidUpdate: bidUpdateTemplate.bind(null, fcl, auth, blockchainNetwork, apis.order),
+			getProtocolFee: getProtocolFeeUpdateTemplate.bind(null, blockchainNetwork),
 		},
 		wallet: {
-			getFungibleBalance: getFungibleBalanceTemplate.bind(null, fcl, network),
+			getFungibleBalance: getFungibleBalanceTemplate.bind(null, fcl, blockchainNetwork),
 		},
 		collection: {
-			setupAccount: setupAccountTemplate.bind(null, fcl, auth, network),
+			setupAccount: setupAccountTemplate.bind(null, fcl, auth, blockchainNetwork),
 		},
 		signUserMessage: signUserMessageTemplate.bind(null, fcl),
 	}

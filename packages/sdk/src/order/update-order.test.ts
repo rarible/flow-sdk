@@ -24,7 +24,7 @@ describe("Test update sell order on emulator", () => {
 
 	test.skip("Should update RaribleNFT sell order on testnet", async () => {
 		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_3.address, FLOW_TESTNET_ACCOUNT_3.privKey)
-		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const testnetSdk = createFlowSdk(fcl, "dev", {}, testnetAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.RARIBLE)
 		const mintTx = await testnetSdk.nft.mint(
 			testnetCollection,

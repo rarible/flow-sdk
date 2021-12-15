@@ -29,9 +29,9 @@ describe("Test fill on emulator", () => {
 
 	test.skip("Should fill order on testnet", async () => {
 		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_3.address, FLOW_TESTNET_ACCOUNT_3.privKey)
-		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const testnetSdk = createFlowSdk(fcl, "dev", {}, testnetAuth)
 		const testnetAuth2 = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_4.address, FLOW_TESTNET_ACCOUNT_4.privKey)
-		const testnetSdk2 = createFlowSdk(fcl, "testnet", {}, testnetAuth2)
+		const testnetSdk2 = createFlowSdk(fcl, "dev", {}, testnetAuth2)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.RARIBLE)
 		const acc1bal = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(FLOW_TESTNET_ACCOUNT_3.address), "FLOW")
 		const mintTx = await testnetSdk.nft.mint(

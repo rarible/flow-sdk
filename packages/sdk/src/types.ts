@@ -37,6 +37,8 @@ export interface FlowTransaction extends CommonFlowTransaction {
 	txId: string
 }
 
+export type { FlowEnv } from "./config/env"
+
 export type NonFungibleTokenType = "NonFungibleToken"
 export type FungibleTokenType = "FungibleToken"
 export type FUSDType = "FUSD"
