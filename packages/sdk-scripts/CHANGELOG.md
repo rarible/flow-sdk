@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.18](https://github.com/rarible/flow-sdk/compare/v0.5.17...v0.5.18) (2021-12-16)
+
+
+### Bug Fixes
+
+* price convertation, evolution order transactions ([50aa268](https://github.com/rarible/flow-sdk/commit/50aa26893200182c3423139ec6e2d232b4190961))
+
+
+
+
+
 ## [0.5.16](https://github.com/rarible/flow-sdk/compare/v0.5.15...v0.5.16) (2021-12-16)
 
 
