@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.16](https://github.com/rarible/flow-sdk/compare/v0.5.15...v0.5.16) (2021-12-16)
+
+
+### Bug Fixes
+
+* fix originFees on fill order ([f5f594c](https://github.com/rarible/flow-sdk/commit/f5f594c2335af95f2a241349652575b65ef30632))
+* old order transactions ([#46](https://github.com/rarible/flow-sdk/issues/46)) ([1f7dfda](https://github.com/rarible/flow-sdk/commit/1f7dfdac89817da176b864e5c24cdc808657189b))
+
+
+
+
+
 ## [0.5.15](https://github.com/rarible/flow-sdk/compare/v0.5.14...v0.5.15) (2021-12-16)
 
 
