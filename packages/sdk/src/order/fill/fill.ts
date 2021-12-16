@@ -3,7 +3,14 @@ import type { Maybe } from "@rarible/types/build/maybe"
 import type { FlowAddress } from "@rarible/types"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import type { FlowNftItemControllerApi, FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
-import type { AuthWithPrivateKey, FlowCurrency, FlowFee, FlowNetwork, FlowTransaction } from "../../types"
+import type {
+	AuthWithPrivateKey,
+	FlowCurrency,
+	FlowFee,
+	FlowNetwork,
+	FlowOriginFees,
+	FlowTransaction,
+} from "../../types"
 import { getCollectionConfig } from "../../common/collection/get-config"
 import { getProtocolFee } from "../get-protocol-fee"
 import { getPreparedOrder } from "../common/get-prepared-order"
@@ -26,9 +33,9 @@ export async function fill(
 	currency: FlowCurrency,
 	order: number | FlowOrder,
 	owner: FlowAddress,
+	originFee: FlowOriginFees,
 ): Promise<FlowTransaction> {
 	if (fcl) {
-
 		const from = auth ? toFlowAddress((await auth()).addr) : toFlowAddress((await fcl.currentUser().snapshot()).addr!)
 		if (!from) {
 			throw new Error("FLOW-SDK: Can't get current user address")
@@ -46,7 +53,7 @@ export async function fill(
 				return waitForSeal(fcl, txId)
 			case "BID":
 				const protocolFee = getProtocolFee.percents(network)
-				const { payouts: orderPayouts, originalFees: orderOriginFees } = preparedOrder.data
+				const { payouts: orderPayouts } = preparedOrder.data
 				const payouts: FlowFee[] = !!orderPayouts.length ?
 					orderPayouts :
 					[{ account: from, value: toBigNumber("1.0") }]
@@ -61,7 +68,7 @@ export async function fill(
 				 */
 				const includedFees: FlowFee[] = [
 					...filteredPayouts,
-					...orderOriginFees,
+					...originFee,
 					...royalties,
 					protocolFee.sellerFee,
 				]
