@@ -7,7 +7,7 @@ import { runTransaction, waitForSeal } from "../common/transaction"
 import { getCollectionConfig } from "../common/collection/get-config"
 import { getBidCode } from "../tx-code-store/order/bid"
 import type { FlowContractAddress } from "../common/flow-address"
-import { getOrderCode } from "../tx-code-store/order/storefront"
+import { getOrderCodeLegacy } from "../tx-code-store/order/order-legacy"
 import { getPreparedOrder } from "./common/get-prepared-order"
 
 export async function cancelOrder(
@@ -24,7 +24,7 @@ export async function cancelOrder(
 		let params: MethodArgs
 		switch (order.type) {
 			case "LIST":
-				params = getOrderCode(fcl, name).cancel(order.id)
+				params = getOrderCodeLegacy(name).cancelOrder(fcl, order.id)
 				break
 			case "BID":
 				params = getBidCode(fcl, name).cancel(order.id)

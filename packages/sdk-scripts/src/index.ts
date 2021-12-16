@@ -10,3 +10,8 @@ export { openBidCommon } from "./cadence/bid/bid-common"
 export { getBalanceScripts } from "./wallet/balance"
 
 export { raribleFee } from "./cadence/rarible-fee/index"
+
+export { StorefrontMotoGPCard } from "./cadence/storefront/storefront-motogp"
+export { StorefrontRaribleNFT } from "./cadence/storefront/storefront-rariblenft"
+export { StorefrontTopShot } from "./cadence/storefront/storefront-topshot"
+export { StorefrontEvolution } from "./cadence/storefront/storefront-evolution"

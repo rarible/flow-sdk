@@ -15,7 +15,6 @@ import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
 import { createFusdTestEnvironment } from "../test/setup-fusd-env"
 import { toFlowItemId } from "../common/item"
-import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/mugen-art"
 
 describe("Test sell on emulator", () => {
 	let sdk: FlowSdk
@@ -124,21 +123,6 @@ describe("Test sell on emulator", () => {
 			collection: motoGpColletion,
 			currency: "FLOW",
 			itemId: toFlowItemId(`${motoGpColletion}:${result.cardID}`),
-			sellItemPrice: "0.0001",
-		})
-		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
-	})
-	test("Should create sell order from MugenArt nft", async () => {
-		const mugenArtCollection = toFlowContractAddress(EmulatorCollections.MUGENNFT)
-		const { acc1, serviceAcc } = await createMugenArtTestEnvironment(fcl)
-
-		const [id] = await getMugenArtIds(fcl, serviceAcc.address, acc1.address)
-		expect(id).toEqual(0)
-
-		const sellTx = await acc1.sdk.order.sell({
-			collection: mugenArtCollection,
-			currency: "FLOW",
-			itemId: toFlowItemId(`${mugenArtCollection}:${id}`),
 			sellItemPrice: "0.0001",
 		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")

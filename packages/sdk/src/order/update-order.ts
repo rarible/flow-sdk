@@ -10,6 +10,7 @@ import { checkPrice } from "../common/check-price"
 import { parseEvents } from "../common/parse-tx-events"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCode } from "../tx-code-store/order/storefront"
+import { getOrderCodeLegacy } from "../tx-code-store/order/order-legacy"
 import { getPreparedOrder } from "./common/get-prepared-order"
 import type { FlowSellResponse } from "./sell"
 import { getProtocolFee } from "./get-protocol-fee"
@@ -42,28 +43,48 @@ export async function updateOrder(
 
 		const { royalties } = network === "emulator" ?
 			{ royalties: [] } : await itemApi.getNftItemById({ itemId: preparedOrder.itemId })
-		const txId = await runTransaction(
-			fcl,
-			map,
-			getOrderCode(fcl, name).update(
-				currency,
-				preparedOrder.id,
-				calculateSaleCuts(
-					from,
-					sellItemPrice, [
-						...(preparedOrder.data.payouts || []),
-						getProtocolFee.percents(network).sellerFee,
-						...(preparedOrder.data.originalFees || []),
-						...(royalties || []),
-					]),
-			),
-			auth,
-		)
-		const tx = await waitForSeal(fcl, txId)
-		const simpleOrderId = parseEvents<string>(tx.events, "ListingAvailable", "listingResourceID")
-		return {
-			...tx,
-			orderId: parseInt(simpleOrderId),
+		switch (preparedOrder.make["@type"]) {
+			case "nft": {
+				const txId = await runTransaction(
+					fcl,
+					map,
+					getOrderCodeLegacy(name).update(fcl, currency, preparedOrder.id, sellItemPrice),
+					auth,
+				)
+				const tx = await waitForSeal(fcl, txId)
+				const simpleOrderId = parseEvents<string>(tx.events, "ListingAvailable", "listingResourceID")
+				return {
+					...tx,
+					orderId: parseInt(simpleOrderId),
+				}
+			}
+			case "fungible": {
+				const txId = await runTransaction(
+					fcl,
+					map,
+					getOrderCode(fcl, name).update(
+						currency,
+						preparedOrder.id,
+						calculateSaleCuts(
+							from,
+							sellItemPrice, [
+								...(preparedOrder.data.payouts || []),
+								getProtocolFee.percents(network).sellerFee,
+								...(preparedOrder.data.originalFees || []),
+								...(royalties || []),
+							]),
+					),
+					auth,
+				)
+				const tx = await waitForSeal(fcl, txId)
+				const simpleOrderId = parseEvents<string>(tx.events, "ListingAvailable", "listingResourceID")
+				return {
+					...tx,
+					orderId: parseInt(simpleOrderId),
+				}
+			}
+			default:
+				throw new Error(`Unknown token type: ${preparedOrder.make["@type"]}`)
 		}
 	}
 	throw new Error("Fcl is required for updating order")

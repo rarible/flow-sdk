@@ -181,7 +181,7 @@ export function createFlowSdk(
 			transfer: transferTemplate.bind(null, fcl, auth, blockchainNetwork),
 		},
 		order: {
-			sell: sellTemplate.bind(null, fcl, apis.item, auth, blockchainNetwork),
+			sell: sellTemplate.bind(null, fcl, auth, blockchainNetwork),
 			fill: buyTemplate.bind(null, fcl, auth, blockchainNetwork, apis.order).bind(null, apis.item),
 			cancelOrder: cancelOrderTmeplate.bind(null, fcl, auth, blockchainNetwork, apis.order),
 			updateOrder: updateOrderTemplate.bind(
