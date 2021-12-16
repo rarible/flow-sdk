@@ -79,7 +79,6 @@ export interface FlowOrderSdk {
 		currency: FlowCurrency,
 		orderId: number | FlowOrder,
 		owner: string,
-		fees: FlowOriginFees,
 	): Promise<FlowTransaction>
 
 	/**
