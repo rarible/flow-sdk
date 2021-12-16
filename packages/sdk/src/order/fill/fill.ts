@@ -3,21 +3,14 @@ import type { Maybe } from "@rarible/types/build/maybe"
 import type { FlowAddress } from "@rarible/types"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import type { FlowNftItemControllerApi, FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
-import type {
-	AuthWithPrivateKey,
-	FlowCurrency,
-	FlowFee,
-	FlowNetwork,
-	FlowOriginFees,
-	FlowTransaction,
-} from "../../types"
+import type { AuthWithPrivateKey, FlowCurrency, FlowFee, FlowNetwork, FlowTransaction } from "../../types"
 import { getCollectionConfig } from "../../common/collection/get-config"
 import { getProtocolFee } from "../get-protocol-fee"
 import { getPreparedOrder } from "../common/get-prepared-order"
 import { calculateFees } from "../../common/calculate-fees"
 import type { FlowContractAddress } from "../../common/flow-address"
 import { runTransaction, waitForSeal } from "../../common/transaction"
-import { getOrderCode } from "../../tx-code-store/order/storefront"
+import { getOrderCodeLegacy } from "../../tx-code-store/order/order-legacy"
 import { fillBidOrder } from "./fill-bid-order"
 
 export type FlowOrderType = "LIST" | "BID"
@@ -33,7 +26,6 @@ export async function fill(
 	currency: FlowCurrency,
 	order: number | FlowOrder,
 	owner: FlowAddress,
-	originFee: FlowOriginFees,
 ): Promise<FlowTransaction> {
 	if (fcl) {
 
@@ -45,31 +37,13 @@ export async function fill(
 		const { name, map } = getCollectionConfig(network, collection)
 		switch (preparedOrder.type) {
 			case "LIST":
-				const fees = calculateFees(preparedOrder.take.value, [
-					...(originFee || []),
-					getProtocolFee.percents(network).buyerFee,
-				])
 				const txId = await runTransaction(
 					fcl,
 					map,
-					getOrderCode(fcl, name).buy(
-						currency,
-						preparedOrder.id,
-						owner,
-						fees
-					),
+					getOrderCodeLegacy(name).buy(fcl, currency, preparedOrder.id, owner),
 					auth,
 				)
 				return waitForSeal(fcl, txId)
-			// return fillSellOrder(
-			// 	fcl,
-			// 	auth,
-			// 	currency,
-			// 	name,
-			// 	map,
-			// 	preparedOrder.id,
-			// 	owner,
-			// 	[...originFee, getProtocolFee.percents(network).buyerFee])
 			case "BID":
 				const protocolFee = getProtocolFee.percents(network)
 				const { payouts: orderPayouts, originalFees: orderOriginFees } = preparedOrder.data

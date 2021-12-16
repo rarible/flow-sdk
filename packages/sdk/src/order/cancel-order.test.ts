@@ -11,7 +11,6 @@ import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp
 import { createFusdTestEnvironment } from "../test/setup-fusd-env"
 import { toFlowItemId } from "../common/item"
 import { getTestOrderTmplate } from "../test/order-template"
-import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/mugen-art"
 
 describe("Test cancel order on emulator", () => {
 	let sdk: FlowSdk
@@ -131,28 +130,6 @@ describe("Test cancel order on emulator", () => {
 
 		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.1"))
 		const cancelTx = await acc1.sdk.order.cancelOrder(motoGpColletion, order)
-		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
-	})
-
-	test("Should cancell sell order, MugenArt nft", async () => {
-		const mugenArtCollection = toFlowContractAddress(EmulatorCollections.MUGENNFT)
-		const { acc1, serviceAcc } = await createMugenArtTestEnvironment(fcl)
-
-		const [id] = await getMugenArtIds(fcl, serviceAcc.address, acc1.address)
-		expect(id).toEqual(0)
-
-		const itemId = toFlowItemId(`${mugenArtCollection}:${id}`)
-
-		const sellTx = await acc1.sdk.order.sell({
-			collection: mugenArtCollection,
-			currency: "FLOW",
-			itemId,
-			sellItemPrice: "0.0001",
-		})
-		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
-
-		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.0001"))
-		const cancelTx = await acc1.sdk.order.cancelOrder(mugenArtCollection, order)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 })
