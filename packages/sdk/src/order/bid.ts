@@ -10,6 +10,7 @@ import type { FlowItemId } from "../common/item"
 import { extractTokenId } from "../common/item"
 import { calculateFees } from "../common/calculate-fees"
 import type { FlowContractAddress } from "../common/flow-address"
+import { fixAmount } from "../common/fix-amount"
 import { getProtocolFee } from "./get-protocol-fee"
 import type { FlowSellResponse } from "./sell"
 
@@ -33,7 +34,7 @@ export async function bid(
 			getBidCode(fcl, name).create(
 				currency,
 				extractTokenId(itemId),
-				price,
+				fixAmount(price),
 				[
 					...calculateFees(price, [protocolFees.buyerFee]),
 					...calculateFees(price, requestFees),

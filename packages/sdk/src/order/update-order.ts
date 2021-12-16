@@ -11,6 +11,7 @@ import { parseEvents } from "../common/parse-tx-events"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCode } from "../tx-code-store/order/storefront"
 import { getOrderCodeLegacy } from "../tx-code-store/order/order-legacy"
+import { fixAmount } from "../common/fix-amount"
 import { getPreparedOrder } from "./common/get-prepared-order"
 import type { FlowSellResponse } from "./sell"
 import { getProtocolFee } from "./get-protocol-fee"
@@ -48,7 +49,7 @@ export async function updateOrder(
 				const txId = await runTransaction(
 					fcl,
 					map,
-					getOrderCodeLegacy(name).update(fcl, currency, preparedOrder.id, sellItemPrice),
+					getOrderCodeLegacy(name).update(fcl, currency, preparedOrder.id, fixAmount(sellItemPrice)),
 					auth,
 				)
 				const tx = await waitForSeal(fcl, txId)
@@ -67,7 +68,7 @@ export async function updateOrder(
 						preparedOrder.id,
 						calculateSaleCuts(
 							from,
-							sellItemPrice, [
+							fixAmount(sellItemPrice), [
 								...(preparedOrder.data.payouts || []),
 								getProtocolFee.percents(network).sellerFee,
 								...(preparedOrder.data.originalFees || []),

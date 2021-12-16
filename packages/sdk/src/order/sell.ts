@@ -17,6 +17,7 @@ import type { FlowItemId } from "../common/item"
 import { extractTokenId } from "../common/item"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCodeLegacy } from "../tx-code-store/order/order-legacy"
+import { fixAmount } from "../common/fix-amount"
 
 export type FlowSellRequest = {
 	collection: FlowContractAddress,
@@ -48,7 +49,7 @@ export async function sell(
 		const txId = await runTransaction(
 			fcl,
 			map,
-			getOrderCodeLegacy(name).sell(fcl, currency, extractTokenId(itemId), sellItemPrice),
+			getOrderCodeLegacy(name).sell(fcl, currency, extractTokenId(itemId), fixAmount(sellItemPrice)),
 			auth,
 		)
 		const tx = await waitForSeal(fcl, txId)
