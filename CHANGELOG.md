@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.15](https://github.com/rarible/flow-sdk/compare/v0.5.14...v0.5.15) (2021-12-16)
+
+
+### Bug Fixes
+
+* update protocol fee ([b44b5e4](https://github.com/rarible/flow-sdk/commit/b44b5e445309ed62b98c55147074e305725c339c))
+
+
+
+
+
 ## [0.5.14](https://github.com/rarible/flow-sdk/compare/v0.5.13...v0.5.14) (2021-12-15)
 
 
