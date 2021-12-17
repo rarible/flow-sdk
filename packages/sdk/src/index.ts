@@ -15,6 +15,7 @@ import { signUserMessage as signUserMessageTemplate } from "./signature/sign-use
 import { getFungibleBalance as getFungibleBalanceTemplate } from "./wallet/get-fungible-balance"
 import { bid as bidTemplate } from "./order/bid"
 import { bidUpdate as bidUpdateTemplate } from "./order/bid-update"
+import { cancelBid as cancelBidTmeplate } from "./order/cancel-bid"
 import { setupAccount as setupAccountTemplate } from "./collection/setup-account"
 import type { ProtocolFees } from "./order/get-protocol-fee"
 import { getProtocolFee as getProtocolFeeUpdateTemplate } from "./order/get-protocol-fee"
@@ -87,7 +88,7 @@ export interface FlowOrderSdk {
 	 * @param collection
 	 * @param orderId
 	 */
-	cancelOrder(collection: FlowContractAddress, orderId: number | FlowOrder): Promise<FlowTransaction>
+	cancelOrder(collection: FlowContractAddress, orderId: number): Promise<FlowTransaction>
 
 	/**
 	 * Create bid
@@ -117,6 +118,13 @@ export interface FlowOrderSdk {
 		order: number | FlowOrder,
 		price: BigNumber,
 	): Promise<FlowSellResponse>
+
+	/**
+	 * Cancel sell order
+	 * @param collection
+	 * @param orderId
+	 */
+	cancelBid(collection: FlowContractAddress, orderId: number): Promise<FlowTransaction>
 
 	getProtocolFee(): ProtocolFees
 }
@@ -183,12 +191,13 @@ export function createFlowSdk(
 		order: {
 			sell: sellTemplate.bind(null, fcl, apis.item, auth, blockchainNetwork),
 			fill: buyTemplate.bind(null, fcl, auth, blockchainNetwork, apis.order).bind(null, apis.item),
-			cancelOrder: cancelOrderTmeplate.bind(null, fcl, auth, blockchainNetwork, apis.order),
+			cancelOrder: cancelOrderTmeplate.bind(null, fcl, auth, blockchainNetwork),
 			updateOrder: updateOrderTemplate.bind(
 				null, fcl, apis.item, apis.order, auth).bind(null, blockchainNetwork,
 			),
 			bid: bidTemplate.bind(null, fcl, auth, blockchainNetwork),
 			bidUpdate: bidUpdateTemplate.bind(null, fcl, auth, blockchainNetwork, apis.order),
+			cancelBid: cancelBidTmeplate.bind(null, fcl, auth, blockchainNetwork),
 			getProtocolFee: getProtocolFeeUpdateTemplate.bind(null, blockchainNetwork),
 		},
 		wallet: {
