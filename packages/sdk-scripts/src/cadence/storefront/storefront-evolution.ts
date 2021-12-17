@@ -15,7 +15,7 @@ transaction(tokenId: UInt64, price: UFix64) {
 
     prepare(acct: AuthAccount) {
         let nftProviderPath = /private/f4264ac8f3256818_EvolutionProviderForNFTStorefront
-        if !acct.getCapability<&Evolution.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.check() {
+        if acct.getCapability<&Evolution.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.borrow() == nil {
             acct.link<&Evolution.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath, target: /storage/f4264ac8f3256818_Evolution_Collection)
         }
 
@@ -66,7 +66,7 @@ transaction(tokenId: UInt64, price: UFix64) {
 
     prepare(acct: AuthAccount) {
         let nftProviderPath = /private/f4264ac8f3256818_EvolutionProviderForNFTStorefront
-        if !acct.getCapability<&Evolution.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.check() {
+        if acct.getCapability<&Evolution.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.borrow() == nil {
             acct.link<&Evolution.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath, target: /storage/f4264ac8f3256818_Evolution_Collection)
         }
 
@@ -119,7 +119,7 @@ transaction(orderId: UInt64, price: UFix64) {
 
     prepare(acct: AuthAccount) {
         let nftProviderPath = /private/f4264ac8f3256818_EvolutionProviderForNFTStorefront
-        if !acct.getCapability<&Evolution.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.check() {
+        if acct.getCapability<&Evolution.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.borrow() == nil {
             acct.link<&Evolution.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath, target: /storage/f4264ac8f3256818_Evolution_Collection)
         }
 
@@ -181,7 +181,7 @@ transaction(orderId: UInt64, price: UFix64) {
 
     prepare(acct: AuthAccount) {
         let nftProviderPath = /private/f4264ac8f3256818_EvolutionProviderForNFTStorefront
-        if !acct.getCapability<&Evolution.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.check() {
+        if acct.getCapability<&Evolution.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.borrow() == nil {
             acct.link<&Evolution.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath, target: /storage/f4264ac8f3256818_Evolution_Collection)
         }
 

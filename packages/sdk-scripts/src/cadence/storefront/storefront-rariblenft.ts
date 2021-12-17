@@ -17,7 +17,7 @@ transaction(tokenId: UInt64, price: UFix64) {
 
     prepare(acct: AuthAccount) {
         let nftProviderPath = /private/RaribleNFTProviderForNFTStorefront
-        if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.check() {
+        if acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.borrow() == nil {
             acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: RaribleNFT.collectionStoragePath)
         }
 
@@ -74,7 +74,7 @@ transaction(tokenId: UInt64, price: UFix64) {
 
     prepare(acct: AuthAccount) {
         let nftProviderPath = /private/RaribleNFTProviderForNFTStorefront
-        if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.check() {
+        if acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.borrow() == nil {
             acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: RaribleNFT.collectionStoragePath)
         }
 
@@ -133,7 +133,7 @@ transaction(orderId: UInt64, price: UFix64) {
 
     prepare(acct: AuthAccount) {
         let nftProviderPath = /private/RaribleNFTProviderForNFTStorefront
-        if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.check() {
+        if acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.borrow() == nil {
             acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: RaribleNFT.collectionStoragePath)
         }
 
@@ -201,7 +201,7 @@ transaction(orderId: UInt64, price: UFix64) {
 
     prepare(acct: AuthAccount) {
         let nftProviderPath = /private/RaribleNFTProviderForNFTStorefront
-        if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.check() {
+        if acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.borrow() == nil {
             acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: RaribleNFT.collectionStoragePath)
         }
 

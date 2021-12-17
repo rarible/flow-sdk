@@ -16,7 +16,7 @@ transaction(tokenId: UInt64, price: UFix64) {
 
     prepare(acct: AuthAccount) {
         let nftProviderPath = /private/TopShotProviderForNFTStorefront
-        if !acct.getCapability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.check() {
+        if acct.getCapability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.borrow() == nil {
             acct.link<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath, target: /storage/MomentCollection)
         }
 
@@ -70,7 +70,7 @@ transaction(tokenId: UInt64, price: UFix64) {
 
     prepare(acct: AuthAccount) {
         let nftProviderPath = /private/TopShotProviderForNFTStorefront
-        if !acct.getCapability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.check() {
+        if acct.getCapability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.borrow() == nil {
             acct.link<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath, target: /storage/MomentCollection)
         }
 
@@ -126,7 +126,7 @@ transaction(orderId: UInt64, price: UFix64) {
 
     prepare(acct: AuthAccount) {
         let nftProviderPath = /private/TopShotProviderForNFTStorefront
-        if !acct.getCapability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.check() {
+        if acct.getCapability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.borrow() == nil {
             acct.link<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath, target: /storage/MomentCollection)
         }
 
@@ -191,7 +191,7 @@ transaction(orderId: UInt64, price: UFix64) {
 
     prepare(acct: AuthAccount) {
         let nftProviderPath = /private/TopShotProviderForNFTStorefront
-        if !acct.getCapability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.check() {
+        if acct.getCapability<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath)!.borrow() == nil {
             acct.link<&TopShot.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(nftProviderPath, target: /storage/MomentCollection)
         }
 
