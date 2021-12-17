@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.19](https://github.com/rarible/flow-sdk/compare/v0.5.18...v0.5.19) (2021-12-17)
+
+
+### Bug Fixes
+
+* legacyTx nftProvider ([13a3bed](https://github.com/rarible/flow-sdk/commit/13a3bedba1f79029307f140a8dada86c40153ee3))
+
+
+
+
+
 ## [0.5.18](https://github.com/rarible/flow-sdk/compare/v0.5.17...v0.5.18) (2021-12-16)
 
 
