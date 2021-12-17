@@ -50,6 +50,8 @@ const EMULATOR_ADDRESS = toFlowAddress("0xf8d6e0586b0a20c7")
 
 // protocol fee in base points
 const PROTOCOL_FEE: BigNumber = toBigNumber("50")
+
+
 // todo move contracts address to fcl.config aliases  if it's possible
 export const CONFIGS: Record<FlowNetwork, Config> = {
 	emulator: {

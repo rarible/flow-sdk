@@ -19,6 +19,7 @@ import { extractTokenId } from "../common/item"
 import { retry } from "../common/retry"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCode } from "../tx-code-store/order/storefront"
+import { fixAmount } from "../common/fix-amount"
 import { getProtocolFee } from "./get-protocol-fee"
 import { calculateSaleCuts } from "./common/calculate-sale-cuts"
 
@@ -62,7 +63,7 @@ export async function sell(
 				extractTokenId(itemId),
 				calculateSaleCuts(
 					from,
-					sellItemPrice, [
+					fixAmount(sellItemPrice), [
 						...(payouts || []),
 						getProtocolFee.percents(network).sellerFee,
 						...(originFees || []),

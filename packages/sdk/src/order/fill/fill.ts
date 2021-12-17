@@ -56,23 +56,14 @@ export async function fill(
 						currency,
 						preparedOrder.id,
 						owner,
-						fees
+						fees,
 					),
 					auth,
 				)
 				return waitForSeal(fcl, txId)
-			// return fillSellOrder(
-			// 	fcl,
-			// 	auth,
-			// 	currency,
-			// 	name,
-			// 	map,
-			// 	preparedOrder.id,
-			// 	owner,
-			// 	[...originFee, getProtocolFee.percents(network).buyerFee])
 			case "BID":
 				const protocolFee = getProtocolFee.percents(network)
-				const { payouts: orderPayouts, originalFees: orderOriginFees } = preparedOrder.data
+				const { payouts: orderPayouts } = preparedOrder.data
 				const payouts: FlowFee[] = !!orderPayouts.length ?
 					orderPayouts :
 					[{ account: from, value: toBigNumber("1.0") }]
@@ -87,7 +78,7 @@ export async function fill(
 				 */
 				const includedFees: FlowFee[] = [
 					...filteredPayouts,
-					...orderOriginFees,
+					...originFee,
 					...royalties,
 					protocolFee.sellerFee,
 				]

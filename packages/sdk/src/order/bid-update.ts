@@ -9,6 +9,7 @@ import { getBidCode } from "../tx-code-store/order/bid"
 import { calculateFees } from "../common/calculate-fees"
 import { parseEvents } from "../common/parse-tx-events"
 import type { FlowContractAddress } from "../common/flow-address"
+import { fixAmount } from "../common/fix-amount"
 import { getProtocolFee } from "./get-protocol-fee"
 import type { FlowSellResponse } from "./sell"
 import { getPreparedOrder } from "./common/get-prepared-order"
@@ -30,7 +31,7 @@ export async function bidUpdate(
 		const txId = await runTransaction(
 			fcl,
 			map,
-			getBidCode(fcl, name).update(currency, preparedOrder.id, price,
+			getBidCode(fcl, name).update(currency, preparedOrder.id, fixAmount(price),
 				[
 					...calculateFees(price, [protocolFees.buyerFee]),
 					...calculateFees(price, preparedOrder.data.originalFees || []),

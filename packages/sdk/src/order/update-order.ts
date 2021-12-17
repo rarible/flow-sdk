@@ -10,6 +10,7 @@ import { checkPrice } from "../common/check-price"
 import { parseEvents } from "../common/parse-tx-events"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCode } from "../tx-code-store/order/storefront"
+import { fixAmount } from "../common/fix-amount"
 import { getPreparedOrder } from "./common/get-prepared-order"
 import type { FlowSellResponse } from "./sell"
 import { getProtocolFee } from "./get-protocol-fee"
@@ -50,7 +51,7 @@ export async function updateOrder(
 				preparedOrder.id,
 				calculateSaleCuts(
 					from,
-					sellItemPrice, [
+					fixAmount(sellItemPrice), [
 						...(preparedOrder.data.payouts || []),
 						getProtocolFee.percents(network).sellerFee,
 						...(preparedOrder.data.originalFees || []),
