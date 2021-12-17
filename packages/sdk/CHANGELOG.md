@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.19](https://github.com/rarible/flow-sdk/compare/v0.5.18...v0.5.19) (2021-12-17)
+
+**Note:** Version bump only for package @rarible/flow-sdk
+
+
+
+
+
+## [0.5.18](https://github.com/rarible/flow-sdk/compare/v0.5.17...v0.5.18) (2021-12-16)
+
+
+### Bug Fixes
+
+* price convertation, evolution order transactions ([50aa268](https://github.com/rarible/flow-sdk/commit/50aa26893200182c3423139ec6e2d232b4190961))
+
+
+
+
+
+## [0.5.17](https://github.com/rarible/flow-sdk/compare/v0.5.16...v0.5.17) (2021-12-16)
+
+
+### Bug Fixes
+
+* protocol fee + market fee ([f392d4d](https://github.com/rarible/flow-sdk/commit/f392d4d3b7eb95dc053b018c3137bc66238539c5))
+
+
+
+
+
+## [0.5.16](https://github.com/rarible/flow-sdk/compare/v0.5.15...v0.5.16) (2021-12-16)
+
+
+### Bug Fixes
+
+* fix originFees on fill order ([f5f594c](https://github.com/rarible/flow-sdk/commit/f5f594c2335af95f2a241349652575b65ef30632))
+* old order transactions ([#46](https://github.com/rarible/flow-sdk/issues/46)) ([1f7dfda](https://github.com/rarible/flow-sdk/commit/1f7dfdac89817da176b864e5c24cdc808657189b))
+
+
+
+
+
 ## [0.5.15](https://github.com/rarible/flow-sdk/compare/v0.5.14...v0.5.15) (2021-12-16)
 
 
