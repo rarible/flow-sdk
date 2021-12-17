@@ -60,7 +60,9 @@ describe("Test sell on emulator", () => {
 			collection,
 			currency: "FLOW",
 			itemId: mintTx.tokenId,
-			sellItemPrice: "0.1",
+			sellItemPrice: "1",
+			payouts: [],
+			originFees: [],
 		})
 		expect(tx.status).toEqual(4)
 	})

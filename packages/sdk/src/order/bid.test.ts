@@ -1,20 +1,16 @@
-import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
-import * as fcl from "@onflow/fcl"
-import { toBigNumber } from "@rarible/types"
-import { createFlowSdk, toFlowContractAddress } from "../index"
+import { createFlowEmulator } from "@rarible/flow-test-common"
+import { toBigNumber, toFlowAddress } from "@rarible/types"
+import { toFlowContractAddress } from "../index"
 import { EmulatorCollections } from "../config/config"
+import { createFlowTestEmulatorSdk } from "../test/create-flow-test-sdk"
 
 describe("Test bid on emulator", () => {
 	createFlowEmulator({})
 	const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
 
 	test("Should create RaribleNFT bid order", async () => {
-		const { address: address1, pk: pk1 } = await createEmulatorAccount("accountName1")
-		const auth1 = createTestAuth(fcl, "emulator", address1, pk1, 0)
-		const sdk1 = createFlowSdk(fcl, "emulator", {}, auth1)
-		const { address: address2, pk: pk2 } = await createEmulatorAccount("accountName2")
-		const auth2 = createTestAuth(fcl, "emulator", address2, pk2, 0)
-		const sdk2 = createFlowSdk(fcl, "emulator", {}, auth2)
+		const { sdk: sdk1 } = await createFlowTestEmulatorSdk("accountName1")
+		const { sdk: sdk2, address: address2 } = await createFlowTestEmulatorSdk("accountName2")
 		const mintTx = await sdk1.nft.mint(
 			collection,
 			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
@@ -25,7 +21,8 @@ describe("Test bid on emulator", () => {
 			collection,
 			"FLOW",
 			mintTx.tokenId,
-			toBigNumber("0.1"),
+			toBigNumber("1"),
+			[{ account: toFlowAddress(address2), value: toBigNumber("0.03") }],
 		)
 		expect(tx.status).toEqual(4)
 

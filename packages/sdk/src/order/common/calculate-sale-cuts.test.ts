@@ -32,4 +32,11 @@ describe("Calculate sale cuts for transaction", () => {
 		expect(cuts.find(a => a.account === address1)?.value).toEqual("0.025")
 		expect(cuts.find(a => a.account === address2)?.value).toEqual("0.075")
 	})
+	test("Should throw error? comissions percents to large", () => {
+		const fees: FlowFee[] = [
+			{ account: address1, value: toBigNumber("0.30") },
+			{ account: address2, value: toBigNumber("0.75") },
+		]
+		expect(() => calculateSaleCuts(FLOW_ZERO_ADDRESS, "0.1", fees)).toThrow(Error)
+	})
 })

@@ -16,6 +16,8 @@ export function calculateSaleCuts(mainPayoutAddress: FlowAddress, price: string,
 	})
 	if (mainPayout.gt(0)) {
 		resultSaleCuts.push({ account: mainPayoutAddress, value: toBigNumber(mainPayout.toString()) })
+	} else if (mainPayout.lt(0)) {
+		throw new Error("Sum of payouts greater than price")
 	}
 	return resultSaleCuts
 }
