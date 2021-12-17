@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.20-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.19...v0.5.20-alpha.0) (2021-12-17)
+
+
+### Bug Fixes
+
+* new develop branch for test envs ([8b1edfd](https://github.com/rarible/flow-sdk/commit/8b1edfd87cf32cef512480c1185015819492a458))
+* remove unused files ([9882562](https://github.com/rarible/flow-sdk/commit/9882562793657420ca05339fbb6edceeb7b333b7))
+
+
+
+
+
 ## [0.5.19](https://github.com/rarible/flow-sdk/compare/v0.5.18...v0.5.19) (2021-12-17)
 
 
