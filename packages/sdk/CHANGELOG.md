@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.21-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.20-alpha.0...v0.5.21-alpha.0) (2021-12-17)
+
+
+### Bug Fixes
+
+* devide cancel order and bid methods ([d3b3e4a](https://github.com/rarible/flow-sdk/commit/d3b3e4afa5c4b9de22220e597dc66d6e79d1e895))
+
+
+
+
+
 ## [0.5.20-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.19...v0.5.20-alpha.0) (2021-12-17)
 
 
