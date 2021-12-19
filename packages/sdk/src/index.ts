@@ -24,7 +24,7 @@ import type { FlowUpdateOrderRequest } from "./order/update-order"
 import { updateOrder as updateOrderTemplate } from "./order/update-order"
 import { CONFIGS } from "./config/config"
 import type { FlowItemId } from "./common/item"
-import type { FlowContractAddress } from "./common/flow-address/index"
+import type { FlowContractAddress } from "./common/flow-address"
 import { ENV_CONFIG } from "./config/env"
 
 export interface FlowApisSdk {
@@ -168,6 +168,7 @@ export function createFlowApisSdk(
  * Creates new instance of FlowSdk
  * @param fcl
  * @param network
+ * @param params - api configuration
  * @param auth - optional, only for testing purposes
  */
 export function createFlowSdk(
@@ -193,7 +194,7 @@ export function createFlowSdk(
 			fill: buyTemplate.bind(null, fcl, auth, blockchainNetwork, apis.order).bind(null, apis.item),
 			cancelOrder: cancelOrderTmeplate.bind(null, fcl, auth, blockchainNetwork),
 			updateOrder: updateOrderTemplate.bind(
-				null, fcl, apis.item, apis.order, auth).bind(null, blockchainNetwork,
+				null, fcl, apis.order, auth).bind(null, blockchainNetwork,
 			),
 			bid: bidTemplate.bind(null, fcl, auth, blockchainNetwork),
 			bidUpdate: bidUpdateTemplate.bind(null, fcl, auth, blockchainNetwork, apis.order),

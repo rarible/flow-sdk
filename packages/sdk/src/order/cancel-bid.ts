@@ -3,7 +3,7 @@ import type { Maybe } from "@rarible/types/build/maybe"
 import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getCollectionConfig } from "../common/collection/get-config"
-import { getBidCode } from "../tx-code-store/order/bid"
+import { getBidCode } from "../tx-code-store/order/rarible-open-bid"
 import type { FlowContractAddress } from "../common/flow-address"
 
 export async function cancelBid(

@@ -1,9 +1,12 @@
 import type { Fcl } from "@rarible/fcl-types"
 import t from "@onflow/types"
 import { openBidCommon, StorefrontCommon } from "@rarible/flow-sdk-scripts"
+import { toBigNumber, toFlowAddress } from "@rarible/types"
 import { runScript } from "../common/transaction"
-import type { FlowCurrency, FlowNetwork } from "../types"
+import type { FlowCurrency, FlowFee, FlowNetwork } from "../types"
 import { CONFIGS } from "../config/config"
+
+type FlowSaleCuts = { receiver: { address: string }, amount: string }
 
 type FlowOrderDetails = {
 	storefrontID: number
@@ -12,8 +15,8 @@ type FlowOrderDetails = {
 	nftID: number
 	salePaymentVaultType: string//'A.0ae53cb6e3f42a79.FlowToken.Vault',
 	salePrice: string //'0.10000000',
+	saleCuts: FlowFee[]
 	currency: FlowCurrency
-	saleCuts: { receiver: object, amount: string }[]
 }
 
 export async function getOrderDetailsFromBlockchain(
@@ -54,11 +57,19 @@ export async function getOrderDetailsFromBlockchain(
 		case "FlowToken":
 			return {
 				...details,
+				saleCuts: ("saleCuts" in details ? details.saleCuts : details.cuts).map((s: FlowSaleCuts) => ({
+					account: toFlowAddress(s.receiver.address),
+					value: toBigNumber(s.amount),
+				})),
 				currency: "FLOW",
 			}
 		case "FUSD":
 			return {
 				...details,
+				saleCuts: ("saleCuts" in details ? details.saleCuts : details.cuts).map((s: FlowSaleCuts) => ({
+					account: toFlowAddress(s.receiver.address),
+					value: toBigNumber(s.amount),
+				})),
 				currency: "FUSD",
 			}
 		default:

@@ -2,7 +2,7 @@ import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { BigNumber } from "@rarible/types"
 import { toFlowAddress } from "@rarible/types"
-import type { FlowNftItemControllerApi, FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
+import type { FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getCollectionConfig } from "../common/collection/get-config"
@@ -10,11 +10,10 @@ import { checkPrice } from "../common/check-price"
 import { parseEvents } from "../common/parse-tx-events"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCode } from "../tx-code-store/order/storefront"
-import { fixAmount } from "../common/fix-amount"
+import { getOrderDetailsFromBlockchain } from "../test/get-order-details-from-blockchain"
 import { getPreparedOrder } from "./common/get-prepared-order"
 import type { FlowSellResponse } from "./sell"
-import { getProtocolFee } from "./get-protocol-fee"
-import { calculateSaleCuts } from "./common/calculate-sale-cuts"
+import { calculateUpdateOrderSaleCuts } from "./common/calculate-update-order-sale-cuts"
 
 export type FlowUpdateOrderRequest = {
 	collection: FlowContractAddress,
@@ -25,7 +24,6 @@ export type FlowUpdateOrderRequest = {
 
 export async function updateOrder(
 	fcl: Maybe<Fcl>,
-	itemApi: FlowNftItemControllerApi,
 	orderApi: FlowOrderControllerApi,
 	auth: AuthWithPrivateKey,
 	network: FlowNetwork,
@@ -41,22 +39,18 @@ export async function updateOrder(
 		const preparedOrder = await getPreparedOrder(orderApi, order)
 		const { name, map } = getCollectionConfig(network, collection)
 
-		const { royalties } = network === "emulator" ?
-			{ royalties: [] } : await itemApi.getNftItemById({ itemId: preparedOrder.itemId })
+		const orderSaleCuts = await getOrderDetailsFromBlockchain(fcl, network, "sell", from, preparedOrder.id)
 		const txId = await runTransaction(
 			fcl,
 			map,
 			getOrderCode(fcl, name).update(
 				currency,
 				preparedOrder.id,
-				calculateSaleCuts(
-					from,
-					fixAmount(sellItemPrice), [
-						...(preparedOrder.data.payouts || []),
-						getProtocolFee.percents(network).sellerFee,
-						...(preparedOrder.data.originalFees || []),
-						...(royalties || []),
-					]),
+				calculateUpdateOrderSaleCuts(
+					preparedOrder.make.value,
+					request.sellItemPrice,
+					orderSaleCuts.saleCuts,
+				),
 			),
 			auth,
 		)

@@ -4,10 +4,10 @@ import { toBigNumber } from "@rarible/types"
 import type { FlowFee } from "../../types"
 
 export function calculateSaleCuts(mainPayoutAddress: FlowAddress, price: string, fees: FlowFee[]): FlowFee[] {
-	const startPrise = toBn(price)
+	const startPrice = toBn(price)
 	let mainPayout = toBn(price)
 	const resultSaleCuts: FlowFee[] = fees.map(fee => {
-		const value = startPrise.multipliedBy(toBn(fee.value))
+		const value = startPrice.multipliedBy(toBn(fee.value))
 		mainPayout = mainPayout.minus(value)
 		return {
 			...fee,
