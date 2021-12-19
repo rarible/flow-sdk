@@ -18,7 +18,7 @@ import { createEvolutionTestEnvironment, getEvolutionIds } from "../../test/evol
 import { toFlowItemId } from "../../common/item"
 import { createTopShotTestEnvironment, getTopShotIds } from "../../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../../test/moto-gp-card"
-import { getOrderDetailsFromBlockchain } from "../../test/get-order-details-from-blockchain"
+import { getOrderDetailsFromBlockchain } from "../common/get-order-details-from-blockchain"
 import { getTestOrderTmplate } from "../../test/order-template"
 import { createMugenArtTestEnvironment, getMugenArtIds } from "../../test/mugen-art"
 

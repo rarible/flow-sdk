@@ -1,10 +1,10 @@
 import type { Fcl } from "@rarible/fcl-types"
-import t from "@onflow/types"
 import { openBidCommon, StorefrontCommon } from "@rarible/flow-sdk-scripts"
+import * as t from "@onflow/types"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
-import { runScript } from "../common/transaction"
-import type { FlowCurrency, FlowFee, FlowNetwork } from "../types"
-import { CONFIGS } from "../config/config"
+import { runScript } from "../../common/transaction"
+import type { FlowCurrency, FlowFee, FlowNetwork } from "../../types"
+import { CONFIGS } from "../../config/config"
 
 type FlowSaleCuts = { receiver: { address: string }, amount: string }
 
