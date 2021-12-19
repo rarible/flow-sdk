@@ -5,6 +5,6 @@ import { fixAmount } from "./fix-amount"
 export function checkPrice(price: string): void {
 	const fixedPrice = fixAmount(price)
 	if (toBn(fixedPrice).lt(toBn(MIN_ORDER_PRICE))) {
-		throw new Error(`Invalid price, minimal value is ${0.0001}`)
+		throw new Error(`Invalid price, minimal value is ${MIN_ORDER_PRICE}`)
 	}
 }
