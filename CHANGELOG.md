@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.21](https://github.com/rarible/flow-sdk/compare/v0.5.21-alpha.0...v0.5.21) (2021-12-19)
+
+
+### Bug Fixes
+
+* fix sale cuts calculation on order update ([6dd6be9](https://github.com/rarible/flow-sdk/commit/6dd6be9010d6f3c99be34a61e99bc3cc43e4e637))
+
+
+
+
+
 ## [0.5.21-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.20-alpha.0...v0.5.21-alpha.0) (2021-12-17)
 
 
