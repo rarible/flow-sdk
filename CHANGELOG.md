@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.22](https://github.com/rarible/flow-sdk/compare/v0.5.21...v0.5.22) (2021-12-19)
+
+
+### Bug Fixes
+
+* decimal places ([57d2f44](https://github.com/rarible/flow-sdk/commit/57d2f4478ab58e59064ded355b481a0b58300443))
+* decimal places ([b19b92e](https://github.com/rarible/flow-sdk/commit/b19b92ec86952725edf4434c70ccd63d99161704))
+* fix onflow/types import ([9cb3ab8](https://github.com/rarible/flow-sdk/commit/9cb3ab835d75958cd1cae27e95dc7f2b17a8be2b))
+
+
+
+
+
 ## [0.5.21](https://github.com/rarible/flow-sdk/compare/v0.5.21-alpha.0...v0.5.21) (2021-12-19)
 
 
