@@ -11,11 +11,11 @@ export function calculateSaleCuts(mainPayoutAddress: FlowAddress, price: string,
 		mainPayout = mainPayout.minus(value)
 		return {
 			...fee,
-			value: toBigNumber(value.decimalPlaces(0).toString()),
+			value: toBigNumber(value.decimalPlaces(8).toString()),
 		}
 	})
 	if (mainPayout.gt(0)) {
-		resultSaleCuts.push({ account: mainPayoutAddress, value: toBigNumber(mainPayout.decimalPlaces(0).toString()) })
+		resultSaleCuts.push({ account: mainPayoutAddress, value: toBigNumber(mainPayout.decimalPlaces(8).toString()) })
 	} else if (mainPayout.lt(0)) {
 		throw new Error("Sum of payouts greater than price")
 	}
