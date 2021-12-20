@@ -22,6 +22,22 @@ describe("Calculate sale cuts for transaction", () => {
 		expect(cuts.find(a => a.account === address4)?.value).toEqual("0.02")
 		expect(cuts.find(a => a.account === FLOW_ZERO_ADDRESS)?.value).toEqual("0.0625")
 	})
+	test("Should convert price and fees to fess in currency and concat duplicates", () => {
+		const fees: FlowFee[] = [
+			{ account: address1, value: toBigNumber("0.1") },
+			{ account: address2, value: toBigNumber("0.05") },
+			{ account: address1, value: toBigNumber("0.025") },
+			{ account: address4, value: toBigNumber("0.2") },
+		]
+		const cuts = calculateSaleCuts(FLOW_ZERO_ADDRESS, "0.1", fees)
+		console.log(cuts)
+		expect(cuts.length).toEqual(4)
+		expect(cuts.find(a => a.account === address1)?.value).toEqual("0.0125")
+		expect(cuts.find(a => a.account === address2)?.value).toEqual("0.005")
+		expect(cuts.find(a => a.account === address4)?.value).toEqual("0.02")
+		expect(cuts.find(a => a.account === FLOW_ZERO_ADDRESS)?.value).toEqual("0.0625")
+	})
+
 	test("Should convert price and fees to fess in currency mainPayout 0", () => {
 		const fees: FlowFee[] = [
 			{ account: address1, value: toBigNumber("0.25") },
