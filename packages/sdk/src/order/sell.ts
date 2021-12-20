@@ -63,12 +63,14 @@ export async function sell(
 				extractTokenId(itemId),
 				calculateSaleCuts(
 					from,
-					fixAmount(sellItemPrice), [
-						...(payouts || []),
+					fixAmount(sellItemPrice),
+					[
 						getProtocolFee.percents(network).sellerFee,
 						...(originFees || []),
 						...(item.royalties || []),
-					]),
+					],
+					[...(payouts || [])],
+				),
 			),
 			auth,
 		)
