@@ -2,12 +2,12 @@ import type { FlowNetwork } from "../types"
 
 export type FlowEnv = "mainnet" | "dev" | "staging" | "emulator"
 
-type FlowEnvConfig = {
+export type FlowEnvConfig = Record<FlowEnv, {
 	basePath: string
 	network: FlowNetwork
-}
+}>
 
-export const ENV_CONFIG: Record<FlowEnv, FlowEnvConfig> = {
+export const ENV_CONFIG: FlowEnvConfig = {
 	emulator: {
 		basePath: "",
 		network: "emulator",

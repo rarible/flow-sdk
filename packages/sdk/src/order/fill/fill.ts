@@ -18,6 +18,7 @@ import { calculateFees } from "../../common/calculate-fees"
 import type { FlowContractAddress } from "../../common/flow-address"
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import { getOrderCode } from "../../tx-code-store/order/storefront"
+import { CONFIGS } from "../../config/config"
 import { fillBidOrder } from "./fill-bid-order"
 
 export type FlowOrderType = "LIST" | "BID"
@@ -33,7 +34,7 @@ export async function fill(
 	currency: FlowCurrency,
 	order: number | FlowOrder,
 	owner: FlowAddress,
-	originFee: FlowOriginFees,
+	originFee?: FlowOriginFees,
 ): Promise<FlowTransaction> {
 	if (fcl) {
 
@@ -45,10 +46,16 @@ export async function fill(
 		const { name, map } = getCollectionConfig(network, collection)
 		switch (preparedOrder.type) {
 			case "LIST":
-				const fees = calculateFees(preparedOrder.take.value, [
-					...(originFee || []),
-					getProtocolFee.percents(network).buyerFee,
-				])
+				const fees: FlowFee[] = []
+				if (
+					preparedOrder.id > CONFIGS[network].lastWithHardcodedOriginalFeesOrderNum &&
+					!["RaribleNFT", "Evolution", "MotoGPCard", "TopShot"].includes(name)
+				) {
+					fees.concat(calculateFees(preparedOrder.take.value, [
+						...(originFee || []),
+						getProtocolFee.percents(network).buyerFee,
+					]))
+				}
 				const txId = await runTransaction(
 					fcl,
 					map,
@@ -78,7 +85,7 @@ export async function fill(
 				 */
 				const includedFees: FlowFee[] = [
 					...filteredPayouts,
-					...originFee,
+					...(originFee || []),
 					...royalties,
 					protocolFee.sellerFee,
 				]
