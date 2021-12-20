@@ -30,7 +30,6 @@ describe("Calculate sale cuts for transaction", () => {
 			{ account: address4, value: toBigNumber("0.2") },
 		]
 		const cuts = calculateSaleCuts(FLOW_ZERO_ADDRESS, "0.1", fees)
-		console.log(cuts)
 		expect(cuts.length).toEqual(4)
 		expect(cuts.find(a => a.account === address1)?.value).toEqual("0.0125")
 		expect(cuts.find(a => a.account === address2)?.value).toEqual("0.005")

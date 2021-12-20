@@ -47,7 +47,7 @@ export async function updateOrder(
 				currency,
 				preparedOrder.id,
 				calculateUpdateOrderSaleCuts(
-					preparedOrder.make.value,
+					preparedOrder.take.value,
 					request.sellItemPrice,
 					orderSaleCuts.saleCuts,
 				),
