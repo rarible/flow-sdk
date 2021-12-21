@@ -14,9 +14,12 @@ export async function burn(
 	tokenId: number,
 ): Promise<FlowTransaction> {
 	if (fcl) {
-		const { map, name } = getCollectionConfig(network, collection)
-		const txId = await runTransaction(fcl, map, getNftCode(name).burn(fcl, tokenId), auth)
-		return waitForSeal(fcl, txId)
+		const { config, map, name } = getCollectionConfig(network, collection)
+		if (config.features.includes("BURN")) {
+			const txId = await runTransaction(fcl, map, getNftCode(name).burn(fcl, tokenId), auth)
+			return waitForSeal(fcl, txId)
+		}
+		throw new Error("This collection doesn't support 'burn' action")
 	}
-	throw new Error("Fcl is required for mint")
+	throw new Error("Fcl is required for burn")
 }

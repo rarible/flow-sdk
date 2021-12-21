@@ -2,10 +2,9 @@ import type { BigNumber, FlowAddress } from "@rarible/types"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import type { FlowContractAddressName } from "../common/flow-address"
 import type { FlowContractName, FlowFee, FlowNetwork } from "../types"
-import { blocktoWallet } from "./network"
 
 export const MIN_ORDER_PRICE = "0.0001"
-
+export type FlowNftFeatures = "MINT" | "BURN" | "TRANSFER"
 export type FlowConfigData = {
 	/**
 	 * additional contracts deployed in main collection
@@ -14,33 +13,33 @@ export type FlowConfigData = {
 	/**
 	 * is mint/burn/transfer avaliable in collection
 	 */
-	mintable: boolean
+	features: FlowNftFeatures[]
 }
 
 export const flowCollectionsConfig: Record<string, FlowConfigData> = {
 	RaribleNFT: {
 		contractsNames: ["RaribleOrder", "RaribleNFT", "LicensedNFT", "RaribleFee"] as FlowContractAddressName[],
-		mintable: true,
+		features: ["MINT", "TRANSFER", "BURN"],
 	},
 	MotoGPCard: {
 		contractsNames: ["MotoGPCard"] as FlowContractAddressName[],
-		mintable: false,
+		features: ["TRANSFER", "BURN"],
 	},
 	Evolution: {
 		contractsNames: ["Evolution"] as FlowContractAddressName[],
-		mintable: false,
+		features: ["TRANSFER", "BURN"],
 	},
 	TopShot: {
 		contractsNames: ["TopShot"] as FlowContractAddressName[],
-		mintable: false,
+		features: ["TRANSFER", "BURN"],
 	},
 	MugenNFT: {
 		contractsNames: ["MugenNFT"] as FlowContractAddressName[],
-		mintable: false,
+		features: ["TRANSFER"],
 	},
 	CNN_NFT: {
 		contractsNames: ["CNN_NFT"] as FlowContractAddressName[],
-		mintable: false,
+		features: ["TRANSFER", "BURN"],
 	},
 }
 
@@ -55,10 +54,7 @@ const PROTOCOL_FEE: BigNumber = toBigNumber("50")
 // todo move contracts address to fcl.config aliases  if it's possible
 export const CONFIGS: Record<FlowNetwork, Config> = {
 	emulator: {
-		flowApiBasePath: "127.0.0.1:3569",
-		walletDiscovery: "",
-		accessNode: "127.0.0.1:3569",
-		challengeHandshake: "",
+		lastWithHardcodedOriginalFeesOrderNum: -1,
 		protocolFee: { account: EMULATOR_ADDRESS, value: PROTOCOL_FEE },
 		mainAddressMap: {
 			NonFungibleToken: EMULATOR_ADDRESS,
@@ -80,11 +76,8 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 		},
 	},
 	testnet: {
-		flowApiBasePath: "https://flow-api-dev.rarible.com",
+		lastWithHardcodedOriginalFeesOrderNum: 23805857,
 		protocolFee: { account: TESTNET_RARIBLE_ADDRESS, value: PROTOCOL_FEE },
-		walletDiscovery: "",
-		accessNode: blocktoWallet.testnet.accessNode,
-		challengeHandshake: blocktoWallet.testnet.wallet,
 		mainAddressMap: {
 			NonFungibleToken: toFlowAddress("0x631e88ae7f1d7c20"),
 			FungibleToken: toFlowAddress("0x9a0766d93b6608b7"),
@@ -105,10 +98,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 		},
 	},
 	mainnet: {
-		flowApiBasePath: "https://flow-api.rarible.com",
-		walletDiscovery: "",
-		accessNode: blocktoWallet.mainnet.accessNode,
-		challengeHandshake: blocktoWallet.mainnet.wallet,
+		lastWithHardcodedOriginalFeesOrderNum: 102307310,
 		protocolFee: { account: toFlowAddress("0x7f599d6dd7fd7e7b"), value: PROTOCOL_FEE },
 		mainAddressMap: {
 			NonFungibleToken: toFlowAddress("0x1d7e57aa55817448"),
@@ -132,11 +122,8 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 }
 
 type Config = {
-	flowApiBasePath: string
-	walletDiscovery: string
-	accessNode: string
-	challengeHandshake: string
 	protocolFee: FlowFee,
+	lastWithHardcodedOriginalFeesOrderNum: number
 	mainAddressMap: Record<FlowContractName, FlowAddress>
 }
 

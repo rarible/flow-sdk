@@ -15,13 +15,16 @@ export async function transfer(
 	to: string,
 ): Promise<FlowTransaction> {
 	if (fcl) {
-		const { map, name } = getCollectionConfig(network, collection)
-		const checkReceiver = await runScript(fcl, getNftCode(name).check(fcl, to), map)
-		if (checkReceiver) {
-			const txId = await runTransaction(fcl, map, getNftCode(name).transfer(fcl, tokenId, to), auth)
-			return await waitForSeal(fcl, txId)
+		const { config, map, name } = getCollectionConfig(network, collection)
+		if (config.features.includes("TRANSFER")) {
+			const checkReceiver = await runScript(fcl, getNftCode(name).check(fcl, to), map)
+			if (checkReceiver) {
+				const txId = await runTransaction(fcl, map, getNftCode(name).transfer(fcl, tokenId, to), auth)
+				return await waitForSeal(fcl, txId)
+			}
+			throw new Error("The recipient has't yet initialized this collection on their account, and can't receive NFT from this collection")
 		}
-		throw new Error("The recipient has't yet initialized this collection on their account, and can't receive NFT from this collection")
+		throw new Error("This collection doesn't support 'transfer' action")
 	}
 	throw new Error("Fcl is required for transfer")
 }
