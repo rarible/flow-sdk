@@ -13,7 +13,7 @@ export async function setupAccount(
 	collection: FlowContractAddress,
 ): Promise<FlowTransaction> {
 	if (!fcl) {
-		throw new Error("Fcl is required for mint")
+		throw new Error("Fcl is required for setup collection on account")
 	}
 	const { map, name } = getCollectionConfig(
 		network,

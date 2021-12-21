@@ -40,20 +40,6 @@ export const runTransaction = async (
 	return tx.transactionId
 }
 
-type TxEvent = {
-	data: any,
-	type: string
-}
-
-export type TxResult = {
-	error: boolean,
-	txId: string,
-	events: TxEvent[]
-	errorMessage?: string,
-	status?: number
-	statusCode?: number
-}
-
 export const waitForSeal = async (fcl: Fcl, txId: string): Promise<FlowTransaction> => {
 	const sealed = await fcl.tx(txId).onceSealed()
 	return {

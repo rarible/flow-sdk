@@ -90,7 +90,7 @@ const {
 // price must be a string of flow fungible token amount with 8 decimals,  for example: 1.123 or 0.1 or 0.00000001
 ```
 
-#### Update order order
+#### Update order
 
 ```typescript
 const {

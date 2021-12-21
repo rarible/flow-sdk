@@ -1,57 +1,5 @@
 import type { FlowContractName, FungibleContracts, NonFungibleContracts } from "../types"
 
-export const orderCodeConfig: Record<string, {
-	nftProviderPath: string
-	collectionPath: string
-	collectionPublicPath: string
-	nftReceiver: string
-	linkArg: string
-}> = {
-	TopShot: {
-		nftProviderPath: "TopShotProviderForNFTStorefront",
-		collectionPath: "/storage/MomentCollection",
-		collectionPublicPath: "/public/MomentCollection",
-		nftReceiver: "&{TopShot.MomentCollectionPublic}",
-		linkArg: "{TopShot.MomentCollectionPublic}",
-
-	},
-	Evolution: {
-		nftProviderPath: "EvolutionProviderForNFTStorefront",
-		collectionPath: "/storage/f4264ac8f3256818_Evolution_Collection",
-		collectionPublicPath: "/public/f4264ac8f3256818_Evolution_Collection",
-		nftReceiver: "&{Evolution.EvolutionCollectionPublic}",
-		linkArg: "{Evolution.EvolutionCollectionPublic}",
-	},
-	MotoGPCard: {
-		nftProviderPath: "MotoGPCardProviderForNFTStorefront",
-		collectionPath: "/storage/motogpCardCollection",
-		collectionPublicPath: "/public/motogpCardCollection",
-		nftReceiver: "&MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}",
-		linkArg: "MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}",
-	},
-	RaribleNFT: {
-		nftProviderPath: "RaribleNFTProviderForNFTStorefront",
-		collectionPath: "RaribleNFT.collectionStoragePath",
-		collectionPublicPath: "RaribleNFT.collectionPublicPath",
-		nftReceiver: "&{NonFungibleToken.Receiver}",
-		linkArg: "{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver}",
-	},
-	MugenNFT: {
-		nftProviderPath: "MugenNFTProviderForNFTStorefront",
-		collectionPath: "MugenNFT.CollectionStoragePath",
-		collectionPublicPath: "MugenNFT.CollectionPublicPath",
-		nftReceiver: "&{NonFungibleToken.CollectionPublic}",
-		linkArg: "{NonFungibleToken.CollectionPublic}",
-	},
-	CNN_NFT: {
-		nftProviderPath: "CNN_NFTProviderForNFTStorefront",
-		collectionPath: "CNN_NFT.CollectionStoragePath",
-		collectionPublicPath: "CNN_NFT.CollectionPublicPath",
-		nftReceiver: "&{NonFungibleToken.CollectionPublic}",
-		linkArg: "{NonFungibleToken.CollectionPublic}",
-	},
-}
-
 export type FtCodeConfig = Record<"@ftPublicPath" | "@ftPrivateType" | "@ftPrivatePath" | "@ftStoragePath" | "@ftContract", string>
 
 export function getFtCodeConfig(contract: FungibleContracts): FtCodeConfig {

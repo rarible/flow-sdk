@@ -19,12 +19,12 @@ import { cancelBid as cancelBidTmeplate } from "./order/cancel-bid"
 import { setupAccount as setupAccountTemplate } from "./collection/setup-account"
 import type { ProtocolFees } from "./order/get-protocol-fee"
 import { getProtocolFee as getProtocolFeeUpdateTemplate } from "./order/get-protocol-fee"
-import type { AuthWithPrivateKey, FlowCurrency, FlowEnv, FlowNetwork, FlowOriginFees, FlowTransaction } from "./types"
+import type { AuthWithPrivateKey, FlowCurrency, FlowEnv, FlowOriginFees, FlowTransaction } from "./types"
 import type { FlowUpdateOrderRequest } from "./order/update-order"
 import { updateOrder as updateOrderTemplate } from "./order/update-order"
-import { CONFIGS } from "./config/config"
 import type { FlowItemId } from "./common/item"
 import type { FlowContractAddress } from "./common/flow-address"
+import type { FlowEnvConfig } from "./config/env"
 import { ENV_CONFIG } from "./config/env"
 
 export interface FlowApisSdk {
@@ -148,12 +148,11 @@ export interface FlowSdk {
 }
 
 export function createFlowApisSdk(
-	env: FlowNetwork,
+	env: FlowEnv,
 	params: ConfigurationParameters = {},
 ): FlowApisSdk {
-	const config = CONFIGS[env]
 	const configuration = new ApiClient.Configuration({
-		basePath: config.flowApiBasePath,
+		basePath: ENV_CONFIG[env].basePath,
 		...params,
 	})
 	return {
@@ -178,10 +177,7 @@ export function createFlowSdk(
 	auth?: AuthWithPrivateKey,
 ): FlowSdk {
 	const blockchainNetwork = ENV_CONFIG[network].network
-	const apis = createFlowApisSdk(
-		blockchainNetwork,
-		{ basePath: ENV_CONFIG[network].basePath, ...params },
-	)
+	const apis = createFlowApisSdk(network, params)
 	return {
 		apis,
 		nft: {
@@ -217,3 +213,6 @@ export { toFlowItemId, isFlowItemId } from "./common/item/index"
 export type { FlowItemId } from "./common/item/index"
 export type { FlowContractAddress } from "./common/flow-address/index"
 export { toFlowContractAddress, isFlowContractAddress } from "./common/flow-address/index"
+export type { FlowEnv } from "./config/env"
+export const FLOW_ENV_CONFIG: FlowEnvConfig = ENV_CONFIG
+export { FlowOrder } from "@rarible/flow-api-client"
