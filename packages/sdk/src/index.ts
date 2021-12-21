@@ -215,3 +215,4 @@ export type { FlowContractAddress } from "./common/flow-address/index"
 export { toFlowContractAddress, isFlowContractAddress } from "./common/flow-address/index"
 export type { FlowEnv } from "./config/env"
 export const FLOW_ENV_CONFIG: FlowEnvConfig = ENV_CONFIG
+export { FlowOrder } from "@rarible/flow-api-client"

@@ -4,7 +4,7 @@ import type { FlowContractAddressName } from "../common/flow-address"
 import type { FlowContractName, FlowFee, FlowNetwork } from "../types"
 
 export const MIN_ORDER_PRICE = "0.0001"
-
+export type FlowNftFeatures = "MINT" | "BURN" | "TRANSFER"
 export type FlowConfigData = {
 	/**
 	 * additional contracts deployed in main collection
@@ -13,33 +13,33 @@ export type FlowConfigData = {
 	/**
 	 * is mint/burn/transfer avaliable in collection
 	 */
-	mintable: boolean
+	features: FlowNftFeatures[]
 }
 
 export const flowCollectionsConfig: Record<string, FlowConfigData> = {
 	RaribleNFT: {
 		contractsNames: ["RaribleOrder", "RaribleNFT", "LicensedNFT", "RaribleFee"] as FlowContractAddressName[],
-		mintable: true,
+		features: ["MINT", "TRANSFER", "BURN"],
 	},
 	MotoGPCard: {
 		contractsNames: ["MotoGPCard"] as FlowContractAddressName[],
-		mintable: false,
+		features: ["TRANSFER", "BURN"],
 	},
 	Evolution: {
 		contractsNames: ["Evolution"] as FlowContractAddressName[],
-		mintable: false,
+		features: ["TRANSFER", "BURN"],
 	},
 	TopShot: {
 		contractsNames: ["TopShot"] as FlowContractAddressName[],
-		mintable: false,
+		features: ["TRANSFER", "BURN"],
 	},
 	MugenNFT: {
 		contractsNames: ["MugenNFT"] as FlowContractAddressName[],
-		mintable: false,
+		features: ["TRANSFER"],
 	},
 	CNN_NFT: {
 		contractsNames: ["CNN_NFT"] as FlowContractAddressName[],
-		mintable: false,
+		features: ["TRANSFER", "BURN"],
 	},
 }
 
@@ -54,7 +54,7 @@ const PROTOCOL_FEE: BigNumber = toBigNumber("50")
 // todo move contracts address to fcl.config aliases  if it's possible
 export const CONFIGS: Record<FlowNetwork, Config> = {
 	emulator: {
-		lastWithHardcodedOriginalFeesOrderNum: 999999999999,
+		lastWithHardcodedOriginalFeesOrderNum: -1,
 		protocolFee: { account: EMULATOR_ADDRESS, value: PROTOCOL_FEE },
 		mainAddressMap: {
 			NonFungibleToken: EMULATOR_ADDRESS,
@@ -76,7 +76,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 		},
 	},
 	testnet: {
-		lastWithHardcodedOriginalFeesOrderNum: 999999999999,
+		lastWithHardcodedOriginalFeesOrderNum: 23805857,
 		protocolFee: { account: TESTNET_RARIBLE_ADDRESS, value: PROTOCOL_FEE },
 		mainAddressMap: {
 			NonFungibleToken: toFlowAddress("0x631e88ae7f1d7c20"),
@@ -98,7 +98,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 		},
 	},
 	mainnet: {
-		lastWithHardcodedOriginalFeesOrderNum: 999999999999,
+		lastWithHardcodedOriginalFeesOrderNum: 102307310,
 		protocolFee: { account: toFlowAddress("0x7f599d6dd7fd7e7b"), value: PROTOCOL_FEE },
 		mainAddressMap: {
 			NonFungibleToken: toFlowAddress("0x1d7e57aa55817448"),

@@ -28,7 +28,7 @@ export async function mint(
 		network,
 		collection,
 	)
-	if (config.mintable) {
+	if (config.features.includes("MINT")) {
 		const txId = await runTransaction(
 			fcl,
 			map,
