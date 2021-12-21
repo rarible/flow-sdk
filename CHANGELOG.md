@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.27](https://github.com/rarible/flow-sdk/compare/v0.5.26...v0.5.27) (2021-12-21)
+
+
+### Bug Fixes
+
+* royalty validator ([ef86cef](https://github.com/rarible/flow-sdk/commit/ef86cef334a82b6a9313dab1912952170b701583))
+
+
+
+
+
 ## [0.5.26](https://github.com/rarible/flow-sdk/compare/v0.5.25...v0.5.26) (2021-12-21)
 
 
