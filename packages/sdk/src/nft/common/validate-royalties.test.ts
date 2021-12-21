@@ -32,4 +32,11 @@ describe("Validate flow royalties", () => {
 		)
 		expect(royalties).toThrow(Error)
 	})
+
+	test("Should skip emty royalties", () => {
+		const royalties = validateRoyalties(
+			[{ account: "" as FlowAddress, value: "" as BigNumber }],
+		)
+		expect(royalties.length).toEqual(0)
+	})
 })
