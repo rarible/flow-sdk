@@ -46,15 +46,16 @@ export async function fill(
 		const { name, map } = getCollectionConfig(network, collection)
 		switch (preparedOrder.type) {
 			case "LIST":
-				const fees: FlowFee[] = []
+				let fees: FlowFee[] = []
+				const terminatorNum = CONFIGS[network].lastWithHardcodedOriginalFeesOrderNum
 				if (
-					preparedOrder.id > CONFIGS[network].lastWithHardcodedOriginalFeesOrderNum &&
-					!["RaribleNFT", "Evolution", "MotoGPCard", "TopShot"].includes(name)
+					preparedOrder.id > terminatorNum ||
+					(preparedOrder.id <= terminatorNum && !["RaribleNFT", "Evolution", "MotoGPCard", "TopShot"].includes(name))
 				) {
-					fees.concat(calculateFees(preparedOrder.take.value, [
+					fees = calculateFees(preparedOrder.take.value, [
 						...(originFee || []),
 						getProtocolFee.percents(network).buyerFee,
-					]))
+					])
 				}
 				const txId = await runTransaction(
 					fcl,
