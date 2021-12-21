@@ -14,9 +14,8 @@ export async function burn(
 	tokenId: number,
 ): Promise<FlowTransaction> {
 	if (fcl) {
-		const { config } = getCollectionConfig(network, collection)
+		const { config, map, name } = getCollectionConfig(network, collection)
 		if (config.features.includes("BURN")) {
-			const { map, name } = getCollectionConfig(network, collection)
 			const txId = await runTransaction(fcl, map, getNftCode(name).burn(fcl, tokenId), auth)
 			return waitForSeal(fcl, txId)
 		}
