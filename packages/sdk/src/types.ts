@@ -25,6 +25,7 @@ export type FlowContractName =
 	| LicensedNFTType
 	| TopShotFeeType
 	| RaribleOpenBid
+	| EnglishAuction
 	| MugenNFT
 	| CNN_NFT
 
@@ -53,5 +54,6 @@ export type RaribleNFTType = "RaribleNFT"
 export type LicensedNFTType = "LicensedNFT"
 export type TopShotFeeType = "TopShotFee"
 export type RaribleOpenBid = "RaribleOpenBid"
+export type EnglishAuction = "EnglishAuction"
 export type MugenNFT = "MugenNFT"
 export type CNN_NFT = "CNN_NFT"

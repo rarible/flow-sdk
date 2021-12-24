@@ -1,0 +1,95 @@
+import type { Fcl, FclArgs } from "@rarible/fcl-types"
+import * as t from "@onflow/types"
+import { englishAuctionTxCode } from "@rarible/flow-sdk-scripts"
+import type { FlowCollectionName } from "../../common/collection"
+import { flowCollections } from "../../common/collection"
+import type { FlowCurrency, FlowFee } from "../../types"
+import { prepareFees } from "../common/conver-fee-to-cadence"
+import { prepareOrderCode } from "../order/prepare-order-code"
+import { fixAmount } from "../../common/fix-amount"
+
+type NftCodeReturnData = {
+	cadence: string
+	args?: ReturnType<FclArgs>
+}
+
+interface GetEnglishAuctionCode {
+	createLot(
+		tokenId: number,
+		minimumBid: string,
+		buyoutPrice: string,
+		increment: string,
+		startAt: string,
+		duration: string,
+		parts: FlowFee[],
+	): NftCodeReturnData
+
+	cancelLot(lotId: number): NftCodeReturnData
+
+	completeLot(lotId: number): NftCodeReturnData
+
+	createBid(lotId: number, amount: string, parts: FlowFee[]): NftCodeReturnData
+
+	increaseBid(lotId: number, amount: string): NftCodeReturnData
+}
+
+export function getEnglishAuctionCode(
+	fcl: Fcl, name: FlowCollectionName, currency: FlowCurrency,
+): GetEnglishAuctionCode {
+	if (flowCollections.includes(name)) {
+		return {
+			createLot: (tokenId, minimumBid, buyoutPrice, increment, startAt, duration, parts) => {
+				return {
+					cadence: prepareOrderCode(englishAuctionTxCode.addLot, name, currency),
+					args: fcl.args([
+						fcl.arg(tokenId, t.UInt64),
+						fcl.arg(fixAmount(minimumBid), t.UFix64),
+						fcl.arg(fixAmount(buyoutPrice), t.UFix64),
+						fcl.arg(fixAmount(increment), t.UFix64),
+						fcl.arg(fixAmount(startAt), t.UFix64),
+						fcl.arg(duration, t.UFix64),
+						fcl.arg(prepareFees(parts), t.Dictionary({
+							key: t.Address,
+							value: t.UFix64,
+						})),
+					]),
+				}
+			},
+			cancelLot: (lotId) => {
+				return {
+					cadence: prepareOrderCode(englishAuctionTxCode.cancelLot, name, currency),
+					args: fcl.args([fcl.arg(lotId, t.UInt64)]),
+				}
+			},
+			completeLot: (lotId) => {
+				return {
+					cadence: prepareOrderCode(englishAuctionTxCode.addLot, name, currency),
+					args: fcl.args([fcl.arg(lotId, t.UInt64)]),
+				}
+			},
+			createBid: (lotId, amount, parts) => {
+				return {
+					cadence: prepareOrderCode(englishAuctionTxCode.addLot, name, currency),
+					args: fcl.args([
+						fcl.arg(lotId, t.UInt64),
+						fcl.arg(amount, t.UFix64),
+						fcl.arg(prepareFees(parts), t.Dictionary({
+							key: t.Address,
+							value: t.UFix64,
+						})),
+					]),
+				}
+			},
+			increaseBid: (lotId, amount) => {
+				return {
+					cadence: prepareOrderCode(englishAuctionTxCode.addLot, name, currency),
+					args: fcl.args([
+						fcl.arg(lotId, t.UInt64),
+						fcl.arg(amount, t.UFix64),
+					]),
+				}
+			},
+		}
+	}
+	throw new Error(`Flow-sdk: Unsupported collection: ${name}`)
+}

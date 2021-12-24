@@ -1,6 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
-import { toFlowAddress } from "@rarible/types"
 import type { FlowNftItemControllerApi } from "@rarible/flow-api-client"
 import type {
 	AuthWithPrivateKey,
@@ -20,6 +19,7 @@ import { retry } from "../common/retry"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCode } from "../tx-code-store/order/storefront"
 import { fixAmount } from "../common/fix-amount"
+import { getAccountAddress } from "../common/get-account-address"
 import { getProtocolFee } from "./get-protocol-fee"
 import { calculateSaleCuts } from "./common/calculate-sale-cuts"
 
@@ -46,10 +46,8 @@ export async function sell(
 	const { collection, currency, itemId, sellItemPrice, payouts, originFees } = request
 	checkPrice(sellItemPrice)
 	if (fcl) {
-		const from = auth ? toFlowAddress((await auth()).addr) : toFlowAddress((await fcl.currentUser().snapshot()).addr!)
-		if (!from) {
-			throw new Error("FLOW-SDK: Can't get current user address")
-		}
+		const from = await getAccountAddress(fcl, auth)
+
 		// condition only for tests on local emulator
 		const item = network === "emulator" ?
 			{ royalties: [] } :

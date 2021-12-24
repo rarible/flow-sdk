@@ -1,7 +1,6 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { BigNumber } from "@rarible/types"
-import { toFlowAddress } from "@rarible/types"
 import type { FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
@@ -10,6 +9,7 @@ import { checkPrice } from "../common/check-price"
 import { parseEvents } from "../common/parse-tx-events"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCode } from "../tx-code-store/order/storefront"
+import { getAccountAddress } from "../common/get-account-address"
 import { getOrderDetailsFromBlockchain } from "./common/get-order-details-from-blockchain"
 import { getPreparedOrder } from "./common/get-prepared-order"
 import type { FlowSellResponse } from "./sell"
@@ -32,10 +32,7 @@ export async function updateOrder(
 	const { collection, currency, sellItemPrice, order } = request
 	checkPrice(sellItemPrice)
 	if (fcl) {
-		const from = auth ? toFlowAddress((await auth()).addr) : toFlowAddress((await fcl.currentUser().snapshot()).addr!)
-		if (!from) {
-			throw new Error("FLOW-SDK: Can't get current user address")
-		}
+		const from = await getAccountAddress(fcl, auth)
 		const preparedOrder = await getPreparedOrder(orderApi, order)
 		const { name, map } = getCollectionConfig(network, collection)
 

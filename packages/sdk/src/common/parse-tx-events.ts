@@ -11,6 +11,7 @@ type EventNames =
 	| "MomentDestroyed"
 	| "Burn"
 	| "BidAvailable"
+	| "LotAvailable"
 
 export function parseEvents<T>(events: FlowTransaction["events"], eventName: EventNames, field: string): T {
 	const event = events.find(e => {
