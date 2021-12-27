@@ -1,4 +1,4 @@
-import type { Fcl, FclArgs } from "@rarible/fcl-types"
+import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { commonNft, RaribleNFT } from "@rarible/flow-sdk-scripts"
 import type { FlowRoyalty } from "@rarible/flow-api-client"
@@ -8,22 +8,18 @@ import { flowCollections } from "../common/collection"
 import { getNftCodeConfig } from "../config/cadence-code-config"
 import type { FlowContractName } from "../types"
 import { fillCodeTemplate } from "../common/template-replacer"
-
-type NftCodeReturnData = {
-	cadence: string
-	args?: ReturnType<FclArgs>
-}
+import type { PreparedTransactionParamsResponse } from "./domain"
 
 interface GetNftCode {
-	burn(fcl: Fcl, tokenId: number): NftCodeReturnData
+	burn(fcl: Fcl, tokenId: number): PreparedTransactionParamsResponse
 
-	transfer(fcl: Fcl, tokenId: number, to: string): NftCodeReturnData
+	transfer(fcl: Fcl, tokenId: number, to: string): PreparedTransactionParamsResponse
 
-	mint(fcl: Fcl, address: string, metadata: string, royalties: FlowRoyalty[]): NftCodeReturnData
+	mint(fcl: Fcl, address: string, metadata: string, royalties: FlowRoyalty[]): PreparedTransactionParamsResponse
 
-	check(fcl: Fcl, address: string): NftCodeReturnData
+	check(fcl: Fcl, address: string): PreparedTransactionParamsResponse
 
-	setupAccount(): NftCodeReturnData
+	setupAccount(): PreparedTransactionParamsResponse
 }
 
 export function getNftCode(name: FlowCollectionName): GetNftCode {

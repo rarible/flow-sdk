@@ -73,7 +73,7 @@ import @nftContract from address
 //
 //   lotId - log id
 //   amount - bid price
-//   parts - payouts for buyer {recipient:rate (0,1))
+//   parts - payouts for buyer {recipient>:rate (0,1))
 //
 transaction (lotId: UInt64, amount: UFix64, parts: {Address:UFix64}) {
     let vault: @FungibleToken.Vault

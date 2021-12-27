@@ -39,7 +39,7 @@ const nftCodeConfig: Record<NonFungibleContracts, Record<"@nftPublicPath" | "@nf
 	},
 	MotoGPCard: {
 		"@nftPublicPath": "/public/motogpCardCollection",
-		"@nftPublicType": "&MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}",
+		"@nftPublicType": "&{MotoGPCard.ICardCollectionPublic}",
 		"@nftStoragePath": "/storage/motogpCardCollection",
 	},
 	TopShot: {

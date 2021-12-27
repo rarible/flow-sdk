@@ -9,7 +9,7 @@ import @nftContract from address
 transaction(nftId: UInt64, price: UFix64, parts: {Address:UFix64}) {
     let openBid: &RaribleOpenBid.OpenBid
     let vault: @FungibleToken.Vault
-    let nftReceiver: Capability<&{NonFungibleToken.CollectionPublic}>
+    let nftReceiver: Capability<@nftPublicType>
     let vaultRef: Capability<@ftPrivateType>
 
     prepare(account: AuthAccount) {
@@ -138,7 +138,7 @@ transaction(bidId: UInt64, price: UFix64, parts: {Address:UFix64}) {
     let openBid: &RaribleOpenBid.OpenBid
     let bid: &RaribleOpenBid.Bid{RaribleOpenBid.BidPublic}
     let vault: @FungibleToken.Vault
-    let nftReceiver: Capability<&{NonFungibleToken.CollectionPublic}>
+    let nftReceiver: Capability<@nftPublicType>
     let vaultRef: Capability<@ftPrivateType>
 
     prepare(account: AuthAccount) {

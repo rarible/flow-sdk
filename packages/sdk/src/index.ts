@@ -28,6 +28,14 @@ import type { FlowEnvConfig } from "./config/env"
 import { ENV_CONFIG } from "./config/env"
 import type { EnglishAuctionCreateRequest } from "./auction/auction-create"
 import { createEnglishAuction } from "./auction/auction-create"
+import type { EnglishAuctionCancelRequest } from "./auction/auction-cancel"
+import { cancelEnglishAuction } from "./auction/auction-cancel"
+import type { EnglishAuctionCompleteRequest } from "./auction/auction-complete"
+import { completeEnglishAuction } from "./auction/auction-complete"
+import type { EnglishAuctionCreateBidRequest } from "./auction/bid-create"
+import { createBid } from "./auction/bid-create"
+import type { EnglishAuctionIncreaseBidRequest } from "./auction/bid-increase"
+import { increaseBid } from "./auction/bid-increase"
 
 export interface FlowApisSdk {
 	order: ApiClient.FlowOrderControllerApi
@@ -133,6 +141,14 @@ export interface FlowOrderSdk {
 
 export interface FlowEnglishAuctionSdk {
 	createLot(request: EnglishAuctionCreateRequest): Promise<FlowSellResponse>
+
+	cancelLot(request: EnglishAuctionCancelRequest): Promise<FlowTransaction>
+
+	completeLot(request: EnglishAuctionCompleteRequest): Promise<FlowTransaction>
+
+	createBid(request: EnglishAuctionCreateBidRequest): Promise<FlowTransaction>
+
+	increaseBid(request: EnglishAuctionIncreaseBidRequest): Promise<FlowTransaction>
 }
 
 export interface FlowWalletSdk {
@@ -206,6 +222,10 @@ export function createFlowSdk(
 		},
 		auction: {
 			createLot: createEnglishAuction.bind(null, fcl, auth, blockchainNetwork, apis.item),
+			cancelLot: cancelEnglishAuction.bind(null, fcl, auth, blockchainNetwork),
+			completeLot: completeEnglishAuction.bind(null, fcl, auth, blockchainNetwork),
+			createBid: createBid.bind(null, fcl, auth, blockchainNetwork),
+			increaseBid: increaseBid.bind(null, fcl, auth, blockchainNetwork),
 		},
 		wallet: {
 			getFungibleBalance: getFungibleBalance.bind(null, fcl, blockchainNetwork),

@@ -1,5 +1,5 @@
-import FungibleToken from "core/FungibleToken.cdc"
-import NonFungibleToken from "core/NonFungibleToken.cdc"
+import FungibleToken from "./core/FungibleToken.cdc"
+import NonFungibleToken from "./core/NonFungibleToken.cdc"
 
 pub contract EnglishAuction {
 
@@ -52,6 +52,12 @@ pub contract EnglishAuction {
         amount: UFix64
     )
 
+    pub event IncreaseBid(
+        lotId: UInt64,
+        bidder: Address,
+        newAmount: UFix64
+    )
+
     pub event CloseBid(
         lotId: UInt64,
         bidder: Address,
@@ -59,7 +65,7 @@ pub contract EnglishAuction {
     )
 
     // Payout
-    // A struct representing the payment to be made by the buyer or seller 
+    // A struct representing the payment to be made by the buyer or seller
     // upon the successful completion of the auction.
     pub struct Payout {
         pub var target: Capability<&{FungibleToken.Receiver}>
@@ -87,7 +93,7 @@ pub contract EnglishAuction {
         pub let price: UFix64
 
         init(
-            reward: Capability<&{NonFungibleToken.CollectionPublic}>, 
+            reward: Capability<&{NonFungibleToken.CollectionPublic}>,
             refund: Capability<&{FungibleToken.Receiver}>,
             vault: @FungibleToken.Vault,
             payouts: [Payout]
@@ -145,7 +151,7 @@ pub contract EnglishAuction {
         pub let duration: UFix64
 
         // State
-        access(self) let bids: @{Address: Bid}
+        access(contract) let bids: @{Address: Bid}
         pub var finishAt: UFix64
         pub var primaryBid: Address?
 
@@ -169,7 +175,7 @@ pub contract EnglishAuction {
                 increment >= EnglishAuction.reservePrice: "AU25: increment should be greater than reservePrice"
                 buyoutPrice == nil || buyoutPrice! >= minimumBid: "AU26: bauoutPrice should be greater than minimumBid, or nil"
             }
-            self.reward = reward 
+            self.reward = reward
             self.refund = refund
             self.item <- [<-item]
             self.bidType = bidType
@@ -205,7 +211,7 @@ pub contract EnglishAuction {
             self.refund.borrow()!.deposit(token: <- self.item.removeFirst())
             emit LotCompleted(lotId: self.uuid, bidder: nil, hammerPrice: nil, isCancelled: isCancelled)
         }
-        
+
         // rewardSeller
         //
         // send money to seller, make all payouts, can be called only when auction is finished
@@ -420,7 +426,7 @@ pub contract EnglishAuction {
             lotRef.addBid(bid: <- bid)
             // soft close
             // when a bid was placed in the last set amount of minutes,
-            // the auction automatically extends a set period of time 
+            // the auction automatically extends a set period of time
             if (timestamp + EnglishAuction.minimalDuration > lotRef.finishAt) {
                 lotRef.setFinishAt(timestamp: timestamp + EnglishAuction.minimalDuration)
             }
@@ -429,6 +435,29 @@ pub contract EnglishAuction {
                 lotRef.setFinishAt(timestamp: timestamp)
                 self.completeLot(lotId: lotId)
             }
+        }
+
+        pub fun increaseBid(
+            lotId: UInt64,
+            address: Address,
+            newVault: @FungibleToken.Vault,
+        ) {
+            let timestamp = getCurrentBlock().timestamp
+            let lotRef = self.borrowLot(lotId: lotId)
+            assert(timestamp >= lotRef.startAt, message: "AU02: The auction has not started yet")
+            assert(timestamp < lotRef.finishAt, message: "AU03: The auction is already finished")
+            assert(lotRef.primaryBid != nil, message: "AU20: Primary bid not found")
+
+            let bidRef = &lotRef.bids[lotRef.primaryBid!] as! &Bid
+            newVault.deposit(from: <- bidRef.vault.removeFirst())
+            let newPrice = newVault.balance
+            bidRef.vault.append(<- newVault)
+
+            emit IncreaseBid(
+                lotId: lotId,
+                bidder: bidRef.reward.address,
+                newAmount: newPrice,
+            )
         }
     }
 

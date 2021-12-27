@@ -7,16 +7,14 @@ import type { FlowItemId } from "../common/item"
 import { extractTokenId } from "../common/item"
 import { checkPrice } from "../common/check-price"
 import type { FlowSellResponse } from "../order/sell"
-import { getAccountAddress } from "../common/get-account-address"
 import { retry } from "../common/retry"
 import { getCollectionConfig } from "../common/collection/get-config"
 import { runTransaction, waitForSeal } from "../common/transaction"
-import { calculateSaleCuts } from "../order/common/calculate-sale-cuts"
 import { fixAmount } from "../common/fix-amount"
 import { getProtocolFee } from "../order/get-protocol-fee"
 import { parseEvents } from "../common/parse-tx-events"
 import { getEnglishAuctionCode } from "../tx-code-store/auction/english-auction"
-import { validateBatch } from "./common/data-validation/validate-batch"
+import { validateBatch } from "../common/data-validation/validate-batch"
 
 export type EnglishAuctionCreateRequest = {
 	collection: FlowContractAddress,
@@ -38,19 +36,18 @@ export async function createEnglishAuction(
 	itemApi: FlowNftItemControllerApi,
 	request: EnglishAuctionCreateRequest,
 ): Promise<FlowSellResponse> {
-	const {
-		collection, currency, itemId, minimumBid, buyoutPrice, increment, startAt, duration, originFees, payouts,
-	} = request
-	validateBatch.decimal(
-		fixAmount(minimumBid),
-		fixAmount(buyoutPrice),
-		fixAmount(increment),
-		fixAmount(startAt),
-		fixAmount(duration),
-	)
-	checkPrice(buyoutPrice)
 	if (fcl) {
-		const from = await getAccountAddress(fcl, auth)
+		const {
+			collection, currency, itemId, minimumBid, buyoutPrice, increment, startAt, duration, originFees, payouts,
+		} = request
+		validateBatch.decimal(
+			fixAmount(minimumBid),
+			fixAmount(buyoutPrice),
+			fixAmount(increment),
+			fixAmount(startAt),
+			fixAmount(duration),
+		)
+		checkPrice(buyoutPrice)
 		const { royalties } = network === "emulator" ?
 			{ royalties: [] } :
 			await retry(10, 1000, async () => itemApi.getNftItemById({ itemId }))
@@ -65,16 +62,12 @@ export async function createEnglishAuction(
 				increment,
 				startAt,
 				duration,
-				calculateSaleCuts(
-					from,
-					fixAmount(buyoutPrice),
-					[
-						getProtocolFee.percents(network).sellerFee,
-						...(originFees || []),
-						...(royalties || []),
-					],
-					[...(payouts || [])],
-				),
+				[
+					getProtocolFee.percents(network).sellerFee,
+					...(originFees || []),
+					...(royalties || []),
+					...(payouts || []),
+				],
 			),
 			auth,
 		)
@@ -85,5 +78,5 @@ export async function createEnglishAuction(
 			orderId: parseInt(simpleOrderId),
 		}
 	}
-	throw new Error("Fcl is required for creating order")
+	throw new Error("Fcl is required for creating lot")
 }
