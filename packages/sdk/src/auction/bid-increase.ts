@@ -7,6 +7,7 @@ import { runTransaction, waitForSeal } from "../common/transaction"
 import { getEnglishAuctionCode } from "../tx-code-store/auction/english-auction"
 import { fixAmount } from "../common/fix-amount"
 import { validateDecimalNumber } from "../common/data-validation/data-validators"
+import { checkPrice } from "../common/check-price"
 import { getLot } from "./common/get-lot"
 
 export type EnglishAuctionIncreaseBidRequest = {
@@ -23,6 +24,7 @@ export async function increaseBid(
 ): Promise<FlowTransaction> {
 	const { collection, lotId, amount } = request
 	validateDecimalNumber(fixAmount(amount))
+	checkPrice(amount)
 	if (fcl) {
 		const { name, map } = getCollectionConfig(network, collection)
 		const { currency } = await getLot(fcl, network, lotId)

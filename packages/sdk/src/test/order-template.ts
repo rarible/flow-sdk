@@ -15,7 +15,7 @@ export function getTestOrderTmplate(type: "sell" | "bid", orderId: number, itemI
 	}
 	const right: FlowAsset = {
 		"@type": "fungible",
-		contract: toFlowContractAddress("A.FlowToken.Fungible"),
+		contract: toFlowContractAddress("A.0x0000000000000000.FlowToken"),
 		value: price,
 	}
 	return {

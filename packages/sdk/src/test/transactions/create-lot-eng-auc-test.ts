@@ -1,5 +1,6 @@
 import type { FlowContractAddress, FlowItemId, FlowSdk } from "../../index"
 import type { FlowSellResponse } from "../../order/sell"
+import type { FlowFee } from "../../types"
 
 /**
  *
@@ -14,7 +15,9 @@ export async function createLotEngAucTest(
 	collection: FlowContractAddress,
 	itemId: FlowItemId,
 	buyoutPrice: string,
-	duration: number,
+	duration: string,
+	payouts: FlowFee[] = [],
+	originFees: FlowFee[] = [],
 ): Promise<FlowSellResponse> {
 	const startAt = ((new Date().getTime() - (10 * 1000)) / 1000).toString()
 	return sdk.auction.createLot({
@@ -25,8 +28,8 @@ export async function createLotEngAucTest(
 		buyoutPrice,
 		increment: "0.0001",
 		startAt,
-		duration: duration.toString(),
-		payouts: [],
-		originFees: [],
+		duration: duration,
+		payouts,
+		originFees,
 	})
 }

@@ -69,7 +69,7 @@ export function getEnglishAuctionCode(
 					cadence: prepareOrderCode(englishAuctionTxCode.addBid, name, currency),
 					args: fcl.args([
 						fcl.arg(lotId, t.UInt64),
-						fcl.arg(amount, t.UFix64),
+						fcl.arg(fixAmount(amount), t.UFix64),
 						fcl.arg(prepareFees(parts), t.Dictionary({
 							key: t.Address,
 							value: t.UFix64,
@@ -82,7 +82,7 @@ export function getEnglishAuctionCode(
 					cadence: prepareOrderCode(englishAuctionTxCode.incrementBid, name, currency),
 					args: fcl.args([
 						fcl.arg(lotId, t.UInt64),
-						fcl.arg(amount, t.UFix64),
+						fcl.arg(fixAmount(amount), t.UFix64),
 					]),
 				}
 			},

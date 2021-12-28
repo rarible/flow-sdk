@@ -1,4 +1,5 @@
 import { createFlowEmulator } from "@rarible/flow-test-common"
+import { toBigNumber } from "@rarible/types"
 import { toFlowContractAddress } from "../index"
 import { EmulatorCollections } from "../config/config"
 import { createFlowTestEmulatorSdk } from "../test/create-flow-test-sdk"
@@ -13,10 +14,19 @@ describe("Test English Auction on emulator", () => {
 
 	test("Should create RaribleNFT auction, cancel lot", async () => {
 		const { sdk } = await createFlowTestEmulatorSdk("acc1")
+		const { address: address1 } = await createFlowTestEmulatorSdk("acc2")
+		const { address: address2 } = await createFlowTestEmulatorSdk("acc3")
 		const mint = await mintRaribleNftTest(sdk, collection)
 
-		const tx = await createLotEngAucTest(sdk, collection, mint.tokenId, "1", 20)
-
+		const tx = await createLotEngAucTest(
+			sdk,
+			collection,
+			mint.tokenId,
+			"1",
+			"20",
+			[{ account: address1, value: toBigNumber("0.5") }],
+			[{ account: address2, value: toBigNumber("0.03") }],
+		)
 		expect(tx.orderId).toBeTruthy()
 
 		const cancelLotTx = await sdk.auction.cancelLot({ collection, lotId: tx.orderId })
@@ -29,7 +39,7 @@ describe("Test English Auction on emulator", () => {
 		const { sdk: sdk2 } = await createFlowTestEmulatorSdk("acc2")
 		const mintTx = await mintRaribleNftTest(sdk, collection)
 
-		const tx = await createLotEngAucTest(sdk, collection, mintTx.tokenId, "1", 20)
+		const tx = await createLotEngAucTest(sdk, collection, mintTx.tokenId, "1", "20")
 		expect(tx.orderId).toBeTruthy()
 
 		const bid = await sdk2.auction.createBid({ collection, lotId: tx.orderId, amount: "0.1", originFee: [] })
@@ -49,7 +59,7 @@ describe("Test English Auction on emulator", () => {
 		const { sdk: sdk2 } = await createFlowTestEmulatorSdk("acc2")
 		const mint = await mintRaribleNftTest(sdk, collection)
 
-		const tx = await createLotEngAucTest(sdk, collection, mint.tokenId, "1", 20)
+		const tx = await createLotEngAucTest(sdk, collection, mint.tokenId, "1", "20")
 		expect(tx.orderId).toBeTruthy()
 
 		const bid = await sdk2.auction.createBid({ collection, lotId: tx.orderId, amount: "0.1", originFee: [] })

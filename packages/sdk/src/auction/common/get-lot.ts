@@ -29,7 +29,7 @@ type FlowEnglishAuctionBlockchainLot = {
 			royalties: { address: string, fee: string }[]
 		}
 	],
-	payouts: { target: any, rate: string },
+	payouts: { target: any, rate: string }[],
 	bidType: string,
 	minimumBid: string,
 	buyoutPrice: string,
@@ -44,6 +44,7 @@ type FlowEnglishAuctionBlockchainLot = {
 type GetLotResponse = {
 	currency: FlowCurrency
 	royalties: FlowFee[]
+	payouts: FlowFee[]
 }
 
 export async function getLot(fcl: Fcl, network: FlowNetwork, lotId: number): Promise<GetLotResponse> {
@@ -58,8 +59,16 @@ export async function getLot(fcl: Fcl, network: FlowNetwork, lotId: number): Pro
 		}
 	})
 
+	const payouts: FlowFee[] = lot.payouts.map(p => {
+		return {
+			account: p.target,
+			value: toBigNumber(p.rate),
+		}
+	})
+
 	return {
 		currency: getCurrency(toFlowContractAddress(lot.bidType)),
 		royalties,
+		payouts,
 	}
 }

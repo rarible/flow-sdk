@@ -1,6 +1,7 @@
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { Fcl } from "@rarible/fcl-types"
 import type { FlowNftItemControllerApi } from "@rarible/flow-api-client"
+import { toBigNumber } from "@rarible/types"
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork, FlowOriginFees, FlowPayouts } from "../types"
 import type { FlowContractAddress } from "../common/flow-address"
 import type { FlowItemId } from "../common/item"
@@ -15,6 +16,8 @@ import { getProtocolFee } from "../order/get-protocol-fee"
 import { parseEvents } from "../common/parse-tx-events"
 import { getEnglishAuctionCode } from "../tx-code-store/auction/english-auction"
 import { validateBatch } from "../common/data-validation/validate-batch"
+import { calculateSaleCuts } from "../order/common/calculate-sale-cuts"
+import { getAccountAddress } from "../common/get-account-address"
 
 export type EnglishAuctionCreateRequest = {
 	collection: FlowContractAddress,
@@ -37,6 +40,7 @@ export async function createEnglishAuction(
 	request: EnglishAuctionCreateRequest,
 ): Promise<FlowSellResponse> {
 	if (fcl) {
+		const from = await getAccountAddress(fcl, auth)
 		const {
 			collection, currency, itemId, minimumBid, buyoutPrice, increment, startAt, duration, originFees, payouts,
 		} = request
@@ -48,10 +52,22 @@ export async function createEnglishAuction(
 			fixAmount(duration),
 		)
 		checkPrice(buyoutPrice)
+		checkPrice(increment)
+		checkPrice(minimumBid)
 		const { royalties } = network === "emulator" ?
 			{ royalties: [] } :
 			await retry(10, 1000, async () => itemApi.getNftItemById({ itemId }))
 		const { name, map } = getCollectionConfig(network, collection)
+		const parts = calculateSaleCuts(
+			from,
+			toBigNumber("1"),
+			[
+				getProtocolFee.percents(network).sellerFee,
+				...(originFees || []),
+				...(royalties || []),
+			],
+			payouts || []
+		)
 		const txId = await runTransaction(
 			fcl,
 			map,
@@ -62,12 +78,7 @@ export async function createEnglishAuction(
 				increment,
 				startAt,
 				duration,
-				[
-					getProtocolFee.percents(network).sellerFee,
-					...(originFees || []),
-					...(royalties || []),
-					...(payouts || []),
-				],
+				parts,
 			),
 			auth,
 		)

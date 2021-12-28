@@ -8,6 +8,8 @@ import { getEnglishAuctionCode } from "../tx-code-store/auction/english-auction"
 import { fixAmount } from "../common/fix-amount"
 import { getProtocolFee } from "../order/get-protocol-fee"
 import { validateDecimalNumber } from "../common/data-validation/data-validators"
+import { concatNonUniqueFees } from "../order/common/calculate-sale-cuts"
+import { checkPrice } from "../common/check-price"
 import { getLot } from "./common/get-lot"
 
 export type EnglishAuctionCreateBidRequest = {
@@ -25,10 +27,11 @@ export async function createBid(
 ): Promise<FlowTransaction> {
 	const { collection, lotId, amount, originFee } = request
 	validateDecimalNumber(fixAmount(amount))
+	checkPrice(amount)
 	if (fcl) {
 		const { name, map } = getCollectionConfig(network, collection)
 		const { currency } = await getLot(fcl, network, lotId)
-		const parts = [...originFee, getProtocolFee.percents(network).buyerFee]
+		const parts = concatNonUniqueFees([...originFee, getProtocolFee.percents(network).buyerFee])
 		const txId = await runTransaction(
 			fcl,
 			map,
