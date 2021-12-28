@@ -1,6 +1,6 @@
 import { createFlowEmulator } from "@rarible/flow-test-common"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
-import fcl from "@onflow/fcl"
+import * as fcl from "@onflow/fcl"
 import { toFlowContractAddress, toFlowItemId } from "../index"
 import { EmulatorCollections } from "../config/config"
 import { createFlowTestEmulatorSdk } from "../test/create-flow-test-sdk"
@@ -9,19 +9,18 @@ import { checkEvent } from "../test/check-event"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
 import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/mugen-art"
+import { mintRaribleNftTest } from "../test/transactions/mint-test"
+import { getTestOrderTmplate } from "../test/order-template"
 
 describe("Test bid on emulator", () => {
 	createFlowEmulator({})
 	const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
 
-	test("Should create RaribleNFT bid order", async () => {
+	test("Should create/update/cancel RaribleNFT bid order", async () => {
 		const { sdk: sdk1 } = await createFlowTestEmulatorSdk("accountName1")
 		const { sdk: sdk2, address: address2 } = await createFlowTestEmulatorSdk("accountName2")
-		const mintTx = await sdk1.nft.mint(
-			collection,
-			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
-			[],
-		)
+
+		const mintTx = await mintRaribleNftTest(sdk1, collection)
 
 		const tx = await sdk2.order.bid(
 			collection,
@@ -32,9 +31,17 @@ describe("Test bid on emulator", () => {
 		)
 		expect(tx.status).toEqual(4)
 
+		const order = getTestOrderTmplate("bid", tx.orderId, mintTx.tokenId, toBigNumber("1"))
+		const updateTx = await sdk2.order.bidUpdate(
+			collection, "FLOW", order, toBigNumber("2"),
+		)
+		checkEvent(updateTx, "BidAvailable", "RaribleOpenBid")
+
+		const cancelBidTx = await sdk2.order.cancelBid(collection, updateTx.orderId)
+		checkEvent(cancelBidTx, "BidCompleted", "RaribleOpenBid")
 	})
 
-	test("Should create bid order from evolution nft", async () => {
+	test.skip("Should create bid order from evolution nft", async () => {
 		const { acc1, acc2, serviceAcc } = await createEvolutionTestEnvironment(fcl)
 
 		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
@@ -49,7 +56,7 @@ describe("Test bid on emulator", () => {
 		checkEvent(bidTx, "BidAvailable", "RaribleOpenBid")
 	})
 
-	test("Should create sell order from TopShot nft", async () => {
+	test.skip("Should create sell order from TopShot nft", async () => {
 		const topShotColletion = toFlowContractAddress(EmulatorCollections.TOPSHOT)
 		const { acc1, serviceAcc } = await createTopShotTestEnvironment(fcl)
 
@@ -65,7 +72,7 @@ describe("Test bid on emulator", () => {
 		checkEvent(bidTx, "BidAvailable", "RaribleOpenBid")
 	})
 
-	test("Should create sell order from MotoCpCard nft", async () => {
+	test.skip("Should create sell order from MotoCpCard nft", async () => {
 		const motoGpColletion = toFlowContractAddress(EmulatorCollections.MOTOGP)
 		const { acc1, serviceAcc } = await createMotoGpTestEnvironment(fcl)
 
@@ -80,7 +87,7 @@ describe("Test bid on emulator", () => {
 		)
 		checkEvent(bidTx, "BidAvailable", "RaribleOpenBid")
 	})
-	test("Should create sell order from MugenArt nft", async () => {
+	test.skip("Should create sell order from MugenArt nft", async () => {
 		const mugenArtCollection = toFlowContractAddress(EmulatorCollections.MUGENNFT)
 		const { acc1, serviceAcc } = await createMugenArtTestEnvironment(fcl)
 

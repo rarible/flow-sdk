@@ -3,10 +3,9 @@ import type { FlowContractName, FungibleContracts, NonFungibleContracts } from "
 export type FtCodeConfig = Record<"@ftPublicPath" | "@ftPrivateType" | "@ftPrivatePath" | "@ftStoragePath" | "@ftContract", string>
 
 export function getFtCodeConfig(contract: FungibleContracts): FtCodeConfig {
-	const ftPrivateType = "&{FungibleToken.Provider,FungibleToken.Balance,FungibleToken.Receiver}"
 	const knownConf = {
 		"@ftContract": contract,
-		"@ftPrivateType": ftPrivateType,
+		"@ftPrivateType": "&{FungibleToken.Provider,FungibleToken.Balance,FungibleToken.Receiver}",
 		"@ftPrivatePath": `/private/${contract}_vaultRef`,
 	}
 	switch (contract) {
@@ -40,7 +39,7 @@ const nftCodeConfig: Record<NonFungibleContracts, Record<"@nftPublicPath" | "@nf
 	},
 	MotoGPCard: {
 		"@nftPublicPath": "/public/motogpCardCollection",
-		"@nftPublicType": "&MotoGPCard.Collection{MotoGPCard.ICardCollectionPublic}",
+		"@nftPublicType": "&{MotoGPCard.ICardCollectionPublic}",
 		"@nftStoragePath": "/storage/motogpCardCollection",
 	},
 	TopShot: {
