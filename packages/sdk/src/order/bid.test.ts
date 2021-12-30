@@ -41,7 +41,7 @@ describe("Test bid on emulator", () => {
 		checkEvent(cancelBidTx, "BidCompleted", "RaribleOpenBid")
 	})
 
-	test.skip("Should create bid order from evolution nft", async () => {
+	test("Should create bid order from evolution nft", async () => {
 		const { acc1, acc2, serviceAcc } = await createEvolutionTestEnvironment(fcl)
 
 		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
@@ -56,7 +56,7 @@ describe("Test bid on emulator", () => {
 		checkEvent(bidTx, "BidAvailable", "RaribleOpenBid")
 	})
 
-	test.skip("Should create sell order from TopShot nft", async () => {
+	test("Should create sell order from TopShot nft", async () => {
 		const topShotColletion = toFlowContractAddress(EmulatorCollections.TOPSHOT)
 		const { acc1, serviceAcc } = await createTopShotTestEnvironment(fcl)
 
@@ -72,7 +72,7 @@ describe("Test bid on emulator", () => {
 		checkEvent(bidTx, "BidAvailable", "RaribleOpenBid")
 	})
 
-	test.skip("Should create sell order from MotoCpCard nft", async () => {
+	test("Should create sell order from MotoCpCard nft", async () => {
 		const motoGpColletion = toFlowContractAddress(EmulatorCollections.MOTOGP)
 		const { acc1, serviceAcc } = await createMotoGpTestEnvironment(fcl)
 
@@ -87,7 +87,7 @@ describe("Test bid on emulator", () => {
 		)
 		checkEvent(bidTx, "BidAvailable", "RaribleOpenBid")
 	})
-	test.skip("Should create sell order from MugenArt nft", async () => {
+	test("Should create sell order from MugenArt nft", async () => {
 		const mugenArtCollection = toFlowContractAddress(EmulatorCollections.MUGENNFT)
 		const { acc1, serviceAcc } = await createMugenArtTestEnvironment(fcl)
 
