@@ -18,6 +18,8 @@ Quick start
 Flow-sdk use [@onflow/fcl-js](link:https://github.com/onflow/fcl-js). You can find configuration details for fcl
 in [this page](https://docs.onflow.org/fcl/tutorials/flow-app-quickstart/#configuration)
 
+TODO: update doc with new interfaces
+
 ```javascript
 //example config for testnet
 import { config } from "@onflow/fcl";
