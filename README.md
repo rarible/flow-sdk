@@ -1,6 +1,6 @@
 # Flow SDK
 
-Documentation for Flow SDK located [here](https://github.com/rarible/flow-sdk/tree/master/packages/flow-sdk)
+Documentation for Flow SDK located [here](https://github.com/rarible/flow-sdk/tree/master/packages/sdk)
 
 Install mono-repository dependencies `yarn`
 To install dependencies and add linking run `yarn bootstrap`
