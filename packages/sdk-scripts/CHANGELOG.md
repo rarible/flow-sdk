@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.29](https://github.com/rarible/flow-sdk/compare/v0.5.18...v0.5.29) (2021-12-30)
+
+
+### Bug Fixes
+
+* add readme to flow scripts ([e347129](https://github.com/rarible/flow-sdk/commit/e347129cd5f46978e6a194a80bcdfa144a950910))
+
+
+
+
+
 ## [0.5.18](https://github.com/rarible/flow-sdk/compare/v0.5.17...v0.5.18) (2021-12-16)
 
 

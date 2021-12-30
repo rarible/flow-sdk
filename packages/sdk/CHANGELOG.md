@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.29](https://github.com/rarible/flow-sdk/compare/v0.5.18...v0.5.29) (2021-12-30)
+
+
+### Bug Fixes
+
+* add todo ([a03a47d](https://github.com/rarible/flow-sdk/commit/a03a47d6c37de66bf374b41eef0494f167a8d2c3))
+
+
+
+
+
 ## [0.5.18](https://github.com/rarible/flow-sdk/compare/v0.5.17...v0.5.18) (2021-12-16)
 
 
