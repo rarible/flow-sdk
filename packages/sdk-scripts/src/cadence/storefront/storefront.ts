@@ -3,12 +3,12 @@ export const Storefront = {
 	import FungibleToken from address
 import NonFungibleToken from address
 import NFTStorefront from address
-import @ftContract from address
-import @nftContract from address
+import %ftContract% from address
+import %nftContract% from address
 
-// List @nftContract item
+// List %nftContract% item
 //
-//   tokenId - @nftContract item id for sale
+//   tokenId - %nftContract% item id for sale
 //   parts - all payments after complete order {address:amount}
 //
 transaction(tokenId: UInt64, parts: {Address: UFix64}) {
@@ -16,10 +16,10 @@ transaction(tokenId: UInt64, parts: {Address: UFix64}) {
     let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>
 
     prepare(account: AuthAccount) {
-        if !account.getCapability<@nftPrivateType>(@nftPrivatePath)!.check() {
-            account.link<@nftPrivateType>(@nftPrivatePath, target: @nftStoragePath)
+        if !account.getCapability<&{%nftPrivateType%}>(%nftPrivatePath%)!.check() {
+            account.link<&{%nftPrivateType%}>(%nftPrivatePath%, target: %nftStoragePath%)
         }
-        self.nftProvider = account.getCapability<@nftPrivateType>(@nftPrivatePath)
+        self.nftProvider = account.getCapability<&{%nftPrivateType%}>(%nftPrivatePath%)
         assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed nft collection provider")
 
         if let storefront = account.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath) {
@@ -35,7 +35,7 @@ transaction(tokenId: UInt64, parts: {Address: UFix64}) {
     execute {
         let cuts: [NFTStorefront.SaleCut] = []
         for address in parts.keys {
-            let receiver = getAccount(address).getCapability<&{FungibleToken.Receiver}>(@ftPublicPath)
+            let receiver = getAccount(address).getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%)
             assert(receiver.check(), message: "Missing or mis-typed fungible token receiver")
             let cut = NFTStorefront.SaleCut(receiver: receiver, amount: parts[address]!)
             cuts.append(cut)
@@ -43,31 +43,22 @@ transaction(tokenId: UInt64, parts: {Address: UFix64}) {
 
         self.storefront.createListing(
             nftProviderCapability: self.nftProvider,
-            nftType: Type<@@nftContract.NFT>(),
+            nftType: Type<@%nftContract%.NFT>(),
             nftID: tokenId,
-            salePaymentVaultType: Type<@@ftContract.Vault>(),
+            salePaymentVaultType: Type<@%ftContract%.Vault>(),
             saleCuts: cuts
         )
     }
 }
-
 	`,
-	/**
-	 * Buy Placeholders
-	 * 0XNFTCONTRACTNAME - nft contract name to import
-	 * 0XFTCONTRACTNAME - ft contract name to import
-	 * 0XVAULTPATH - vaultPath
-	 * 0XNFTCOLLECTIONPUBLICPATH - nftCollectionPublicPath
-	 * 0XCOLLECTIONSTORAGEPATH - collectionPath
-	 */
 	buy: `
 	import FungibleToken from address
 import NonFungibleToken from address
 import NFTStorefront from address
-import @ftContract from address
-import @nftContract from address
+import %ftContract% from address
+import %nftContract% from address
 
-// Buy @nftContract item
+// Buy %nftContract% item
 //
 //   orderId - NFTStorefront listingResourceID
 //   storefrontAddress - seller address
@@ -80,11 +71,6 @@ transaction(orderId: UInt64, storefrontAddress: Address, parts: {Address:UFix64}
     let nftCollection: &{NonFungibleToken.Receiver}
 
     prepare(account: AuthAccount) {
-        if account.borrow<&@nftStorageType>(from: @nftStoragePath) == nil {
-            let collection <- @nftContract.createEmptyCollection() as! @@nftStorageType
-            account.save(<-collection, to: @nftStoragePath)
-            account.link<@nftPublicType>(@nftPublicPath, target: @nftStoragePath)
-        }
         self.storefront = getAccount(storefrontAddress)
             .getCapability(NFTStorefront.StorefrontPublicPath)
             .borrow<&NFTStorefront.Storefront{NFTStorefront.StorefrontPublic}>()
@@ -97,18 +83,28 @@ transaction(orderId: UInt64, storefrontAddress: Address, parts: {Address:UFix64}
             amount = amount + parts[address]!
         }
 
-        let mainVault = account.borrow<&FungibleToken.Vault>(from: @ftStoragePath)
-            ?? panic("Cannot borrow @ftContract vault from account storage")
+        let mainVault = account.borrow<&FungibleToken.Vault>(from: %ftStoragePath%)
+            ?? panic("Cannot borrow %ftContract% vault from account storage")
         self.paymentVault <- mainVault.withdraw(amount: amount)
 
-        self.nftCollection = account.borrow<&{NonFungibleToken.Receiver}>(from: @nftStoragePath)
+        if !account.getCapability<&{%nftPublicType%}>(%nftPublicPath%).check() {
+            if account.borrow<&AnyResource>(from: %nftStoragePath%) != nil {
+                account.unlink(%nftPublicPath%)
+                account.link<&{%nftPublicType%}>(%nftPublicPath%, target: %nftStoragePath%)
+            } else {
+                let collection <- %nftContract%.createEmptyCollection() as! @%nftStorageType%
+                account.save(<-collection, to: %nftStoragePath%)
+                account.link<&{%nftPublicType%}>(%nftPublicPath%, target: %nftStoragePath%)
+            }
+        }
+        self.nftCollection = account.borrow<&{NonFungibleToken.Receiver}>(from: %nftStoragePath%)
             ?? panic("Cannot borrow NFT collection receiver from account")
     }
 
     execute {
         for address in parts.keys {
-            let receiver = getAccount(address).getCapability<&{FungibleToken.Receiver}>(@ftPublicPath)
-            assert(receiver.check(), message: "Cannot borrow @ftContract receiver")
+            let receiver = getAccount(address).getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%)
+            assert(receiver.check(), message: "Cannot borrow %ftContract% receiver")
             let part <- self.paymentVault.withdraw(amount: parts[address]!)
             receiver.borrow()!.deposit(from: <- part)
         }
@@ -141,10 +137,10 @@ transaction(orderId: UInt64) {
 	import FungibleToken from address
 import NonFungibleToken from address
 import NFTStorefront from address
-import @ftContract from address
-import @nftContract from address
+import %ftContract% from address
+import %nftContract% from address
 
-// Relist @nftContract item
+// Relist %nftContract% item
 //
 //   orderId - replacing NFTStorefront listingResourceID
 //   parts - all payments after complete order {address:amount}
@@ -155,10 +151,10 @@ transaction(orderId: UInt64, parts: {Address: UFix64}) {
     let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>
 
     prepare(account: AuthAccount) {
-        if !account.getCapability<@nftPrivateType>(@nftPrivatePath)!.check() {
-            account.link<@nftPrivateType>(@nftPrivatePath, target: @nftStoragePath)
+        if !account.getCapability<&{%nftPrivateType%}>(%nftPrivatePath%)!.check() {
+            account.link<&{%nftPrivateType%}>(%nftPrivatePath%, target: %nftStoragePath%)
         }
-        self.nftProvider = account.getCapability<@nftPrivateType>(@nftPrivatePath)
+        self.nftProvider = account.getCapability<&{%nftPrivateType%}>(%nftPrivatePath%)
         assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed nft collection provider")
 
         if let storefront = account.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath) {
@@ -180,7 +176,7 @@ transaction(orderId: UInt64, parts: {Address: UFix64}) {
 
         let cuts: [NFTStorefront.SaleCut] = []
         for address in parts.keys {
-            let receiver = getAccount(address).getCapability<&{FungibleToken.Receiver}>(@ftPublicPath)
+            let receiver = getAccount(address).getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%)
             assert(receiver.check(), message: "Missing or mis-typed fungible token receiver")
             let cut = NFTStorefront.SaleCut(receiver: receiver, amount: parts[address]!)
             cuts.append(cut)
@@ -190,7 +186,7 @@ transaction(orderId: UInt64, parts: {Address: UFix64}) {
             nftProviderCapability: self.nftProvider,
             nftType: self.details.nftType,
             nftID: self.details.nftID,
-            salePaymentVaultType: Type<@@ftContract.Vault>(),
+            salePaymentVaultType: Type<@%ftContract%.Vault>(),
             saleCuts: cuts
         )
     }

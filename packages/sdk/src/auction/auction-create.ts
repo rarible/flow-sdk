@@ -18,15 +18,16 @@ import { getEnglishAuctionCode } from "../tx-code-store/auction/english-auction"
 import { validateBatch } from "../common/data-validation/validate-batch"
 import { calculateSaleCuts } from "../order/common/calculate-sale-cuts"
 import { getAccountAddress } from "../common/get-account-address"
+import { validateDecimalNumber } from "../common/data-validation/data-validators"
 
 export type EnglishAuctionCreateRequest = {
 	collection: FlowContractAddress,
 	currency: FlowCurrency,
 	itemId: FlowItemId,
 	minimumBid: string,
-	buyoutPrice: string,
+	buyoutPrice?: string,
 	increment: string,
-	startAt: string,
+	startAt?: string,
 	duration: string,
 	originFees?: FlowOriginFees,
 	payouts?: FlowPayouts,
@@ -46,12 +47,11 @@ export async function createEnglishAuction(
 		} = request
 		validateBatch.decimal(
 			fixAmount(minimumBid),
-			fixAmount(buyoutPrice),
 			fixAmount(increment),
-			fixAmount(startAt),
 			fixAmount(duration),
 		)
-		checkPrice(buyoutPrice)
+		buyoutPrice && validateDecimalNumber(fixAmount(buyoutPrice)) && checkPrice(buyoutPrice)
+		startAt && validateDecimalNumber(fixAmount(startAt))
 		checkPrice(increment)
 		checkPrice(minimumBid)
 		const { royalties } = network === "emulator" ?
@@ -66,20 +66,20 @@ export async function createEnglishAuction(
 				...(originFees || []),
 				...(royalties || []),
 			],
-			payouts || []
+			payouts || [],
 		)
 		const txId = await runTransaction(
 			fcl,
 			map,
-			getEnglishAuctionCode(fcl, name, currency).createLot(
-				extractTokenId(request.itemId),
+			getEnglishAuctionCode(fcl, name, currency).createLot({
+				tokenId: extractTokenId(request.itemId),
 				minimumBid,
 				buyoutPrice,
 				increment,
 				startAt,
 				duration,
 				parts,
-			),
+			}),
 			auth,
 		)
 		const tx = await waitForSeal(fcl, txId)
