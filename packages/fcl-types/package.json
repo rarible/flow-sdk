@@ -1,6 +1,6 @@
 {
   "name": "@rarible/fcl-types",
-  "version": "0.5.0",
+  "version": "0.5.30-ac.0",
   "description": "",
   "license": "MIT",
   "main": "build/index.js",
