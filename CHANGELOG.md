@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.30-alpha.2](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.1...v0.5.30-alpha.2) (2022-01-10)
+
+
+### Bug Fixes
+
+* add doc fiel for sdk-scripts package ([82d8639](https://github.com/rarible/flow-sdk/commit/82d8639479ee3ef0b05b76fda6b48baae3ea3432))
+
+
+
+
+
 ## [0.5.30-alpha.1](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.0...v0.5.30-alpha.1) (2022-01-10)
 
 
