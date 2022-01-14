@@ -159,4 +159,11 @@ export async function deployAll(address: string) {
 			NonFungibleToken: address,
 		},
 	})
+	await deployContractByName({
+		name: CONTRACTS.MatrixWorldVoucher,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
 }

@@ -10,26 +10,8 @@ export interface FlowFee extends FlowRoyalty {
 export type FlowOriginFees = FlowFee[]
 export type FlowPayouts = FlowFee[]
 
-export type FlowContractName =
-	| NonFungibleTokenType
-	| FungibleTokenType
-	| FUSDType
-	| FlowTokenType
-	| NFTStorefrontType
-	| MotoGPCardType
-	| EvolutionType
-	| TopShotType
-	| RaribleFeeType
-	| RaribleOrderType
-	| RaribleNFTType
-	| LicensedNFTType
-	| TopShotFeeType
-	| RaribleOpenBid
-	| MugenNFT
-	| CNN_NFT
-	| MatrixWorldFlowFestNFT
-
 export type FungibleContracts = FUSDType | FlowTokenType
+
 export type NonFungibleContracts =
 	RaribleNFTType |
 	EvolutionType |
@@ -37,7 +19,21 @@ export type NonFungibleContracts =
 	TopShotType |
 	MugenNFT |
 	CNN_NFT |
-	MatrixWorldFlowFestNFT
+	MatrixWorldFlowFestNFT |
+	MatrixWorldVoucher
+
+export type FlowContractName =
+	| NonFungibleTokenType
+	| FungibleTokenType
+	| NFTStorefrontType
+	| RaribleFeeType
+	| RaribleOrderType
+	| LicensedNFTType
+	| TopShotFeeType
+	| RaribleOpenBid
+	| FungibleContracts
+	| NonFungibleContracts
+
 
 export type AuthWithPrivateKey = undefined | ((account?: any) => Promise<any>)
 
@@ -52,15 +48,16 @@ export type FungibleTokenType = "FungibleToken"
 export type FUSDType = "FUSD"
 export type FlowTokenType = "FlowToken"
 export type NFTStorefrontType = "NFTStorefront"
-export type MotoGPCardType = "MotoGPCard"
-export type EvolutionType = "Evolution"
-export type TopShotType = "TopShot"
 export type RaribleFeeType = "RaribleFee"
 export type RaribleOrderType = "RaribleOrder"
-export type RaribleNFTType = "RaribleNFT"
 export type LicensedNFTType = "LicensedNFT"
 export type TopShotFeeType = "TopShotFee"
 export type RaribleOpenBid = "RaribleOpenBid"
+export type MotoGPCardType = "MotoGPCard"
+export type EvolutionType = "Evolution"
+export type TopShotType = "TopShot"
+export type RaribleNFTType = "RaribleNFT"
 export type MugenNFT = "MugenNFT"
 export type CNN_NFT = "CNN_NFT"
 export type MatrixWorldFlowFestNFT = "MatrixWorldFlowFestNFT"
+export type MatrixWorldVoucher = "MatrixWorldVoucher"

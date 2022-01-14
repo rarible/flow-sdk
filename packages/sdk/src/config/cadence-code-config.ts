@@ -63,6 +63,10 @@ const nftCodeConfig: Record<NonFungibleContracts, NftStaticVariables> = {
 		"%nftPublicPath%": "MatrixWorldFlowFestNFT.CollectionPublicPath",
 		"%nftStoragePath%": "MatrixWorldFlowFestNFT.CollectionStoragePath",
 	},
+	MatrixWorldVoucher: {
+		"%nftPublicPath%": "MatrixWorldVoucher.CollectionPublicPath",
+		"%nftStoragePath%": "MatrixWorldVoucher.CollectionStoragePath",
+	},
 }
 export type NftCodeConfig = NftStaticVariables & {
 	"%nftContract%": string
