@@ -41,6 +41,10 @@ export const flowCollectionsConfig: Record<string, FlowConfigData> = {
 		contractsNames: ["CNN_NFT"] as FlowContractAddressName[],
 		features: ["TRANSFER", "BURN"],
 	},
+	MatrixWorldFlowFestNFT: {
+		contractsNames: ["MatrixWorldFlowFestNFT"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
 }
 
 const MAINNET_RARIBLE_ADDRESS = toFlowAddress("0x01ab36aaf654a13e")
@@ -73,6 +77,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			RaribleOpenBid: EMULATOR_ADDRESS,
 			MugenNFT: EMULATOR_ADDRESS,
 			CNN_NFT: EMULATOR_ADDRESS,
+			MatrixWorldFlowFestNFT: EMULATOR_ADDRESS,
 		},
 	},
 	testnet: {
@@ -95,6 +100,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			RaribleOpenBid: TESTNET_RARIBLE_ADDRESS,
 			MugenNFT: TESTNET_RARIBLE_ADDRESS,
 			CNN_NFT: TESTNET_RARIBLE_ADDRESS,
+			MatrixWorldFlowFestNFT: toFlowAddress("0xe2f1b000e0203c1d"),
 		},
 	},
 	mainnet: {
@@ -117,6 +123,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			RaribleOpenBid: MAINNET_RARIBLE_ADDRESS,
 			MugenNFT: toFlowAddress("0x2cd46d41da4ce262"),
 			CNN_NFT: toFlowAddress("0x329feb3ab062d289"),
+			MatrixWorldFlowFestNFT: toFlowAddress("0x2d2750f240198f91"),
 		},
 	},
 }
@@ -133,7 +140,8 @@ export enum EmulatorCollections {
 	EVOLUTION = "A.0xf8d6e0586b0a20c7.Evolution",
 	TOPSHOT = "A.0xf8d6e0586b0a20c7.TopShot",
 	MUGENNFT = "A.0xf8d6e0586b0a20c7.MugenNFT",
-	CNNNFT = "A.0xf8d6e0586b0a20c7.CNN_NFT"
+	CNNNFT = "A.0xf8d6e0586b0a20c7.CNN_NFT",
+	MATRIXFEST = "A.0xf8d6e0586b0a20c7.MatrixWorldFlowFestNFT"
 }
 
 export enum TestnetCollections {
@@ -142,7 +150,8 @@ export enum TestnetCollections {
 	EVOLUTION = "A.01658d9b94068f3c.Evolution",
 	TOPSHOT = "A.01658d9b94068f3c.TopShot",
 	MUGENNFT = "A.ebf4ae01d1284af8.MugenNFT",
-	CNNNFT = "A.ebf4ae01d1284af8.CNN_NFT"
+	CNNNFT = "A.ebf4ae01d1284af8.CNN_NFT",
+	MATRIXFEST = "A.e2f1b000e0203c1d.MatrixWorldFlowFestNFT"
 }
 
 export enum MainnetCollections {
@@ -151,5 +160,6 @@ export enum MainnetCollections {
 	EVOLUTION = "A.f4264ac8f3256818.Evolution",
 	TOPSHOT = "A.0b2a3299cc857e29.TopShot",
 	MUGENNFT = "A.2cd46d41da4ce262.MugenNFT",
-	CNNNFT = "A.329feb3ab062d289.CNN_NFT"
+	CNNNFT = "A.329feb3ab062d289.CNN_NFT",
+	MATRIXFEST = "A.2d2750f240198f91.MatrixWorldFlowFestNFT"
 }

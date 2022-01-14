@@ -27,9 +27,17 @@ export type FlowContractName =
 	| RaribleOpenBid
 	| MugenNFT
 	| CNN_NFT
+	| MatrixWorldFlowFestNFT
 
 export type FungibleContracts = FUSDType | FlowTokenType
-export type NonFungibleContracts = RaribleNFTType | EvolutionType | MotoGPCardType | TopShotType | MugenNFT | CNN_NFT
+export type NonFungibleContracts =
+	RaribleNFTType |
+	EvolutionType |
+	MotoGPCardType |
+	TopShotType |
+	MugenNFT |
+	CNN_NFT |
+	MatrixWorldFlowFestNFT
 
 export type AuthWithPrivateKey = undefined | ((account?: any) => Promise<any>)
 
@@ -55,3 +63,4 @@ export type TopShotFeeType = "TopShotFee"
 export type RaribleOpenBid = "RaribleOpenBid"
 export type MugenNFT = "MugenNFT"
 export type CNN_NFT = "CNN_NFT"
+export type MatrixWorldFlowFestNFT = "MatrixWorldFlowFestNFT"
