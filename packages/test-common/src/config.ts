@@ -21,6 +21,8 @@ export const CONTRACTS: Record<Contracts, string> = {
 	RaribleOpenBid: "RaribleOpenBid",
 	MugenNFT: "MugenNFT",
 	CNN_NFT: "CNN_NFT",
+	MatrixWorldFlowFestNFT: "MatrixWorldFlowFestNFT",
+	MatrixWorldVoucher: "MatrixWorldVoucher",
 }
 type Contracts =
 	"NonFungibleToken" |
@@ -42,7 +44,9 @@ type Contracts =
 	"ContractVersion" |
 	"RaribleOpenBid" |
 	"MugenNFT" |
-	"CNN_NFT"
+	"CNN_NFT" |
+	"MatrixWorldFlowFestNFT" |
+	"MatrixWorldVoucher"
 
 type TestAccount = {
 	address: string
