@@ -52,7 +52,8 @@ export async function sell(
 			fcl,
 			map,
 			getOrderCodeLegacy(name).sell(
-				fcl, currency,
+				fcl,
+				currency,
 				tokenId,
 				fixAmount(sellItemPrice),
 				name === "RaribleNFT" ? await getFlowRaribleNftRoyalties(fcl, network, from, tokenId) : [],

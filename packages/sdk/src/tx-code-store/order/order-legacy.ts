@@ -99,10 +99,20 @@ export function getOrderCodeLegacy(collection: FlowCollectionName): GenerateCode
 				args: fcl.args([fcl.arg(orderId, t.UInt64), fcl.arg(address, t.Address)]),
 			}
 		},
-		update: (fcl: Fcl, currency: FlowCurrency, orderId: number, price: string) => {
+		update: (fcl: Fcl, currency: FlowCurrency, orderId: number, price: string, royalties: FlowFee[]) => {
+			const args = collection === "RaribleNFT" ?
+				fcl.args([
+					fcl.arg(orderId, t.UInt64),
+					fcl.arg(price, t.UFix64),
+					fcl.arg(prepareFees(royalties), t.Dictionary({
+						key: t.Address,
+						value: t.UFix64,
+					})),
+				]) :
+				fcl.args([fcl.arg(orderId, t.UInt64), fcl.arg(price, t.UFix64)])
 			return {
 				cadence: orderCode[collection][currency].update,
-				args: fcl.args([fcl.arg(orderId, t.UInt64), fcl.arg(price, t.UFix64)]),
+				args,
 			}
 		},
 		cancelOrder: (fcl: Fcl, orderId: number) => {
