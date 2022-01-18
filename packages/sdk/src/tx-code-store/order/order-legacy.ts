@@ -7,8 +7,9 @@ import {
 	StorefrontRaribleNFT,
 	StorefrontTopShot,
 } from "@rarible/flow-sdk-scripts"
-import type { FlowCurrency } from "../../types"
+import type { FlowCurrency, FlowFee } from "../../types"
 import type { FlowCollectionName } from "../../common/collection"
+import { fixAmount } from "../../common/fix-amount"
 
 
 type OrderMethods = Record<"buy" | "sell" | "update", string>
@@ -75,10 +76,21 @@ type GenerateCodeResponse = Record<"sell" | "buy" | "update" | "cancelOrder", Ge
 
 export function getOrderCodeLegacy(collection: FlowCollectionName): GenerateCodeResponse {
 	return {
-		sell: (fcl: Fcl, currency: FlowCurrency, tokenId: number, price: string) => {
+		sell: (fcl: Fcl, currency: FlowCurrency, tokenId: number, price: string, royalties: FlowFee[]) => {
+			const args = collection === "RaribleNFT" ?
+				fcl.args([
+					fcl.arg(tokenId, t.UInt64),
+					fcl.arg(price, t.UFix64),
+					fcl.arg(prepareFees(royalties), t.Dictionary({
+						key: t.Address,
+						value: t.UFix64,
+					})),
+				],
+				) :
+				fcl.args([fcl.arg(tokenId, t.UInt64), fcl.arg(price, t.UFix64)])
 			return {
 				cadence: orderCode[collection][currency].sell,
-				args: fcl.args([fcl.arg(tokenId, t.UInt64), fcl.arg(price, t.UFix64)]),
+				args,
 			}
 		},
 		buy: (fcl: Fcl, currency: FlowCurrency, orderId: number, address: string) => {
@@ -100,4 +112,11 @@ export function getOrderCodeLegacy(collection: FlowCollectionName): GenerateCode
 			}
 		},
 	}
+}
+
+export function prepareFees(fees: FlowFee[]): { key: string, value: string }[] {
+	return fees.map(f => ({
+		key: f.account,
+		value: fixAmount(f.value.toString()),
+	}))
 }

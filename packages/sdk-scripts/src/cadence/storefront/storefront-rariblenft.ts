@@ -11,17 +11,17 @@ import NFTStorefront from 0xNFTSTOREFRONT
 
 // Sell RaribleNFT token for FlowToken with NFTStorefront
 //
-transaction(tokenId: UInt64, price: UFix64) {
-    let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>
+transaction(tokenId: UInt64, price: UFix64, royalties: {Address: UFix64}) {
+    let nftProvider: Capability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>
     let storefront: &NFTStorefront.Storefront
 
     prepare(acct: AuthAccount) {
         let nftProviderPath = /private/RaribleNFTProviderForNFTStorefront
-        if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!.check() {
-            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath, target: RaribleNFT.collectionStoragePath)
+        if !acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>(nftProviderPath)!.check() {
+            acct.link<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>(nftProviderPath, target: RaribleNFT.collectionStoragePath)
         }
 
-        self.nftProvider = acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic,LicensedNFT.CollectionPublic}>(nftProviderPath)!
+        self.nftProvider = acct.getCapability<&{NonFungibleToken.Provider,NonFungibleToken.CollectionPublic}>(nftProviderPath)!
         assert(self.nftProvider.borrow() != nil, message: "Missing or mis-typed nft collection provider")
 
         if acct.borrow<&NFTStorefront.Storefront>(from: NFTStorefront.StorefrontStoragePath) == nil {
@@ -34,13 +34,12 @@ transaction(tokenId: UInt64, price: UFix64) {
     }
 
     execute {
-        let royalties: [RaribleOrder.PaymentPart] = []
+        let royaltiesPart: [RaribleOrder.PaymentPart] = []
         let extraCuts: [RaribleOrder.PaymentPart] = []
 
-        for royalty in self.nftProvider.borrow()!.getRoyalties(id: tokenId) {
-            royalties.append(RaribleOrder.PaymentPart(address: royalty.address, rate: royalty.fee))
+        for k in royalties.keys {
+            royaltiesPart.append(RaribleOrder.PaymentPart(address: k, rate: royalties[k]!))
         }
-
 
         RaribleOrder.addOrder(
             storefront: self.storefront,
@@ -51,7 +50,7 @@ transaction(tokenId: UInt64, price: UFix64) {
             vaultType: Type<@FlowToken.Vault>(),
             price: price,
             extraCuts: extraCuts,
-            royalties: royalties
+            royalties: royaltiesPart
         )
     }
 }
