@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.29-hotfix.0](https://github.com/rarible/flow-sdk/compare/v0.5.29...v0.5.29-hotfix.0) (2022-01-18)
+
+
+### Bug Fixes
+
+* fix sell tx bug (reproduced if acount initialized with new trnsactions) ([23cc48c](https://github.com/rarible/flow-sdk/commit/23cc48c3653b82138dc817eeafb9584a6166215e))
+* fix updateOrder bug ([4c11294](https://github.com/rarible/flow-sdk/commit/4c112943a41ef391b15f556306b038e07aefe09c))
+
+
+
+
+
 ## [0.5.29](https://github.com/rarible/flow-sdk/compare/v0.5.18...v0.5.29) (2021-12-30)
 
 
