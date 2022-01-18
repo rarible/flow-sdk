@@ -12,10 +12,12 @@ import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCode } from "../tx-code-store/order/storefront"
 import { getOrderCodeLegacy } from "../tx-code-store/order/order-legacy"
 import { fixAmount } from "../common/fix-amount"
+import { extractTokenId, toFlowItemId } from "../common/item"
 import { getPreparedOrder } from "./common/get-prepared-order"
 import type { FlowSellResponse } from "./sell"
 import { getProtocolFee } from "./get-protocol-fee"
 import { calculateSaleCuts } from "./common/calculate-sale-cuts"
+import { getFlowRaribleNftRoyalties } from "./common/get-royalties"
 
 export type FlowUpdateOrderRequest = {
 	collection: FlowContractAddress,
@@ -49,7 +51,13 @@ export async function updateOrder(
 				const txId = await runTransaction(
 					fcl,
 					map,
-					getOrderCodeLegacy(name).update(fcl, currency, preparedOrder.id, fixAmount(sellItemPrice)),
+					getOrderCodeLegacy(name).update(
+						fcl,
+						currency,
+						preparedOrder.id,
+						fixAmount(sellItemPrice),
+						name === "RaribleNFT" ? await getFlowRaribleNftRoyalties(fcl, network, from, extractTokenId(toFlowItemId(preparedOrder.itemId))) : [],
+					),
 					auth,
 				)
 				const tx = await waitForSeal(fcl, txId)
