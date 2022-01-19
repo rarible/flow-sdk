@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.30-alpha.4](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.3...v0.5.30-alpha.4) (2022-01-19)
+
+
+### Bug Fixes
+
+* accept bid payout parts calculation ([2a806f8](https://github.com/rarible/flow-sdk/commit/2a806f8efcb506d526cbc1827d52b2f8b7c8f1a7))
+
+
+
+
+
 ## [0.5.30-alpha.3](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.2...v0.5.30-alpha.3) (2022-01-17)
 
 **Note:** Version bump only for package @rarible/flow-test-common
