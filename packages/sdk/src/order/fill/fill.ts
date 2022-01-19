@@ -1,7 +1,7 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { FlowAddress } from "@rarible/types"
-import { toBigNumber, toFlowAddress } from "@rarible/types"
+import { toFlowAddress } from "@rarible/types"
 import type { FlowNftItemControllerApi, FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
 import type {
 	AuthWithPrivateKey,
@@ -70,15 +70,13 @@ export async function fill(
 				)
 				return waitForSeal(fcl, txId)
 			case "BID":
-				const protocolFee = getProtocolFee.percents(network)
+				const protocolFee: FlowFee[] = [getProtocolFee.percents(network).sellerFee]
 				const { payouts: orderPayouts } = preparedOrder.data
-				const payouts: FlowFee[] = !!orderPayouts.length ?
-					orderPayouts :
-					[{ account: from, value: toBigNumber("1.0") }]
+				const payouts: FlowFee[] = !!orderPayouts.length ? orderPayouts : []
 				/**
-				 * remove owner from payouts, owner receive the rest of the money
+				 * remove owner from payouts, owner receive the rest of the money automatically
 				 */
-				const filteredPayouts = payouts.filter(p => p.account !== owner)
+				const filteredPayouts = payouts.filter(p => p.account !== from)
 				const { royalties } = network === "emulator" ?
 					{ royalties: [] } : await itemApi.getNftItemById({ itemId: preparedOrder.itemId })
 				/**
@@ -88,7 +86,7 @@ export async function fill(
 					...filteredPayouts,
 					...(originFee || []),
 					...royalties,
-					protocolFee.sellerFee,
+					...protocolFee,
 				]
 				return fillBidOrder(
 					fcl,
