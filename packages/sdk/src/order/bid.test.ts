@@ -1,5 +1,5 @@
 import { createFlowEmulator } from "@rarible/flow-test-common"
-import { toBigNumber, toFlowAddress } from "@rarible/types"
+import { toBigNumber } from "@rarible/types"
 import fcl from "@onflow/fcl"
 import { toFlowContractAddress, toFlowItemId } from "../index"
 import { EmulatorCollections } from "../config/config"
@@ -9,28 +9,36 @@ import { checkEvent } from "../test/check-event"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
 import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/mugen-art"
+import { getTestOrderTmplate } from "../test/order-template"
 
 describe("Test bid on emulator", () => {
 	createFlowEmulator({})
 	const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
 
 	test("Should create RaribleNFT bid order", async () => {
-		const { sdk: sdk1 } = await createFlowTestEmulatorSdk("accountName1")
+		const { sdk: sdk1, address: address1 } = await createFlowTestEmulatorSdk("accountName1")
 		const { sdk: sdk2, address: address2 } = await createFlowTestEmulatorSdk("accountName2")
+		// console.log("balance address1", await sdk1.wallet.getFungibleBalance(address1, "FLOW"))
 		const mintTx = await sdk1.nft.mint(
 			collection,
 			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
-			[],
+			[{ account: address2, value: toBigNumber("0.12") }],
 		)
-
 		const tx = await sdk2.order.bid(
 			collection,
 			"FLOW",
 			mintTx.tokenId,
-			toBigNumber("1"),
-			[{ account: toFlowAddress(address2), value: toBigNumber("0.03") }],
+			toBigNumber("2"),
+			[], //{ account: toFlowAddress(address2), value: toBigNumber("0.03") }
 		)
 		expect(tx.status).toEqual(4)
+
+		const order = getTestOrderTmplate("bid", tx.orderId, mintTx.tokenId, toBigNumber("1"))
+		await sdk1.order.fill(collection, "FLOW", order, address2, [])
+
+		const bid2 = await sdk1.order.bid(collection, "FLOW", mintTx.tokenId, toBigNumber("1"), [])
+		const order2 = getTestOrderTmplate("bid", bid2.orderId, mintTx.tokenId, toBigNumber("1"))
+		await sdk2.order.fill(collection, "FLOW", order2, address1, [])
 
 	})
 
