@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.30-alpha.5](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.4...v0.5.30-alpha.5) (2022-01-20)
+
+
+### Bug Fixes
+
+* fb-533 update bid transactions and contract ([4b45a99](https://github.com/rarible/flow-sdk/commit/4b45a99ec27b67349680335fa36c631fef43be99))
+* update RaribleOpenBid address for testnet ([e243eff](https://github.com/rarible/flow-sdk/commit/e243eff8e7692917b2c5b6e9a842ebe5f0aa5d08))
+
+
+
+
+
 ## [0.5.30-alpha.4](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.3...v0.5.30-alpha.4) (2022-01-19)
 
 
