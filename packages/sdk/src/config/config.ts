@@ -102,7 +102,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			RaribleOrder: TESTNET_RARIBLE_ADDRESS,
 			RaribleNFT: TESTNET_RARIBLE_ADDRESS,
 			LicensedNFT: TESTNET_RARIBLE_ADDRESS,
-			RaribleOpenBid: TESTNET_RARIBLE_ADDRESS,
+			RaribleOpenBid: toFlowAddress("0x1d56d7ba49283a88"),
 			MugenNFT: TESTNET_RARIBLE_ADDRESS,
 			CNN_NFT: TESTNET_RARIBLE_ADDRESS,
 			MatrixWorldFlowFestNFT: toFlowAddress("0xe2f1b000e0203c1d"),
