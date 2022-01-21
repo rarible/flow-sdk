@@ -56,7 +56,7 @@ const TESTNET_RARIBLE_ADDRESS = toFlowAddress("0xebf4ae01d1284af8")
 const EMULATOR_ADDRESS = toFlowAddress("0xf8d6e0586b0a20c7")
 
 // protocol fee in base points
-const PROTOCOL_FEE: BigNumber = toBigNumber("50")
+const PROTOCOL_FEE: BigNumber = toBigNumber("0")
 
 
 // todo move contracts address to fcl.config aliases  if it's possible
