@@ -36,8 +36,7 @@ export async function bid(
 				extractTokenId(itemId),
 				fixAmount(price),
 				[
-					...calculateFees(price, protocolFees),
-					...calculateFees(price, requestFees),
+					...calculateFees(price, [...protocolFees, ...requestFees]),
 				],
 			),
 			auth,
