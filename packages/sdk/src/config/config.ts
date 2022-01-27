@@ -62,7 +62,6 @@ const PROTOCOL_FEE: BigNumber = toBigNumber("0")
 // todo move contracts address to fcl.config aliases  if it's possible
 export const CONFIGS: Record<FlowNetwork, Config> = {
 	emulator: {
-		lastWithHardcodedOriginalFeesOrderNum: -1,
 		protocolFee: { account: EMULATOR_ADDRESS, value: PROTOCOL_FEE },
 		mainAddressMap: {
 			NonFungibleToken: EMULATOR_ADDRESS,
@@ -86,7 +85,6 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 		},
 	},
 	testnet: {
-		lastWithHardcodedOriginalFeesOrderNum: 23805857,
 		protocolFee: { account: TESTNET_RARIBLE_ADDRESS, value: PROTOCOL_FEE },
 		mainAddressMap: {
 			NonFungibleToken: toFlowAddress("0x631e88ae7f1d7c20"),
@@ -110,7 +108,6 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 		},
 	},
 	mainnet: {
-		lastWithHardcodedOriginalFeesOrderNum: 102307310,
 		protocolFee: { account: toFlowAddress("0x7f599d6dd7fd7e7b"), value: PROTOCOL_FEE },
 		mainAddressMap: {
 			NonFungibleToken: toFlowAddress("0x1d7e57aa55817448"),
@@ -137,7 +134,6 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 
 type Config = {
 	protocolFee: FlowFee,
-	lastWithHardcodedOriginalFeesOrderNum: number
 	mainAddressMap: Record<FlowContractName, FlowAddress>
 }
 

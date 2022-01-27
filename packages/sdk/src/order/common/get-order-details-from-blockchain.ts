@@ -5,6 +5,7 @@ import { toBigNumber, toFlowAddress } from "@rarible/types"
 import { runScript } from "../../common/transaction"
 import type { FlowCurrency, FlowFee, FlowNetwork } from "../../types"
 import { CONFIGS } from "../../config/config"
+import { withPrefix } from "../../common/prefix"
 
 type FlowSaleCuts = { receiver: { address: string }, amount: string }
 
@@ -17,6 +18,7 @@ type FlowOrderDetails = {
 	salePrice: string //'0.10000000',
 	saleCuts: FlowFee[]
 	currency: FlowCurrency
+	isLegacy: boolean
 }
 
 export async function getOrderDetailsFromBlockchain(
@@ -53,23 +55,26 @@ export async function getOrderDetailsFromBlockchain(
 		map,
 	)
 	const fungibleContract = "vaultType" in details ? details.vaultType.split(".")[2] : details.salePaymentVaultType.split(".")[2]
+	const protocolFeeReceiver = CONFIGS[network].protocolFee.account
+	const data = {
+		...details,
+		saleCuts: ("saleCuts" in details ? details.saleCuts : details.cuts).map((s: FlowSaleCuts) => ({
+			account: toFlowAddress(s.receiver.address),
+			value: toBigNumber(s.amount),
+		})),
+	}
+	data.isLegacy = data.saleCuts.filter(
+		(s: FlowFee) => withPrefix(s.account).toLowerCase() === withPrefix(protocolFeeReceiver).toLowerCase(),
+	).length > 1
 	switch (fungibleContract) {
 		case "FlowToken":
 			return {
-				...details,
-				saleCuts: ("saleCuts" in details ? details.saleCuts : details.cuts).map((s: FlowSaleCuts) => ({
-					account: toFlowAddress(s.receiver.address),
-					value: toBigNumber(s.amount),
-				})),
+				...data,
 				currency: "FLOW",
 			}
 		case "FUSD":
 			return {
-				...details,
-				saleCuts: ("saleCuts" in details ? details.saleCuts : details.cuts).map((s: FlowSaleCuts) => ({
-					account: toFlowAddress(s.receiver.address),
-					value: toBigNumber(s.amount),
-				})),
+				...data,
 				currency: "FUSD",
 			}
 		default:
