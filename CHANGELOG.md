@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.30-alpha.7](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.6...v0.5.30-alpha.7) (2022-01-27)
+
+
+### Bug Fixes
+
+* fb-547 add check on isLegacy order when fill order ([3f34a99](https://github.com/rarible/flow-sdk/commit/3f34a99fff21ac340895fedd53a7ad7cf52fcab6))
+* fee test ([c5adcf0](https://github.com/rarible/flow-sdk/commit/c5adcf01dc5d4ec4465161b44306476ad4fc3137))
+
+
+
+
+
 ## [0.5.30-alpha.6](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.5...v0.5.30-alpha.6) (2022-01-21)
 
 
