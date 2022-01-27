@@ -18,7 +18,7 @@ import { calculateFees } from "../../common/calculate-fees"
 import type { FlowContractAddress } from "../../common/flow-address"
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import { getOrderCode } from "../../tx-code-store/order/storefront"
-import { CONFIGS } from "../../config/config"
+import { getOrderDetailsFromBlockchain } from "../common/get-order-details-from-blockchain"
 import { fillBidOrder } from "./fill-bid-order"
 
 export type FlowOrderType = "LIST" | "BID"
@@ -46,12 +46,11 @@ export async function fill(
 		const { name, map } = getCollectionConfig(network, collection)
 		switch (preparedOrder.type) {
 			case "LIST":
+				const blockChainOrder = await getOrderDetailsFromBlockchain(
+					fcl, network, "sell", owner, preparedOrder.id,
+				)
 				let fees: FlowFee[] = []
-				const terminatorNum = CONFIGS[network].lastWithHardcodedOriginalFeesOrderNum
-				if (
-					preparedOrder.id > terminatorNum ||
-					(preparedOrder.id <= terminatorNum && !["RaribleNFT", "Evolution", "MotoGPCard", "TopShot"].includes(name))
-				) {
+				if (!blockChainOrder.isLegacy) {
 					fees = calculateFees(preparedOrder.take.value, [
 						...(originFee || []),
 						getProtocolFee.percents(network).buyerFee,

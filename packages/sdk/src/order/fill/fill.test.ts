@@ -64,6 +64,7 @@ describe("Test fill on emulator", () => {
 
 	test("Should fill RaribleNFT order for FLOW tokens", async () => {
 		const { address, pk } = await createEmulatorAccount("accountName")
+		const { address: address2 } = await createEmulatorAccount("accountName2")
 		const auth = createTestAuth(fcl, "emulator", address, pk, 0)
 		sdk = createFlowSdk(fcl, "emulator", {}, auth)
 		const mintTx = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
@@ -73,7 +74,7 @@ describe("Test fill on emulator", () => {
 			currency: "FLOW",
 			itemId: mintTx.tokenId,
 			sellItemPrice: "0.001",
-			originFees: [{ account: toFlowAddress(address), value: toBigNumber("0.1") }],
+			originFees: [{ account: toFlowAddress(address2), value: toBigNumber("0.1") }],
 		})
 		// const { orderId } = tx.events[2].data
 		expect(tx.orderId).toBeGreaterThan(0)
