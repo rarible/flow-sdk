@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.29-hotfix.1](https://github.com/rarible/flow-sdk/compare/v0.5.29-hotfix.0...v0.5.29-hotfix.1) (2022-01-28)
+
+
+### Bug Fixes
+
+* fix sdk-scripts dependency ([55e51a0](https://github.com/rarible/flow-sdk/commit/55e51a072614577f8ea582ff67d8e175d42cf61c))
+
+
+
+
+
 ## [0.5.29-hotfix.0](https://github.com/rarible/flow-sdk/compare/v0.5.29...v0.5.29-hotfix.0) (2022-01-18)
 
 
