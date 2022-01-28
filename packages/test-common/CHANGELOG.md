@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.30](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.8...v0.5.30) (2022-01-28)
+
+
+### Bug Fixes
+
+* add types for FlowService ([a0222f0](https://github.com/rarible/flow-sdk/commit/a0222f0eb718ea69579521bbd5c2eaa3ddaafd02))
+
+
+
+
+
 ## [0.5.30-alpha.5](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.4...v0.5.30-alpha.5) (2022-01-20)
 
 
