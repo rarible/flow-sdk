@@ -15,15 +15,16 @@ import { signUserMessage as signUserMessageTemplate } from "./signature/sign-use
 import { getFungibleBalance as getFungibleBalanceTemplate } from "./wallet/get-fungible-balance"
 import { bid as bidTemplate } from "./order/bid"
 import { bidUpdate as bidUpdateTemplate } from "./order/bid-update"
+import { cancelBid as cancelBidTmeplate } from "./order/cancel-bid"
 import { setupAccount as setupAccountTemplate } from "./collection/setup-account"
 import type { ProtocolFees } from "./order/get-protocol-fee"
 import { getProtocolFee as getProtocolFeeUpdateTemplate } from "./order/get-protocol-fee"
-import type { AuthWithPrivateKey, FlowCurrency, FlowEnv, FlowNetwork, FlowOriginFees, FlowTransaction } from "./types"
+import type { AuthWithPrivateKey, FlowCurrency, FlowEnv, FlowOriginFees, FlowTransaction } from "./types"
 import type { FlowUpdateOrderRequest } from "./order/update-order"
 import { updateOrder as updateOrderTemplate } from "./order/update-order"
-import { CONFIGS } from "./config/config"
 import type { FlowItemId } from "./common/item"
-import type { FlowContractAddress } from "./common/flow-address/index"
+import type { FlowContractAddress } from "./common/flow-address"
+import type { FlowEnvConfig } from "./config/env"
 import { ENV_CONFIG } from "./config/env"
 
 export interface FlowApisSdk {
@@ -87,7 +88,7 @@ export interface FlowOrderSdk {
 	 * @param collection
 	 * @param orderId
 	 */
-	cancelOrder(collection: FlowContractAddress, orderId: number | FlowOrder): Promise<FlowTransaction>
+	cancelOrder(collection: FlowContractAddress, orderId: number): Promise<FlowTransaction>
 
 	/**
 	 * Create bid
@@ -118,6 +119,13 @@ export interface FlowOrderSdk {
 		price: BigNumber,
 	): Promise<FlowSellResponse>
 
+	/**
+	 * Cancel sell order
+	 * @param collection
+	 * @param orderId
+	 */
+	cancelBid(collection: FlowContractAddress, orderId: number): Promise<FlowTransaction>
+
 	getProtocolFee(): ProtocolFees
 }
 
@@ -140,12 +148,11 @@ export interface FlowSdk {
 }
 
 export function createFlowApisSdk(
-	env: FlowNetwork,
+	env: FlowEnv,
 	params: ConfigurationParameters = {},
 ): FlowApisSdk {
-	const config = CONFIGS[env]
 	const configuration = new ApiClient.Configuration({
-		basePath: config.flowApiBasePath,
+		basePath: ENV_CONFIG[env].basePath,
 		...params,
 	})
 	return {
@@ -160,6 +167,7 @@ export function createFlowApisSdk(
  * Creates new instance of FlowSdk
  * @param fcl
  * @param network
+ * @param params - api configuration
  * @param auth - optional, only for testing purposes
  */
 export function createFlowSdk(
@@ -169,10 +177,7 @@ export function createFlowSdk(
 	auth?: AuthWithPrivateKey,
 ): FlowSdk {
 	const blockchainNetwork = ENV_CONFIG[network].network
-	const apis = createFlowApisSdk(
-		blockchainNetwork,
-		{ basePath: ENV_CONFIG[network].basePath, ...params },
-	)
+	const apis = createFlowApisSdk(network, params)
 	return {
 		apis,
 		nft: {
@@ -181,14 +186,15 @@ export function createFlowSdk(
 			transfer: transferTemplate.bind(null, fcl, auth, blockchainNetwork),
 		},
 		order: {
-			sell: sellTemplate.bind(null, fcl, auth, blockchainNetwork),
+			sell: sellTemplate.bind(null, fcl, apis.item, auth, blockchainNetwork),
 			fill: buyTemplate.bind(null, fcl, auth, blockchainNetwork, apis.order).bind(null, apis.item),
-			cancelOrder: cancelOrderTmeplate.bind(null, fcl, auth, blockchainNetwork, apis.order),
+			cancelOrder: cancelOrderTmeplate.bind(null, fcl, auth, blockchainNetwork),
 			updateOrder: updateOrderTemplate.bind(
-				null, fcl, apis.item, apis.order, auth).bind(null, blockchainNetwork,
+				null, fcl, apis.order, auth).bind(null, blockchainNetwork,
 			),
 			bid: bidTemplate.bind(null, fcl, auth, blockchainNetwork),
 			bidUpdate: bidUpdateTemplate.bind(null, fcl, auth, blockchainNetwork, apis.order),
+			cancelBid: cancelBidTmeplate.bind(null, fcl, auth, blockchainNetwork),
 			getProtocolFee: getProtocolFeeUpdateTemplate.bind(null, blockchainNetwork),
 		},
 		wallet: {
@@ -207,3 +213,6 @@ export { toFlowItemId, isFlowItemId } from "./common/item/index"
 export type { FlowItemId } from "./common/item/index"
 export type { FlowContractAddress } from "./common/flow-address/index"
 export { toFlowContractAddress, isFlowContractAddress } from "./common/flow-address/index"
+export type { FlowEnv } from "./config/env"
+export const FLOW_ENV_CONFIG: FlowEnvConfig = ENV_CONFIG
+export { FlowOrder } from "@rarible/flow-api-client"

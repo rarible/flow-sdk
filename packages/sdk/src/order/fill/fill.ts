@@ -1,7 +1,7 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { FlowAddress } from "@rarible/types"
-import { toBigNumber, toFlowAddress } from "@rarible/types"
+import { toFlowAddress } from "@rarible/types"
 import type { FlowNftItemControllerApi, FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
 import type {
 	AuthWithPrivateKey,
@@ -17,7 +17,8 @@ import { getPreparedOrder } from "../common/get-prepared-order"
 import { calculateFees } from "../../common/calculate-fees"
 import type { FlowContractAddress } from "../../common/flow-address"
 import { runTransaction, waitForSeal } from "../../common/transaction"
-import { getOrderCodeLegacy } from "../../tx-code-store/order/order-legacy"
+import { getOrderCode } from "../../tx-code-store/order/storefront"
+import { getOrderDetailsFromBlockchain } from "../common/get-order-details-from-blockchain"
 import { fillBidOrder } from "./fill-bid-order"
 
 export type FlowOrderType = "LIST" | "BID"
@@ -33,9 +34,10 @@ export async function fill(
 	currency: FlowCurrency,
 	order: number | FlowOrder,
 	owner: FlowAddress,
-	originFee: FlowOriginFees,
+	originFee?: FlowOriginFees,
 ): Promise<FlowTransaction> {
 	if (fcl) {
+
 		const from = auth ? toFlowAddress((await auth()).addr) : toFlowAddress((await fcl.currentUser().snapshot()).addr!)
 		if (!from) {
 			throw new Error("FLOW-SDK: Can't get current user address")
@@ -44,23 +46,36 @@ export async function fill(
 		const { name, map } = getCollectionConfig(network, collection)
 		switch (preparedOrder.type) {
 			case "LIST":
+				const blockChainOrder = await getOrderDetailsFromBlockchain(
+					fcl, network, "sell", owner, preparedOrder.id,
+				)
+				let fees: FlowFee[] = []
+				if (!blockChainOrder.isLegacy) {
+					fees = calculateFees(preparedOrder.take.value, [
+						...(originFee || []),
+						getProtocolFee.percents(network).buyerFee,
+					])
+				}
 				const txId = await runTransaction(
 					fcl,
 					map,
-					getOrderCodeLegacy(name).buy(fcl, currency, preparedOrder.id, owner),
+					getOrderCode(fcl, name).buy(
+						currency,
+						preparedOrder.id,
+						owner,
+						fees,
+					),
 					auth,
 				)
 				return waitForSeal(fcl, txId)
 			case "BID":
-				const protocolFee = getProtocolFee.percents(network)
+				const protocolFee: FlowFee[] = [getProtocolFee.percents(network).sellerFee]
 				const { payouts: orderPayouts } = preparedOrder.data
-				const payouts: FlowFee[] = !!orderPayouts.length ?
-					orderPayouts :
-					[{ account: from, value: toBigNumber("1.0") }]
+				const payouts: FlowFee[] = !!orderPayouts.length ? orderPayouts : []
 				/**
-				 * remove owner from payouts, owner receive the rest of the money
+				 * remove owner from payouts, owner receive the rest of the money automatically
 				 */
-				const filteredPayouts = payouts.filter(p => p.account !== owner)
+				const filteredPayouts = payouts.filter(p => p.account !== from)
 				const { royalties } = network === "emulator" ?
 					{ royalties: [] } : await itemApi.getNftItemById({ itemId: preparedOrder.itemId })
 				/**
@@ -68,9 +83,9 @@ export async function fill(
 				 */
 				const includedFees: FlowFee[] = [
 					...filteredPayouts,
-					...originFee,
+					...(originFee || []),
 					...royalties,
-					protocolFee.sellerFee,
+					...protocolFee,
 				]
 				return fillBidOrder(
 					fcl,

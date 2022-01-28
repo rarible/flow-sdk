@@ -1,18 +1,19 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { BigNumber } from "@rarible/types"
+import { toFlowAddress } from "@rarible/types"
 import type { FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getCollectionConfig } from "../common/collection/get-config"
-import { getBidCode } from "../tx-code-store/order/bid"
-import { calculateFees } from "../common/calculate-fees"
+import { getBidCode } from "../tx-code-store/order/rarible-open-bid"
 import { parseEvents } from "../common/parse-tx-events"
 import type { FlowContractAddress } from "../common/flow-address"
 import { fixAmount } from "../common/fix-amount"
-import { getProtocolFee } from "./get-protocol-fee"
+import { getOrderDetailsFromBlockchain } from "./common/get-order-details-from-blockchain"
 import type { FlowSellResponse } from "./sell"
 import { getPreparedOrder } from "./common/get-prepared-order"
+import { calculateUpdateOrderSaleCuts } from "./common/calculate-update-order-sale-cuts"
 
 export async function bidUpdate(
 	fcl: Maybe<Fcl>,
@@ -25,17 +26,23 @@ export async function bidUpdate(
 	price: BigNumber,
 ): Promise<FlowSellResponse> {
 	if (fcl) {
+		const from = auth ? toFlowAddress((await auth()).addr) : toFlowAddress((await fcl.currentUser().snapshot()).addr!)
+		if (!from) {
+			throw new Error("FLOW-SDK: Can't get current user address")
+		}
 		const preparedOrder = await getPreparedOrder(orderApi, order)
 		const { name, map } = getCollectionConfig(network, collection)
-		const protocolFees = getProtocolFee.percents(network)
+		const bidSaleCuts = await getOrderDetailsFromBlockchain(fcl, network, "bid", from, preparedOrder.id)
 		const txId = await runTransaction(
 			fcl,
 			map,
 			getBidCode(fcl, name).update(currency, preparedOrder.id, fixAmount(price),
-				[
-					...calculateFees(price, [protocolFees.buyerFee]),
-					...calculateFees(price, preparedOrder.data.originalFees || []),
-				]),
+				calculateUpdateOrderSaleCuts(
+					preparedOrder.make.value,
+					price,
+					bidSaleCuts.saleCuts,
+				),
+			),
 			auth,
 		)
 		const txResponse = await waitForSeal(fcl, txId)

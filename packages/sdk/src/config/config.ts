@@ -1,11 +1,10 @@
 import type { BigNumber, FlowAddress } from "@rarible/types"
-import { toBigNumber, toFlowAddress } from "@rarible/types"
+import { toBigNumber, toFlowAddress, ZERO_ADDRESS } from "@rarible/types"
 import type { FlowContractAddressName } from "../common/flow-address"
 import type { FlowContractName, FlowFee, FlowNetwork } from "../types"
-import { blocktoWallet } from "./network"
 
 export const MIN_ORDER_PRICE = "0.0001"
-
+export type FlowNftFeatures = "MINT" | "BURN" | "TRANSFER"
 export type FlowConfigData = {
 	/**
 	 * additional contracts deployed in main collection
@@ -14,33 +13,41 @@ export type FlowConfigData = {
 	/**
 	 * is mint/burn/transfer avaliable in collection
 	 */
-	mintable: boolean
+	features: FlowNftFeatures[]
 }
 
 export const flowCollectionsConfig: Record<string, FlowConfigData> = {
 	RaribleNFT: {
 		contractsNames: ["RaribleOrder", "RaribleNFT", "LicensedNFT", "RaribleFee"] as FlowContractAddressName[],
-		mintable: true,
+		features: ["MINT", "TRANSFER", "BURN"],
 	},
 	MotoGPCard: {
 		contractsNames: ["MotoGPCard"] as FlowContractAddressName[],
-		mintable: false,
+		features: ["TRANSFER", "BURN"],
 	},
 	Evolution: {
 		contractsNames: ["Evolution"] as FlowContractAddressName[],
-		mintable: false,
+		features: ["TRANSFER", "BURN"],
 	},
 	TopShot: {
 		contractsNames: ["TopShot"] as FlowContractAddressName[],
-		mintable: false,
+		features: ["TRANSFER", "BURN"],
 	},
 	MugenNFT: {
 		contractsNames: ["MugenNFT"] as FlowContractAddressName[],
-		mintable: false,
+		features: ["TRANSFER"],
 	},
 	CNN_NFT: {
 		contractsNames: ["CNN_NFT"] as FlowContractAddressName[],
-		mintable: false,
+		features: ["TRANSFER", "BURN"],
+	},
+	MatrixWorldFlowFestNFT: {
+		contractsNames: ["MatrixWorldFlowFestNFT"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
+	MatrixWorldVoucher: {
+		contractsNames: ["MatrixWorldVoucher"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
 	},
 }
 
@@ -49,14 +56,12 @@ const TESTNET_RARIBLE_ADDRESS = toFlowAddress("0xebf4ae01d1284af8")
 const EMULATOR_ADDRESS = toFlowAddress("0xf8d6e0586b0a20c7")
 
 // protocol fee in base points
-const PROTOCOL_FEE: BigNumber = toBigNumber("250")
+const PROTOCOL_FEE: BigNumber = toBigNumber("0")
+
+
 // todo move contracts address to fcl.config aliases  if it's possible
 export const CONFIGS: Record<FlowNetwork, Config> = {
 	emulator: {
-		flowApiBasePath: "127.0.0.1:3569",
-		walletDiscovery: "",
-		accessNode: "127.0.0.1:3569",
-		challengeHandshake: "",
 		protocolFee: { account: EMULATOR_ADDRESS, value: PROTOCOL_FEE },
 		mainAddressMap: {
 			NonFungibleToken: EMULATOR_ADDRESS,
@@ -75,14 +80,12 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			RaribleOpenBid: EMULATOR_ADDRESS,
 			MugenNFT: EMULATOR_ADDRESS,
 			CNN_NFT: EMULATOR_ADDRESS,
+			MatrixWorldFlowFestNFT: EMULATOR_ADDRESS,
+			MatrixWorldVoucher: EMULATOR_ADDRESS,
 		},
 	},
 	testnet: {
-		flowApiBasePath: "https://flow-api-dev.rarible.com",
 		protocolFee: { account: TESTNET_RARIBLE_ADDRESS, value: PROTOCOL_FEE },
-		walletDiscovery: "",
-		accessNode: blocktoWallet.testnet.accessNode,
-		challengeHandshake: blocktoWallet.testnet.wallet,
 		mainAddressMap: {
 			NonFungibleToken: toFlowAddress("0x631e88ae7f1d7c20"),
 			FungibleToken: toFlowAddress("0x9a0766d93b6608b7"),
@@ -97,16 +100,14 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			RaribleOrder: TESTNET_RARIBLE_ADDRESS,
 			RaribleNFT: TESTNET_RARIBLE_ADDRESS,
 			LicensedNFT: TESTNET_RARIBLE_ADDRESS,
-			RaribleOpenBid: TESTNET_RARIBLE_ADDRESS,
+			RaribleOpenBid: toFlowAddress("0x1d56d7ba49283a88"),
 			MugenNFT: TESTNET_RARIBLE_ADDRESS,
 			CNN_NFT: TESTNET_RARIBLE_ADDRESS,
+			MatrixWorldFlowFestNFT: toFlowAddress("0xe2f1b000e0203c1d"),
+			MatrixWorldVoucher: toFlowAddress(ZERO_ADDRESS),
 		},
 	},
 	mainnet: {
-		flowApiBasePath: "https://flow-api.rarible.com",
-		walletDiscovery: "",
-		accessNode: blocktoWallet.mainnet.accessNode,
-		challengeHandshake: blocktoWallet.mainnet.wallet,
 		protocolFee: { account: toFlowAddress("0x7f599d6dd7fd7e7b"), value: PROTOCOL_FEE },
 		mainAddressMap: {
 			NonFungibleToken: toFlowAddress("0x1d7e57aa55817448"),
@@ -125,15 +126,13 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			RaribleOpenBid: MAINNET_RARIBLE_ADDRESS,
 			MugenNFT: toFlowAddress("0x2cd46d41da4ce262"),
 			CNN_NFT: toFlowAddress("0x329feb3ab062d289"),
+			MatrixWorldFlowFestNFT: toFlowAddress("0x2d2750f240198f91"),
+			MatrixWorldVoucher: toFlowAddress("0x0d77ec47bbad8ef6"),
 		},
 	},
 }
 
 type Config = {
-	flowApiBasePath: string
-	walletDiscovery: string
-	accessNode: string
-	challengeHandshake: string
 	protocolFee: FlowFee,
 	mainAddressMap: Record<FlowContractName, FlowAddress>
 }
@@ -144,7 +143,9 @@ export enum EmulatorCollections {
 	EVOLUTION = "A.0xf8d6e0586b0a20c7.Evolution",
 	TOPSHOT = "A.0xf8d6e0586b0a20c7.TopShot",
 	MUGENNFT = "A.0xf8d6e0586b0a20c7.MugenNFT",
-	CNNNFT = "A.0xf8d6e0586b0a20c7.CNN_NFT"
+	CNNNFT = "A.0xf8d6e0586b0a20c7.CNN_NFT",
+	MATRIXFEST = "A.0xf8d6e0586b0a20c7.MatrixWorldFlowFestNFT",
+	MATRIXLANDVAUCHER = "A.0xf8d6e0586b0a20c7.MatrixWorldVoucher"
 }
 
 export enum TestnetCollections {
@@ -153,7 +154,8 @@ export enum TestnetCollections {
 	EVOLUTION = "A.01658d9b94068f3c.Evolution",
 	TOPSHOT = "A.01658d9b94068f3c.TopShot",
 	MUGENNFT = "A.ebf4ae01d1284af8.MugenNFT",
-	CNNNFT = "A.ebf4ae01d1284af8.CNN_NFT"
+	CNNNFT = "A.ebf4ae01d1284af8.CNN_NFT",
+	MATRIXFEST = "A.e2f1b000e0203c1d.MatrixWorldFlowFestNFT",
 }
 
 export enum MainnetCollections {
@@ -162,5 +164,7 @@ export enum MainnetCollections {
 	EVOLUTION = "A.f4264ac8f3256818.Evolution",
 	TOPSHOT = "A.0b2a3299cc857e29.TopShot",
 	MUGENNFT = "A.2cd46d41da4ce262.MugenNFT",
-	CNNNFT = "A.329feb3ab062d289.CNN_NFT"
+	CNNNFT = "A.329feb3ab062d289.CNN_NFT",
+	MATRIXFEST = "A.2d2750f240198f91.MatrixWorldFlowFestNFT",
+	MATRIXLANDVAUCHER = "A.0d77ec47bbad8ef6.MatrixWorldVoucher"
 }

@@ -3,10 +3,10 @@ import type { Maybe } from "@rarible/types/build/maybe"
 import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getCollectionConfig } from "../common/collection/get-config"
+import { getBidCode } from "../tx-code-store/order/rarible-open-bid"
 import type { FlowContractAddress } from "../common/flow-address"
-import { getOrderCode } from "../tx-code-store/order/storefront"
 
-export async function cancelOrder(
+export async function cancelBid(
 	fcl: Maybe<Fcl>,
 	auth: AuthWithPrivateKey,
 	network: FlowNetwork,
@@ -18,7 +18,7 @@ export async function cancelOrder(
 		const txId = await runTransaction(
 			fcl,
 			map,
-			getOrderCode(fcl, name).cancel(orderId),
+			getBidCode(fcl, name).cancel(orderId),
 			auth,
 		)
 		return waitForSeal(fcl, txId)

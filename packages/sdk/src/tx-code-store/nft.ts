@@ -54,7 +54,10 @@ export function getNftCode(name: FlowCollectionName): GetNftCode {
 					))
 					return {
 						cadence: RaribleNFT.mint,
-						args: fcl.args([fcl.arg(metadata, t.String), fcl.arg(convertRoyalties(royalties), RoyaltiesType)]),
+						args: fcl.args([
+							fcl.arg(metadata, t.String),
+							fcl.arg(convertRoyalties(royalties), RoyaltiesType),
+						]),
 					}
 				}
 				throw new Error("This collection doesn't support minting")

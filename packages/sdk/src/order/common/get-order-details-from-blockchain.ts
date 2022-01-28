@@ -1,9 +1,13 @@
 import type { Fcl } from "@rarible/fcl-types"
-import t from "@onflow/types"
 import { openBidCommon, StorefrontCommon } from "@rarible/flow-sdk-scripts"
-import { runScript } from "../common/transaction"
-import type { FlowCurrency, FlowNetwork } from "../types"
-import { CONFIGS } from "../config/config"
+import * as t from "@onflow/types"
+import { toBigNumber, toFlowAddress } from "@rarible/types"
+import { runScript } from "../../common/transaction"
+import type { FlowCurrency, FlowFee, FlowNetwork } from "../../types"
+import { CONFIGS } from "../../config/config"
+import { withPrefix } from "../../common/prefix"
+
+type FlowSaleCuts = { receiver: { address: string }, amount: string }
 
 type FlowOrderDetails = {
 	storefrontID: number
@@ -12,8 +16,9 @@ type FlowOrderDetails = {
 	nftID: number
 	salePaymentVaultType: string//'A.0ae53cb6e3f42a79.FlowToken.Vault',
 	salePrice: string //'0.10000000',
+	saleCuts: FlowFee[]
 	currency: FlowCurrency
-	saleCuts: { receiver: object, amount: string }[]
+	isLegacy: boolean
 }
 
 export async function getOrderDetailsFromBlockchain(
@@ -50,15 +55,26 @@ export async function getOrderDetailsFromBlockchain(
 		map,
 	)
 	const fungibleContract = "vaultType" in details ? details.vaultType.split(".")[2] : details.salePaymentVaultType.split(".")[2]
+	const protocolFeeReceiver = CONFIGS[network].protocolFee.account
+	const data = {
+		...details,
+		saleCuts: ("saleCuts" in details ? details.saleCuts : details.cuts).map((s: FlowSaleCuts) => ({
+			account: toFlowAddress(s.receiver.address),
+			value: toBigNumber(s.amount),
+		})),
+	}
+	data.isLegacy = data.saleCuts.filter(
+		(s: FlowFee) => withPrefix(s.account).toLowerCase() === withPrefix(protocolFeeReceiver).toLowerCase(),
+	).length > 1
 	switch (fungibleContract) {
 		case "FlowToken":
 			return {
-				...details,
+				...data,
 				currency: "FLOW",
 			}
 		case "FUSD":
 			return {
-				...details,
+				...data,
 				currency: "FUSD",
 			}
 		default:

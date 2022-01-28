@@ -3,7 +3,7 @@ import type { FlowAddress } from "@rarible/types"
 import type { AuthWithPrivateKey, FlowCurrency, FlowFee, FlowTransaction } from "../../types"
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import type { FlowCollectionName } from "../../common/collection"
-import { getBidCode } from "../../tx-code-store/order/bid"
+import { getBidCode } from "../../tx-code-store/order/rarible-open-bid"
 
 export async function fillBidOrder(
 	fcl: Fcl,

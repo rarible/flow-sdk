@@ -1,6 +1,5 @@
 import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
-import { toBigNumber } from "@rarible/types"
 import type { FlowSdk } from "../index"
 import { createFlowSdk, toFlowContractAddress } from "../index"
 import { checkEvent } from "../test/check-event"
@@ -10,7 +9,7 @@ import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
 import { createFusdTestEnvironment } from "../test/setup-fusd-env"
 import { toFlowItemId } from "../common/item"
-import { getTestOrderTmplate } from "../test/order-template"
+import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/mugen-art"
 
 describe("Test cancel order on emulator", () => {
 	let sdk: FlowSdk
@@ -30,21 +29,8 @@ describe("Test cancel order on emulator", () => {
 		})
 		expect(tx.status).toEqual(4)
 
-		const order = getTestOrderTmplate("sell", tx.orderId, mintTx.tokenId, toBigNumber("0.1"))
-		const cancelTx = await sdk.order.cancelOrder(collection, order)
+		const cancelTx = await sdk.order.cancelOrder(collection, tx.orderId)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
-	})
-
-	test("Should cancel RaribleNFT bid order", async () => {
-		const price = toBigNumber("0.1")
-		const mintTx = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
-		const tx = await sdk.order.bid(
-			collection, "FLOW", mintTx.tokenId, price,
-		)
-		expect(tx.status).toEqual(4)
-		const order = getTestOrderTmplate("bid", tx.orderId, mintTx.tokenId, price)
-		const cancelTx = await sdk.order.cancelOrder(collection, order)
-		checkEvent(cancelTx, "BidCompleted", "RaribleOpenBid")
 	})
 
 	test("Should cancel RaribleNFT sell order for FUSD", async () => {
@@ -62,8 +48,7 @@ describe("Test cancel order on emulator", () => {
 		})
 		expect(tx.status).toEqual(4)
 
-		const order = getTestOrderTmplate("sell", tx.orderId, mintTx.tokenId, toBigNumber("0.1"))
-		const cancelTx = await acc1.sdk.order.cancelOrder(collection, order)
+		const cancelTx = await acc1.sdk.order.cancelOrder(collection, tx.orderId)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 
@@ -84,8 +69,7 @@ describe("Test cancel order on emulator", () => {
 		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 
-		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.1"))
-		const cancelTx = await acc1.sdk.order.cancelOrder(evolutionCollection, order)
+		const cancelTx = await acc1.sdk.order.cancelOrder(evolutionCollection, sellTx.orderId)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 
@@ -106,8 +90,7 @@ describe("Test cancel order on emulator", () => {
 		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 
-		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.1"))
-		const cancelTx = await acc1.sdk.order.cancelOrder(topShotColletion, order)
+		const cancelTx = await acc1.sdk.order.cancelOrder(topShotColletion, sellTx.orderId)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 
@@ -128,8 +111,28 @@ describe("Test cancel order on emulator", () => {
 		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 
-		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.1"))
-		const cancelTx = await acc1.sdk.order.cancelOrder(motoGpColletion, order)
+		const cancelTx = await acc1.sdk.order.cancelOrder(motoGpColletion, sellTx.orderId)
+		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
+	})
+
+	test("Should cancell sell order, MugenArt nft", async () => {
+		const mugenArtCollection = toFlowContractAddress(EmulatorCollections.MUGENNFT)
+		const { acc1, serviceAcc } = await createMugenArtTestEnvironment(fcl)
+
+		const [id] = await getMugenArtIds(fcl, serviceAcc.address, acc1.address)
+		expect(id).toEqual(0)
+
+		const itemId = toFlowItemId(`${mugenArtCollection}:${id}`)
+
+		const sellTx = await acc1.sdk.order.sell({
+			collection: mugenArtCollection,
+			currency: "FLOW",
+			itemId,
+			sellItemPrice: "0.0001",
+		})
+		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
+
+		const cancelTx = await acc1.sdk.order.cancelOrder(mugenArtCollection, sellTx.orderId)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 })

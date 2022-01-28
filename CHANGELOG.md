@@ -3,6 +3,230 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.30-alpha.8](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.7...v0.5.30-alpha.8) (2022-01-27)
+
+
+### Bug Fixes
+
+* commissions duplicates concat ([b10f3c8](https://github.com/rarible/flow-sdk/commit/b10f3c8a6ec8ac9c60b69edbc6230dfdc4cd0007))
+
+
+
+
+
+## [0.5.30-alpha.7](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.6...v0.5.30-alpha.7) (2022-01-27)
+
+
+### Bug Fixes
+
+* fb-547 add check on isLegacy order when fill order ([3f34a99](https://github.com/rarible/flow-sdk/commit/3f34a99fff21ac340895fedd53a7ad7cf52fcab6))
+* fee test ([c5adcf0](https://github.com/rarible/flow-sdk/commit/c5adcf01dc5d4ec4465161b44306476ad4fc3137))
+
+
+
+
+
+## [0.5.30-alpha.6](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.5...v0.5.30-alpha.6) (2022-01-21)
+
+
+### Bug Fixes
+
+* switch protocol fee to 0 ([5b17a72](https://github.com/rarible/flow-sdk/commit/5b17a720677ceead663405fa36c9cff786fda02d))
+
+
+
+
+
+## [0.5.30-alpha.5](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.4...v0.5.30-alpha.5) (2022-01-20)
+
+
+### Bug Fixes
+
+* fb-533 update bid transactions and contract ([4b45a99](https://github.com/rarible/flow-sdk/commit/4b45a99ec27b67349680335fa36c631fef43be99))
+* update RaribleOpenBid address for testnet ([e243eff](https://github.com/rarible/flow-sdk/commit/e243eff8e7692917b2c5b6e9a842ebe5f0aa5d08))
+
+
+
+
+
+## [0.5.30-alpha.4](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.3...v0.5.30-alpha.4) (2022-01-19)
+
+
+### Bug Fixes
+
+* accept bid payout parts calculation ([2a806f8](https://github.com/rarible/flow-sdk/commit/2a806f8efcb506d526cbc1827d52b2f8b7c8f1a7))
+
+
+
+
+
+## [0.5.30-alpha.3](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.2...v0.5.30-alpha.3) (2022-01-17)
+
+**Note:** Version bump only for package root
+
+
+
+
+
+## [0.5.30-alpha.2](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.1...v0.5.30-alpha.2) (2022-01-10)
+
+
+### Bug Fixes
+
+* add doc fiel for sdk-scripts package ([82d8639](https://github.com/rarible/flow-sdk/commit/82d8639479ee3ef0b05b76fda6b48baae3ea3432))
+
+
+
+
+
+## [0.5.30-alpha.1](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.0...v0.5.30-alpha.1) (2022-01-10)
+
+
+### Bug Fixes
+
+* deps ([44a4f38](https://github.com/rarible/flow-sdk/commit/44a4f3890f074d039d577f62bd120929bd6ca978))
+
+
+
+
+
+## [0.5.30-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.29-alpha.0...v0.5.30-alpha.0) (2021-12-30)
+
+
+### Bug Fixes
+
+* sdk doc ([bf39302](https://github.com/rarible/flow-sdk/commit/bf393027de07c737a9168f973edfd9e6cf12cc8f))
+
+
+
+
+
+## [0.5.29-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.28...v0.5.29-alpha.0) (2021-12-30)
+
+
+### Bug Fixes
+
+* update scripts ([ec611ca](https://github.com/rarible/flow-sdk/commit/ec611ca898302e864a822949d0e80cecd71bd9d2))
+
+
+
+
+
+## [0.5.28](https://github.com/rarible/flow-sdk/compare/v0.5.27...v0.5.28) (2021-12-21)
+
+
+### Bug Fixes
+
+* legacy order detection ([60a61b4](https://github.com/rarible/flow-sdk/commit/60a61b499ecdc1872ecf53ec2145cb551d26e991))
+
+
+
+
+
+## [0.5.27](https://github.com/rarible/flow-sdk/compare/v0.5.26...v0.5.27) (2021-12-21)
+
+
+### Bug Fixes
+
+* royalty validator ([ef86cef](https://github.com/rarible/flow-sdk/commit/ef86cef334a82b6a9313dab1912952170b701583))
+
+
+
+
+
+## [0.5.26](https://github.com/rarible/flow-sdk/compare/v0.5.25...v0.5.26) (2021-12-21)
+
+
+### Bug Fixes
+
+* add royalty validation ([55b1dcb](https://github.com/rarible/flow-sdk/commit/55b1dcb364f96d5bb300b5deb0fa694dde63122c))
+
+
+
+
+
+## [0.5.25](https://github.com/rarible/flow-sdk/compare/v0.5.24...v0.5.25) (2021-12-20)
+
+
+### Bug Fixes
+
+* fix payout calculation on order creation ([48f9c66](https://github.com/rarible/flow-sdk/commit/48f9c664b18f815631e67bc63ca9b616f826639e))
+
+
+
+
+
+## [0.5.24](https://github.com/rarible/flow-sdk/compare/v0.5.23...v0.5.24) (2021-12-20)
+
+
+### Bug Fixes
+
+* update order fee calculation ([8376401](https://github.com/rarible/flow-sdk/commit/8376401719833d57635b1c983c139d4525159e42))
+
+
+
+
+
+## [0.5.23](https://github.com/rarible/flow-sdk/compare/v0.5.22...v0.5.23) (2021-12-20)
+
+
+### Bug Fixes
+
+* sell fees calculation ([3de4b8a](https://github.com/rarible/flow-sdk/commit/3de4b8a099b0575188d61144dd87780f1d6e0a6f))
+
+
+
+
+
+## [0.5.22](https://github.com/rarible/flow-sdk/compare/v0.5.21...v0.5.22) (2021-12-19)
+
+
+### Bug Fixes
+
+* decimal places ([57d2f44](https://github.com/rarible/flow-sdk/commit/57d2f4478ab58e59064ded355b481a0b58300443))
+* decimal places ([b19b92e](https://github.com/rarible/flow-sdk/commit/b19b92ec86952725edf4434c70ccd63d99161704))
+* fix onflow/types import ([9cb3ab8](https://github.com/rarible/flow-sdk/commit/9cb3ab835d75958cd1cae27e95dc7f2b17a8be2b))
+
+
+
+
+
+## [0.5.21](https://github.com/rarible/flow-sdk/compare/v0.5.21-alpha.0...v0.5.21) (2021-12-19)
+
+
+### Bug Fixes
+
+* fix sale cuts calculation on order update ([6dd6be9](https://github.com/rarible/flow-sdk/commit/6dd6be9010d6f3c99be34a61e99bc3cc43e4e637))
+
+
+
+
+
+## [0.5.21-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.20-alpha.0...v0.5.21-alpha.0) (2021-12-17)
+
+
+### Bug Fixes
+
+* devide cancel order and bid methods ([d3b3e4a](https://github.com/rarible/flow-sdk/commit/d3b3e4afa5c4b9de22220e597dc66d6e79d1e895))
+
+
+
+
+
+## [0.5.20-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.19...v0.5.20-alpha.0) (2021-12-17)
+
+
+### Bug Fixes
+
+* fees bugs ([8fa6606](https://github.com/rarible/flow-sdk/commit/8fa660683a4b5a9150a7b4c00c68589eb725cd71))
+* lerna allow branch conf ([c726acc](https://github.com/rarible/flow-sdk/commit/c726acc8f24bcd96d5ed09d364e7a9a1022b7da0))
+* new develop branch for test envs ([8b1edfd](https://github.com/rarible/flow-sdk/commit/8b1edfd87cf32cef512480c1185015819492a458))
+* remove unused files ([9882562](https://github.com/rarible/flow-sdk/commit/9882562793657420ca05339fbb6edceeb7b333b7))
+
+
+
+
+
 ## [0.5.19](https://github.com/rarible/flow-sdk/compare/v0.5.18...v0.5.19) (2021-12-17)
 
 

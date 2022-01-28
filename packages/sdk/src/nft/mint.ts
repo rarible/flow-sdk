@@ -8,6 +8,7 @@ import { getCollectionConfig } from "../common/collection/get-config"
 import type { FlowItemId } from "../common/item"
 import { toFlowItemId } from "../common/item"
 import type { FlowContractAddress } from "../common/flow-address"
+import { validateRoyalties } from "./common/validate-royalties"
 
 export interface FlowMintResponse extends FlowTransaction {
 	tokenId: FlowItemId
@@ -28,11 +29,12 @@ export async function mint(
 		network,
 		collection,
 	)
-	if (config.mintable) {
+	if (config.features.includes("MINT")) {
+		const validatedRoyalties = validateRoyalties(royalties)
 		const txId = await runTransaction(
 			fcl,
 			map,
-			getNftCode(name).mint(fcl, address, metadata, royalties),
+			getNftCode(name).mint(fcl, address, metadata, validatedRoyalties),
 			auth,
 		)
 		const txResult = await waitForSeal(fcl, txId)

@@ -3,30 +3,34 @@ export const openBidTransactionCode: Record<"openBid" | "closeBid" | "cancelBid"
 		import FungibleToken from address
 import NonFungibleToken from address
 import RaribleOpenBid from address
-import @ftContract from address
-import @nftContract from address
+import %ftContract% from address
+import %nftContract% from address
 
 transaction(nftId: UInt64, price: UFix64, parts: {Address:UFix64}) {
     let openBid: &RaribleOpenBid.OpenBid
-    let vault: @FungibleToken.Vault
     let nftReceiver: Capability<&{NonFungibleToken.CollectionPublic}>
-    let vaultRef: Capability<@ftPrivateType>
+    let vaultRef: Capability<&{%ftPrivateType%}>
 
     prepare(account: AuthAccount) {
-        if account.borrow<&@nftStorageType>(from: @nftStoragePath) == nil {
-            let collection <- @nftContract.createEmptyCollection() as! @@nftStorageType
-            account.save(<-collection, to: @nftStoragePath)
-            account.link<@nftPublicType>(@nftPublicPath, target: @nftStoragePath)
+        if !account.getCapability<&{%nftPublicType%}>(%nftPublicPath%).check() {
+            if account.borrow<&AnyResource>(from: %nftStoragePath%) != nil {
+                account.unlink(%nftPublicPath%)
+                account.link<&{%nftPublicType%}>(%nftPublicPath%, target: %nftStoragePath%)
+            } else {
+                let collection <- %nftContract%.createEmptyCollection() as! @%nftStorageType%
+                account.save(<-collection, to: %nftStoragePath%)
+                account.link<&{%nftPublicType%}>(%nftPublicPath%, target: %nftStoragePath%)
+            }
         }
 
-        self.nftReceiver = account.getCapability<@nftPublicType>(@nftPublicPath)
-        assert(self.nftReceiver.check(), message: "Missing or mis-typed @nftContract receiver")
+        self.nftReceiver = account.getCapability<&{NonFungibleToken.CollectionPublic}>(%nftPublicPath%)
+        assert(self.nftReceiver.check(), message: "Missing or mis-typed %nftContract% receiver")
 
-        if !account.getCapability<@ftPrivateType>(@ftPrivatePath)!.check() {
-            account.link<@ftPrivateType>(@ftPrivatePath, target: @ftStoragePath)
+        if !account.getCapability<&{%ftPrivateType%}>(%ftPrivatePath%)!.check() {
+            account.link<&{%ftPrivateType%}>(%ftPrivatePath%, target: %ftStoragePath%)
         }
 
-        self.vaultRef = account.getCapability<@ftPrivateType>(@ftPrivatePath)!
+        self.vaultRef = account.getCapability<&{%ftPrivateType%}>(%ftPrivatePath%)!
         assert(self.vaultRef.check(), message: "Missing or mis-typed fungible token vault ref")
 
         if account.borrow<&RaribleOpenBid.OpenBid>(from: RaribleOpenBid.OpenBidStoragePath) == nil {
@@ -37,21 +41,16 @@ transaction(nftId: UInt64, price: UFix64, parts: {Address:UFix64}) {
 
         self.openBid = account.borrow<&RaribleOpenBid.OpenBid>(from: RaribleOpenBid.OpenBidStoragePath)
             ?? panic("Missing or mis-typed RaribleOpenBid OpenBid")
-
-        var amount = price
-        for key in parts.keys {
-            amount = amount + parts[key]!
-        }
-
-        self.vault <- self.vaultRef.borrow()!.withdraw(amount: amount)
     }
 
     execute {
+        var amount = price
         let cuts: [RaribleOpenBid.Cut] = []
         for address in parts.keys {
+            amount = amount + parts[address]!
             cuts.append(
                 RaribleOpenBid.Cut(
-                    receiver: getAccount(address).getCapability<&{FungibleToken.Receiver}>(@ftPublicPath),
+                    receiver: getAccount(address).getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%),
                     amount: parts[address]!,
                 )
             )
@@ -59,9 +58,9 @@ transaction(nftId: UInt64, price: UFix64, parts: {Address:UFix64}) {
 
         self.openBid.createBid(
             vaultRefCapability: self.vaultRef,
-            testVault: <- self.vault,
+            offerPrice: amount,
             rewardCapability: self.nftReceiver,
-            nftType: Type<@@nftContract.NFT>(),
+            nftType: Type<@%nftContract%.NFT>(),
             nftId: nftId,
             cuts: cuts,
         )
@@ -73,8 +72,8 @@ transaction(nftId: UInt64, price: UFix64, parts: {Address:UFix64}) {
 	import FungibleToken from address
 import NonFungibleToken from address
 import RaribleOpenBid from address
-import @ftContract from address
-import @nftContract from address
+import %ftContract% from address
+import %nftContract% from address
 
 transaction(bidId: UInt64, openBidAddress: Address, parts: {Address:UFix64}) {
     let openBid: &RaribleOpenBid.OpenBid{RaribleOpenBid.OpenBidPublic}
@@ -92,18 +91,18 @@ transaction(bidId: UInt64, openBidAddress: Address, parts: {Address:UFix64}) {
             ?? panic("No Offer with that ID in OpenBid")
 
         let nftId = self.bid.getDetails().nftId
-        let nftCollection = account.borrow<&@nftStorageType>(from: @nftStoragePath)
+        let nftCollection = account.borrow<&%nftStorageType%>(from: %nftStoragePath%)
             ?? panic("Cannot borrow NFT collection receiver from account")
         self.nft <- nftCollection.withdraw(withdrawID: nftId)
 
-        self.mainVault = account.borrow<&{FungibleToken.Receiver}>(from: @ftStoragePath)
+        self.mainVault = account.borrow<&{FungibleToken.Receiver}>(from: %ftStoragePath%)
             ?? panic("Cannot borrow FlowToken vault from account storage")
     }
 
     execute {
         let vault <- self.bid.purchase(item: <-self.nft)!
         for address in parts.keys {
-            let receiver = getAccount(address).getCapability(@ftPublicPath).borrow<&{FungibleToken.Receiver}>()!
+            let receiver = getAccount(address).getCapability(%ftPublicPath%).borrow<&{FungibleToken.Receiver}>()!
             let part <- vault.withdraw(amount: parts[address]!)
             receiver.deposit(from: <- part)
         }
@@ -131,15 +130,14 @@ transaction(bidId: UInt64) {
 		import FungibleToken from address
 import NonFungibleToken from address
 import RaribleOpenBid from address
-import @ftContract from address
-import @nftContract from address
+import %ftContract% from address
+import %nftContract% from address
 
 transaction(bidId: UInt64, price: UFix64, parts: {Address:UFix64}) {
     let openBid: &RaribleOpenBid.OpenBid
     let bid: &RaribleOpenBid.Bid{RaribleOpenBid.BidPublic}
-    let vault: @FungibleToken.Vault
     let nftReceiver: Capability<&{NonFungibleToken.CollectionPublic}>
-    let vaultRef: Capability<@ftPrivateType>
+    let vaultRef: Capability<&{%ftPrivateType%}>
 
     prepare(account: AuthAccount) {
         self.openBid = account.borrow<&RaribleOpenBid.OpenBid>(from: RaribleOpenBid.OpenBidStoragePath)
@@ -147,39 +145,39 @@ transaction(bidId: UInt64, price: UFix64, parts: {Address:UFix64}) {
 
         self.bid = self.openBid.borrowBid(bidId: bidId)!
 
-        if account.borrow<&@nftStorageType>(from: @nftStoragePath) == nil {
-            let collection <- @nftContract.createEmptyCollection() as! @@nftStorageType
-            account.save(<-collection, to: @nftStoragePath)
-            account.link<@nftPublicType>(@nftPublicPath, target: @nftStoragePath)
+        if !account.getCapability<&{%nftPublicType%}>(%nftPublicPath%).check() {
+            if account.borrow<&AnyResource>(from: %nftStoragePath%) != nil {
+                account.unlink(%nftPublicPath%)
+                account.link<&{%nftPublicType%}>(%nftPublicPath%, target: %nftStoragePath%)
+            } else {
+                let collection <- %nftContract%.createEmptyCollection() as! @%nftStorageType%
+                account.save(<-collection, to: %nftStoragePath%)
+                account.link<&{%nftPublicType%}>(%nftPublicPath%, target: %nftStoragePath%)
+            }
         }
 
-        self.nftReceiver = account.getCapability<@nftPublicType>(@nftPublicPath)
-        assert(self.nftReceiver.check(), message: "Missing or mis-typed @nftContract receiver")
+        self.nftReceiver = account.getCapability<&{NonFungibleToken.CollectionPublic}>(%nftPublicPath%)
+        assert(self.nftReceiver.check(), message: "Missing or mis-typed %nftContract% receiver")
 
-        if !account.getCapability<@ftPrivateType>(@ftPrivatePath)!.check() {
-            account.link<@ftPrivateType>(@ftPrivatePath, target: @ftStoragePath)
+        if !account.getCapability<&{%ftPrivateType%}>(%ftPrivatePath%)!.check() {
+            account.link<&{%ftPrivateType%}>(%ftPrivatePath%, target: %ftStoragePath%)
         }
 
-        self.vaultRef = account.getCapability<@ftPrivateType>(@ftPrivatePath)!
+        self.vaultRef = account.getCapability<&{%ftPrivateType%}>(%ftPrivatePath%)!
         assert(self.vaultRef.check(), message: "Missing or mis-typed fungible token vault ref")
-
-        var amount = price
-        for key in parts.keys {
-            amount = amount + parts[key]!
-        }
-
-        self.vault <- self.vaultRef.borrow()!.withdraw(amount: amount)
     }
 
     execute {
         let details = self.bid.getDetails()
         self.openBid.removeBid(bidId: bidId)
 
+        var amount = price
         let cuts: [RaribleOpenBid.Cut] = []
         for address in parts.keys {
+            amount = amount + parts[address]!
             cuts.append(
                 RaribleOpenBid.Cut(
-                    receiver: getAccount(address).getCapability<&{FungibleToken.Receiver}>(@ftPublicPath),
+                    receiver: getAccount(address).getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%),
                     amount: parts[address]!,
                 )
             )
@@ -187,7 +185,7 @@ transaction(bidId: UInt64, price: UFix64, parts: {Address:UFix64}) {
 
         self.openBid.createBid(
             vaultRefCapability: self.vaultRef,
-            testVault: <- self.vault,
+            offerPrice: amount,
             rewardCapability: self.nftReceiver,
             nftType: details.nftType,
             nftId: details.nftId,

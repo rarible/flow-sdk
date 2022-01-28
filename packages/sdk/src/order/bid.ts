@@ -1,10 +1,10 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { BigNumber } from "@rarible/types"
-import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork, FlowOriginFees } from "../types"
+import type { AuthWithPrivateKey, FlowCurrency, FlowFee, FlowNetwork, FlowOriginFees } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getCollectionConfig } from "../common/collection/get-config"
-import { getBidCode } from "../tx-code-store/order/bid"
+import { getBidCode } from "../tx-code-store/order/rarible-open-bid"
 import { parseEvents } from "../common/parse-tx-events"
 import type { FlowItemId } from "../common/item"
 import { extractTokenId } from "../common/item"
@@ -26,8 +26,8 @@ export async function bid(
 ): Promise<FlowSellResponse> {
 	if (fcl) {
 		const { name, map } = getCollectionConfig(network, collection)
-		const protocolFees = getProtocolFee.percents(network)
-		const requestFees = originFee || []
+		const protocolFees: FlowFee[] = [getProtocolFee.percents(network).buyerFee]
+		const requestFees: FlowFee[] = originFee || []
 		const txId = await runTransaction(
 			fcl,
 			map,
@@ -36,8 +36,7 @@ export async function bid(
 				extractTokenId(itemId),
 				fixAmount(price),
 				[
-					...calculateFees(price, [protocolFees.buyerFee]),
-					...calculateFees(price, requestFees),
+					...calculateFees(price, [...protocolFees, ...requestFees]),
 				],
 			),
 			auth,

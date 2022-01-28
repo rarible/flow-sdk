@@ -4,6 +4,7 @@ import { openBidTransactionCode } from "@rarible/flow-sdk-scripts"
 import type { FlowCollectionName } from "../../common/collection"
 import type { FlowCurrency, FlowFee } from "../../types"
 import { prepareFees } from "../common/conver-fee-to-cadence"
+import { fixAmount } from "../../common/fix-amount"
 import { prepareOrderCode } from "./prepare-order-code"
 
 type GenerateCodeMethodResponse = {
@@ -24,7 +25,7 @@ export function getBidCode(fcl: Fcl, collectionName: FlowCollectionName): Genera
 			return {
 				cadence: prepareOrderCode(openBidTransactionCode.openBid, collectionName, currency),
 				args: fcl.args([
-					fcl.arg(itemId, t.UInt64), fcl.arg(price, t.UFix64), fcl.arg(prepareFees(fees), t.Dictionary({
+					fcl.arg(itemId, t.UInt64), fcl.arg(fixAmount(price), t.UFix64), fcl.arg(prepareFees(fees), t.Dictionary({
 						key: t.Address,
 						value: t.UFix64,
 					})),
@@ -36,7 +37,7 @@ export function getBidCode(fcl: Fcl, collectionName: FlowCollectionName): Genera
 				cadence: prepareOrderCode(openBidTransactionCode.updateBid, collectionName, currency),
 				args: fcl.args([
 					fcl.arg(bidId, t.UInt64),
-					fcl.arg(price, t.UFix64),
+					fcl.arg(fixAmount(price), t.UFix64),
 					fcl.arg(prepareFees(fees), t.Dictionary({
 						key: t.Address,
 						value: t.UFix64,

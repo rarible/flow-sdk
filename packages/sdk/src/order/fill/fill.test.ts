@@ -18,8 +18,9 @@ import { createEvolutionTestEnvironment, getEvolutionIds } from "../../test/evol
 import { toFlowItemId } from "../../common/item"
 import { createTopShotTestEnvironment, getTopShotIds } from "../../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../../test/moto-gp-card"
-import { getOrderDetailsFromBlockchain } from "../../test/get-order-details-from-blockchain"
+import { getOrderDetailsFromBlockchain } from "../common/get-order-details-from-blockchain"
 import { getTestOrderTmplate } from "../../test/order-template"
+import { createMugenArtTestEnvironment, getMugenArtIds } from "../../test/mugen-art"
 
 describe("Test fill on emulator", () => {
 	let sdk: FlowSdk
@@ -63,6 +64,7 @@ describe("Test fill on emulator", () => {
 
 	test("Should fill RaribleNFT order for FLOW tokens", async () => {
 		const { address, pk } = await createEmulatorAccount("accountName")
+		const { address: address2 } = await createEmulatorAccount("accountName2")
 		const auth = createTestAuth(fcl, "emulator", address, pk, 0)
 		sdk = createFlowSdk(fcl, "emulator", {}, auth)
 		const mintTx = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
@@ -72,7 +74,7 @@ describe("Test fill on emulator", () => {
 			currency: "FLOW",
 			itemId: mintTx.tokenId,
 			sellItemPrice: "0.001",
-			originFees: [{ account: toFlowAddress(address), value: toBigNumber("0.1") }],
+			originFees: [{ account: toFlowAddress(address2), value: toBigNumber("0.1") }],
 		})
 		// const { orderId } = tx.events[2].data
 		expect(tx.orderId).toBeGreaterThan(0)
@@ -201,5 +203,29 @@ describe("Test fill on emulator", () => {
 		checkEvent(buyTx, "ListingCompleted", "NFTStorefront")
 		const buyResult = await borrowMotoGpCardId(fcl, serviceAcc.address, acc2.address, 1)
 		expect(buyResult.cardID).toEqual(1)
+	})
+
+	test("Should fill sell order, MugenArt nft", async () => {
+		const mugenArtCollection = toFlowContractAddress(EmulatorCollections.MUGENNFT)
+		const { acc1, acc2, serviceAcc } = await createMugenArtTestEnvironment(fcl)
+
+		const [id] = await getMugenArtIds(fcl, serviceAcc.address, acc1.address)
+		expect(id).toEqual(0)
+
+		const itemId = toFlowItemId(`${mugenArtCollection}:${id}`)
+
+		const sellTx = await acc1.sdk.order.sell({
+			collection: mugenArtCollection,
+			currency: "FLOW",
+			itemId,
+			sellItemPrice: "0.0001",
+		})
+		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
+
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.0001"))
+		const buyTx = await acc2.sdk.order.fill(mugenArtCollection, "FLOW", order, acc1.address, [])
+		checkEvent(buyTx, "ListingCompleted", "NFTStorefront")
+		const [buyItemId] = await getMugenArtIds(fcl, serviceAcc.address, acc2.address)
+		expect(buyItemId).toEqual(0)
 	})
 })
