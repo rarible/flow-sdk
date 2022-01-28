@@ -1,13 +1,12 @@
 import { createFlowEmulator } from "@rarible/flow-test-common"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
-import { toFlowContractAddress } from "../index"
-import { EmulatorCollections } from "../config/config"
 import { createFlowTestEmulatorSdk } from "../test/create-flow-test-sdk"
 import { checkEvent } from "../test/check-event"
+import { getCollectionId } from "../config/config"
 
 describe("Test cancel order on emulator", () => {
 	createFlowEmulator({})
-	const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
+	const collection = getCollectionId("emulator", "RaribleNFT")
 
 
 	test("Should cancel RaribleNFT bid order", async () => {

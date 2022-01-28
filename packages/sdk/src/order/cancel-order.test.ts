@@ -1,20 +1,20 @@
 import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
 import type { FlowSdk } from "../index"
-import { createFlowSdk, toFlowContractAddress } from "../index"
+import { createFlowSdk } from "../index"
 import { checkEvent } from "../test/check-event"
-import { EmulatorCollections } from "../config/config"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
 import { createFusdTestEnvironment } from "../test/setup-fusd-env"
 import { toFlowItemId } from "../common/item"
 import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/mugen-art"
+import { getCollectionId } from "../config/config"
 
 describe("Test cancel order on emulator", () => {
 	let sdk: FlowSdk
 	createFlowEmulator({})
-	const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
+	const collection = getCollectionId("emulator", "RaribleNFT")
 
 	beforeAll(async () => {
 		const { address, pk } = await createEmulatorAccount("accountName")
@@ -53,7 +53,7 @@ describe("Test cancel order on emulator", () => {
 	})
 
 	test("Should cancel sell order from evolution nft", async () => {
-		const evolutionCollection = toFlowContractAddress(EmulatorCollections.EVOLUTION)
+		const evolutionCollection = getCollectionId("emulator", "Evolution")
 		const { acc1, serviceAcc } = await createEvolutionTestEnvironment(fcl)
 
 		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
@@ -74,7 +74,7 @@ describe("Test cancel order on emulator", () => {
 	})
 
 	test("Should cancel sell order from TopShot nft", async () => {
-		const topShotColletion = toFlowContractAddress(EmulatorCollections.TOPSHOT)
+		const topShotColletion = getCollectionId("emulator", "TopShot")
 		const { acc1, serviceAcc } = await createTopShotTestEnvironment(fcl)
 
 		const [result] = await getTopShotIds(fcl, serviceAcc.address, acc1.address)
@@ -95,7 +95,7 @@ describe("Test cancel order on emulator", () => {
 	})
 
 	test("Should cancel order from MotoCpCard nft", async () => {
-		const motoGpColletion = toFlowContractAddress(EmulatorCollections.MOTOGP)
+		const motoGpColletion = getCollectionId("emulator", "MotoGPCard")
 		const { acc1, serviceAcc } = await createMotoGpTestEnvironment(fcl)
 
 		const result = await borrowMotoGpCardId(fcl, serviceAcc.address, acc1.address, 1)
@@ -116,7 +116,7 @@ describe("Test cancel order on emulator", () => {
 	})
 
 	test("Should cancell sell order, MugenArt nft", async () => {
-		const mugenArtCollection = toFlowContractAddress(EmulatorCollections.MUGENNFT)
+		const mugenArtCollection = getCollectionId("emulator", "MugenNFT")
 		const { acc1, serviceAcc } = await createMugenArtTestEnvironment(fcl)
 
 		const [id] = await getMugenArtIds(fcl, serviceAcc.address, acc1.address)

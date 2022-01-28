@@ -1,17 +1,17 @@
 import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
 import type { FlowSdk } from "../index"
-import { createFlowSdk, toFlowContractAddress } from "../index"
+import { createFlowSdk } from "../index"
 import { checkEvent } from "../test/check-event"
-import { EmulatorCollections } from "../config/config"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
 import { extractTokenId } from "../common/item"
+import { getCollectionId } from "../config/config"
 
 describe("Test burn on emulator", () => {
 	let sdk: FlowSdk
-	const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
+	const collection = getCollectionId("emulator", "RaribleNFT")
 	createFlowEmulator({})
 
 	beforeAll(async () => {
@@ -34,7 +34,7 @@ describe("Test burn on emulator", () => {
 		expect(result.data.itemId).toEqual(1)
 
 		const burnTx = await acc1.sdk.nft.burn(
-			toFlowContractAddress(EmulatorCollections.EVOLUTION), 1,
+			getCollectionId("emulator", "Evolution"), 1,
 		)
 		expect(burnTx.status).toEqual(4)
 		checkEvent(burnTx, "Withdraw", "Evolution")
@@ -42,7 +42,7 @@ describe("Test burn on emulator", () => {
 	})
 
 	test("should burn TopShot nft", async () => {
-		const topShotColletion = toFlowContractAddress(EmulatorCollections.TOPSHOT)
+		const topShotColletion = getCollectionId("emulator", "TopShot")
 		const { acc1, serviceAcc } = await createTopShotTestEnvironment(fcl)
 
 		const [result] = await getTopShotIds(fcl, serviceAcc.address, acc1.address)
@@ -54,7 +54,7 @@ describe("Test burn on emulator", () => {
 	})
 
 	test("should burn MotoCpCard nft", async () => {
-		const motoGpColletion = toFlowContractAddress(EmulatorCollections.MOTOGP)
+		const motoGpColletion = getCollectionId("emulator", "MotoGPCard")
 		const { acc1, serviceAcc } = await createMotoGpTestEnvironment(fcl)
 
 		const result = await borrowMotoGpCardId(fcl, serviceAcc.address, acc1.address, 1)

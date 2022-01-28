@@ -20,7 +20,9 @@ export type NonFungibleContracts =
 	MugenNFT |
 	CNN_NFT |
 	MatrixWorldFlowFestNFT |
-	MatrixWorldVoucher
+	MatrixWorldVoucher |
+	RaribleNFTv2 |
+	SoftCollection
 
 export type FlowContractName =
 	| NonFungibleTokenType
@@ -33,7 +35,7 @@ export type FlowContractName =
 	| RaribleOpenBid
 	| FungibleContracts
 	| NonFungibleContracts
-
+	| MetadataViews
 
 export type AuthWithPrivateKey = undefined | ((account?: any) => Promise<any>)
 
@@ -61,3 +63,6 @@ export type MugenNFT = "MugenNFT"
 export type CNN_NFT = "CNN_NFT"
 export type MatrixWorldFlowFestNFT = "MatrixWorldFlowFestNFT"
 export type MatrixWorldVoucher = "MatrixWorldVoucher"
+export type RaribleNFTv2 = "RaribleNFTv2"
+export type SoftCollection = "SoftCollection"
+export type MetadataViews = "MetadataViews"

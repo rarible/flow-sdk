@@ -1,14 +1,14 @@
 import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
 import { toBigNumber } from "@rarible/types"
-import { createFlowSdk, toFlowContractAddress } from "../index"
+import { createFlowSdk } from "../index"
 import { getTestOrderTmplate } from "../test/order-template"
 import { checkEvent } from "../test/check-event"
-import { EmulatorCollections } from "../config/config"
+import { getCollectionId } from "../config/config"
 
 describe("Bid update", () => {
 	createFlowEmulator({})
-	const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
+	const collection = getCollectionId("emulator", "RaribleNFT")
 	test("Should update RaribleNFT bid order", async () => {
 		const { address, pk } = await createEmulatorAccount("accountName")
 		const auth = createTestAuth(fcl, "emulator", address, pk, 0)

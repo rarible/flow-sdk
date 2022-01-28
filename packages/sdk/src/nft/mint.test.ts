@@ -2,11 +2,11 @@ import * as fcl from "@onflow/fcl"
 import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
 import type { FlowSdk } from "../index"
 import { createFlowSdk, toFlowContractAddress } from "../index"
-import { EmulatorCollections } from "../config/config"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
 import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/mugen-art"
+import { getCollectionId } from "../config/config"
 
 describe("Minting on emulator", () => {
 	let sdk: FlowSdk
@@ -19,7 +19,7 @@ describe("Minting on emulator", () => {
 	})
 
 	test("should mint nft", async () => {
-		const contract = toFlowContractAddress(EmulatorCollections.RARIBLE)
+		const contract = getCollectionId("emulator", "RaribleNFT")
 		const mintTx = await sdk.nft.mint(
 			contract, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
 		expect(mintTx.status).toEqual(4)

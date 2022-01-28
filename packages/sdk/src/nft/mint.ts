@@ -25,11 +25,11 @@ export async function mint(
 	if (!fcl) {
 		throw new Error("Fcl is required for mint")
 	}
-	const { map, address, config, name } = getCollectionConfig(
+	const { map, address, features, name } = getCollectionConfig(
 		network,
 		collection,
 	)
-	if (config.features.includes("MINT")) {
+	if (features.includes("MINT")) {
 		const validatedRoyalties = validateRoyalties(royalties)
 		const txId = await runTransaction(
 			fcl,
