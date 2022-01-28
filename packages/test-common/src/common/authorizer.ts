@@ -4,6 +4,11 @@ import type { Fcl } from "@rarible/fcl-types"
 
 const ec = new EC("p256")
 
+type FlowSigningFunctionResponse = { addr: string, keyId: number, signature: string }
+type FlowSigningFunction = (signable: { message: string }) => FlowSigningFunctionResponse
+type FlowAuthorizeMinterResponce = { tempId: string, addr: string, keyId: number, signingFunction: FlowSigningFunction }
+type FlowAuthorizeMinter = (account: any) => Promise<FlowAuthorizeMinterResponce>
+
 class FlowService {
 	constructor(
 		private readonly fcl: Fcl,
@@ -13,10 +18,10 @@ class FlowService {
 	) {
 	}
 
-	authorizeMinter = () => {
-		return async (account: any = {}) => {
+	authorizeMinter = (): FlowAuthorizeMinter => {
+		return async (account = {}) => {
 			const user = await this.getAccount(this.minterFlowAddress)
-			const key = user.keys[this.minterAccountIndex]
+			const key = user.keys[+this.minterAccountIndex]
 
 			const sign = this.signWithKey
 			const pk = this.minterPrivateKeyHex
@@ -25,11 +30,11 @@ class FlowService {
 				...account,
 				tempId: `${user.address}-${key.index}`,
 				addr: this.fcl.sansPrefix(user.address),
-				keyId: Number(key.index),
-				signingFunction: (signable: { message: string }) => {
+				keyId: +key.index,
+				signingFunction: (signable) => {
 					return {
 						addr: this.fcl.withPrefix(user.address),
-						keyId: Number(key.index),
+						keyId: +key.index,
 						signature: sign(pk, signable.message),
 					}
 				},
@@ -37,12 +42,17 @@ class FlowService {
 		}
 	}
 
-	getAccount = async (addr: string) => {
+	getAccount = async (addr: string): Promise<{
+		keys: {
+			index: number
+		}[]
+		address: string
+	}> => {
 		const { account } = await this.fcl.send([this.fcl.getAccount(addr)])
 		return account
 	}
 
-	private signWithKey = (privateKey: string, msg: string) => {
+	private signWithKey = (privateKey: string, msg: string): string => {
 		const key = ec.keyFromPrivate(Buffer.from(privateKey, "hex"))
 		const sig = key.sign(this.hashMsg(msg))
 		const n = 32
