@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.32](https://github.com/rarible/flow-sdk/compare/v0.5.31...v0.5.32) (2022-01-31)
+
+
+### Bug Fixes
+
+* add secondary coolections to collections name check function ([66c5395](https://github.com/rarible/flow-sdk/commit/66c53957dc30f44b335295b154312f9ee7629d1b))
+* improve typings for collections ([6cfb6a5](https://github.com/rarible/flow-sdk/commit/6cfb6a518add563919028c642f4a3303c74a6248))
+
+
+
+
+
 ## [0.5.31](https://github.com/rarible/flow-sdk/compare/v0.5.30...v0.5.31) (2022-01-31)
 
 
