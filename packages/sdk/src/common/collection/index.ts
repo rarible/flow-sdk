@@ -1,38 +1,25 @@
 import type { FlowAddress } from "@rarible/types"
 import type { FlowContractAddress, FlowContractAddressName } from "../flow-address"
 import { parseContractAddress } from "../flow-address"
+import type { NonFungibleContract } from "../../types"
+import { NON_FUNGIBLE_CONTRACTS } from "../../types"
 
 export type FlowCollectionName = FlowContractAddressName & {
 	__IS_FLOW_COLLECTION_NAME__: true
 }
 
-export const flowCollections = [
-	"MotoGPCard",
-	"Evolution",
-	"TopShot",
-	"RaribleNFT",
-	"MugenNFT",
-	"CNN_NFT",
-	"MatrixWorldFlowFestNFT",
-	"MatrixWorldVoucher",
-	"DisruptArt",
-	"Art",
-	"StarlyCard",
-	"OneFootballCollectible",
-	"ChainmonstersRewards",
-] as FlowContractAddressName[]
-
 export type FlowCollectionAddress = FlowContractAddress & {
 	__IS_FLOW_KNOWN_COLLECTION_ADDRESS__: true
 }
 
+//todo remove this function
 export function isFlowCollection(address: FlowContractAddress): address is FlowCollectionAddress {
 	const { name } = parseContractAddress(address)
-	return flowCollections.indexOf(name) !== -1
+	return NON_FUNGIBLE_CONTRACTS.indexOf(name) !== -1
 }
 
 export type FlowCollectionData = {
-	name: FlowCollectionName
+	name: NonFungibleContract
 	address: FlowAddress
 }
 

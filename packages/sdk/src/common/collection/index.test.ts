@@ -1,4 +1,5 @@
 import { toFlowContractAddress } from "../flow-address"
+import type { NonFungibleContracts } from "../../types"
 import { getCollectionData, isFlowCollection } from "."
 
 describe("collection", () => {
@@ -26,11 +27,11 @@ describe("collection", () => {
 
 })
 
-const collections = [
-	"MotoGPCard",
-	"Evolution",
-	"TopShot",
+const collections: NonFungibleContracts = [
 	"RaribleNFT",
+	"Evolution",
+	"MotoGPCard",
+	"TopShot",
 	"MugenNFT",
 	"CNN_NFT",
 	"MatrixWorldFlowFestNFT",

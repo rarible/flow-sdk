@@ -1,7 +1,7 @@
 import type { BigNumber, FlowAddress } from "@rarible/types"
 import { toBigNumber, toFlowAddress, ZERO_ADDRESS } from "@rarible/types"
 import type { FlowContractAddressName } from "../common/flow-address"
-import type { FlowContractName, FlowFee, FlowNetwork } from "../types"
+import type { FlowContractName, FlowFee, FlowNetwork, NonFungibleContract } from "../types"
 
 export const MIN_ORDER_PRICE = "0.0001"
 export type FlowNftFeatures = "MINT" | "BURN" | "TRANSFER"
@@ -16,7 +16,7 @@ export type FlowConfigData = {
 	features: FlowNftFeatures[]
 }
 
-export const flowCollectionsConfig: Record<string, FlowConfigData> = {
+export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> = {
 	RaribleNFT: {
 		contractsNames: ["RaribleOrder", "RaribleNFT", "LicensedNFT", "RaribleFee"] as FlowContractAddressName[],
 		features: ["MINT", "TRANSFER", "BURN"],

@@ -1,4 +1,4 @@
-import type { FlowContractName, FungibleContracts, NonFungibleContracts } from "../types"
+import type { FlowContractName, FungibleContracts, NonFungibleContract } from "../types"
 
 export type FtCodeConfig = Record<"%ftPublicPath%" | "%ftPrivateType%" | "%ftPrivatePath%" | "%ftStoragePath%" | "%ftContract%", string>
 
@@ -31,7 +31,7 @@ type NftStaticVariables = {
 	"%nftStoragePath%": string
 	"%publicTypeAddon%"?: string
 }
-const nftCodeConfig: Record<NonFungibleContracts, NftStaticVariables> = {
+const nftCodeConfig: Record<NonFungibleContract, NftStaticVariables> = {
 	RaribleNFT: {
 		"%nftPublicPath%": "RaribleNFT.collectionPublicPath",
 		"%nftStoragePath%": "RaribleNFT.collectionStoragePath",
@@ -105,7 +105,7 @@ export function getNftCodeConfig(contract: FlowContractName): NftCodeConfig {
 	if (!Object.keys(nftCodeConfig).includes(contract)) {
 		throw new Error(`Unsupported contract: ${contract}`)
 	}
-	const staticConfig = nftCodeConfig[contract as NonFungibleContracts]
+	const staticConfig = nftCodeConfig[contract as NonFungibleContract]
 	return {
 		...staticConfig,
 		"%nftContract%": contract,
