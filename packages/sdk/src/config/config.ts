@@ -49,6 +49,26 @@ export const flowCollectionsConfig: Record<string, FlowConfigData> = {
 		contractsNames: ["MatrixWorldVoucher"] as FlowContractAddressName[],
 		features: ["TRANSFER", "BURN"],
 	},
+	DisruptArt: {
+		contractsNames: ["DisruptArt"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
+	Art: {
+		contractsNames: ["Art"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
+	StarlyCard: {
+		contractsNames: ["StarlyCard"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
+	OneFootballCollectible: {
+		contractsNames: ["OneFootballCollectible"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
+	ChainmonstersRewards: {
+		contractsNames: ["ChainmonstersRewards"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
 }
 
 const MAINNET_RARIBLE_ADDRESS = toFlowAddress("0x01ab36aaf654a13e")
@@ -82,6 +102,11 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			CNN_NFT: EMULATOR_ADDRESS,
 			MatrixWorldFlowFestNFT: EMULATOR_ADDRESS,
 			MatrixWorldVoucher: EMULATOR_ADDRESS,
+			DisruptArt: EMULATOR_ADDRESS,
+			Art: EMULATOR_ADDRESS,
+			StarlyCard: EMULATOR_ADDRESS,
+			OneFootballCollectible: EMULATOR_ADDRESS,
+			ChainmonstersRewards: EMULATOR_ADDRESS,
 		},
 	},
 	testnet: {
@@ -105,6 +130,11 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			CNN_NFT: TESTNET_RARIBLE_ADDRESS,
 			MatrixWorldFlowFestNFT: toFlowAddress("0xe2f1b000e0203c1d"),
 			MatrixWorldVoucher: toFlowAddress(ZERO_ADDRESS),
+			DisruptArt: TESTNET_RARIBLE_ADDRESS,
+			Art: TESTNET_RARIBLE_ADDRESS,
+			StarlyCard: TESTNET_RARIBLE_ADDRESS,
+			OneFootballCollectible: TESTNET_RARIBLE_ADDRESS,
+			ChainmonstersRewards: TESTNET_RARIBLE_ADDRESS,
 		},
 	},
 	mainnet: {
@@ -128,6 +158,11 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			CNN_NFT: toFlowAddress("0x329feb3ab062d289"),
 			MatrixWorldFlowFestNFT: toFlowAddress("0x2d2750f240198f91"),
 			MatrixWorldVoucher: toFlowAddress("0x0d77ec47bbad8ef6"),
+			DisruptArt: toFlowAddress("0xcd946ef9b13804c6"),
+			Art: toFlowAddress("0xd796ff17107bbff6"),
+			StarlyCard: toFlowAddress("0x5b82f21c0edf76e3"),
+			OneFootballCollectible: toFlowAddress("0x6831760534292098"),
+			ChainmonstersRewards: toFlowAddress("0x93615d25d14fa337"),
 		},
 	},
 }
@@ -145,7 +180,7 @@ export enum EmulatorCollections {
 	MUGENNFT = "A.0xf8d6e0586b0a20c7.MugenNFT",
 	CNNNFT = "A.0xf8d6e0586b0a20c7.CNN_NFT",
 	MATRIXFEST = "A.0xf8d6e0586b0a20c7.MatrixWorldFlowFestNFT",
-	MATRIXLANDVAUCHER = "A.0xf8d6e0586b0a20c7.MatrixWorldVoucher"
+	MATRIXLANDVAUCHER = "A.0xf8d6e0586b0a20c7.MatrixWorldVoucher",
 }
 
 export enum TestnetCollections {

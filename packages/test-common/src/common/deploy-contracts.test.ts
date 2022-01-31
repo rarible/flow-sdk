@@ -19,7 +19,7 @@ describe("Test auth", () => {
 		])
 		const result = await fcl.tx(tx).onceSealed()
 		expect(result.status).toEqual(4)
-	})
+	}, 20000)
 })
 
 const CODE = `
@@ -44,6 +44,11 @@ import MugenNFT from 0xf8d6e0586b0a20c7
 import CNN_NFT from 0xf8d6e0586b0a20c7
 import MatrixWorldFlowFestNFT from 0xf8d6e0586b0a20c7
 import MatrixWorldVoucher from 0xf8d6e0586b0a20c7
+import Art from 0xf8d6e0586b0a20c7
+import ChainmonstersRewards from 0xf8d6e0586b0a20c7
+import StarlyCard from 0xf8d6e0586b0a20c7
+import DisruptArt from 0xf8d6e0586b0a20c7
+import OneFootballCollectible from 0xf8d6e0586b0a20c7
 
 transaction {
   prepare(account: AuthAccount) {

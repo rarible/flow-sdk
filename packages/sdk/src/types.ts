@@ -20,7 +20,12 @@ export type NonFungibleContracts =
 	MugenNFT |
 	CNN_NFT |
 	MatrixWorldFlowFestNFT |
-	MatrixWorldVoucher
+	MatrixWorldVoucher |
+	DisruptArt |
+	Art |
+	StarlyCard |
+	OneFootballCollectible |
+	ChainmonstersRewards
 
 export type FlowContractName =
 	| NonFungibleTokenType
@@ -61,3 +66,8 @@ export type MugenNFT = "MugenNFT"
 export type CNN_NFT = "CNN_NFT"
 export type MatrixWorldFlowFestNFT = "MatrixWorldFlowFestNFT"
 export type MatrixWorldVoucher = "MatrixWorldVoucher"
+export type DisruptArt = "DisruptArt"
+export type Art = "Art"
+export type StarlyCard = "StarlyCard"
+export type OneFootballCollectible = "OneFootballCollectible"
+export type ChainmonstersRewards = "ChainmonstersRewards"
