@@ -13,6 +13,13 @@ export const flowCollections = [
 	"RaribleNFT",
 	"MugenNFT",
 	"CNN_NFT",
+	"MatrixWorldFlowFestNFT",
+	"MatrixWorldVoucher",
+	"DisruptArt",
+	"Art",
+	"StarlyCard",
+	"OneFootballCollectible",
+	"ChainmonstersRewards",
 ] as FlowContractAddressName[]
 
 export type FlowCollectionAddress = FlowContractAddress & {
