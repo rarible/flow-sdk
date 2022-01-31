@@ -1,16 +1,15 @@
 import type { FlowAddress } from "@rarible/types"
 import type { FlowConfigData } from "../../config/config"
 import { CONFIGS, flowCollectionsConfig } from "../../config/config"
-import type { FlowNetwork } from "../../types"
+import type { FlowNetwork, NonFungibleContract } from "../../types"
 import type { FlowContractAddress } from "../flow-address"
-import type { FlowCollectionName } from "./index"
 import { getCollectionData } from "./index"
 
 export type CollectionConfig = {
 	map: Record<string, FlowAddress>
 	address: FlowAddress
 	config: FlowConfigData
-	name: FlowCollectionName
+	name: NonFungibleContract
 }
 
 export function getCollectionConfig(network: FlowNetwork, collection: FlowContractAddress): CollectionConfig {

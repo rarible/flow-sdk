@@ -1,8 +1,7 @@
 import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { Storefront } from "@rarible/flow-sdk-scripts"
-import type { FlowCollectionName } from "../../common/collection"
-import type { FlowCurrency, FlowFee } from "../../types"
+import type { FlowCurrency, FlowFee, NonFungibleContract } from "../../types"
 import { prepareFees } from "../common/conver-fee-to-cadence"
 import { prepareOrderCode } from "./prepare-order-code"
 
@@ -18,7 +17,7 @@ type GenerateBidCodeResponse = {
 	cancel: (orderId: number) => GenerateCodeMethodResponse
 }
 
-export function getOrderCode(fcl: Fcl, collectionName: FlowCollectionName): GenerateBidCodeResponse {
+export function getOrderCode(fcl: Fcl, collectionName: NonFungibleContract): GenerateBidCodeResponse {
 	return {
 		create(currency, itemId, fees) {
 			return {

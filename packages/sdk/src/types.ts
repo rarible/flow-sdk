@@ -12,20 +12,25 @@ export type FlowPayouts = FlowFee[]
 
 export type FungibleContracts = FUSDType | FlowTokenType
 
-export type NonFungibleContracts =
-	RaribleNFTType |
-	EvolutionType |
-	MotoGPCardType |
-	TopShotType |
-	MugenNFT |
-	CNN_NFT |
-	MatrixWorldFlowFestNFT |
-	MatrixWorldVoucher |
-	DisruptArt |
-	Art |
-	StarlyCard |
-	OneFootballCollectible |
-	ChainmonstersRewards
+
+export const NON_FUNGIBLE_CONTRACTS = [
+	"RaribleNFT",
+	"Evolution",
+	"MotoGPCard",
+	"TopShot",
+	"MugenNFT",
+	"CNN_NFT",
+	"MatrixWorldFlowFestNFT",
+	"MatrixWorldVoucher",
+	"DisruptArt",
+	"Art",
+	"StarlyCard",
+	"OneFootballCollectible",
+	"ChainmonstersRewards",
+] as const
+
+export type NonFungibleContracts = typeof NON_FUNGIBLE_CONTRACTS
+export type NonFungibleContract = NonFungibleContracts[number]
 
 export type FlowContractName =
 	| NonFungibleTokenType
@@ -37,7 +42,7 @@ export type FlowContractName =
 	| TopShotFeeType
 	| RaribleOpenBid
 	| FungibleContracts
-	| NonFungibleContracts
+	| NonFungibleContract
 
 
 export type AuthWithPrivateKey = undefined | ((account?: any) => Promise<any>)
@@ -58,16 +63,3 @@ export type RaribleOrderType = "RaribleOrder"
 export type LicensedNFTType = "LicensedNFT"
 export type TopShotFeeType = "TopShotFee"
 export type RaribleOpenBid = "RaribleOpenBid"
-export type MotoGPCardType = "MotoGPCard"
-export type EvolutionType = "Evolution"
-export type TopShotType = "TopShot"
-export type RaribleNFTType = "RaribleNFT"
-export type MugenNFT = "MugenNFT"
-export type CNN_NFT = "CNN_NFT"
-export type MatrixWorldFlowFestNFT = "MatrixWorldFlowFestNFT"
-export type MatrixWorldVoucher = "MatrixWorldVoucher"
-export type DisruptArt = "DisruptArt"
-export type Art = "Art"
-export type StarlyCard = "StarlyCard"
-export type OneFootballCollectible = "OneFootballCollectible"
-export type ChainmonstersRewards = "ChainmonstersRewards"

@@ -1,8 +1,7 @@
 import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { openBidTransactionCode } from "@rarible/flow-sdk-scripts"
-import type { FlowCollectionName } from "../../common/collection"
-import type { FlowCurrency, FlowFee } from "../../types"
+import type { FlowCurrency, FlowFee, NonFungibleContract } from "../../types"
 import { prepareFees } from "../common/conver-fee-to-cadence"
 import { fixAmount } from "../../common/fix-amount"
 import { prepareOrderCode } from "./prepare-order-code"
@@ -19,7 +18,7 @@ type GenerateBidCodeResponse = {
 	cancel: (bidId: number) => GenerateCodeMethodResponse
 }
 
-export function getBidCode(fcl: Fcl, collectionName: FlowCollectionName): GenerateBidCodeResponse {
+export function getBidCode(fcl: Fcl, collectionName: NonFungibleContract): GenerateBidCodeResponse {
 	return {
 		create(currency, itemId, price, fees) {
 			return {

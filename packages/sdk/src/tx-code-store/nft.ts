@@ -3,10 +3,9 @@ import * as t from "@onflow/types"
 import { commonNft, RaribleNFT } from "@rarible/flow-sdk-scripts"
 import type { FlowRoyalty } from "@rarible/flow-api-client"
 import { convertRoyalties } from "../common/convert-royalties"
-import type { FlowCollectionName } from "../common/collection"
-import { flowCollections } from "../common/collection"
 import { getNftCodeConfig } from "../config/cadence-code-config"
-import type { FlowContractName } from "../types"
+import type { FlowContractName, NonFungibleContract } from "../types"
+import { NON_FUNGIBLE_CONTRACTS } from "../types"
 import { fillCodeTemplate } from "../common/template-replacer"
 
 type NftCodeReturnData = {
@@ -26,8 +25,8 @@ interface GetNftCode {
 	setupAccount(): NftCodeReturnData
 }
 
-export function getNftCode(name: FlowCollectionName): GetNftCode {
-	if (flowCollections.includes(name)) {
+export function getNftCode(name: NonFungibleContract): GetNftCode {
+	if (NON_FUNGIBLE_CONTRACTS.includes(name)) {
 		const map = getNftCodeConfig(name as FlowContractName)
 		return {
 			burn: (fcl: Fcl, tokenId: number) => {

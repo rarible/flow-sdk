@@ -1,10 +1,9 @@
-import type { FlowCollectionName } from "../../common/collection"
-import type { FlowContractName, FlowCurrency } from "../../types"
+import type { FlowContractName, FlowCurrency, NonFungibleContract } from "../../types"
 import type { FtCodeConfig, NftCodeConfig } from "../../config/cadence-code-config"
 import { getFtCodeConfig, getNftCodeConfig } from "../../config/cadence-code-config"
 import { fillCodeTemplate } from "../../common/template-replacer"
 
-export function prepareOrderCode(code: string, collectionName: FlowCollectionName, currency: FlowCurrency) {
+export function prepareOrderCode(code: string, collectionName: NonFungibleContract, currency: FlowCurrency) {
 	let ftData: FtCodeConfig
 	switch (currency) {
 		case "FLOW":

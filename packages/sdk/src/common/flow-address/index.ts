@@ -1,5 +1,7 @@
 import type { FlowAddress } from "@rarible/types"
 import { toFlowAddress } from "@rarible/types"
+import type { NonFungibleContract } from "../../types"
+import { NON_FUNGIBLE_CONTRACTS } from "../../types"
 
 export type FlowContractAddress = string & {
 	__IS_FLOW_CONTRACT_ADDRESS__: true
@@ -30,16 +32,18 @@ export type FlowContractAddressName = string & {
 
 type FlowContractAddressData = {
 	address: FlowAddress
-	name: FlowContractAddressName
+	name: NonFungibleContract
 }
 
 export function parseContractAddress(x: FlowContractAddress): FlowContractAddressData {
 	const [, address, name] = x.split(".")
 	if (!address || !name) {
 		throw new Error("Invalid contract address")
+	} else if (NON_FUNGIBLE_CONTRACTS.indexOf(name as NonFungibleContract) === -1) {
+		throw new Error(`Unknown or not a non-fungible contract name: ${name}`)
 	}
 	return {
 		address: toFlowAddress(address),
-		name: name as FlowContractAddressName,
+		name: name as NonFungibleContract,
 	}
 }
