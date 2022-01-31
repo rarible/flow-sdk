@@ -67,6 +67,30 @@ const nftCodeConfig: Record<NonFungibleContracts, NftStaticVariables> = {
 		"%nftPublicPath%": "MatrixWorldVoucher.CollectionPublicPath",
 		"%nftStoragePath%": "MatrixWorldVoucher.CollectionStoragePath",
 	},
+	DisruptArt: {
+		"%nftPublicPath%": "DisruptArt.disruptArtPublicPath",
+		"%nftStoragePath%": "DisruptArt.disruptArtStoragePath",
+	},
+	Art: {
+		"%nftPublicPath%": "Art.CollectionPublicPath",
+		"%nftStoragePath%": "Art.CollectionStoragePath",
+		"%publicTypeAddon%": "Art.CollectionPublic",
+	},
+	StarlyCard: {
+		"%nftPublicPath%": "StarlyCard.CollectionPublicPath",
+		"%nftStoragePath%": "StarlyCard.CollectionStoragePath",
+		"%publicTypeAddon%": "StarlyCard.StarlyCardCollectionPublic",
+	},
+	OneFootballCollectible: {
+		"%nftPublicPath%": "OneFootballCollectible.CollectionPublicPath",
+		"%nftStoragePath%": "OneFootballCollectible.CollectionStoragePath",
+		"%publicTypeAddon%": "OneFootballCollectible.OneFootballCollectibleCollectionPublic",
+	},
+	ChainmonstersRewards: {
+		"%nftPublicPath%": "/public/ChainmonstersRewardCollection",
+		"%nftStoragePath%": "/storage/ChainmonstersRewardCollection",
+		"%publicTypeAddon%": "ChainmonstersRewards.ChainmonstersRewardCollectionPublic",
+	},
 }
 export type NftCodeConfig = NftStaticVariables & {
 	"%nftContract%": string

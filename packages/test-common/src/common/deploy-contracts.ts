@@ -166,4 +166,46 @@ export async function deployAll(address: string) {
 			NonFungibleToken: address,
 		},
 	})
+	await deployContractByName({
+		name: CONTRACTS.Content,
+		to: address,
+		addressMap: {},
+	})
+	await deployContractByName({
+		name: CONTRACTS.Art,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			FungibleToken: "0xee82856bf20e2aa6",
+			Content: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.ChainmonstersRewards,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.StarlyCard,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.DisruptArt,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.OneFootballCollectible,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
 }
