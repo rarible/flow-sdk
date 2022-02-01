@@ -22,7 +22,7 @@ type MintRequest = {
 type CreateCollectionRequest = {
 	fcl: Fcl
 	address: string
-	from: FlowAddress
+	receiver: FlowAddress
 	name: string,
 	symbol: string,
 	royalties: FlowFee[]
@@ -114,7 +114,7 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 			createCollection: ({
 													 fcl,
 													 address,
-													 from,
+													 receiver,
 													 name,
 													 symbol,
 													 royalties,
@@ -134,14 +134,14 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 				return {
 					cadence: fillCodeTemplate(SoftCollection.create, map),
 					args: fcl.args([
-						fcl.arg(from, t.Address),
-						fcl.arg(parentId || null, t.Optional(t.UInt64)),
+						fcl.arg(receiver, t.Address),
+						fcl.arg(parentId === undefined ? null : parentId, t.Optional(t.UInt64)),
 						fcl.arg(name, t.String),
 						fcl.arg(symbol, t.String),
 						fcl.arg(icon || null, t.Optional(t.String)),
 						fcl.arg(description || null, t.Optional(t.String)),
 						fcl.arg(url || null, t.Optional(t.String)),
-						fcl.arg(supply || null, t.Optional(t.UInt64)),
+						fcl.arg(supply === undefined ? null : supply, t.Optional(t.UInt64)),
 						fcl.arg(convertRoyalties(royalties), RoyaltiesType),
 					]),
 				}

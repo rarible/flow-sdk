@@ -8,14 +8,14 @@ import {
 import fcl from "@onflow/fcl"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import { checkEvent } from "../test/check-event"
-import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
-import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
-import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
+import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/secondary-collections/evolution"
+import { createTopShotTestEnvironment, getTopShotIds } from "../test/secondary-collections/top-shot"
+import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/secondary-collections/moto-gp-card"
 import { createFusdTestEnvironment } from "../test/setup-fusd-env"
 import { toFlowItemId } from "../common/item"
 import { getTestOrderTmplate } from "../test/order-template"
 import { createFlowSdk } from "../index"
-import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/mugen-art"
+import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/secondary-collections/mugen-art"
 import { getCollectionId } from "../config/config"
 
 describe("Test update sell order on emulator", () => {

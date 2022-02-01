@@ -17,7 +17,7 @@ import { bid as bidTemplate } from "./order/bid"
 import { bidUpdate as bidUpdateTemplate } from "./order/bid-update"
 import { cancelBid as cancelBidTmeplate } from "./order/cancel-bid"
 import { setupAccount as setupAccountTemplate } from "./collection/setup-account"
-import type { CreateCollectionRequest } from "./collection/create-collection"
+import type { CreateCollectionRequest, CreateCollectionResponse } from "./collection/create-collection"
 import { createCollection as createCollectionTemplate } from "./collection/create-collection"
 import type { ProtocolFees } from "./order/get-protocol-fee"
 import { getProtocolFee as getProtocolFeeUpdateTemplate } from "./order/get-protocol-fee"
@@ -59,12 +59,6 @@ export interface FlowNftSdk {
 	 * @param tokenId
 	 */
 	burn(collection: FlowContractAddress, tokenId: number): Promise<FlowTransaction>
-
-	/**
-	 * Create collection (SoftCollection)
-	 * @param request
-	 */
-	createCollection(request: CreateCollectionRequest): Promise<FlowTransaction>
 }
 
 export interface FlowOrderSdk {
@@ -143,6 +137,26 @@ export interface FlowWalletSdk {
 
 export interface FlowCollectionSdk {
 	setupAccount(collection: FlowContractAddress): Promise<FlowTransaction>
+
+	/**
+	 * Create a new User collection
+	 *
+	 * @returns FlowTransaction + <b>collectionId</> (minterId) and <b>parentId</b>(parent minterId)
+	 * @param request
+	 *
+	 *  <p> {</p>
+	 *  	<p> collection?: FlowContractAddress </p>
+	 *		<p>receiver: FlowAddress</p>
+	 *		<p>name: string</p>
+	 *		<p>symbol: string</p>
+	 *		<p>royalties: FlowFee[]</p>
+	 *		<p>icon?: string</p>
+	 *		<p>description?: string</p>
+	 *		<p>url?: string</p>
+	 *		<p>supply?: number</p>
+	 *<p>}</p>
+	 */
+	createCollection(request: CreateCollectionRequest): Promise<CreateCollectionResponse>
 }
 
 export interface FlowSdk {
@@ -192,7 +206,6 @@ export function createFlowSdk(
 			mint: mintTemplate.bind(null, fcl, auth, blockchainNetwork),
 			burn: burnTemplate.bind(null, fcl, auth, blockchainNetwork),
 			transfer: transferTemplate.bind(null, fcl, auth, blockchainNetwork),
-			createCollection: createCollectionTemplate.bind(null, fcl, auth, blockchainNetwork),
 		},
 		order: {
 			sell: sellTemplate.bind(null, fcl, apis.item, auth, blockchainNetwork),
@@ -211,6 +224,7 @@ export function createFlowSdk(
 		},
 		collection: {
 			setupAccount: setupAccountTemplate.bind(null, fcl, auth, blockchainNetwork),
+			createCollection: createCollectionTemplate.bind(null, fcl, auth, blockchainNetwork),
 		},
 		signUserMessage: signUserMessageTemplate.bind(null, fcl),
 	}

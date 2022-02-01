@@ -7,10 +7,10 @@ import {
 import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { testScripts } from "@rarible/flow-test-common/build/common/scripts"
-import { runScript, runTransaction, waitForSeal } from "../common/transaction"
-import type { AuthWithPrivateKey } from "../types"
-import type { FlowSdk } from "../index"
-import { createFlowSdk } from "../index"
+import { runScript, runTransaction, waitForSeal } from "../../common/transaction"
+import type { AuthWithPrivateKey } from "../../types"
+import type { FlowSdk } from "../../index"
+import { createFlowSdk } from "../../index"
 
 export async function initAccountMotoGp(fcl: Fcl, auth: AuthWithPrivateKey, contractOwner: string) {
 	const cadence = testTransactions.motoGpCard.init

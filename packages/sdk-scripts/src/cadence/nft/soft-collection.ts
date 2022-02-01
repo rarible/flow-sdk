@@ -6,7 +6,7 @@ import SoftCollection from "contracts/SoftCollection.cdc"
 transaction (address: Address, parentId: UInt64?, name: String, symbol: String, icon: String?, description: String?, url: String?, supply: UInt64?, royalties: [SoftCollection.Royalty]) {
     let minter: &SoftCollection.Minter
 
-    prepare (account: AuthAccount) {
+		prepare(account: AuthAccount) {
         self.minter = account.borrow<&SoftCollection.Minter>(from: SoftCollection.MinterStoragePath)!
     }
 
