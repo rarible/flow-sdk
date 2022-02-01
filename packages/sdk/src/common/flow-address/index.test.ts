@@ -1,7 +1,7 @@
 import { toFlowAddress } from "@rarible/types"
 import { parseContractAddress, toFlowContractAddress } from "."
 
-describe("ethereum/utils/to-flow-address", () => {
+describe("to-flow-address", () => {
 	it("should correctly parse flow address", () => {
 		expect(toFlowAddress("0x55ad22f01ef568a1")).toStrictEqual("0x55ad22f01ef568a1")
 	})
@@ -16,21 +16,21 @@ describe("ethereum/utils/to-flow-address", () => {
 
 	it("correctly parse contract address with underscore", () => {
 		expect(toFlowContractAddress("A.0x665b9acf64dfdfdb.CommonNFT_TEST")).toStrictEqual(
-			"A.0x665b9acf64dfdfdb.CommonNFT_TEST"
+			"A.0x665b9acf64dfdfdb.CommonNFT_TEST",
 		)
 	})
 
 	it("should correctly parse contract address", () => {
-		expect(parseContractAddress(toFlowContractAddress("A.0x665b9acf64dfdfdb.CommonNFT"))).toStrictEqual({
+		expect(parseContractAddress(toFlowContractAddress("A.0x665b9acf64dfdfdb.RaribleNFT"))).toStrictEqual({
 			address: "0x665b9acf64dfdfdb",
-			name: "CommonNFT",
+			name: "RaribleNFT",
 		})
 	})
 
 	it("should correctly parse contract address with underscore", () => {
-		expect(parseContractAddress(toFlowContractAddress("A.0x665b9acf64dfdfdb.CommonNFT_TEST"))).toStrictEqual({
+		expect(parseContractAddress(toFlowContractAddress("A.0x665b9acf64dfdfdb.CNN_NFT"))).toStrictEqual({
 			address: "0x665b9acf64dfdfdb",
-			name: "CommonNFT_TEST",
+			name: "CNN_NFT",
 		})
 	})
 })

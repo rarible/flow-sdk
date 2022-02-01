@@ -1,7 +1,7 @@
 import type { BigNumber, FlowAddress } from "@rarible/types"
 import { toBigNumber, toFlowAddress, ZERO_ADDRESS } from "@rarible/types"
-import type { FlowContractName, FlowFee, FlowNetwork, NonFungibleContracts } from "../types"
 import { toFlowContractAddress } from "../common/flow-address"
+import type { FlowContractName, FlowFee, FlowNetwork, NonFungibleContract } from "../types"
 import { sansPrefix } from "../common/prefix"
 
 export const MIN_ORDER_PRICE = "0.0001"
@@ -13,7 +13,7 @@ export type FlowConfigData = {
 	features: FlowNftFeatures[]
 }
 
-export const flowCollectionsConfig: Record<string, FlowConfigData> = {
+export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> = {
 	RaribleNFT: {
 		features: ["MINT", "TRANSFER", "BURN"],
 	},
@@ -43,6 +43,21 @@ export const flowCollectionsConfig: Record<string, FlowConfigData> = {
 	},
 	RaribleNFTv2: {
 		features: ["TRANSFER", "BURN", "MINT"],
+	},
+	DisruptArt: {
+		features: ["TRANSFER", "BURN"],
+	},
+	Art: {
+		features: ["TRANSFER", "BURN"],
+	},
+	StarlyCard: {
+		features: ["TRANSFER", "BURN"],
+	},
+	OneFootballCollectible: {
+		features: ["TRANSFER", "BURN"],
+	},
+	ChainmonstersRewards: {
+		features: ["TRANSFER", "BURN"],
 	},
 }
 
@@ -80,6 +95,11 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			MetadataViews: EMULATOR_ADDRESS,
 			SoftCollection: EMULATOR_ADDRESS,
 			RaribleNFTv2: EMULATOR_ADDRESS,
+			DisruptArt: EMULATOR_ADDRESS,
+			Art: EMULATOR_ADDRESS,
+			StarlyCard: EMULATOR_ADDRESS,
+			OneFootballCollectible: EMULATOR_ADDRESS,
+			ChainmonstersRewards: EMULATOR_ADDRESS,
 		},
 	},
 	testnet: {
@@ -106,6 +126,11 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			MetadataViews: toFlowAddress("0x631e88ae7f1d7c20"),
 			SoftCollection: TESTNET_RARIBLE_ADDRESS,
 			RaribleNFTv2: TESTNET_RARIBLE_ADDRESS,
+			DisruptArt: TESTNET_RARIBLE_ADDRESS,
+			Art: TESTNET_RARIBLE_ADDRESS,
+			StarlyCard: TESTNET_RARIBLE_ADDRESS,
+			OneFootballCollectible: TESTNET_RARIBLE_ADDRESS,
+			ChainmonstersRewards: TESTNET_RARIBLE_ADDRESS,
 		},
 	},
 	mainnet: {
@@ -132,6 +157,11 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			MetadataViews: toFlowAddress("0x1d7e57aa55817448"),
 			SoftCollection: MAINNET_RARIBLE_ADDRESS,
 			RaribleNFTv2: MAINNET_RARIBLE_ADDRESS,
+			DisruptArt: toFlowAddress("0xcd946ef9b13804c6"),
+			Art: toFlowAddress("0xd796ff17107bbff6"),
+			StarlyCard: toFlowAddress("0x5b82f21c0edf76e3"),
+			OneFootballCollectible: toFlowAddress("0x6831760534292098"),
+			ChainmonstersRewards: toFlowAddress("0x93615d25d14fa337"),
 		},
 	},
 }
@@ -141,6 +171,6 @@ type Config = {
 	mainAddressMap: Record<FlowContractName, FlowAddress>
 }
 
-export function getCollectionId(network: FlowNetwork, collectionName: NonFungibleContracts) {
+export function getCollectionId(network: FlowNetwork, collectionName: NonFungibleContract) {
 	return toFlowContractAddress(`A.${sansPrefix(CONFIGS[network].mainAddressMap[collectionName])}.${collectionName}`)
 }

@@ -17,6 +17,8 @@ import { bid as bidTemplate } from "./order/bid"
 import { bidUpdate as bidUpdateTemplate } from "./order/bid-update"
 import { cancelBid as cancelBidTmeplate } from "./order/cancel-bid"
 import { setupAccount as setupAccountTemplate } from "./collection/setup-account"
+import type { CreateCollectionRequest } from "./collection/create-collection"
+import { createCollection as createCollectionTemplate } from "./collection/create-collection"
 import type { ProtocolFees } from "./order/get-protocol-fee"
 import { getProtocolFee as getProtocolFeeUpdateTemplate } from "./order/get-protocol-fee"
 import type { AuthWithPrivateKey, FlowCurrency, FlowEnv, FlowOriginFees, FlowTransaction } from "./types"
@@ -57,6 +59,12 @@ export interface FlowNftSdk {
 	 * @param tokenId
 	 */
 	burn(collection: FlowContractAddress, tokenId: number): Promise<FlowTransaction>
+
+	/**
+	 * Create collection (SoftCollection)
+	 * @param request
+	 */
+	createCollection(request: CreateCollectionRequest): Promise<FlowTransaction>
 }
 
 export interface FlowOrderSdk {
@@ -184,6 +192,7 @@ export function createFlowSdk(
 			mint: mintTemplate.bind(null, fcl, auth, blockchainNetwork),
 			burn: burnTemplate.bind(null, fcl, auth, blockchainNetwork),
 			transfer: transferTemplate.bind(null, fcl, auth, blockchainNetwork),
+			createCollection: createCollectionTemplate.bind(null, fcl, auth, blockchainNetwork),
 		},
 		order: {
 			sell: sellTemplate.bind(null, fcl, apis.item, auth, blockchainNetwork),

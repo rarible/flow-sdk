@@ -1,4 +1,4 @@
-export const RaribleNftV2 = {
+export const RaribleNFTv2 = {
 	mint: `
 import NonFungibleToken from address
 import SoftCollection from address

@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.31](https://github.com/rarible/flow-sdk/compare/v0.5.30...v0.5.31) (2022-01-31)
+
+
+### Features
+
+* support secondary collections: Distrupt, ChainMonsters, OneFootball, Starly, Versus ([00bb647](https://github.com/rarible/flow-sdk/commit/00bb6479c8ef1e51f20b0458d02043051a6e0eff))
+
+
+
+
+
+## [0.5.30](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.8...v0.5.30) (2022-01-28)
+
+
+### Bug Fixes
+
+* add types for FlowService ([a0222f0](https://github.com/rarible/flow-sdk/commit/a0222f0eb718ea69579521bbd5c2eaa3ddaafd02))
+
+
+
+
+
 ## [0.5.30-alpha.8](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.7...v0.5.30-alpha.8) (2022-01-27)
 
 
