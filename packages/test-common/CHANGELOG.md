@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.32...v0.5.33-alpha.0) (2022-02-02)
+
+
+### Bug Fixes
+
+* test timeouts in test-common package ([6e21404](https://github.com/rarible/flow-sdk/commit/6e214042634adbcf8d0ce4cfdb990407f86d5446))
+
+
+
+
+
 ## [0.5.31](https://github.com/rarible/flow-sdk/compare/v0.5.30...v0.5.31) (2022-01-31)
 
 

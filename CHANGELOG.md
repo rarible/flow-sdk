@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.32...v0.5.33-alpha.0) (2022-02-02)
+
+
+### Bug Fixes
+
+* improve fetch meta function ([0c9c6c2](https://github.com/rarible/flow-sdk/commit/0c9c6c2e6ac9c8d161eb0862113a815ffbe88728))
+* refactor fetching royalty when close orders ([1a9f24c](https://github.com/rarible/flow-sdk/commit/1a9f24c3a56e8e52ffc6cbdc7b11a197a3c5f455))
+* test timeouts in test-common package ([6e21404](https://github.com/rarible/flow-sdk/commit/6e214042634adbcf8d0ce4cfdb990407f86d5446))
+* tests for flowAddress and flowContract ([8a02215](https://github.com/rarible/flow-sdk/commit/8a02215c4d87f214cbf88c6dae2108f8722e9824))
+
+
+
+
+
 ## [0.5.32](https://github.com/rarible/flow-sdk/compare/v0.5.31...v0.5.32) (2022-01-31)
 
 
