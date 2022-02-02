@@ -6,11 +6,16 @@ import { retry } from "./retry"
 export async function fetchMeta(metaUri: string): Promise<Partial<PinataMetaData>> {
 	const url = `${METADATA_HOST}/ipfs/${metaUri.split("/")[3]}`
 	return retry(10, 1000, async () => {
-		try {
-			const data = await fetch(url)
-			return data.json()
-		} catch (e) {
-			throw new Error(`Cant fetch meta data from ${url}`)
-		}
+		return new Promise((resolve, reject) => {
+			fetch(url, { method: "GET" }).then((response: Response) => {
+				if (response.status >= 200 && response.status < 300) {
+					resolve(response.json())
+				} else {
+					reject(`Cant fetch meta data from ${url}`)
+				}
+			}).catch((e: Error) => {
+				throw new Error(`Cant fetch meta data: ${e}`)
+			})
+		})
 	})
 }
