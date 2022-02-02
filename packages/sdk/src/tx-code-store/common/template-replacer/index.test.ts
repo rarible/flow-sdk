@@ -1,4 +1,4 @@
-import { fillCodeTemplate, replaceImportAddresses } from "."
+import { fillCodeTemplate, replaceImportAddresses } from "./index"
 
 describe("replace import", () => {
 	test("test-emulator replace import", () => {

@@ -1,4 +1,4 @@
-import { withPrefix } from "../prefix"
+import { withPrefix } from "../../../common/prefix"
 
 const REGEXP_IMPORT = /(\s*import\s*)([\w\d]+)(\s+from\s*)([\w\d".\\/]+)/g
 

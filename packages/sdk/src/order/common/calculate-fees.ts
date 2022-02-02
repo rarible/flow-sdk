@@ -1,8 +1,8 @@
 import type { BigNumber } from "@rarible/types"
 import { toBigNumber } from "@rarible/types"
 import { toBn } from "@rarible/utils"
-import type { FlowFee } from "../types"
-import { concatNonUniqueFees } from "../order/common/calculate-sale-cuts"
+import type { FlowFee } from "../../types"
+import { concatNonUniqueFees } from "./calculate-sale-cuts"
 
 export function calculateFees(price: BigNumber, fees: FlowFee[]): FlowFee[] {
 	const calculatedFees = fees.map(fee => {

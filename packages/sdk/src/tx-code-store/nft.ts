@@ -1,15 +1,14 @@
 import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
-import { commonNft, RaribleNFT } from "@rarible/flow-sdk-scripts"
+import { commonNft, RaribleNFT, RaribleNFTv2, SoftCollection } from "@rarible/flow-sdk-scripts"
 import type { FlowRoyalty } from "@rarible/flow-api-client"
-import { RaribleNFTv2, SoftCollection } from "@rarible/flow-sdk-scripts/src"
 import type { FlowAddress } from "@rarible/types"
-import { convertRoyalties } from "../common/convert-royalties"
 import { getNftCodeConfig } from "../config/cadence-code-config"
 import type { FlowContractName, FlowFee, NonFungibleContract } from "../types"
 import { NON_FUNGIBLE_CONTRACTS } from "../types"
-import { fillCodeTemplate } from "../common/template-replacer"
-import { fetchMeta } from "../common/fetch-meta"
+import { fetchMeta } from "../nft/common/fetch-meta"
+import { fillCodeTemplate } from "./common/template-replacer"
+import { convertRoyalties } from "./common/convert-royalties"
 
 type NftCodeReturnData = {
 	cadence: string

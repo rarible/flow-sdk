@@ -14,7 +14,7 @@ import type {
 import { getCollectionConfig } from "../../common/collection/get-config"
 import { getProtocolFee } from "../get-protocol-fee"
 import { getPreparedOrder } from "../common/get-prepared-order"
-import { calculateFees } from "../../common/calculate-fees"
+import { calculateFees } from "../common/calculate-fees"
 import type { FlowContractAddress } from "../../common/flow-address"
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import { getOrderCode } from "../../tx-code-store/order/storefront"

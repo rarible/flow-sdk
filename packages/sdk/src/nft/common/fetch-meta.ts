@@ -1,7 +1,7 @@
 import fetch from "node-fetch"
-import type { PinataMetaData } from "../types"
-import { METADATA_HOST } from "../config/config"
-import { retry } from "./retry"
+import type { PinataMetaData } from "../../types"
+import { METADATA_HOST } from "../../config/config"
+import { retry } from "../../common/retry"
 
 export async function fetchMeta(metaUri: string): Promise<Partial<PinataMetaData>> {
 	const url = `${METADATA_HOST}/ipfs/${metaUri.split("/")[3]}`

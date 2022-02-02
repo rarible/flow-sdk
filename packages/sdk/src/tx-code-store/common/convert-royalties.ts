@@ -1,5 +1,5 @@
 import type { FlowRoyalty } from "@rarible/flow-api-client"
-import { fixAmount } from "./fix-amount"
+import { fixAmount } from "../../common/fix-amount"
 
 export function convertRoyalties(royalties: FlowRoyalty[]) {
 	return royalties.map(royalty => ({
