@@ -21,14 +21,14 @@ describe("to-flow-address", () => {
 	})
 
 	it("should correctly parse contract address", () => {
-		expect(parseContractAddress(toFlowContractAddress("A.0x665b9acf64dfdfdb.RaribleNFT"))).toStrictEqual({
+		expect(parseContractAddress(toFlowContractAddress("A.0x665b9acf64dfdfdb.RaribleNFT"))).toEqual({
 			address: "0x665b9acf64dfdfdb",
 			name: "RaribleNFT",
 		})
 	})
 
 	it("should correctly parse contract address with underscore", () => {
-		expect(parseContractAddress(toFlowContractAddress("A.0x665b9acf64dfdfdb.CNN_NFT"))).toStrictEqual({
+		expect(parseContractAddress(toFlowContractAddress("A.0x665b9acf64dfdfdb.CNN_NFT"))).toEqual({
 			address: "0x665b9acf64dfdfdb",
 			name: "CNN_NFT",
 		})

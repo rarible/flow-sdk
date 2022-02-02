@@ -8,7 +8,7 @@ describe("collection", () => {
 	})
 
 	test("must return valid collection data", () => {
-		expect(getCollectionData(toFlowContractAddress("A.0x01658d9b94068f3c.TopShot"))).toStrictEqual({
+		expect(getCollectionData(toFlowContractAddress("A.0x01658d9b94068f3c.TopShot"))).toEqual({
 			name: "TopShot",
 			address: "0x01658d9b94068f3c",
 		})
