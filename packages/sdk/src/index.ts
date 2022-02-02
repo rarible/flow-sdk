@@ -17,6 +17,8 @@ import { bid as bidTemplate } from "./order/bid"
 import { bidUpdate as bidUpdateTemplate } from "./order/bid-update"
 import { cancelBid as cancelBidTmeplate } from "./order/cancel-bid"
 import { setupAccount as setupAccountTemplate } from "./collection/setup-account"
+import type { CreateCollectionRequest, CreateCollectionResponse } from "./collection/create-collection"
+import { createCollection as createCollectionTemplate } from "./collection/create-collection"
 import type { ProtocolFees } from "./order/get-protocol-fee"
 import { getProtocolFee as getProtocolFeeUpdateTemplate } from "./order/get-protocol-fee"
 import type { AuthWithPrivateKey, FlowCurrency, FlowEnv, FlowOriginFees, FlowTransaction } from "./types"
@@ -135,6 +137,26 @@ export interface FlowWalletSdk {
 
 export interface FlowCollectionSdk {
 	setupAccount(collection: FlowContractAddress): Promise<FlowTransaction>
+
+	/**
+	 * Create a new User collection
+	 *
+	 * @returns FlowTransaction + <b>collectionId</> (minterId) and <b>parentId</b>(parent minterId)
+	 * @param request
+	 *
+	 *  <p> {</p>
+	 *  	<p> collection?: FlowContractAddress </p>
+	 *		<p>receiver: FlowAddress</p>
+	 *		<p>name: string</p>
+	 *		<p>symbol: string</p>
+	 *		<p>royalties: FlowFee[]</p>
+	 *		<p>icon?: string</p>
+	 *		<p>description?: string</p>
+	 *		<p>url?: string</p>
+	 *		<p>supply?: number</p>
+	 *<p>}</p>
+	 */
+	createCollection(request: CreateCollectionRequest): Promise<CreateCollectionResponse>
 }
 
 export interface FlowSdk {
@@ -202,6 +224,7 @@ export function createFlowSdk(
 		},
 		collection: {
 			setupAccount: setupAccountTemplate.bind(null, fcl, auth, blockchainNetwork),
+			createCollection: createCollectionTemplate.bind(null, fcl, auth, blockchainNetwork),
 		},
 		signUserMessage: signUserMessageTemplate.bind(null, fcl),
 	}

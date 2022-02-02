@@ -12,6 +12,13 @@ export type FlowPayouts = FlowFee[]
 
 export type FungibleContracts = FUSDType | FlowTokenType
 
+export type PinataMetaData = {
+	"name": string
+	"description": string
+	"image": string
+	"attributes": Record<string, string>[]
+}
+
 
 export const NON_FUNGIBLE_CONTRACTS = [
 	"RaribleNFT",
@@ -27,6 +34,8 @@ export const NON_FUNGIBLE_CONTRACTS = [
 	"StarlyCard",
 	"OneFootballCollectible",
 	"ChainmonstersRewards",
+	"RaribleNFTv2",
+	"SoftCollection",
 ] as const
 
 export type NonFungibleContracts = typeof NON_FUNGIBLE_CONTRACTS
@@ -43,7 +52,7 @@ export type FlowContractName =
 	| RaribleOpenBid
 	| FungibleContracts
 	| NonFungibleContract
-
+	| MetadataViews
 
 export type AuthWithPrivateKey = undefined | ((account?: any) => Promise<any>)
 
@@ -63,3 +72,4 @@ export type RaribleOrderType = "RaribleOrder"
 export type LicensedNFTType = "LicensedNFT"
 export type TopShotFeeType = "TopShotFee"
 export type RaribleOpenBid = "RaribleOpenBid"
+export type MetadataViews = "MetadataViews"

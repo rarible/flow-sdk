@@ -91,6 +91,14 @@ const nftCodeConfig: Record<NonFungibleContract, NftStaticVariables> = {
 		"%nftStoragePath%": "/storage/ChainmonstersRewardCollection",
 		"%publicTypeAddon%": "ChainmonstersRewards.ChainmonstersRewardCollectionPublic",
 	},
+	SoftCollection: {
+		"%nftPublicPath%": "SoftCollection.CollectionPublicPath",
+		"%nftStoragePath%": "SoftCollection.CollectionStoragePath",
+	},
+	RaribleNFTv2: {
+		"%nftPublicPath%": "RaribleNFTv2.CollectionPublicPath",
+		"%nftStoragePath%": "RaribleNFTv2.CollectionStoragePath",
+	},
 }
 export type NftCodeConfig = NftStaticVariables & {
 	"%nftContract%": string

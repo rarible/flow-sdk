@@ -2,7 +2,7 @@ export type FlowItemId = string & {
 	__IS_FLOW_ITEM_ID__: true
 }
 
-export const flowItemIdRegExp = /^A\.0*x*[0-9a-f]{16}\.[A-Za-z]{3,}:[0-9]{1,}/
+export const flowItemIdRegExp = /^A\.0*x*[0-9a-f]{16}\.[A-Za-z0-9_]{3,}:[0-9]{1,}/
 
 export function toFlowItemId(itemId: string): FlowItemId {
 	if (isFlowItemId(itemId)) {

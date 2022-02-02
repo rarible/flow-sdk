@@ -19,7 +19,7 @@ describe("Test auth", () => {
 		])
 		const result = await fcl.tx(tx).onceSealed()
 		expect(result.status).toEqual(4)
-	}, 20000)
+	})
 })
 
 const CODE = `
@@ -49,6 +49,9 @@ import ChainmonstersRewards from 0xf8d6e0586b0a20c7
 import StarlyCard from 0xf8d6e0586b0a20c7
 import DisruptArt from 0xf8d6e0586b0a20c7
 import OneFootballCollectible from 0xf8d6e0586b0a20c7
+import RaribleNFTv2 from 0xf8d6e0586b0a20c7
+import SoftCollection from 0xf8d6e0586b0a20c7
+import MetadataViews from 0xf8d6e0586b0a20c7
 
 transaction {
   prepare(account: AuthAccount) {

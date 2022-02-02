@@ -2,7 +2,7 @@ import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rari
 import fcl from "@onflow/fcl"
 import type { FlowSdk } from "../index"
 import { createFlowSdk, toFlowContractAddress } from "../index"
-import { EmulatorCollections } from "../config/config"
+import { getCollectionId } from "../config/config"
 
 describe("Colelction setup on account", () => {
 	let sdk: FlowSdk
@@ -15,17 +15,17 @@ describe("Colelction setup on account", () => {
 	})
 
 	test("Should init collection on account", async () => {
-		const collection1 = await sdk.collection.setupAccount(toFlowContractAddress(EmulatorCollections.RARIBLE))
+		const collection1 = await sdk.collection.setupAccount(toFlowContractAddress(getCollectionId("emulator", "RaribleNFT")))
 		expect(collection1.status).toEqual(4)
-		const collection2 = await sdk.collection.setupAccount(toFlowContractAddress(EmulatorCollections.TOPSHOT))
+		const collection2 = await sdk.collection.setupAccount(toFlowContractAddress(getCollectionId("emulator", "TopShot")))
 		expect(collection2.status).toEqual(4)
-		const collection3 = await sdk.collection.setupAccount(toFlowContractAddress(EmulatorCollections.MUGENNFT))
+		const collection3 = await sdk.collection.setupAccount(toFlowContractAddress(getCollectionId("emulator", "MugenNFT")))
 		expect(collection3.status).toEqual(4)
-		const collection4 = await sdk.collection.setupAccount(toFlowContractAddress(EmulatorCollections.MOTOGP))
+		const collection4 = await sdk.collection.setupAccount(toFlowContractAddress(getCollectionId("emulator", "MotoGPCard")))
 		expect(collection4.status).toEqual(4)
-		const collection5 = await sdk.collection.setupAccount(toFlowContractAddress(EmulatorCollections.EVOLUTION))
+		const collection5 = await sdk.collection.setupAccount(toFlowContractAddress(getCollectionId("emulator", "Evolution")))
 		expect(collection5.status).toEqual(4)
-		const collection6 = await sdk.collection.setupAccount(toFlowContractAddress(EmulatorCollections.CNNNFT))
+		const collection6 = await sdk.collection.setupAccount(toFlowContractAddress(getCollectionId("emulator", "CNN_NFT")))
 		expect(collection6.status).toEqual(4)
 	})
 })

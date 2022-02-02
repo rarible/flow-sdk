@@ -1,6 +1,7 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { FlowRoyalty } from "@rarible/flow-api-client"
+import { toFlowAddress } from "@rarible/types"
 import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getNftCode } from "../tx-code-store/nft"
@@ -25,24 +26,30 @@ export async function mint(
 	if (!fcl) {
 		throw new Error("Fcl is required for mint")
 	}
-	const { map, address, config, name } = getCollectionConfig(
+	const from = auth ? toFlowAddress((await auth()).addr) : toFlowAddress((await fcl.currentUser().snapshot()).addr!)
+	if (!from) {
+		throw new Error("FLOW-SDK: Can't get current user address")
+	}
+	const { map, address, features, name, userCollectionId } = getCollectionConfig(
 		network,
 		collection,
 	)
-	if (config.features.includes("MINT")) {
+	const minterId = userCollectionId
+	if (features.includes("MINT")) {
 		const validatedRoyalties = validateRoyalties(royalties)
 		const txId = await runTransaction(
 			fcl,
 			map,
-			getNftCode(name).mint(fcl, address, metadata, validatedRoyalties),
+			await getNftCode(name).mint({ fcl, address, metadata, royalties: validatedRoyalties, receiver: from, minterId }),
 			auth,
 		)
 		const txResult = await waitForSeal(fcl, txId)
+
 		if (txResult.events.length) {
-			const mintEvent = txResult.events.find(e => e.type.split(".")[3] === "Mint")
+			const mintEvent = txResult.events.find(e => ["Mint", "Minted"].includes(e.type.split(".")[3]))
 			if (mintEvent) {
 				return {
-					tokenId: toFlowItemId(`${collection}:${mintEvent.data.id}`),
+					tokenId: toFlowItemId(`A.${address}.${name}:${mintEvent.data.id}`),
 					...txResult,
 				}
 			}
@@ -50,5 +57,5 @@ export async function mint(
 		}
 		throw new Error("Something went wrong, transaction sent but events is empty")
 	}
-	throw new Error("This collection doesn't support 'mint'")
+	throw new Error("This collection doesn't support minting")
 }

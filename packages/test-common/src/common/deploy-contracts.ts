@@ -208,4 +208,28 @@ export async function deployAll(address: string) {
 			NonFungibleToken: address,
 		},
 	})
+	await deployContractByName({
+		name: CONTRACTS.MetadataViews,
+		to: address,
+		addressMap: {},
+	})
+	await deployContractByName({
+		name: CONTRACTS.RaribleNFTv2,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			MetadataViews: address,
+			LicensedNFT: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.SoftCollection,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			MetadataViews: address,
+			RaribleNFTv2: address,
+			LicensedNFT: address,
+		},
+	})
 }

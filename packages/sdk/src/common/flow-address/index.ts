@@ -33,10 +33,11 @@ export type FlowContractAddressName = string & {
 type FlowContractAddressData = {
 	address: FlowAddress
 	name: NonFungibleContract
+	softCollectionId: string | undefined
 }
 
 export function parseContractAddress(x: FlowContractAddress): FlowContractAddressData {
-	const [, address, name] = x.split(".")
+	const [, address, name, softCollectionId] = x.split(".")
 	if (!address || !name) {
 		throw new Error("Invalid contract address")
 	} else if (NON_FUNGIBLE_CONTRACTS.indexOf(name as NonFungibleContract) === -1) {
@@ -45,5 +46,6 @@ export function parseContractAddress(x: FlowContractAddress): FlowContractAddres
 	return {
 		address: toFlowAddress(address),
 		name: name as NonFungibleContract,
+		softCollectionId,
 	}
 }

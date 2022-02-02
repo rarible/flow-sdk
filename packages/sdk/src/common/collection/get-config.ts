@@ -8,21 +8,21 @@ import { getCollectionData } from "./index"
 export type CollectionConfig = {
 	map: Record<string, FlowAddress>
 	address: FlowAddress
-	config: FlowConfigData
+	features: FlowConfigData["features"]
 	name: NonFungibleContract
+	isUserCollection: boolean
+	userCollectionId?: string
 }
 
 export function getCollectionConfig(network: FlowNetwork, collection: FlowContractAddress): CollectionConfig {
-	const { name, address } = getCollectionData(collection)
-	const map: Record<string, FlowAddress> = {}
-	const config = flowCollectionsConfig[name]
-	config.contractsNames.forEach(k => {
-		map[k] = address
-	})
+	const { name, address, softCollectionId } = getCollectionData(collection)
+	const isUserCollection = !!softCollectionId
 	return {
-		map: Object.assign(map, CONFIGS[network].mainAddressMap),
+		map: CONFIGS[network].mainAddressMap,
 		address,
 		name,
-		config,
+		features: flowCollectionsConfig[name].features,
+		isUserCollection,
+		...isUserCollection ? { userCollectionId: softCollectionId } : {},
 	}
 }

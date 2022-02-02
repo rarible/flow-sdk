@@ -1,16 +1,16 @@
 import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
 import { toFlowAddress } from "@rarible/types"
-import { createFlowSdk, toFlowContractAddress } from "../index"
 import { checkEvent } from "../test/check-event"
-import { EmulatorCollections } from "../config/config"
-import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
-import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
-import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
+import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/secondary-collections/evolution"
+import { createTopShotTestEnvironment, getTopShotIds } from "../test/secondary-collections/top-shot"
+import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/secondary-collections/moto-gp-card"
 import { extractTokenId } from "../common/item"
+import { getCollectionId } from "../config/config"
+import { createFlowSdk } from "../index"
 
 describe("Test transfer on emulator", () => {
-	const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
+	const collection = getCollectionId("emulator", "RaribleNFT")
 	createFlowEmulator({})
 
 	test("Should transfer NFT", async () => {
@@ -43,7 +43,7 @@ describe("Test transfer on emulator", () => {
 		expect(result.data.itemId).toEqual(1)
 
 		const transferTx = await acc1.sdk.nft.transfer(
-			toFlowContractAddress(EmulatorCollections.EVOLUTION), 1, toFlowAddress(acc2.address),
+			getCollectionId("emulator", "Evolution"), 1, toFlowAddress(acc2.address),
 		)
 		expect(transferTx.status).toEqual(4)
 		checkEvent(transferTx, "Withdraw", "Evolution")
@@ -51,7 +51,7 @@ describe("Test transfer on emulator", () => {
 	})
 
 	test("Should transfer TopShot nft", async () => {
-		const topShotColletion = toFlowContractAddress(EmulatorCollections.TOPSHOT)
+		const topShotColletion = getCollectionId("emulator", "TopShot")
 		const { acc1, acc2, serviceAcc } = await createTopShotTestEnvironment(fcl)
 
 		const [result] = await getTopShotIds(fcl, serviceAcc.address, acc1.address)
@@ -63,7 +63,7 @@ describe("Test transfer on emulator", () => {
 	})
 
 	test("should burn MotoCpCard nft", async () => {
-		const motoGpColletion = toFlowContractAddress(EmulatorCollections.MOTOGP)
+		const motoGpColletion = getCollectionId("emulator", "MotoGPCard")
 		const { acc1, acc2, serviceAcc } = await createMotoGpTestEnvironment(fcl)
 
 		const result = await borrowMotoGpCardId(fcl, serviceAcc.address, acc1.address, 1)

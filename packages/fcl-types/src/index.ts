@@ -1,24 +1,43 @@
 export interface Fcl<T extends Record<string, any> = {}> {
 	sansPrefix(address: string): null | string
+
 	send(args: unknown[], opts?: {}): Promise<FlowTransactionResponse>
+
 	authenticate(): Promise<FlowUserData>
+
 	unauthenticate(): Promise<void>
+
 	currentUser(): FlowCurrentUser
+
 	getAccount(address: string): Promise<FlowAccount>
+
 	account(address: string): Promise<FlowAccount>
+
 	config(): FlowConfig<FclConfigDictionary<T>>
+
 	transaction(...a: any): any
+
 	script(...a: any): any
+
 	decode(response: FlowTransactionResponse): Promise<any>
+
 	arg: FclArg
 	args: FclArgs
+
 	payer(...a: any): any
+
 	tx: FclTx
+
 	proposer(...a: any): any
+
 	limit(...a: any): any
+
 	authz(): FlowAuthorizationObject
+
 	authorizations(signature: any[]): any
+
 	verifyUserSignature(message: string, compositeSignatures: any[]): any
+
 	withPrefix(address: string): string
 }
 
@@ -151,5 +170,5 @@ export type FlowUserData = {
 	services: Object[]
 }
 
-export type FclArg = (value: string | number | object, xform: any) => any
+export type FclArg = (value: string | number | object | null, xform: any) => any
 export type FclArgs = (args: FclArg[]) => any[]

@@ -41,4 +41,6 @@ const collections: NonFungibleContracts = [
 	"StarlyCard",
 	"OneFootballCollectible",
 	"ChainmonstersRewards",
+	"RaribleNFTv2",
+	"SoftCollection",
 ]

@@ -10,29 +10,29 @@ import * as fcl from "@onflow/fcl"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import { toBn } from "@rarible/utils"
 import type { FlowSdk } from "../../index"
-import { createFlowSdk, toFlowContractAddress } from "../../index"
-import { EmulatorCollections, TestnetCollections } from "../../config/config"
+import { createFlowSdk } from "../../index"
 import { createFusdTestEnvironment } from "../../test/setup-fusd-env"
 import { checkEvent } from "../../test/check-event"
-import { createEvolutionTestEnvironment, getEvolutionIds } from "../../test/evolution"
+import { createEvolutionTestEnvironment, getEvolutionIds } from "../../test/secondary-collections/evolution"
 import { toFlowItemId } from "../../common/item"
-import { createTopShotTestEnvironment, getTopShotIds } from "../../test/top-shot"
-import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../../test/moto-gp-card"
+import { createTopShotTestEnvironment, getTopShotIds } from "../../test/secondary-collections/top-shot"
+import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../../test/secondary-collections/moto-gp-card"
 import { getOrderDetailsFromBlockchain } from "../common/get-order-details-from-blockchain"
 import { getTestOrderTmplate } from "../../test/order-template"
-import { createMugenArtTestEnvironment, getMugenArtIds } from "../../test/mugen-art"
+import { createMugenArtTestEnvironment, getMugenArtIds } from "../../test/secondary-collections/mugen-art"
+import { getCollectionId } from "../../config/config"
 
 describe("Test fill on emulator", () => {
 	let sdk: FlowSdk
 	createFlowEmulator({})
-	const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
+	const collection = getCollectionId("emulator", "RaribleNFT")
 
 	test.skip("Should fill order on testnet", async () => {
 		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_3.address, FLOW_TESTNET_ACCOUNT_3.privKey)
 		const testnetSdk = createFlowSdk(fcl, "dev", {}, testnetAuth)
 		const testnetAuth2 = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_4.address, FLOW_TESTNET_ACCOUNT_4.privKey)
 		const testnetSdk2 = createFlowSdk(fcl, "dev", {}, testnetAuth2)
-		const testnetCollection = toFlowContractAddress(TestnetCollections.RARIBLE)
+		const testnetCollection = getCollectionId("testnet", "RaribleNFT")
 		const acc1bal = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(FLOW_TESTNET_ACCOUNT_3.address), "FLOW")
 		const mintTx = await testnetSdk.nft.mint(
 			testnetCollection,
@@ -131,7 +131,7 @@ describe("Test fill on emulator", () => {
 	})
 
 	test("Should fill an evolution nft", async () => {
-		const evolutionCollection = toFlowContractAddress(EmulatorCollections.EVOLUTION)
+		const evolutionCollection = getCollectionId("emulator", "Evolution")
 		const { acc1, acc2, serviceAcc } = await createEvolutionTestEnvironment(fcl)
 
 		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
@@ -156,7 +156,7 @@ describe("Test fill on emulator", () => {
 	})
 
 	test("Should fill TopShot nft", async () => {
-		const topShotColletion = toFlowContractAddress(EmulatorCollections.TOPSHOT)
+		const topShotColletion = getCollectionId("emulator", "TopShot")
 		const { acc1, acc2, serviceAcc } = await createTopShotTestEnvironment(fcl)
 
 		const [result] = await getTopShotIds(fcl, serviceAcc.address, acc1.address)
@@ -182,7 +182,7 @@ describe("Test fill on emulator", () => {
 	})
 
 	test("Should fill MotoCpCard nft", async () => {
-		const motoGpColletion = toFlowContractAddress(EmulatorCollections.MOTOGP)
+		const motoGpColletion = getCollectionId("emulator", "MotoGPCard")
 		const { acc1, acc2, serviceAcc } = await createMotoGpTestEnvironment(fcl)
 
 		const result = await borrowMotoGpCardId(fcl, serviceAcc.address, acc1.address, 1)
@@ -206,7 +206,7 @@ describe("Test fill on emulator", () => {
 	})
 
 	test("Should fill sell order, MugenArt nft", async () => {
-		const mugenArtCollection = toFlowContractAddress(EmulatorCollections.MUGENNFT)
+		const mugenArtCollection = getCollectionId("emulator", "MugenNFT")
 		const { acc1, acc2, serviceAcc } = await createMugenArtTestEnvironment(fcl)
 
 		const [id] = await getMugenArtIds(fcl, serviceAcc.address, acc1.address)

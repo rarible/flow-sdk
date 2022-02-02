@@ -15,8 +15,8 @@ export async function transfer(
 	to: string,
 ): Promise<FlowTransaction> {
 	if (fcl) {
-		const { config, map, name } = getCollectionConfig(network, collection)
-		if (config.features.includes("TRANSFER")) {
+		const { features, map, name } = getCollectionConfig(network, collection)
+		if (features.includes("TRANSFER")) {
 			const checkReceiver = await runScript(fcl, getNftCode(name).check(fcl, to), map)
 			if (checkReceiver) {
 				const txId = await runTransaction(fcl, map, getNftCode(name).transfer(fcl, tokenId, to), auth)

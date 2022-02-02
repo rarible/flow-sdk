@@ -19,6 +19,7 @@ import type { FlowContractAddress } from "../../common/flow-address"
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import { getOrderCode } from "../../tx-code-store/order/storefront"
 import { getOrderDetailsFromBlockchain } from "../common/get-order-details-from-blockchain"
+import { retry } from "../../common/retry"
 import { fillBidOrder } from "./fill-bid-order"
 
 export type FlowOrderType = "LIST" | "BID"
@@ -77,7 +78,17 @@ export async function fill(
 				 */
 				const filteredPayouts = payouts.filter(p => p.account !== from)
 				const { royalties } = network === "emulator" ?
-					{ royalties: [] } : await itemApi.getNftItemById({ itemId: preparedOrder.itemId })
+					{ royalties: [] } :
+					{
+						royalties: (
+							await retry(
+								10,
+								1000,
+								async () => itemApi.getNftItemRoyaltyById({ itemId: preparedOrder.itemId }),
+							)
+						).royalty,
+					}
+
 				/**
 				 * fees included in price, royalties, originFees, protocolFees
 				 */

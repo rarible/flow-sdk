@@ -21,11 +21,12 @@ export function isFlowCollection(address: FlowContractAddress): address is FlowC
 export type FlowCollectionData = {
 	name: NonFungibleContract
 	address: FlowAddress
+	softCollectionId: string | undefined
 }
 
 export function getCollectionData(str: FlowContractAddress): FlowCollectionData {
 	if (isFlowCollection(str)) {
-		return parseContractAddress(str) as FlowCollectionData
+		return parseContractAddress(str)
 	}
 	throw new Error("Not a known collection address")
 }

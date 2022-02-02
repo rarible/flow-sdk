@@ -1,5 +1,7 @@
 export { commonNft } from "./cadence/nft/common"
 export { RaribleNFT } from "./cadence/nft/rarible-nft"
+export { RaribleNFTv2 } from "./cadence/nft/rarible-nft-v2"
+export { SoftCollection } from "./cadence/nft/soft-collection"
 
 export { Storefront } from "./cadence/storefront/storefront"
 export { StorefrontCommon } from "./cadence/storefront/storefront-common"

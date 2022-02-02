@@ -17,11 +17,11 @@ export function createFlowEmulator(params: CreateFlowEmulatorParams): void {
 			emulator.setLogging(true)
 		}
 		await deployAll(withPrefix(await config().get("SERVICE_ADDRESS")))
-	}, 20000)
+	}, 50000)
 
 	afterAll(async () => {
 		await emulator.stop()
-	}, 20000)
+	})
 
 }
 
