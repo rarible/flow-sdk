@@ -53,7 +53,7 @@ export async function sell(
 		// condition only for tests on local emulator
 		const item = network === "emulator" ?
 			{ royalties: [] } :
-			await retry(10, 1000, async () => itemApi.getNftItemById({ itemId }))
+			{ royalties: (await retry(10, 1000, async () => itemApi.getNftItemRoyaltyById({ itemId }))).royalty }
 		const { name, map } = getCollectionConfig(network, collection)
 		const txId = await runTransaction(
 			fcl,
