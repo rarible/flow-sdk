@@ -12,6 +12,13 @@ export type FlowPayouts = FlowFee[]
 
 export type FungibleContracts = FUSDType | FlowTokenType
 
+export type PinataMetaData = {
+	"name": string
+	"description": string
+	"image": string
+	"attributes": Record<string, string>[]
+}
+
 
 export const NON_FUNGIBLE_CONTRACTS = [
 	"RaribleNFT",

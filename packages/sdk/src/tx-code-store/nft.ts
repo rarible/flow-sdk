@@ -9,6 +9,7 @@ import { getNftCodeConfig } from "../config/cadence-code-config"
 import type { FlowContractName, FlowFee, NonFungibleContract } from "../types"
 import { NON_FUNGIBLE_CONTRACTS } from "../types"
 import { fillCodeTemplate } from "../common/template-replacer"
+import { fetchMeta } from "../common/fetch-meta"
 
 type NftCodeReturnData = {
 	cadence: string
@@ -38,7 +39,7 @@ interface GetNftCode {
 
 	transfer(fcl: Fcl, tokenId: number, to: string): NftCodeReturnData
 
-	mint(request: MintRequest): NftCodeReturnData
+	mint(request: MintRequest): Promise<NftCodeReturnData>
 
 	check(fcl: Fcl, address: string): NftCodeReturnData
 
@@ -64,7 +65,7 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 					args: fcl.args([fcl.arg(tokenId, t.UInt64), fcl.arg(to, t.Address)]),
 				}
 			},
-			mint: ({ fcl, address, metadata, royalties, minterId, receiver }) => {
+			mint: async ({ fcl, address, metadata, royalties, minterId, receiver }) => {
 				const RoyaltiesType = t.Array(t.Struct(
 					`A.${fcl.sansPrefix(address)}.${name}.Royalty`,
 					[
@@ -83,13 +84,40 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 						}
 					}
 					case "RaribleNFTv2": {
+						const { name: nftName, description, attributes } = await fetchMeta(metadata)
+						const metaArg = fcl.arg(
+							{
+								fields: [
+									{ name: "name", value: nftName || "" },
+									{ name: "description", value: description || null },
+									{ name: "cid", value: "" },
+									{
+										name: "attributes",
+										value: attributes?.map(a => {
+											const attribute = Object.entries(a)[0]
+											return { key: attribute[0], value: attribute[1] }
+										}),
+									},
+									{ name: "contentUrls", value: [] },
+								],
+							},
+							t.Struct(
+								`A.${fcl.sansPrefix(address)}.${name}.Meta`,
+								[
+									{ value: t.String },
+									{ value: t.Optional(t.String) },
+									{ value: t.String },
+									{ value: t.Dictionary({ key: t.String, value: t.String }) },
+									{ value: t.Array(t.String) },
+								]),
+						)
 						if (minterId && receiver) {
 							return {
 								cadence: RaribleNFTv2.mint,
 								args: fcl.args([
-									fcl.arg(minterId, t.UInt64),
+									fcl.arg(parseInt(minterId), t.UInt64),
 									fcl.arg(receiver, t.Address),
-									fcl.arg(metadata, t.String),
+									metaArg,
 									fcl.arg(convertRoyalties(royalties), RoyaltiesType),
 								]),
 							}

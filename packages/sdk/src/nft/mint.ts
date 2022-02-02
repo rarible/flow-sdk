@@ -40,15 +40,16 @@ export async function mint(
 		const txId = await runTransaction(
 			fcl,
 			map,
-			getNftCode(name).mint({ fcl, address, metadata, royalties: validatedRoyalties, receiver: from, minterId }),
+			await getNftCode(name).mint({ fcl, address, metadata, royalties: validatedRoyalties, receiver: from, minterId }),
 			auth,
 		)
 		const txResult = await waitForSeal(fcl, txId)
+
 		if (txResult.events.length) {
-			const mintEvent = txResult.events.find(e => e.type.split(".")[3] === "Mint")
+			const mintEvent = txResult.events.find(e => ["Mint", "Minted"].includes(e.type.split(".")[3]))
 			if (mintEvent) {
 				return {
-					tokenId: toFlowItemId(`${collection}:${mintEvent.data.id}`),
+					tokenId: toFlowItemId(`A.${address}.${name}:${mintEvent.data.id}`),
 					...txResult,
 				}
 			}
