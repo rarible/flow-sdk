@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33](https://github.com/rarible/flow-sdk/compare/v0.5.32...v0.5.33) (2022-02-03)
+
+
+### Bug Fixes
+
+* prepare order code function ([38d94d9](https://github.com/rarible/flow-sdk/commit/38d94d992304717143396e8f23d43cf9dbf1ca70))
+
+
+
+
+
 ## [0.5.32](https://github.com/rarible/flow-sdk/compare/v0.5.31...v0.5.32) (2022-01-31)
 
 
