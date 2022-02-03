@@ -23,7 +23,8 @@
     "@rarible/flow-api-client": "~0.0.3",
     "@rarible/flow-sdk-scripts": "^0.5.33-alpha.0",
     "@rarible/types": "0.5.3",
-    "@rarible/utils": "~0.5.0"
+    "@rarible/utils": "~0.5.0",
+    "cross-fetch": "^3.1.5"
   },
   "devDependencies": {
     "@rarible/flow-test-common": "^0.5.33-alpha.0",
