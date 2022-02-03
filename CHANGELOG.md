@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.3](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.2...v0.5.33-alpha.3) (2022-02-03)
+
+
+### Bug Fixes
+
+* deps ([ce6ce66](https://github.com/rarible/flow-sdk/commit/ce6ce66c14d63b0968f894041088f01dd89812f8))
+* fetch issue ([b1cd5d0](https://github.com/rarible/flow-sdk/commit/b1cd5d099d1ceb09b58ecb5612ec1281e85d353f))
+
+
+
+
+
 ## [0.5.33-alpha.2](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.1...v0.5.33-alpha.2) (2022-02-03)
 
 
