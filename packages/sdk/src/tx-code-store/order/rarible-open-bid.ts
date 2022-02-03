@@ -1,9 +1,9 @@
 import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
-import { openBidTransactionCode } from "@rarible/flow-sdk-scripts"
 import type { FlowCurrency, FlowFee, NonFungibleContract } from "../../types"
 import { prepareFees } from "../common/conver-fee-to-cadence"
 import { fixAmount } from "../../common/fix-amount"
+import { openBidTransactionCode } from "../../scripts/bid/bid"
 import { prepareOrderCode } from "./prepare-order-code"
 
 type GenerateCodeMethodResponse = {

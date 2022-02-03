@@ -1,5 +1,5 @@
-import { openBidTransactionCode } from "@rarible/flow-sdk-scripts"
 import type { FlowCurrency, NonFungibleContract } from "../../types"
+import { openBidTransactionCode } from "../../scripts/bid/bid"
 import { prepareOrderCode } from "./prepare-order-code"
 
 describe("Get bid cadence code", () => {
