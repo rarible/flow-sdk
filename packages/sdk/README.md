@@ -11,7 +11,7 @@ npm i -S @rarible/flow-sdk
 Quick start
 
 1. [Configure fcl](https://github.com/rarible/flow-sdk/tree/master/packages/sdk#configure-fcl)
-2. [Create and use flow-sdk](https://github.com/rarible/flow-sdk/tree/master/packages/flow-sdk#create-and-use-flow-sdk)
+2. [Create and use flow-sdk](https://github.com/rarible/flow-sdk/tree/master/packages/sdk#create-and-use-flow-sdk)
 
 ### Configure fcl
 
