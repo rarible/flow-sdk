@@ -1,10 +1,8 @@
-import type { FlowAddress } from "@rarible/types"
 import type { FlowContractAddress, FlowSdk } from "../../index"
 import type { FlowFee } from "../../types"
 
 export async function testCreateCollection(
 	sdk: FlowSdk,
-	receiver: FlowAddress,
 	collection?: FlowContractAddress,
 	name: string = "TestCollection",
 	symbol: string = "TST",
@@ -18,7 +16,6 @@ export async function testCreateCollection(
 		name,
 		symbol,
 		royalties,
-		receiver,
 		collection,
 		icon,
 		description,

@@ -9,6 +9,7 @@ import { NON_FUNGIBLE_CONTRACTS } from "../types"
 import { fetchMeta } from "../nft/common/fetch-meta"
 import { fillCodeTemplate } from "./common/template-replacer"
 import { convertRoyalties } from "./common/convert-royalties"
+import { prepareFees } from "./common/convert-fee-to-cadence"
 
 type NftCodeReturnData = {
 	cadence: string
@@ -151,15 +152,9 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 													 url,
 													 supply,
 												 }) => {
-				const RoyaltiesType = t.Array(t.Struct(
-					`A.${fcl.sansPrefix(address)}.SoftCollection.Royalty`,
-					[
-						{ value: t.Address },
-						{ value: t.UFix64 },
-					],
-				))
+				const preparedMap = { ...map, "0xSOFTCOLLECTION": address }
 				return {
-					cadence: fillCodeTemplate(SoftCollection.create, map),
+					cadence: fillCodeTemplate(SoftCollection.create, preparedMap),
 					args: fcl.args([
 						fcl.arg(receiver, t.Address),
 						fcl.arg(parentId === undefined ? null : parentId, t.Optional(t.UInt64)),
@@ -169,7 +164,10 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 						fcl.arg(description || null, t.Optional(t.String)),
 						fcl.arg(url || null, t.Optional(t.String)),
 						fcl.arg(supply === undefined ? null : supply, t.Optional(t.UInt64)),
-						fcl.arg(convertRoyalties(royalties), RoyaltiesType),
+						fcl.arg(prepareFees(royalties), t.Dictionary({
+							key: t.Address,
+							value: t.UFix64,
+						})),
 					]),
 				}
 			},

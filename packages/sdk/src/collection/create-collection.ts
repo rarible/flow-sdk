@@ -1,6 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
-import type { FlowAddress } from "@rarible/types"
 import { toFlowAddress } from "@rarible/types"
 import type { AuthWithPrivateKey, FlowFee, FlowNetwork, FlowTransaction } from "../types"
 import type { FlowContractAddress } from "../common/flow-address"
@@ -13,7 +12,6 @@ import { getCollectionId } from "../config/config"
 
 export type CreateCollectionRequest = {
 	collection?: FlowContractAddress
-	receiver: FlowAddress
 	name: string
 	symbol: string
 	royalties: FlowFee[]
@@ -39,7 +37,7 @@ export async function createCollection(
 		if (!from) {
 			throw new Error("FLOW-SDK: Can't get current user address")
 		}
-		const { royalties, url, icon, name: requestName, description, symbol, supply, receiver } = request
+		const { royalties, url, icon, name: requestName, description, symbol, supply } = request
 		const preparedCollection = request.collection || getCollectionId(network, "SoftCollection")
 		const { address, name, map, userCollectionId } = getCollectionConfig(
 			network, preparedCollection,
@@ -55,7 +53,7 @@ export async function createCollection(
 					fcl,
 					address,
 					royalties: validatedRoyalties,
-					receiver,
+					receiver: from,
 					parentId: minterId,
 					url,
 					icon,
