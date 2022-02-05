@@ -16,7 +16,7 @@ type NftCodeReturnData = {
 	args?: ReturnType<FclArgs>
 }
 
-type MintRequest = {
+export type BlockchainApiMintRequest = {
 	fcl: Fcl, address: string, minterId?: string, receiver?: string, metadata: string, royalties: FlowRoyalty[]
 }
 
@@ -39,7 +39,7 @@ interface GetNftCode {
 
 	transfer(fcl: Fcl, tokenId: number, to: string): NftCodeReturnData
 
-	mint(request: MintRequest): Promise<NftCodeReturnData>
+	mint(request: BlockchainApiMintRequest): Promise<NftCodeReturnData>
 
 	check(fcl: Fcl, address: string): NftCodeReturnData
 
