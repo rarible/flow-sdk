@@ -1,66 +1,9 @@
 import type { BigNumber, FlowAddress } from "@rarible/types"
 import { toBigNumber, toFlowAddress, ZERO_ADDRESS } from "@rarible/types"
-import { toFlowContractAddress } from "../common/flow-address"
-import type { FlowContractName, FlowFee, FlowNetwork, NonFungibleContract } from "../types"
-import { sansPrefix } from "../common/prefix"
+import type { FlowContractName, FlowFee, FlowNetwork, NonFungibleContract } from "../types/types"
 
 export const METADATA_HOST = "https://gateway.pinata.cloud"
 export const MIN_ORDER_PRICE = "0.0001"
-export type FlowNftFeatures = "MINT" | "BURN" | "TRANSFER"
-export type FlowConfigData = {
-	/**
-	 * is mint/burn/transfer avaliable in collection
-	 */
-	features: FlowNftFeatures[]
-}
-
-export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> = {
-	RaribleNFT: {
-		features: ["MINT", "TRANSFER", "BURN"],
-	},
-	MotoGPCard: {
-		features: ["TRANSFER", "BURN"],
-	},
-	Evolution: {
-		features: ["TRANSFER", "BURN"],
-	},
-	TopShot: {
-		features: ["TRANSFER", "BURN"],
-	},
-	MugenNFT: {
-		features: ["TRANSFER"],
-	},
-	CNN_NFT: {
-		features: ["TRANSFER", "BURN"],
-	},
-	MatrixWorldFlowFestNFT: {
-		features: ["TRANSFER", "BURN"],
-	},
-	MatrixWorldVoucher: {
-		features: ["TRANSFER", "BURN"],
-	},
-	SoftCollection: {
-		features: ["TRANSFER", "BURN", "MINT"],
-	},
-	RaribleNFTv2: {
-		features: ["TRANSFER", "BURN", "MINT"],
-	},
-	DisruptArt: {
-		features: ["TRANSFER", "BURN"],
-	},
-	Art: {
-		features: ["TRANSFER", "BURN"],
-	},
-	StarlyCard: {
-		features: ["TRANSFER", "BURN"],
-	},
-	OneFootballCollectible: {
-		features: ["TRANSFER", "BURN"],
-	},
-	ChainmonstersRewards: {
-		features: ["TRANSFER", "BURN"],
-	},
-}
 
 const MAINNET_RARIBLE_ADDRESS = toFlowAddress("0x01ab36aaf654a13e")
 const TESTNET_RARIBLE_ADDRESS = toFlowAddress("0xebf4ae01d1284af8")
@@ -68,7 +11,6 @@ const EMULATOR_ADDRESS = toFlowAddress("0xf8d6e0586b0a20c7")
 
 // protocol fee in base points
 const PROTOCOL_FEE: BigNumber = toBigNumber("0")
-
 
 // todo move contracts address to fcl.config aliases  if it's possible
 export const CONFIGS: Record<FlowNetwork, Config> = {
@@ -172,6 +114,53 @@ type Config = {
 	mainAddressMap: Record<FlowContractName, FlowAddress>
 }
 
-export function getCollectionId(network: FlowNetwork, collectionName: NonFungibleContract) {
-	return toFlowContractAddress(`A.${sansPrefix(CONFIGS[network].mainAddressMap[collectionName])}.${collectionName}`)
+export type FlowNftFeatures = "MINT" | "BURN" | "TRANSFER"
+export type FlowConfigData = { features: FlowNftFeatures[] }
+
+export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> = {
+	RaribleNFT: {
+		features: ["MINT", "TRANSFER", "BURN"],
+	},
+	MotoGPCard: {
+		features: ["TRANSFER", "BURN"],
+	},
+	Evolution: {
+		features: ["TRANSFER", "BURN"],
+	},
+	TopShot: {
+		features: ["TRANSFER", "BURN"],
+	},
+	MugenNFT: {
+		features: ["TRANSFER"],
+	},
+	CNN_NFT: {
+		features: ["TRANSFER", "BURN"],
+	},
+	MatrixWorldFlowFestNFT: {
+		features: ["TRANSFER", "BURN"],
+	},
+	MatrixWorldVoucher: {
+		features: ["TRANSFER", "BURN"],
+	},
+	SoftCollection: {
+		features: ["TRANSFER", "BURN", "MINT"],
+	},
+	RaribleNFTv2: {
+		features: ["TRANSFER", "BURN", "MINT"],
+	},
+	DisruptArt: {
+		features: ["TRANSFER", "BURN"],
+	},
+	Art: {
+		features: ["TRANSFER", "BURN"],
+	},
+	StarlyCard: {
+		features: ["TRANSFER", "BURN"],
+	},
+	OneFootballCollectible: {
+		features: ["TRANSFER", "BURN"],
+	},
+	ChainmonstersRewards: {
+		features: ["TRANSFER", "BURN"],
+	},
 }
