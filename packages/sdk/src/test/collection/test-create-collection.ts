@@ -1,10 +1,8 @@
-import type { FlowAddress } from "@rarible/types"
 import type { FlowContractAddress, FlowSdk } from "../../index"
-import type { FlowFee } from "../../types"
+import type { FlowFee } from "../../types/types"
 
 export async function testCreateCollection(
 	sdk: FlowSdk,
-	receiver: FlowAddress,
 	collection?: FlowContractAddress,
 	name: string = "TestCollection",
 	symbol: string = "TST",
@@ -14,17 +12,16 @@ export async function testCreateCollection(
 	url?: string,
 	supply?: number,
 ) {
-	const mintTx = await sdk.collection.createCollection({
+	const createCollectionTx = await sdk.collection.createCollection({
 		name,
 		symbol,
 		royalties,
-		receiver,
 		collection,
 		icon,
 		description,
 		url,
 		supply,
 	})
-	expect(mintTx.collectionId).toBeGreaterThanOrEqual(0)
-	return mintTx
+	expect(createCollectionTx.collectionId).toBeGreaterThanOrEqual(0)
+	return createCollectionTx
 }

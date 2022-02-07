@@ -3,31 +3,36 @@ import type { Maybe } from "@rarible/types/build/maybe"
 import type { ConfigurationParameters, FlowOrder, FlowRoyalty } from "@rarible/flow-api-client"
 import * as ApiClient from "@rarible/flow-api-client"
 import type { BigNumber, FlowAddress } from "@rarible/types"
-import type { FlowMintResponse } from "./nft/mint"
-import { mint as mintTemplate } from "./nft/mint"
-import { burn as burnTemplate } from "./nft/burn"
-import { transfer as transferTemplate } from "./nft/transfer"
-import type { FlowSellRequest, FlowSellResponse } from "./order/sell"
-import { sell as sellTemplate } from "./order/sell"
-import { fill as buyTemplate } from "./order/fill/fill"
-import { cancelOrder as cancelOrderTmeplate } from "./order/cancel-order"
-import { signUserMessage as signUserMessageTemplate } from "./signature/sign-user-message"
-import { getFungibleBalance as getFungibleBalanceTemplate } from "./wallet/get-fungible-balance"
-import { bid as bidTemplate } from "./order/bid"
-import { bidUpdate as bidUpdateTemplate } from "./order/bid-update"
-import { cancelBid as cancelBidTmeplate } from "./order/cancel-bid"
-import { setupAccount as setupAccountTemplate } from "./collection/setup-account"
-import type { CreateCollectionRequest, CreateCollectionResponse } from "./collection/create-collection"
-import { createCollection as createCollectionTemplate } from "./collection/create-collection"
-import type { ProtocolFees } from "./order/get-protocol-fee"
-import { getProtocolFee as getProtocolFeeUpdateTemplate } from "./order/get-protocol-fee"
-import type { AuthWithPrivateKey, FlowCurrency, FlowEnv, FlowOriginFees, FlowTransaction } from "./types"
-import type { FlowUpdateOrderRequest } from "./order/update-order"
-import { updateOrder as updateOrderTemplate } from "./order/update-order"
-import type { FlowItemId } from "./common/item"
-import type { FlowContractAddress } from "./common/flow-address"
-import type { FlowEnvConfig } from "./config/env"
-import { ENV_CONFIG } from "./config/env"
+import type { FlowMintResponse } from "./interfaces/nft/mint"
+import { mint as mintTemplate } from "./interfaces/nft/mint"
+import { burn as burnTemplate } from "./interfaces/nft/burn"
+import { transfer as transferTemplate } from "./interfaces/nft/transfer"
+import type { FlowSellRequest, FlowSellResponse } from "./interfaces/order/sell"
+import { sell as sellTemplate } from "./interfaces/order/sell"
+import { fill as buyTemplate } from "./interfaces/order/fill/fill"
+import { cancelOrder as cancelOrderTmeplate } from "./interfaces/order/cancel-order"
+import { signUserMessage as signUserMessageTemplate } from "./interfaces/signature/sign-user-message"
+import { getFungibleBalance as getFungibleBalanceTemplate } from "./interfaces/wallet/get-fungible-balance"
+import { bid as bidTemplate } from "./interfaces/order/bid"
+import { bidUpdate as bidUpdateTemplate } from "./interfaces/order/bid-update"
+import { cancelBid as cancelBidTmeplate } from "./interfaces/order/cancel-bid"
+import { setupAccount as setupAccountTemplate } from "./interfaces/collection/setup-account"
+import type { CreateCollectionRequest, CreateCollectionResponse } from "./interfaces/collection/create-collection"
+import { createCollection as createCollectionTemplate } from "./interfaces/collection/create-collection"
+import type { ProtocolFees } from "./interfaces/order/get-protocol-fee"
+import { getProtocolFee as getProtocolFeeUpdateTemplate } from "./interfaces/order/get-protocol-fee"
+import type { AuthWithPrivateKey, FlowCurrency, FlowEnv, FlowOriginFees, FlowTransaction } from "./types/types"
+import type { FlowUpdateOrderRequest } from "./interfaces/order/update-order"
+import { updateOrder as updateOrderTemplate } from "./interfaces/order/update-order"
+import type { FlowItemId } from "./types/item"
+import { FLOW_ENV_CONFIG } from "./config/env"
+import type { FlowContractAddress } from "./types/contract-address"
+import type {
+	UpdateCollectionRequest,
+	UpdateCollectionResponse} from "./interfaces/collection/update-collection"
+import {
+	updateCollection as updateCollectionTemplate,
+} from "./interfaces/collection/update-collection"
 
 export interface FlowApisSdk {
 	order: ApiClient.FlowOrderControllerApi
@@ -157,6 +162,8 @@ export interface FlowCollectionSdk {
 	 *<p>}</p>
 	 */
 	createCollection(request: CreateCollectionRequest): Promise<CreateCollectionResponse>
+
+	updateCollection(request: UpdateCollectionRequest): Promise<UpdateCollectionResponse>
 }
 
 export interface FlowSdk {
@@ -174,7 +181,7 @@ export function createFlowApisSdk(
 	params: ConfigurationParameters = {},
 ): FlowApisSdk {
 	const configuration = new ApiClient.Configuration({
-		basePath: ENV_CONFIG[env].basePath,
+		basePath: FLOW_ENV_CONFIG[env].basePath,
 		...params,
 	})
 	return {
@@ -198,7 +205,7 @@ export function createFlowSdk(
 	params?: ConfigurationParameters,
 	auth?: AuthWithPrivateKey,
 ): FlowSdk {
-	const blockchainNetwork = ENV_CONFIG[network].network
+	const blockchainNetwork = FLOW_ENV_CONFIG[network].network
 	const apis = createFlowApisSdk(network, params)
 	return {
 		apis,
@@ -225,17 +232,18 @@ export function createFlowSdk(
 		collection: {
 			setupAccount: setupAccountTemplate.bind(null, fcl, auth, blockchainNetwork),
 			createCollection: createCollectionTemplate.bind(null, fcl, auth, blockchainNetwork),
+			updateCollection: updateCollectionTemplate.bind(null, fcl, auth, blockchainNetwork),
 		},
 		signUserMessage: signUserMessageTemplate.bind(null, fcl),
 	}
 }
 
-export type { FlowNetwork, FlowCurrency, FlowTransaction, AuthWithPrivateKey } from "./types"
+export type { FlowNetwork, FlowCurrency, FlowTransaction, AuthWithPrivateKey } from "./types/types"
 export type { FlowRoyalty } from "@rarible/flow-api-client"
-export { toFlowItemId, isFlowItemId } from "./common/item/index"
-export type { FlowItemId } from "./common/item/index"
-export type { FlowContractAddress } from "./common/flow-address/index"
-export { toFlowContractAddress, isFlowContractAddress } from "./common/flow-address/index"
+export { toFlowItemId, isFlowItemId } from "./types/item/index"
+export type { FlowItemId } from "./types/item/index"
+export type { FlowContractAddress } from "./types/contract-address/index"
+export { toFlowContractAddress, isFlowContractAddress } from "./types/contract-address/index"
 export type { FlowEnv } from "./config/env"
-export const FLOW_ENV_CONFIG: FlowEnvConfig = ENV_CONFIG
+export { FLOW_ENV_CONFIG } from "./config/env"
 export { FlowOrder } from "@rarible/flow-api-client"

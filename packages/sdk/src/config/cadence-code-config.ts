@@ -1,4 +1,4 @@
-import type { FlowContractName, FungibleContracts, NonFungibleContract } from "../types"
+import type { FlowContractName, FungibleContracts, NonFungibleContract } from "../types/types"
 
 export type FtCodeConfig = Record<"%ftPublicPath%" | "%ftPrivateType%" | "%ftPrivatePath%" | "%ftStoragePath%" | "%ftContract%", string>
 

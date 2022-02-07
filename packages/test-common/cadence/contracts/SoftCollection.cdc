@@ -9,6 +9,7 @@ pub contract SoftCollection : NonFungibleToken, LicensedNFT {
 
     pub let CollectionPublicPath: PublicPath
     pub let CollectionStoragePath: StoragePath
+    pub let MinterPublicPath: PublicPath
     pub let MinterStoragePath: StoragePath
 
     pub event ContractInitialized()
@@ -16,7 +17,7 @@ pub contract SoftCollection : NonFungibleToken, LicensedNFT {
     pub event Deposit(id: UInt64, to: Address?)
     pub event Minted(id: UInt64, parentId: UInt64?, meta: Meta, creator: Address, royalties: [LicensedNFT.Royalty])
     pub event Burned(id: UInt64)
-    pub event Changed(meta: Meta)
+    pub event Changed(id: UInt64, meta: Meta)
 
     pub struct Royalty {
         pub let address: Address
@@ -86,7 +87,7 @@ pub contract SoftCollection : NonFungibleToken, LicensedNFT {
 
         pub fun update(icon: String?, description: String?, url: String?) {
             self.meta.update(icon: icon, description: description, url: url)
-            emit Changed(meta: self.meta)
+            emit Changed(id: self.id, meta: self.meta)
         }
 
         pub fun resolveView(_ view: Type): AnyStruct? {
@@ -165,6 +166,12 @@ pub contract SoftCollection : NonFungibleToken, LicensedNFT {
             )
         }
 
+        pub fun updateItem(id: UInt64, icon: String?, description: String?, url: String?) {
+            let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT
+            let minter = ref as! &NFT
+            minter.update(icon: icon, description: description, url: url)
+        }
+
         init() {
             self.ownedNFTs <- {}
         }
@@ -174,7 +181,21 @@ pub contract SoftCollection : NonFungibleToken, LicensedNFT {
         }
     }
 
-    pub resource Minter {
+    pub resource interface Minter {
+        pub fun mint(
+            receiver: Capability<&{NonFungibleToken.CollectionPublic}>,
+            parentId: UInt64?,
+            name: String,
+            symbol: String,
+            icon: String?,
+            description: String?,
+            url: String?,
+            supply: UInt64?,
+            royalties: [LicensedNFT.Royalty],
+        )
+    }
+
+    pub resource SoftCollectionMinter : Minter {
         pub fun mint(
             receiver: Capability<&{NonFungibleToken.CollectionPublic}>,
             parentId: UInt64?,
@@ -214,9 +235,11 @@ pub contract SoftCollection : NonFungibleToken, LicensedNFT {
 
         self.CollectionPublicPath = /public/SoftCollection
         self.CollectionStoragePath = /storage/SoftCollection
+        self.MinterPublicPath = /public/SoftCollectionMinter
         self.MinterStoragePath = /storage/SoftCollectionMinter
 
-        self.account.save(<- create Minter(), to: self.MinterStoragePath)
+        self.account.save(<- create SoftCollectionMinter(), to: self.MinterStoragePath)
+        self.account.link<&{Minter}>(self.MinterPublicPath, target: self.MinterStoragePath)
 
         emit ContractInitialized()
     }
