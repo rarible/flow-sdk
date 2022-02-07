@@ -4,7 +4,7 @@ import { commonNft, RaribleNFT, RaribleNFTv2, SoftCollection } from "@rarible/fl
 import type { FlowRoyalty } from "@rarible/flow-api-client"
 import type { FlowAddress } from "@rarible/types"
 import { getNftCodeConfig } from "../config/cadence-code-config"
-import type { FlowContractName, FlowFee, NonFungibleContract } from "../types/types"
+import type { FlowFee, NonFungibleContract } from "../types/types"
 import { NON_FUNGIBLE_CONTRACTS } from "../types/types"
 import { fetchMeta } from "../interfaces/nft/common/fetch-meta"
 import { fillCodeTemplate } from "./common/template-replacer"
@@ -34,6 +34,14 @@ type CreateCollectionRequest = {
 	supply?: number
 }
 
+type UpdateCollectionRequest = {
+	fcl: Fcl,
+	collectionIdNumber: number
+	icon?: string
+	description?: string
+	url?: string
+}
+
 interface GetNftCode {
 	burn(fcl: Fcl, tokenId: number): NftCodeReturnData
 
@@ -46,11 +54,13 @@ interface GetNftCode {
 	setupAccount(): NftCodeReturnData
 
 	createCollection(request: CreateCollectionRequest): NftCodeReturnData
+
+	updateCollection(request: UpdateCollectionRequest): NftCodeReturnData
 }
 
 export function getNftCode(name: NonFungibleContract): GetNftCode {
 	if (NON_FUNGIBLE_CONTRACTS.includes(name)) {
-		const map = getNftCodeConfig(name as FlowContractName)
+		const map = getNftCodeConfig(name)
 		return {
 			burn: (fcl: Fcl, tokenId: number) => {
 				return {
@@ -168,6 +178,23 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 							key: t.Address,
 							value: t.UFix64,
 						})),
+					]),
+				}
+			},
+			updateCollection: ({
+													 fcl,
+													 collectionIdNumber,
+													 icon,
+													 description,
+													 url,
+												 }) => {
+				return {
+					cadence: fillCodeTemplate(SoftCollection.update, map),
+					args: fcl.args([
+						fcl.arg(collectionIdNumber, t.UInt64),
+						fcl.arg(icon || null, t.Optional(t.String)),
+						fcl.arg(description || null, t.Optional(t.String)),
+						fcl.arg(url || null, t.Optional(t.String)),
 					]),
 				}
 			},

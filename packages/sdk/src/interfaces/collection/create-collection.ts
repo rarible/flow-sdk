@@ -73,7 +73,7 @@ export async function createCollection(
 						parentId: mintEvent.data.parentId,
 					}
 				}
-				throw new Error("Deposit event not found in transaction response")
+				throw new Error("Minted event not found in transaction response")
 			}
 		}
 		throw new Error(`Not a  Flow softCollection contract: ${name}`)

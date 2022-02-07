@@ -27,6 +27,12 @@ import { updateOrder as updateOrderTemplate } from "./interfaces/order/update-or
 import type { FlowItemId } from "./types/item"
 import { FLOW_ENV_CONFIG } from "./config/env"
 import type { FlowContractAddress } from "./types/contract-address"
+import type {
+	UpdateCollectionRequest,
+	UpdateCollectionResponse} from "./interfaces/collection/update-collection"
+import {
+	updateCollection as updateCollectionTemplate,
+} from "./interfaces/collection/update-collection"
 
 export interface FlowApisSdk {
 	order: ApiClient.FlowOrderControllerApi
@@ -156,6 +162,8 @@ export interface FlowCollectionSdk {
 	 *<p>}</p>
 	 */
 	createCollection(request: CreateCollectionRequest): Promise<CreateCollectionResponse>
+
+	updateCollection(request: UpdateCollectionRequest): Promise<UpdateCollectionResponse>
 }
 
 export interface FlowSdk {
@@ -224,6 +232,7 @@ export function createFlowSdk(
 		collection: {
 			setupAccount: setupAccountTemplate.bind(null, fcl, auth, blockchainNetwork),
 			createCollection: createCollectionTemplate.bind(null, fcl, auth, blockchainNetwork),
+			updateCollection: updateCollectionTemplate.bind(null, fcl, auth, blockchainNetwork),
 		},
 		signUserMessage: signUserMessageTemplate.bind(null, fcl),
 	}
