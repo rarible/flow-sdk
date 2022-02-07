@@ -8,6 +8,8 @@ npm i -S @rarible/flow-sdk
 
 ## Usage
 
+### Simple code [example](https://github.com/rarible/flow-sdk/tree/master/packages/sdk/example/index.ts)
+
 Quick start
 
 1. [Configure fcl](https://github.com/rarible/flow-sdk/tree/master/packages/sdk#configure-fcl)
@@ -45,37 +47,44 @@ const sdk = createFlowSdk(fcl, "testnet")
 Mint response represents transaction result extended with `txId` and minted `tokenId`
 
 ```typescript
-const {
-  txId, // transaction id
-  tokenId, // minted tokenId
-  status, // flow transaction status
-  statusCode, // flow transaction statusCode - for example: value 4 for sealed transaction
-  errorMessage,
-  events, // events generated from contract and include all events produced by transaction, deopsits withdrown etc.
-} = await sdk.nft.mint(collection, "your meta info", [])
+import { toFlowContractAddress } from "@rarible/flow-sdk"
+import { toFlowAddress } from "@rarible/types"
+
+// collection = Contact address A.[contactAddress].[contractName]
+const collection = toFlowContractAddress("A.0x1234567890abcdef.RaribleNFT")
+// royalties - array of objects: {account: FlowAddress, value: BigNumber}, value must be a number between 0 and 1
+const royalties = [{ account: toFlowAddress("0x1234567890abcdef"), value: toBigNumber("0.1") }]
+const metaData = "your meta info" // usually ipfs url
+
+const { tokenId } = await sdk.nft.mint(collection, metaData, royalties)
 ```
+
+Returns `FlowTransaction` object with minted tokenId
 
 #### Transfer
 
 ```typescript
-const {
-  status,
-  statusCode,
-  errorMessage,
-  events,
-} = await sdk.nft.transfer(collection, tokenId, toFlowAddress)
+import { toFlowAddress } from "@rarible/types"
+
+const collection = toFlowContractAddress("A.0x1234567890abcdef.RaribleNFT")
+const tokenId = 123
+const receiver = toFlowAddress("0x1234567890abcdef")
+
+const tx = await sdk.nft.transfer(collection, tokenId, receiver)
 ```
+
+Returns `FlowTransaction` object
 
 #### Burn
 
 ```typescript
-const {
-  status,
-  statusCode,
-  errorMessage,
-  events,
-} = await sdk.nft.burn(collection, tokenId)
+const collection = toFlowContractAddress("A.0x1234567890abcdef.RaribleNFT")
+const tokenId = 123
+
+const tx = await sdk.nft.burn(collection, tokenId)
 ```
+
+Returns `FlowTransaction` object
 
 #### Create sell order
 
