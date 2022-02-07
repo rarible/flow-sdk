@@ -47,7 +47,7 @@ import NonFungibleToken from "contracts/core/NonFungibleToken.cdc"
 import SoftCollection from "contracts/SoftCollection.cdc"
 
 transaction (id: UInt64, icon: String?, description: String?, url: String?) {
-    let collection: &{SoftCollection.Collection}
+    let collection: &SoftCollection.Collection
 
     prepare (account: AuthAccount) {
         self.collection = account.borrow<&SoftCollection.Collection>(from: SoftCollection.CollectionStoragePath)!

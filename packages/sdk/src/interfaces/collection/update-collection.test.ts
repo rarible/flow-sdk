@@ -17,7 +17,6 @@ describe("Test update collection", () => {
 
 		const collection = getContractAddress("emulator", "SoftCollection")
 
-		/** Create collection */
 		const tx = await testCreateCollection(sdk)
 		expect(tx.parentId).toBeFalsy()
 
