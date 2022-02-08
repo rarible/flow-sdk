@@ -22,6 +22,6 @@ export async function testCreateCollection(
 		url,
 		supply,
 	})
-	expect(createCollectionTx.collectionId).toBeGreaterThanOrEqual(0)
+	expect(parseInt(createCollectionTx.collectionId)).toBeGreaterThanOrEqual(0)
 	return createCollectionTx
 }

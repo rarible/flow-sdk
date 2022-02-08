@@ -21,8 +21,8 @@ export type CreateCollectionRequest = {
 }
 
 export type CreateCollectionResponse = FlowTransaction & {
-	collectionId: number
-	parentId: number
+	collectionId: string
+	parentId: string | null
 }
 
 export async function createCollection(
@@ -67,10 +67,11 @@ export async function createCollection(
 			if (txResult.events.length) {
 				const mintEvent = txResult.events.find(e => e.type.split(".")[3] === "Minted")
 				if (mintEvent) {
+					const { id, parentId } = mintEvent.data
 					return {
 						...txResult,
-						collectionId: mintEvent.data.id,
-						parentId: mintEvent.data.parentId,
+						collectionId: `${id}`,
+						parentId: typeof parentId === "number" ? `${parentId}` : null,
 					}
 				}
 				throw new Error("Minted event not found in transaction response")

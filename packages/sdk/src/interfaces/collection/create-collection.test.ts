@@ -33,7 +33,7 @@ describe("Test create collection", () => {
 
 		/** Create collection */
 		const tx = await testCreateCollection(sdk)
-		expect(tx.collectionId).toEqual(0)
+		expect(tx.collectionId).toEqual("0")
 		expect(tx.parentId).toBeFalsy()
 		/** And create new one with parent collection Id */
 		const tx2 = await testCreateCollection(sdk, toFlowContractAddress(`${collection}:${tx.collectionId}`))

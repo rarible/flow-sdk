@@ -3,20 +3,19 @@ import type { Maybe } from "@rarible/types/build/maybe"
 import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../types/types"
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import { getNftCode } from "../../blockchain-api/nft"
-import type { FlowContractAddress } from "../../types/contract-address"
 import { getCollectionConfig, getContractAddress } from "../../config/utils"
 
 
 export type UpdateCollectionRequest = {
-	collection?: FlowContractAddress
+	collectionIdNumber: string
 	icon?: string
 	description?: string
 	url?: string
 }
 
 export type UpdateCollectionResponse = FlowTransaction & {
-	collectionId: number
-	parentId: number
+	collectionId: string
+	parentId: string | null
 }
 
 export async function updateCollection(
@@ -26,19 +25,16 @@ export async function updateCollection(
 	request: UpdateCollectionRequest,
 ): Promise<UpdateCollectionResponse> {
 	if (fcl) {
-		const { icon, description, url, collection } = request
-		const preparedCollection = collection || getContractAddress(network, "SoftCollection")
-		const { name, map, userCollectionId } = getCollectionConfig(network, preparedCollection)
-		if (!userCollectionId) {
-			throw new Error("Collection id number is not defined")
-		}
+		const { icon, description, url, collectionIdNumber } = request
+		const collection = getContractAddress(network, "SoftCollection")
+		const { name, map } = getCollectionConfig(network, collection)
 		if (name === "SoftCollection") {
 			const txId = await runTransaction(
 				fcl,
 				map,
 				getNftCode(name).updateCollection({
 					fcl,
-					collectionIdNumber: parseInt(userCollectionId),
+					collectionIdNumber: parseInt(collectionIdNumber),
 					icon,
 					description,
 					url,
@@ -49,10 +45,11 @@ export async function updateCollection(
 			if (txResult.events.length) {
 				const mintEvent = txResult.events.find(e => e.type.split(".")[3] === "Changed")
 				if (mintEvent) {
+					const { id, parentId } = mintEvent.data
 					return {
 						...txResult,
-						collectionId: mintEvent.data.id,
-						parentId: mintEvent.data.parentId,
+						collectionId: `${id}`,
+						parentId: typeof parentId === "number" ? `${parentId}` : null,
 					}
 				}
 				throw new Error("Update event not found in transaction response")
