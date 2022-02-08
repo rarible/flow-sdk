@@ -27,12 +27,8 @@ import { updateOrder as updateOrderTemplate } from "./interfaces/order/update-or
 import type { FlowItemId } from "./types/item"
 import { FLOW_ENV_CONFIG } from "./config/env"
 import type { FlowContractAddress } from "./types/contract-address"
-import type {
-	UpdateCollectionRequest,
-	UpdateCollectionResponse} from "./interfaces/collection/update-collection"
-import {
-	updateCollection as updateCollectionTemplate,
-} from "./interfaces/collection/update-collection"
+import type { UpdateCollectionRequest, UpdateCollectionResponse } from "./interfaces/collection/update-collection"
+import { updateCollection as updateCollectionTemplate } from "./interfaces/collection/update-collection"
 
 export interface FlowApisSdk {
 	order: ApiClient.FlowOrderControllerApi
@@ -238,12 +234,20 @@ export function createFlowSdk(
 	}
 }
 
-export type { FlowNetwork, FlowCurrency, FlowTransaction, AuthWithPrivateKey } from "./types/types"
+export type {
+	FlowNetwork,
+	FlowCurrency,
+	FlowTransaction,
+	AuthWithPrivateKey,
+	FlowFee,
+	FlowEnv,
+	NonFungibleContract,
+} from "./types/types"
+export { NON_FUNGIBLE_CONTRACTS } from "./types/types"
 export type { FlowRoyalty } from "@rarible/flow-api-client"
 export { toFlowItemId, isFlowItemId } from "./types/item/index"
 export type { FlowItemId } from "./types/item/index"
 export type { FlowContractAddress } from "./types/contract-address/index"
 export { toFlowContractAddress, isFlowContractAddress } from "./types/contract-address/index"
-export type { FlowEnv } from "./config/env"
 export { FLOW_ENV_CONFIG } from "./config/env"
 export { FlowOrder } from "@rarible/flow-api-client"

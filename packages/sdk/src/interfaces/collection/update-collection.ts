@@ -4,11 +4,11 @@ import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../typ
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import { getNftCode } from "../../blockchain-api/nft"
 import type { FlowContractAddress } from "../../types/contract-address"
-import { getCollectionConfig } from "../../config/utils"
+import { getCollectionConfig, getContractAddress } from "../../config/utils"
 
 
 export type UpdateCollectionRequest = {
-	collection: FlowContractAddress
+	collection?: FlowContractAddress
 	icon?: string
 	description?: string
 	url?: string
@@ -27,7 +27,8 @@ export async function updateCollection(
 ): Promise<UpdateCollectionResponse> {
 	if (fcl) {
 		const { icon, description, url, collection } = request
-		const { name, map, userCollectionId } = getCollectionConfig(network, collection)
+		const preparedCollection = collection || getContractAddress(network, "SoftCollection")
+		const { name, map, userCollectionId } = getCollectionConfig(network, preparedCollection)
 		if (!userCollectionId) {
 			throw new Error("Collection id number is not defined")
 		}
