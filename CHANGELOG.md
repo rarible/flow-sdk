@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.6](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.5...v0.5.33-alpha.6) (2022-02-08)
+
+
+### Bug Fixes
+
+* collectionUpdate input props and root sdk exports ([45d8fac](https://github.com/rarible/flow-sdk/commit/45d8fac01c1d4bb1d40688760f682a425b68bc6e))
+
+
+
+
+
 ## [0.5.33-alpha.5](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.4...v0.5.33-alpha.5) (2022-02-07)
 
 **Note:** Version bump only for package root
