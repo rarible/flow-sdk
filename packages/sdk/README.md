@@ -168,3 +168,8 @@ Returns `FlowTransaction` object
 
 The same as buy order `sdk.order.fill`
 
+#### Get account fungible tokens balance
+
+```typescript
+const balance = await sdk.wallet.getFungibleBalance(accountAddress, "FUSD")
+```
