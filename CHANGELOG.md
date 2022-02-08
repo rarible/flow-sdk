@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.7](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.6...v0.5.33-alpha.7) (2022-02-08)
+
+
+### Bug Fixes
+
+* fix create collection return types ([57d5521](https://github.com/rarible/flow-sdk/commit/57d5521022f81ff93218794f4552a22def22f594))
+
+
+
+
+
 ## [0.5.33-alpha.6](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.5...v0.5.33-alpha.6) (2022-02-08)
 
 
