@@ -9,6 +9,7 @@ import type { FlowItemId } from "../../types/item"
 import { toFlowItemId } from "../../types/item"
 import type { FlowContractAddress } from "../../types/contract-address"
 import { getCollectionConfig } from "../../config/utils"
+import { sansPrefix } from "../../common/prefix"
 import { validateRoyalties } from "./common/validate-royalties"
 
 export interface FlowMintResponse extends FlowTransaction {
@@ -49,7 +50,7 @@ export async function mint(
 			const mintEvent = txResult.events.find(e => ["Mint", "Minted"].includes(e.type.split(".")[3]))
 			if (mintEvent) {
 				return {
-					tokenId: toFlowItemId(`A.${address}.${name}:${mintEvent.data.id}`),
+					tokenId: toFlowItemId(`A.${sansPrefix(address)}.${name}:${mintEvent.data.id}`),
 					...txResult,
 				}
 			}
