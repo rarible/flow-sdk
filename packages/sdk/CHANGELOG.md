@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.8](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.7...v0.5.33-alpha.8) (2022-02-09)
+
+
+### Bug Fixes
+
+* fix tokenId without prefix when mint ([e9a01d2](https://github.com/rarible/flow-sdk/commit/e9a01d2d519c53fa2175236df6be36c8cb3b9d5d))
+
+
+
+
+
 ## [0.5.33-alpha.7](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.6...v0.5.33-alpha.7) (2022-02-08)
 
 
