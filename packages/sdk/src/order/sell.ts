@@ -16,12 +16,12 @@ import { checkPrice } from "../common/check-price"
 import { parseEvents } from "../common/parse-tx-events"
 import type { FlowItemId } from "../common/item"
 import { extractTokenId } from "../common/item"
-import { retry } from "../common/retry"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCode } from "../tx-code-store/order/storefront"
 import { fixAmount } from "../common/fix-amount"
 import { getProtocolFee } from "./get-protocol-fee"
 import { calculateSaleCuts } from "./common/calculate-sale-cuts"
+import { fetchItemRoyalties } from "./common/fetch-item-royalties"
 
 export type FlowSellRequest = {
 	collection: FlowContractAddress,
@@ -51,9 +51,7 @@ export async function sell(
 			throw new Error("FLOW-SDK: Can't get current user address")
 		}
 		// condition only for tests on local emulator
-		const item = network === "emulator" ?
-			{ royalties: [] } :
-			await retry(10, 1000, async () => itemApi.getNftItemById({ itemId }))
+		const royalties = network === "emulator" ? [] : await fetchItemRoyalties(itemApi, itemId)
 		const { name, map } = getCollectionConfig(network, collection)
 		const txId = await runTransaction(
 			fcl,
@@ -67,7 +65,7 @@ export async function sell(
 					[
 						getProtocolFee.percents(network).sellerFee,
 						...(originFees || []),
-						...(item.royalties || []),
+						...(royalties || []),
 					],
 					[...(payouts || [])],
 				),

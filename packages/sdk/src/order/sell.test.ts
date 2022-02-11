@@ -30,7 +30,7 @@ describe("Test sell on emulator", () => {
 
 	test.skip("Should create new sell order on testnet", async () => {
 		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_4.address, FLOW_TESTNET_ACCOUNT_4.privKey)
-		const testnetSdk = createFlowSdk(fcl, "dev", {}, testnetAuth)
+		const testnetSdk = createFlowSdk(fcl, "staging", {}, testnetAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.RARIBLE)
 		const mintTx = await testnetSdk.nft.mint(
 			testnetCollection,
