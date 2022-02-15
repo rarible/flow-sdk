@@ -10,35 +10,31 @@ import { toFlowContractAddress } from "../../common/flow-address"
 
 type FlowEnglishAuctionBlockchainLot = {
 	uuid: number,
-	reward: {
-		path: { type: string, value: [{}] },
-		address: string,
-		borrowType: string
-	},
-	refund: {
-		path: { type: string, value: [{}] },
-		address: string,
-		borrowType: string
-	},
-	item: [
-		{
+	lot: {
+		uuid: number,
+		mark: number,
+		item: {
 			uuid: number,
 			id: number,
 			creator: string,
 			metadata: { etaURI: string },
 			royalties: { address: string, fee: string }[]
-		}
-	],
-	payouts: { target: any, rate: string }[],
-	bidType: string,
-	minimumBid: string,
-	buyoutPrice: string,
-	increment: string,
-	startAt: string,
-	duration: string,
-	bids: {},
-	finishAt: string,
-	primaryBid: null
+		},
+		refund: {
+			path: { type: string, value: [{}] },
+			address: string,
+			borrowType: string
+		},
+		payouts: { target: any, rate: string }[],
+	},
+	bidType: string
+	minimumBid: string
+	buyoutPrice: string
+	increment: string
+	startAt: string
+	duration: string
+	bid: null,
+	finishAt: string
 }
 
 type GetLotResponse = {
@@ -52,14 +48,14 @@ export async function getLot(fcl: Fcl, network: FlowNetwork, lotId: number): Pro
 	const lot: FlowEnglishAuctionBlockchainLot = await runScript(
 		fcl, params, { EnglishAuction: CONFIGS[network].mainAddressMap.EnglishAuction },
 	)
-	const royalties: FlowRoyalty[] = lot.item[0].royalties.map(r => {
+	const royalties: FlowRoyalty[] = lot.lot.item.royalties.map(r => {
 		return {
 			account: toFlowAddress(r.address),
 			value: toBigNumber(r.fee),
 		}
 	})
 
-	const payouts: FlowFee[] = lot.payouts.map(p => {
+	const payouts: FlowFee[] = lot.lot.payouts.map(p => {
 		return {
 			account: p.target,
 			value: toBigNumber(p.rate),

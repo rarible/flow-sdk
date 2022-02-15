@@ -1,193 +1,160 @@
 type FlowEnglishAuctionActions = "addLot" | "addBid" | "cancelLot" | "completeLot" | "incrementBid"
 export const englishAuctionTxCode: Record<FlowEnglishAuctionActions, string> = {
 	addLot: `
-	import FungibleToken from address
-import NonFungibleToken from address
-import EnglishAuction from address
-import %ftContract% from address
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import FungibleToken from 0xFUNGIBLETOKEN
+import EnglishAuction from 0xENGLISHAUCTION
 import %nftContract% from address
+import %ftContract% from address
 
-// Adds auction lot
-//
-//   tokenId - id of the token to be auctioned
-//   minimumBid - minimum amount of the first bid
-//   buyoutPrice - immediate redemption price (e.q. "buy it now")
-//   increment - minimum bets step
-//   startAt - auction start time (unix time, with fractional)
-//   duration - duration of the auction in seconds
-//   parts - payouts from seller {recipient:rate (0,1))
-//
 transaction (
-    tokenId: UInt64,
+    itemId: UInt64,
+    payouts: {Address:UFix64},
     minimumBid: UFix64,
     buyoutPrice: UFix64?,
     increment: UFix64,
     startAt: UFix64?,
     duration: UFix64,
-    parts: {Address:UFix64}
-) {
-    let item: @NonFungibleToken.NFT
-    let reward: Capability<&{FungibleToken.Receiver}>
-    let refund: Capability<&{NonFungibleToken.CollectionPublic}>
+){
+    let manager: &EnglishAuction.AuctionManager
+    let source: Capability<&{NonFungibleToken.CollectionPublic,NonFungibleToken.Provider}>
+    let target: Capability<&{FungibleToken.Receiver}>
 
     prepare(account: AuthAccount) {
-        if !account.getCapability<&{%nftPublicType%}>(%nftPublicPath%).check() {
-            if account.borrow<&AnyResource>(from: %nftStoragePath%) != nil {
-                account.unlink(%nftPublicPath%)
-                account.link<&{%nftPublicType%}>(%nftPublicPath%, target: %nftStoragePath%)
-            } else {
-                let collection <- %nftContract%.createEmptyCollection() as! @%nftStorageType%
-                account.save(<-collection, to: %nftStoragePath%)
-                account.link<&{%nftPublicType%}>(%nftPublicPath%, target: %nftStoragePath%)
-            }
+        if account.borrow<&EnglishAuction.AuctionManager>(from: EnglishAuction.AuctionManagerStoragePath) == nil {
+            account.save(<-EnglishAuction.createAuctionManager(), to: EnglishAuction.AuctionManagerStoragePath)
+        }
+        self.manager = account.borrow<&EnglishAuction.AuctionManager>(from: EnglishAuction.AuctionManagerStoragePath)!
+
+        if !account.getCapability<&{%nftPrivateType%}>(%nftPrivatePath%).check() {
+            account.link<&{%nftPrivateType%}>(%nftPrivatePath%, target: %nftStoragePath%)
         }
 
-        let collection = account.borrow<&%nftStorageType%>(from: %nftStoragePath%)
-                ?? panic("Missing %nftContract% collection on signer account")
-        self.item <- collection.withdraw(withdrawID: tokenId)
-        self.reward = account.getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%)
-        self.refund = account.getCapability<&{NonFungibleToken.CollectionPublic}>(%nftPublicPath%)
+        self.source = account.getCapability<&{%nftPrivateType%}>(%nftPrivatePath%)
+        self.target = account.getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%)
     }
 
     execute {
-        let payouts: [EnglishAuction.Payout] = []
-        for key in parts.keys {
-            let receiver = getAccount(key).getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%)
-            payouts.append(EnglishAuction.Payout(target: receiver, rate: parts[key]!))
+        let p: [EnglishAuction.Payout] = []
+        for address in payouts.keys {
+            let target = getAccount(address).getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%)
+            p.append(EnglishAuction.Payout(target: target, rate: payouts[address]!))
         }
-
-        EnglishAuction.borrowAuction().addLot(
-            reward: self.reward,
-            refund: self.refund,
-            item: <- self.item,
-            bidType: Type<%ftContract%>(),
+        self.manager.createLot(
+            source: self.source,
+            itemId: itemId,
+            payouts: p,
+            bidType: Type<@FlowToken.Vault>(),
             minimumBid: minimumBid,
             buyoutPrice: buyoutPrice,
             increment: increment,
             startAt: startAt,
             duration: duration,
-            payouts: payouts
         )
     }
 }
 	`,
 	addBid: `
-	import FungibleToken from address
-import NonFungibleToken from address
-import EnglishAuction from address
-import %ftContract% from address
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import FungibleToken from 0xFUNGIBLETOKEN
+import EnglishAuction from 0xENGLISHAUCTION
 import %nftContract% from address
 
-// Adds new auction bid
-//
-//   lotId - log id
-//   amount - bid price
-//   parts - payouts for buyer {recipient:rate (0,1))
-//
-transaction (lotId: UInt64, amount: UFix64, parts: {Address:UFix64}) {
-    let vault: @FungibleToken.Vault
+transaction (auctionId: UInt64, price: UFix64, payouts: {Address:UFix64}){
+    let manager: &EnglishAuction.AuctionManager
     let reward: Capability<&{NonFungibleToken.CollectionPublic}>
-    let refund: Capability<&{FungibleToken.Receiver}>
+    let source: Capability<&{FungibleToken.Receiver,FungibleToken.Provider}>
 
-    prepare(account: AuthAccount) {
+    prepare (account: AuthAccount) {
+        if account.borrow<&EnglishAuction.AuctionManager>(from: EnglishAuction.AuctionManagerStoragePath) == nil {
+            account.save(<-EnglishAuction.createAuctionManager(), to: EnglishAuction.AuctionManagerStoragePath)
+        }
+        self.manager = account.borrow<&EnglishAuction.AuctionManager>(from: EnglishAuction.AuctionManagerStoragePath)!
+
+        if !account.getCapability<&{%ftPrivateType%}>(%ftPrivatePath%)!.check() {
+            account.link<&{%ftPrivateType%}>(%ftPrivatePath%, target: %ftStoragePath%)
+        }
+        self.source = account.getCapability<&{%ftPrivateType%}>(%ftPrivatePath%)
+
         if !account.getCapability<&{%nftPublicType%}>(%nftPublicPath%).check() {
             if account.borrow<&AnyResource>(from: %nftStoragePath%) != nil {
                 account.unlink(%nftPublicPath%)
                 account.link<&{%nftPublicType%}>(%nftPublicPath%, target: %nftStoragePath%)
             } else {
-                let collection <- %nftContract%.createEmptyCollection() as! @%nftStorageType%
-                account.save(<-collection, to: %nftStoragePath%)
+                account.save(<- %nftContract%.createEmptyCollection(), to: %nftStoragePath%)
                 account.link<&{%nftPublicType%}>(%nftPublicPath%, target: %nftStoragePath%)
             }
         }
-
-        var r: UFix64 = 0.0
-        for key in parts.keys { r = r + parts[key]! }
-        let mainVault = account.borrow<&FungibleToken.Vault>(from: %ftStoragePath%)
-            ?? panic("Cannot borrow %ftContract% vault from account")
-
-        self.vault <- mainVault.withdraw(amount: amount * (1.0+r))
         self.reward = account.getCapability<&{NonFungibleToken.CollectionPublic}>(%nftPublicPath%)
-        self.refund = account.getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%)
     }
 
     execute {
-        let payouts: [EnglishAuction.Payout] = []
-        for key in parts.keys {
-            let receiver = getAccount(key).getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%)
-            payouts.append(EnglishAuction.Payout(target: receiver, rate: parts[key]!))
+        let p: [EnglishAuction.Payout] = []
+        for address in payouts.keys {
+            let target = getAccount(address).getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%)
+            p.append(EnglishAuction.Payout(target: target, rate: payouts[address]!))
         }
-
-        EnglishAuction.borrowAuction().addBid(
-            lotId: lotId,
+        self.manager.createBid(
+            auctionId: auctionId,
             reward: self.reward,
-            refund: self.refund,
-            vault: <- self.vault,
-            payouts: payouts
+            source: self.source,
+            price: price,
+            payouts: p,
         )
     }
 }
 	`,
 	cancelLot: `
-	import EnglishAuction from address
+import EnglishAuction from 0xENGLISHAUCTION
 
-// Cancel lot
+// Cancel auction
 //
-transaction(lotId: UInt64) {
-    let account: AuthAccount
+transaction(auctionId: UInt64) {
+    let manager: &EnglishAuction.AuctionManager
 
     prepare(account: AuthAccount) {
-        self.account = account
+        self.manager = account.borrow<&EnglishAuction.AuctionManager>(from: EnglishAuction.AuctionManagerStoragePath)!
     }
 
     execute {
-        EnglishAuction.borrowAuction().cancelLot(auth: self.account, lotId: lotId)
+        self.manager.cancelLot(auctionId: auctionId)
     }
 }
 
 	`,
 	completeLot: `
-	import EnglishAuction from address
+import EnglishAuction from 0xENGLISHAUCTION
 
 // Complete lot
 //
-transaction (lotId: UInt64) {
+transaction(auctionId: UInt64) {
+    let manager: &EnglishAuction.AuctionManager
+
     prepare(account: AuthAccount) {
+        self.manager = account.borrow<&EnglishAuction.AuctionManager>(from: EnglishAuction.AuctionManagerStoragePath)!
     }
 
     execute {
-        EnglishAuction.borrowAuction().completeLot(lotId: lotId)
+        self.manager.completeLot(auctionId: auctionId)
     }
 }
-
 	`,
 	incrementBid: `
-	import FungibleToken from address
-import EnglishAuction from address
-import %ftContract% from address
+import FungibleToken from 0xFUNGIBLETOKEN
+import EnglishAuction from 0xENGLISHAUCTION
 
-// Increase primary bid amount
-//
-//   lotId - log id
-//   amount - bid price addition
-//
-transaction (lotId: UInt64, amount: UFix64) {
-    let address: Address
+transaction (auctionId: UInt64, price: UFix64){
+    let manager: &EnglishAuction.AuctionManager
     let vault: @FungibleToken.Vault
 
-    prepare(account: AuthAccount) {
-        self.address = account.address
-        let mainVault = account.borrow<&FungibleToken.Vault>(from: %ftStoragePath%)
-            ?? panic("Cannot borrow %ftContract% vault from account")
-        self.vault <- mainVault.withdraw(amount: amount)
+    prepare (account: AuthAccount) {
+        self.manager = account.borrow<&EnglishAuction.AuctionManager>(from: EnglishAuction.AuctionManagerStoragePath)!
+        let main = account.borrow<&FungibleToken.Vault>(from: %ftStoragePath%)!
+        self.vault <- main.withdraw(amount: price)
     }
 
     execute {
-        EnglishAuction.borrowAuction().increaseBid(
-            lotId: lotId,
-            address: self.address,
-            newVault: <- self.vault,
-        )
+        self.manager.increaseBid(auctionId: auctionId, from: <-self.vault)
     }
 }
 	`,

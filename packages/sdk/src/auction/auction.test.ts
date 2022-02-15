@@ -84,23 +84,23 @@ describe("Test English Auction on emulator", () => {
 		const { sdk } = await createFlowTestEmulatorSdk("acc1")
 		const { sdk: sdk2 } = await createFlowTestEmulatorSdk("acc2")
 		const mint = await mintRaribleNftTest(sdk, collection)
-
+		debugger
 		const tx = await createLotEngAucTest(sdk, collection, {
 			itemId: mint.tokenId,
-			buyoutPrice: "1",
+			buyoutPrice: "10",
 			duration: "20",
 		})
 		expect(tx.orderId).toBeTruthy()
-
-		const bid = await sdk2.auction.createBid({ collection, lotId: tx.orderId, amount: "0.1", originFee: [] })
+		debugger
+		const bid = await sdk2.auction.createBid({ collection, lotId: tx.orderId, amount: "1", originFee: [] })
 		checkEvent(bid, "OpenBid", "EnglishAuction")
-
-		const increase = await sdk2.auction.increaseBid({ collection, lotId: tx.orderId, amount: "0.2" })
+		debugger
+		const increase = await sdk2.auction.increaseBid({ collection, lotId: tx.orderId, amount: "2" })
 		checkEvent(increase, "IncreaseBid", "EnglishAuction")
-
+		debugger
 		await testDelay(61000)
-		await mintRaribleNftTest(sdk, collection)
-
+		await mintRaribleNftTest(sdk, collection) //for generate new block
+		debugger
 		const cancelLotTx = await sdk.auction.completeLot({ collection, lotId: tx.orderId })
 		checkEvent(cancelLotTx, "LotCompleted", "EnglishAuction")
 		expect(cancelLotTx.status).toEqual(4)

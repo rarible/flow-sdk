@@ -8,15 +8,16 @@ import { prepareFees } from "../common/conver-fee-to-cadence"
 import { prepareOrderCode } from "../order/prepare-order-code"
 import { fixAmount } from "../../common/fix-amount"
 import type { PreparedTransactionParamsResponse } from "../domain"
+import { logger } from "../../test/logger"
 
 type TxCreateEnglishAutcionLotRequest = {
 	tokenId: number,
+	parts: FlowFee[],
 	minimumBid: string,
 	buyoutPrice?: string,
 	increment: string,
 	startAt?: string,
 	duration: string,
-	parts: FlowFee[],
 }
 
 interface GetEnglishAuctionCode {
@@ -38,19 +39,30 @@ export function getEnglishAuctionCode(
 	if (flowCollections.includes(name)) {
 		return {
 			createLot: ({ tokenId, minimumBid, buyoutPrice, increment, startAt, duration, parts }) => {
+				logger("create lot")
+				logger(
+					"create lot", "\n",
+					"tokenId", tokenId, "\n",
+					"parts", parts, "\n",
+					"minimumBid", fixAmount(minimumBid), "\n",
+					"buyoutPrice", buyoutPrice ? fixAmount(buyoutPrice) : null, "\n",
+					"increment", fixAmount(increment), "\n",
+					"startAt", startAt ? fixAmount(startAt) : null, "\n",
+					"duration", fixAmount(duration), "\n",
+				)
 				return {
 					cadence: prepareOrderCode(englishAuctionTxCode.addLot, name, currency),
 					args: fcl.args([
 						fcl.arg(tokenId, t.UInt64),
+						fcl.arg(prepareFees(parts), t.Dictionary({
+							key: t.Address,
+							value: t.UFix64,
+						})),
 						fcl.arg(fixAmount(minimumBid), t.UFix64),
 						fcl.arg(buyoutPrice ? fixAmount(buyoutPrice) : null, t.Optional(t.UFix64)),
 						fcl.arg(fixAmount(increment), t.UFix64),
 						fcl.arg(startAt ? fixAmount(startAt) : null, t.Optional(t.UFix64)),
 						fcl.arg(fixAmount(duration), t.UFix64),
-						fcl.arg(prepareFees(parts), t.Dictionary({
-							key: t.Address,
-							value: t.UFix64,
-						})),
 					]),
 				}
 			},
@@ -61,12 +73,22 @@ export function getEnglishAuctionCode(
 				}
 			},
 			completeLot: (lotId) => {
+				logger(
+					"complete lot", "\n",
+					"lotId", lotId,
+				)
 				return {
 					cadence: prepareOrderCode(englishAuctionTxCode.completeLot, name, currency),
 					args: fcl.args([fcl.arg(lotId, t.UInt64)]),
 				}
 			},
 			createBid: (lotId, amount, parts) => {
+				logger(
+					"createBid", "\n",
+					"lotId", lotId, "\n",
+					"amount", fixAmount(amount), "\n",
+					"parts", prepareFees(parts), "\n",
+				)
 				return {
 					cadence: prepareOrderCode(englishAuctionTxCode.addBid, name, currency),
 					args: fcl.args([
@@ -80,6 +102,11 @@ export function getEnglishAuctionCode(
 				}
 			},
 			increaseBid: (lotId, amount) => {
+				logger(
+					"increaseBid", "\n",
+					"lotId", lotId, "\n",
+					"amount", fixAmount(amount), "\n",
+				)
 				return {
 					cadence: prepareOrderCode(englishAuctionTxCode.incrementBid, name, currency),
 					args: fcl.args([

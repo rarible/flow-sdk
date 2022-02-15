@@ -7,10 +7,10 @@ pub fun main(lotId: UInt64): [UInt64] {
 }
 `,
 	borrowLot: `
-	import EnglishAuction from address
+import EnglishAuction from 0xENGLISHAUCTION
 
-pub fun main(lotId: UInt64): &EnglishAuction.Lot? {
-    return EnglishAuction.borrowAuction().borrowLot(lotId: lotId)
+pub fun main(auctionId: UInt64): &EnglishAuction.Auction? {
+    return EnglishAuction.borrow(auctionId: auctionId)
 }
 
 	`,
