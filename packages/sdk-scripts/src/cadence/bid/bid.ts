@@ -8,7 +8,6 @@ import %nftContract% from address
 
 transaction(nftId: UInt64, price: UFix64, parts: {Address:UFix64}) {
     let openBid: &RaribleOpenBid.OpenBid
-    let vault: @FungibleToken.Vault
     let nftReceiver: Capability<&{NonFungibleToken.CollectionPublic}>
     let vaultRef: Capability<&{%ftPrivateType%}>
 
@@ -42,18 +41,13 @@ transaction(nftId: UInt64, price: UFix64, parts: {Address:UFix64}) {
 
         self.openBid = account.borrow<&RaribleOpenBid.OpenBid>(from: RaribleOpenBid.OpenBidStoragePath)
             ?? panic("Missing or mis-typed RaribleOpenBid OpenBid")
-
-        var amount = price
-        for key in parts.keys {
-            amount = amount + parts[key]!
-        }
-
-        self.vault <- self.vaultRef.borrow()!.withdraw(amount: amount)
     }
 
     execute {
+        var amount = price
         let cuts: [RaribleOpenBid.Cut] = []
         for address in parts.keys {
+            amount = amount + parts[address]!
             cuts.append(
                 RaribleOpenBid.Cut(
                     receiver: getAccount(address).getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%),
@@ -64,7 +58,7 @@ transaction(nftId: UInt64, price: UFix64, parts: {Address:UFix64}) {
 
         self.openBid.createBid(
             vaultRefCapability: self.vaultRef,
-            testVault: <- self.vault,
+            offerPrice: amount,
             rewardCapability: self.nftReceiver,
             nftType: Type<@%nftContract%.NFT>(),
             nftId: nftId,
@@ -142,7 +136,6 @@ import %nftContract% from address
 transaction(bidId: UInt64, price: UFix64, parts: {Address:UFix64}) {
     let openBid: &RaribleOpenBid.OpenBid
     let bid: &RaribleOpenBid.Bid{RaribleOpenBid.BidPublic}
-    let vault: @FungibleToken.Vault
     let nftReceiver: Capability<&{NonFungibleToken.CollectionPublic}>
     let vaultRef: Capability<&{%ftPrivateType%}>
 
@@ -172,21 +165,16 @@ transaction(bidId: UInt64, price: UFix64, parts: {Address:UFix64}) {
 
         self.vaultRef = account.getCapability<&{%ftPrivateType%}>(%ftPrivatePath%)!
         assert(self.vaultRef.check(), message: "Missing or mis-typed fungible token vault ref")
-
-        var amount = price
-        for key in parts.keys {
-            amount = amount + parts[key]!
-        }
-
-        self.vault <- self.vaultRef.borrow()!.withdraw(amount: amount)
     }
 
     execute {
         let details = self.bid.getDetails()
         self.openBid.removeBid(bidId: bidId)
 
+        var amount = price
         let cuts: [RaribleOpenBid.Cut] = []
         for address in parts.keys {
+            amount = amount + parts[address]!
             cuts.append(
                 RaribleOpenBid.Cut(
                     receiver: getAccount(address).getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%),
@@ -197,7 +185,7 @@ transaction(bidId: UInt64, price: UFix64, parts: {Address:UFix64}) {
 
         self.openBid.createBid(
             vaultRefCapability: self.vaultRef,
-            testVault: <- self.vault,
+            offerPrice: amount,
             rewardCapability: self.nftReceiver,
             nftType: details.nftType,
             nftId: details.nftId,

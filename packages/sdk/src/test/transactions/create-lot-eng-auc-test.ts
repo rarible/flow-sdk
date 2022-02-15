@@ -1,6 +1,5 @@
-import type { FlowSellResponse } from "../../order/sell"
-import type { FlowFee } from "../../types"
-import type { FlowContractAddress, FlowItemId, FlowSdk } from "../../index"
+import type { FlowContractAddress, FlowFee, FlowItemId, FlowSdk } from "../../index"
+import type { FlowSellResponse } from "../../interfaces/order/sell"
 
 export async function createLotEngAucTest(
 	sdk: FlowSdk,

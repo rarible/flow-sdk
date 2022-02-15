@@ -1,4 +1,4 @@
-import type { FlowContractName, FungibleContracts, NonFungibleContracts } from "../types"
+import type { FlowContractName, FungibleContracts, NonFungibleContract } from "../types/types"
 
 export type FtCodeConfig = Record<"%ftPublicPath%" | "%ftPrivateType%" | "%ftPrivatePath%" | "%ftStoragePath%" | "%ftContract%", string>
 
@@ -31,7 +31,7 @@ type NftStaticVariables = {
 	"%nftStoragePath%": string
 	"%publicTypeAddon%"?: string
 }
-const nftCodeConfig: Record<NonFungibleContracts, NftStaticVariables> = {
+const nftCodeConfig: Record<NonFungibleContract, NftStaticVariables> = {
 	RaribleNFT: {
 		"%nftPublicPath%": "RaribleNFT.collectionPublicPath",
 		"%nftStoragePath%": "RaribleNFT.collectionStoragePath",
@@ -59,6 +59,46 @@ const nftCodeConfig: Record<NonFungibleContracts, NftStaticVariables> = {
 		"%nftPublicPath%": "CNN_NFT.CollectionPublicPath",
 		"%nftStoragePath%": "CNN_NFT.CollectionStoragePath",
 	},
+	MatrixWorldFlowFestNFT: {
+		"%nftPublicPath%": "MatrixWorldFlowFestNFT.CollectionPublicPath",
+		"%nftStoragePath%": "MatrixWorldFlowFestNFT.CollectionStoragePath",
+	},
+	MatrixWorldVoucher: {
+		"%nftPublicPath%": "MatrixWorldVoucher.CollectionPublicPath",
+		"%nftStoragePath%": "MatrixWorldVoucher.CollectionStoragePath",
+	},
+	DisruptArt: {
+		"%nftPublicPath%": "DisruptArt.disruptArtPublicPath",
+		"%nftStoragePath%": "DisruptArt.disruptArtStoragePath",
+	},
+	Art: {
+		"%nftPublicPath%": "Art.CollectionPublicPath",
+		"%nftStoragePath%": "Art.CollectionStoragePath",
+		"%publicTypeAddon%": "Art.CollectionPublic",
+	},
+	StarlyCard: {
+		"%nftPublicPath%": "StarlyCard.CollectionPublicPath",
+		"%nftStoragePath%": "StarlyCard.CollectionStoragePath",
+		"%publicTypeAddon%": "StarlyCard.StarlyCardCollectionPublic",
+	},
+	OneFootballCollectible: {
+		"%nftPublicPath%": "OneFootballCollectible.CollectionPublicPath",
+		"%nftStoragePath%": "OneFootballCollectible.CollectionStoragePath",
+		"%publicTypeAddon%": "OneFootballCollectible.OneFootballCollectibleCollectionPublic",
+	},
+	ChainmonstersRewards: {
+		"%nftPublicPath%": "/public/ChainmonstersRewardCollection",
+		"%nftStoragePath%": "/storage/ChainmonstersRewardCollection",
+		"%publicTypeAddon%": "ChainmonstersRewards.ChainmonstersRewardCollectionPublic",
+	},
+	SoftCollection: {
+		"%nftPublicPath%": "SoftCollection.CollectionPublicPath",
+		"%nftStoragePath%": "SoftCollection.CollectionStoragePath",
+	},
+	RaribleNFTv2: {
+		"%nftPublicPath%": "RaribleNFTv2.CollectionPublicPath",
+		"%nftStoragePath%": "RaribleNFTv2.CollectionStoragePath",
+	},
 }
 export type NftCodeConfig = NftStaticVariables & {
 	"%nftContract%": string
@@ -73,7 +113,7 @@ export function getNftCodeConfig(contract: FlowContractName): NftCodeConfig {
 	if (!Object.keys(nftCodeConfig).includes(contract)) {
 		throw new Error(`Unsupported contract: ${contract}`)
 	}
-	const staticConfig = nftCodeConfig[contract as NonFungibleContracts]
+	const staticConfig = nftCodeConfig[contract as NonFungibleContract]
 	return {
 		...staticConfig,
 		"%nftContract%": contract,

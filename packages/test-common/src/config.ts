@@ -23,6 +23,17 @@ export const CONTRACTS: Record<Contracts, string> = {
 	RaribleOpenBid: "RaribleOpenBid",
 	MugenNFT: "MugenNFT",
 	CNN_NFT: "CNN_NFT",
+	MatrixWorldFlowFestNFT: "MatrixWorldFlowFestNFT",
+	MatrixWorldVoucher: "MatrixWorldVoucher",
+	DisruptArt: "DisruptArt",
+	Art: "Art",
+	StarlyCard: "StarlyCard",
+	OneFootballCollectible: "OneFootballCollectible",
+	ChainmonstersRewards: "ChainmonstersRewards",
+	Content: "Content",
+	SoftCollection: "SoftCollection",
+	RaribleNFTv2: "RaribleNFTv2",
+	MetadataViews: "MetadataViews",
 	EnglishAuction: "EnglishAuction",
 }
 type Contracts =
@@ -46,6 +57,18 @@ type Contracts =
 	"RaribleOpenBid" |
 	"MugenNFT" |
 	"CNN_NFT" |
+	"MatrixWorldFlowFestNFT" |
+	"MatrixWorldVoucher" |
+	"DisruptArt" |
+	"Art" |
+	"StarlyCard" |
+	"OneFootballCollectible" |
+	"ChainmonstersRewards" |
+	"Content" |
+	"MatrixWorldVoucher" |
+	"SoftCollection" |
+	"RaribleNFTv2" |
+	"MetadataViews" |
 	"EnglishAuction"
 
 type TestAccount = {

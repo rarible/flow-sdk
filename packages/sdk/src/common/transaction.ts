@@ -1,6 +1,6 @@
 import type { Fcl } from "@rarible/fcl-types"
-import type { AuthWithPrivateKey, FlowTransaction } from "../types"
-import { replaceImportAddresses } from "./template-replacer"
+import type { AuthWithPrivateKey, FlowTransaction } from "../types/types"
+import { replaceImportAddresses } from "../blockchain-api/common/template-replacer"
 
 export type MethodArgs = {
 	cadence: string

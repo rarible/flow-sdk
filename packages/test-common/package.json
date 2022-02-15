@@ -1,6 +1,6 @@
 {
   "name": "@rarible/flow-test-common",
-  "version": "0.5.30-ac.0",
+  "version": "0.5.33-alpha.5",
   "repository": "https://github.com/rarible/flow-sdk",
   "license": "MIT",
   "main": "build/index.js",
@@ -12,13 +12,13 @@
   "scripts": {
     "build": "tsc --project tsconfig-build.json",
     "clean": "rimraf ./build",
-    "test": "jest --passWithNoTests --maxWorkers=1 --testTimeout=30000",
+    "test": "jest --passWithNoTests --maxWorkers=1 --testTimeout=50000",
     "verify": "tsc --noEmit"
   },
   "dependencies": {
     "@onflow/config": "^0.0.2",
     "elliptic": "^6.5.4",
-    "flow-js-testing": "~0.2.3-alpha.2",
+    "flow-js-testing": "~0.1.13",
     "sha3": "^2.1.4"
   },
   "devDependencies": {

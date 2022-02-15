@@ -1,4 +1,4 @@
-import type { FlowContractName, FlowTransaction } from "../types"
+import type { FlowContractName, FlowTransaction } from "../types/types"
 
 type EventNames =
 	| "Withdraw"

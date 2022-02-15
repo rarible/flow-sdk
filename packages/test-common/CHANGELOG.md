@@ -3,6 +3,77 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.5](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.4...v0.5.33-alpha.5) (2022-02-07)
+
+**Note:** Version bump only for package @rarible/flow-test-common
+
+
+
+
+
+## [0.5.33-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.32...v0.5.33-alpha.0) (2022-02-02)
+
+
+### Bug Fixes
+
+* test timeouts in test-common package ([6e21404](https://github.com/rarible/flow-sdk/commit/6e214042634adbcf8d0ce4cfdb990407f86d5446))
+
+
+
+
+
+## [0.5.31](https://github.com/rarible/flow-sdk/compare/v0.5.30...v0.5.31) (2022-01-31)
+
+
+### Features
+
+* support secondary collections: Distrupt, ChainMonsters, OneFootball, Starly, Versus ([00bb647](https://github.com/rarible/flow-sdk/commit/00bb6479c8ef1e51f20b0458d02043051a6e0eff))
+
+
+
+
+
+## [0.5.30](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.8...v0.5.30) (2022-01-28)
+
+
+### Bug Fixes
+
+* add types for FlowService ([a0222f0](https://github.com/rarible/flow-sdk/commit/a0222f0eb718ea69579521bbd5c2eaa3ddaafd02))
+
+
+
+
+
+## [0.5.30-alpha.5](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.4...v0.5.30-alpha.5) (2022-01-20)
+
+
+### Bug Fixes
+
+* fb-533 update bid transactions and contract ([4b45a99](https://github.com/rarible/flow-sdk/commit/4b45a99ec27b67349680335fa36c631fef43be99))
+
+
+
+
+
+## [0.5.30-alpha.4](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.3...v0.5.30-alpha.4) (2022-01-19)
+
+
+### Bug Fixes
+
+* accept bid payout parts calculation ([2a806f8](https://github.com/rarible/flow-sdk/commit/2a806f8efcb506d526cbc1827d52b2f8b7c8f1a7))
+
+
+
+
+
+## [0.5.30-alpha.3](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.2...v0.5.30-alpha.3) (2022-01-17)
+
+**Note:** Version bump only for package @rarible/flow-test-common
+
+
+
+
+
 ## [0.5.30-ac.0](https://github.com/rarible/flow-sdk/compare/v0.5.28...v0.5.30-ac.0) (2021-12-30)
 
 **Note:** Version bump only for package @rarible/flow-test-common

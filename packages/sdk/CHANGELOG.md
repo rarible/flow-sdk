@@ -3,6 +3,241 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.8](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.7...v0.5.33-alpha.8) (2022-02-09)
+
+
+### Bug Fixes
+
+* fix tokenId without prefix when mint ([e9a01d2](https://github.com/rarible/flow-sdk/commit/e9a01d2d519c53fa2175236df6be36c8cb3b9d5d))
+
+
+
+
+
+## [0.5.33-alpha.7](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.6...v0.5.33-alpha.7) (2022-02-08)
+
+
+### Bug Fixes
+
+* fix create collection return types ([57d5521](https://github.com/rarible/flow-sdk/commit/57d5521022f81ff93218794f4552a22def22f594))
+
+
+
+
+
+## [0.5.33-alpha.6](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.5...v0.5.33-alpha.6) (2022-02-08)
+
+
+### Bug Fixes
+
+* collectionUpdate input props and root sdk exports ([45d8fac](https://github.com/rarible/flow-sdk/commit/45d8fac01c1d4bb1d40688760f682a425b68bc6e))
+
+
+
+
+
+## [0.5.33-alpha.5](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.4...v0.5.33-alpha.5) (2022-02-07)
+
+**Note:** Version bump only for package @rarible/flow-sdk
+
+
+
+
+
+## [0.5.33-alpha.4](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.3...v0.5.33-alpha.4) (2022-02-03)
+
+
+### Bug Fixes
+
+* remove unnecessary package ([734ee15](https://github.com/rarible/flow-sdk/commit/734ee156fdaeac3bebb71a727ae67c1c52ca3b76))
+
+
+
+
+
+## [0.5.33-alpha.3](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.2...v0.5.33-alpha.3) (2022-02-03)
+
+
+### Bug Fixes
+
+* deps ([ce6ce66](https://github.com/rarible/flow-sdk/commit/ce6ce66c14d63b0968f894041088f01dd89812f8))
+* fetch issue ([b1cd5d0](https://github.com/rarible/flow-sdk/commit/b1cd5d099d1ceb09b58ecb5612ec1281e85d353f))
+
+
+
+
+
+## [0.5.33-alpha.2](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.1...v0.5.33-alpha.2) (2022-02-03)
+
+
+### Bug Fixes
+
+* fetch issue ([fe79769](https://github.com/rarible/flow-sdk/commit/fe79769bb78fd9d59b74d17f8f36dd32b637c1c6))
+
+
+
+
+
+## [0.5.33-alpha.1](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.0...v0.5.33-alpha.1) (2022-02-02)
+
+
+### Bug Fixes
+
+* import from sdk-scripts ([f76225e](https://github.com/rarible/flow-sdk/commit/f76225ec1cf2cec8aa7a31d2d1fc335bb8dab00d))
+
+
+
+
+
+## [0.5.33-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.32...v0.5.33-alpha.0) (2022-02-02)
+
+
+### Bug Fixes
+
+* improve fetch meta function ([0c9c6c2](https://github.com/rarible/flow-sdk/commit/0c9c6c2e6ac9c8d161eb0862113a815ffbe88728))
+* refactor fetching royalty when close orders ([1a9f24c](https://github.com/rarible/flow-sdk/commit/1a9f24c3a56e8e52ffc6cbdc7b11a197a3c5f455))
+* tests for flowAddress and flowContract ([8a02215](https://github.com/rarible/flow-sdk/commit/8a02215c4d87f214cbf88c6dae2108f8722e9824))
+
+
+
+
+
+## [0.5.32](https://github.com/rarible/flow-sdk/compare/v0.5.31...v0.5.32) (2022-01-31)
+
+
+### Bug Fixes
+
+* add secondary coolections to collections name check function ([66c5395](https://github.com/rarible/flow-sdk/commit/66c53957dc30f44b335295b154312f9ee7629d1b))
+* improve typings for collections ([6cfb6a5](https://github.com/rarible/flow-sdk/commit/6cfb6a518add563919028c642f4a3303c74a6248))
+
+
+
+
+
+## [0.5.31](https://github.com/rarible/flow-sdk/compare/v0.5.30...v0.5.31) (2022-01-31)
+
+
+### Features
+
+* support secondary collections: Distrupt, ChainMonsters, OneFootball, Starly, Versus ([00bb647](https://github.com/rarible/flow-sdk/commit/00bb6479c8ef1e51f20b0458d02043051a6e0eff))
+
+
+
+
+
+## [0.5.30](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.8...v0.5.30) (2022-01-28)
+
+**Note:** Version bump only for package @rarible/flow-sdk
+
+
+
+
+
+## [0.5.30-alpha.8](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.7...v0.5.30-alpha.8) (2022-01-27)
+
+
+### Bug Fixes
+
+* commissions duplicates concat ([b10f3c8](https://github.com/rarible/flow-sdk/commit/b10f3c8a6ec8ac9c60b69edbc6230dfdc4cd0007))
+
+
+
+
+
+## [0.5.30-alpha.7](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.6...v0.5.30-alpha.7) (2022-01-27)
+
+
+### Bug Fixes
+
+* fb-547 add check on isLegacy order when fill order ([3f34a99](https://github.com/rarible/flow-sdk/commit/3f34a99fff21ac340895fedd53a7ad7cf52fcab6))
+* fee test ([c5adcf0](https://github.com/rarible/flow-sdk/commit/c5adcf01dc5d4ec4465161b44306476ad4fc3137))
+
+
+
+
+
+## [0.5.30-alpha.6](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.5...v0.5.30-alpha.6) (2022-01-21)
+
+
+### Bug Fixes
+
+* switch protocol fee to 0 ([5b17a72](https://github.com/rarible/flow-sdk/commit/5b17a720677ceead663405fa36c9cff786fda02d))
+
+
+
+
+
+## [0.5.30-alpha.5](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.4...v0.5.30-alpha.5) (2022-01-20)
+
+
+### Bug Fixes
+
+* update RaribleOpenBid address for testnet ([e243eff](https://github.com/rarible/flow-sdk/commit/e243eff8e7692917b2c5b6e9a842ebe5f0aa5d08))
+
+
+
+
+
+## [0.5.30-alpha.4](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.3...v0.5.30-alpha.4) (2022-01-19)
+
+
+### Bug Fixes
+
+* accept bid payout parts calculation ([2a806f8](https://github.com/rarible/flow-sdk/commit/2a806f8efcb506d526cbc1827d52b2f8b7c8f1a7))
+
+
+
+
+
+## [0.5.30-alpha.3](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.2...v0.5.30-alpha.3) (2022-01-17)
+
+**Note:** Version bump only for package @rarible/flow-sdk
+
+
+
+
+
+## [0.5.30-alpha.2](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.1...v0.5.30-alpha.2) (2022-01-10)
+
+**Note:** Version bump only for package @rarible/flow-sdk
+
+
+
+
+
+## [0.5.30-alpha.1](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.0...v0.5.30-alpha.1) (2022-01-10)
+
+
+### Bug Fixes
+
+* deps ([44a4f38](https://github.com/rarible/flow-sdk/commit/44a4f3890f074d039d577f62bd120929bd6ca978))
+
+
+
+
+
+## [0.5.30-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.29-alpha.0...v0.5.30-alpha.0) (2021-12-30)
+
+
+### Bug Fixes
+
+* sdk doc ([bf39302](https://github.com/rarible/flow-sdk/commit/bf393027de07c737a9168f973edfd9e6cf12cc8f))
+
+
+
+
+
+## [0.5.29-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.28...v0.5.29-alpha.0) (2021-12-30)
+
+
+### Bug Fixes
+
+* update scripts ([ec611ca](https://github.com/rarible/flow-sdk/commit/ec611ca898302e864a822949d0e80cecd71bd9d2))
+
+
+
+
+
 ## [0.5.30-ac.0](https://github.com/rarible/flow-sdk/compare/v0.5.28...v0.5.30-ac.0) (2021-12-30)
 
 

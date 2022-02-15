@@ -1,6 +1,6 @@
-import type { FlowCurrency } from "../types"
-import type { FlowContractAddress} from "./flow-address"
-import { parseContractAddress } from "./flow-address"
+import type { FlowContractAddress } from "../types/contract-address"
+import { parseContractAddress } from "../types/contract-address"
+import type { FlowCurrency } from "../types/types"
 
 export function getCurrency(contract: FlowContractAddress): FlowCurrency {
 	const { name } = parseContractAddress(contract)

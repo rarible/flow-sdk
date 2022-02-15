@@ -3,6 +3,63 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.5](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.4...v0.5.33-alpha.5) (2022-02-07)
+
+**Note:** Version bump only for package @rarible/flow-sdk-scripts
+
+
+
+
+
+## [0.5.33-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.32...v0.5.33-alpha.0) (2022-02-02)
+
+**Note:** Version bump only for package @rarible/flow-sdk-scripts
+
+
+
+
+
+## [0.5.30](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.8...v0.5.30) (2022-01-28)
+
+**Note:** Version bump only for package @rarible/flow-sdk-scripts
+
+
+
+
+
+## [0.5.30-alpha.5](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.4...v0.5.30-alpha.5) (2022-01-20)
+
+
+### Bug Fixes
+
+* fb-533 update bid transactions and contract ([4b45a99](https://github.com/rarible/flow-sdk/commit/4b45a99ec27b67349680335fa36c631fef43be99))
+
+
+
+
+
+## [0.5.30-alpha.2](https://github.com/rarible/flow-sdk/compare/v0.5.30-alpha.1...v0.5.30-alpha.2) (2022-01-10)
+
+
+### Bug Fixes
+
+* add doc fiel for sdk-scripts package ([82d8639](https://github.com/rarible/flow-sdk/commit/82d8639479ee3ef0b05b76fda6b48baae3ea3432))
+
+
+
+
+
+## [0.5.29-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.28...v0.5.29-alpha.0) (2021-12-30)
+
+
+### Bug Fixes
+
+* update scripts ([ec611ca](https://github.com/rarible/flow-sdk/commit/ec611ca898302e864a822949d0e80cecd71bd9d2))
+
+
+
+
+
 ## [0.5.30-ac.0](https://github.com/rarible/flow-sdk/compare/v0.5.28...v0.5.30-ac.0) (2021-12-30)
 
 **Note:** Version bump only for package @rarible/flow-sdk-scripts

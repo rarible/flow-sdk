@@ -160,4 +160,84 @@ export async function deployAll(address: string) {
 			FungibleToken: EMULATOR_FUNGIBLE_TOKEN_ADDRESS,
 		},
 	})
+	await deployContractByName({
+		name: CONTRACTS.MatrixWorldFlowFestNFT,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.MatrixWorldVoucher,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.Content,
+		to: address,
+		addressMap: {},
+	})
+	await deployContractByName({
+		name: CONTRACTS.Art,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			FungibleToken: "0xee82856bf20e2aa6",
+			Content: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.ChainmonstersRewards,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.StarlyCard,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.DisruptArt,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.OneFootballCollectible,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.MetadataViews,
+		to: address,
+		addressMap: {},
+	})
+	await deployContractByName({
+		name: CONTRACTS.RaribleNFTv2,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			MetadataViews: address,
+			LicensedNFT: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.SoftCollection,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			MetadataViews: address,
+			RaribleNFTv2: address,
+			LicensedNFT: address,
+		},
+	})
 }

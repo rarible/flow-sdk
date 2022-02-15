@@ -2,7 +2,7 @@ import { FLOW_ZERO_ADDRESS, toBigNumber } from "@rarible/types"
 import type { FlowRoyalty } from "@rarible/flow-api-client"
 import type { FlowContractAddress, FlowSdk } from "../../index"
 import { checkEvent } from "../check-event"
-import type { FlowMintResponse } from "../../nft/mint"
+import type { FlowMintResponse } from "../../interfaces/nft/mint"
 
 export async function mintRaribleNftTest(
 	sdk: FlowSdk, collection: FlowContractAddress, royalties: FlowRoyalty[] = [],

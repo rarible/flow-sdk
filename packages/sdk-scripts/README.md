@@ -1,1 +1,1 @@
-## Flow SDK scripts
+# Cadence scripts for flow SDK

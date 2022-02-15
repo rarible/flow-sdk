@@ -42,6 +42,16 @@ import PackOpener from 0xf8d6e0586b0a20c7
 import ContractVersion from 0xf8d6e0586b0a20c7
 import MugenNFT from 0xf8d6e0586b0a20c7
 import CNN_NFT from 0xf8d6e0586b0a20c7
+import MatrixWorldFlowFestNFT from 0xf8d6e0586b0a20c7
+import MatrixWorldVoucher from 0xf8d6e0586b0a20c7
+import Art from 0xf8d6e0586b0a20c7
+import ChainmonstersRewards from 0xf8d6e0586b0a20c7
+import StarlyCard from 0xf8d6e0586b0a20c7
+import DisruptArt from 0xf8d6e0586b0a20c7
+import OneFootballCollectible from 0xf8d6e0586b0a20c7
+import RaribleNFTv2 from 0xf8d6e0586b0a20c7
+import SoftCollection from 0xf8d6e0586b0a20c7
+import MetadataViews from 0xf8d6e0586b0a20c7
 import EnglishAuction from 0xf8d6e0586b0a20c7
 
 transaction {
