@@ -2,7 +2,7 @@ import { emulator } from "flow-js-testing"
 import { startEmulator } from "./create-emulator"
 
 describe("test emulator", () => {
-	test("should start and stop emulator", async () => {
+	test.skip("should start and stop emulator", async () => {
 
 		await startEmulator({ logs: true })
 		expect(emulator.logging).toBeTruthy()
