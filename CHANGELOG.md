@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.34](https://github.com/rarible/flow-sdk/compare/v0.5.33...v0.5.34) (2022-02-16)
+
+
+### Bug Fixes
+
+* replace get royalties method ([#65](https://github.com/rarible/flow-sdk/issues/65)) ([6db4d54](https://github.com/rarible/flow-sdk/commit/6db4d5417f441e50091d3914d390daf5f89c1022))
+
+
+
+
+
 ## [0.5.33](https://github.com/rarible/flow-sdk/compare/v0.5.32...v0.5.33) (2022-02-03)
 
 
