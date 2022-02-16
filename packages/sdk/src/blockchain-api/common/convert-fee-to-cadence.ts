@@ -1,9 +1,18 @@
 import type { FlowFee } from "../../types/types"
 import { fixAmount } from "../../common/fix-amount"
 
-export function prepareFees(fees: FlowFee[]): { key: string, value: string }[] {
-	return fees.map(f => ({
-		key: f.account,
-		value: fixAmount(f.value.toString()),
-	}))
+type PreparedFees = { key: string, value: string }
+
+export function prepareFees(fees: FlowFee[]): PreparedFees[] {
+	const prepared: PreparedFees[] = []
+	fees.forEach(f => {
+		const value = fixAmount(f.value.toString())
+		if (value !== "0.0") {
+			prepared.push({
+				key: f.account,
+				value,
+			})
+		}
+	})
+	return prepared
 }
