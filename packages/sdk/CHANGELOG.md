@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.9](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.8...v0.5.33-alpha.9) (2022-02-16)
+
+
+### Bug Fixes
+
+* add awaiter handler for getPreparedOrder function ([a904e5d](https://github.com/rarible/flow-sdk/commit/a904e5d4097912ad81e8b617d749e89808ba3103))
+* replace get royalties method ([7c0a0a2](https://github.com/rarible/flow-sdk/commit/7c0a0a21e078d86097659b05f3c815a1590e0c7e))
+
+
+
+## [0.5.33](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.4...v0.5.33) (2022-02-03)
+
+
+### Bug Fixes
+
+* prepare order code function ([38d94d9](https://github.com/rarible/flow-sdk/commit/38d94d992304717143396e8f23d43cf9dbf1ca70))
+
+
+
+
+
 ## [0.5.33](https://github.com/rarible/flow-sdk/compare/v0.5.32...v0.5.33) (2022-02-03)
 
 
