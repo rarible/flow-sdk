@@ -4,7 +4,7 @@ import type { FlowContractAddress, FlowCurrency, FlowFee, FlowItemId, FlowNetwor
 import type { FlowSellResponse } from "../order/sell"
 import { checkEvent } from "../../test/check-event"
 import { getOrderDetailsFromBlockchain } from "../order/common/get-order-details-from-blockchain"
-import { checkFees } from "./check-fees-test"
+import { checkSellFees } from "./check-sell-fees-test"
 
 export async function sellTest(
 	fcl: Fcl,
@@ -41,7 +41,7 @@ export async function sellTest(
 
 	expect(toBn(order.salePrice).toString()).toEqual(toBn(sellItemPrice).toString())
 
-	checkFees(order.saleCuts, { payouts, originFees }, orderProposer, sellItemPrice)
+	checkSellFees(order.saleCuts, { payouts, originFees }, orderProposer, sellItemPrice)
 
 	return sellTx
 }

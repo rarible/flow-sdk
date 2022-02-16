@@ -6,6 +6,7 @@ import { runScript } from "../../../common/transaction"
 import type { FlowCurrency, FlowFee, FlowNetwork } from "../../../types/types"
 import { CONFIGS } from "../../../config/config"
 import { withPrefix } from "../../../common/prefix"
+import { getCurrencyFromVaultType } from "./get-currency-from-vault-type"
 
 type FlowSaleCuts = { receiver: { address: string }, amount: string }
 
@@ -54,7 +55,7 @@ export async function getOrderDetailsFromBlockchain(
 		},
 		map,
 	)
-	const fungibleContract = "vaultType" in details ? details.vaultType.split(".")[2] : details.salePaymentVaultType.split(".")[2]
+
 	const protocolFeeReceiver = CONFIGS[network].protocolFee.account
 	const data = {
 		...details,
@@ -66,18 +67,10 @@ export async function getOrderDetailsFromBlockchain(
 	data.isLegacy = data.saleCuts.filter(
 		(s: FlowFee) => withPrefix(s.account).toLowerCase() === withPrefix(protocolFeeReceiver).toLowerCase(),
 	).length > 1
-	switch (fungibleContract) {
-		case "FlowToken":
-			return {
-				...data,
-				currency: "FLOW",
-			}
-		case "FUSD":
-			return {
-				...data,
-				currency: "FUSD",
-			}
-		default:
-			throw new Error("Unsupported fungible token")
+	const fungibleContract = "vaultType" in details ? details.vaultType : details.salePaymentVaultType
+	const currency = getCurrencyFromVaultType(fungibleContract)
+	return {
+		...data,
+		currency,
 	}
 }

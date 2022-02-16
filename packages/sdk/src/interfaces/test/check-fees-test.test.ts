@@ -1,6 +1,6 @@
 import { FLOW_ZERO_ADDRESS, toBigNumber, toFlowAddress } from "@rarible/types"
 import type { FlowFee } from "../../types/types"
-import { checkFees } from "./check-fees-test"
+import { checkSellFees } from "./check-sell-fees-test"
 
 describe("test checkFees function", () => {
 	test("expected behaviour", () => {
@@ -21,7 +21,7 @@ describe("test checkFees function", () => {
 			],
 		}
 
-		checkFees(received, expected, account, price.toString())
+		checkSellFees(received, expected, account, price.toString())
 	})
 	test("incorrect received fees length", () => {
 		const price = "10"
@@ -40,7 +40,7 @@ describe("test checkFees function", () => {
 			],
 		}
 
-		const result = () => checkFees(received, expected, account, price.toString())
+		const result = () => checkSellFees(received, expected, account, price.toString())
 		expect(result).toThrow()
 	})
 })
