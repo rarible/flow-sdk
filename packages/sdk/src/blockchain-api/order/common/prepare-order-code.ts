@@ -15,7 +15,5 @@ export function prepareOrderCode(code: string, collectionName: NonFungibleContra
 		default:
 			throw new Error("Unsupported currency")
 	}
-
-	const codeWithFt = fillCodeTemplate(code, ftData)
-	return fillCodeTemplate(codeWithFt, getNftCodeConfig(collectionName))
+	return fillCodeTemplate(fillCodeTemplate(code, ftData), getNftCodeConfig(collectionName))
 }
