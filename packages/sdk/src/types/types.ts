@@ -53,6 +53,7 @@ export type FlowContractName =
 	| FungibleContracts
 	| NonFungibleContract
 	| MetadataViews
+	| EnglishAuction
 
 export type AuthWithPrivateKey = undefined | ((account?: any) => Promise<any>)
 
@@ -73,3 +74,4 @@ export type LicensedNFTType = "LicensedNFT"
 export type TopShotFeeType = "TopShotFee"
 export type RaribleOpenBid = "RaribleOpenBid"
 export type MetadataViews = "MetadataViews"
+export type EnglishAuction = "EnglishAuction"

@@ -1,20 +1,16 @@
-import type { Fcl, FclArgs } from "@rarible/fcl-types"
+import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { Storefront } from "@rarible/flow-sdk-scripts"
 import type { FlowCurrency, FlowFee, NonFungibleContract } from "../../types/types"
 import { prepareFees } from "../common/convert-fee-to-cadence"
+import type { PreparedTransactionParamsResponse } from "../domain"
 import { prepareOrderCode } from "./common/prepare-order-code"
 
-type GenerateCodeMethodResponse = {
-	cadence: string,
-	args: ReturnType<FclArgs>
-}
-
 type GenerateBidCodeResponse = {
-	create: (currency: FlowCurrency, itemId: number, fees: FlowFee[]) => GenerateCodeMethodResponse
-	update: (currency: FlowCurrency, orderId: number, fees: FlowFee[]) => GenerateCodeMethodResponse
-	buy: (currency: FlowCurrency, orderId: number, address: string, fees: FlowFee[]) => GenerateCodeMethodResponse
-	cancel: (orderId: number) => GenerateCodeMethodResponse
+	create: (currency: FlowCurrency, itemId: number, fees: FlowFee[]) => PreparedTransactionParamsResponse
+	update: (currency: FlowCurrency, orderId: number, fees: FlowFee[]) => PreparedTransactionParamsResponse
+	buy: (currency: FlowCurrency, orderId: number, address: string, fees: FlowFee[]) => PreparedTransactionParamsResponse
+	cancel: (orderId: number) => PreparedTransactionParamsResponse
 }
 
 export function getOrderCode(fcl: Fcl, collectionName: NonFungibleContract): GenerateBidCodeResponse {

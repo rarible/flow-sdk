@@ -8,5 +8,7 @@ describe("prepareFees", () => {
 				key: FLOW_ZERO_ADDRESS,
 				value: "0.1",
 			}])
+		expect(prepareFees([{ account: toFlowAddress(FLOW_ZERO_ADDRESS), value: toBigNumber("0") }]))
+			.toStrictEqual([])
 	})
 })

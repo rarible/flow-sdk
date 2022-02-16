@@ -9,13 +9,13 @@ import { toFlowContractAddress } from "../types/contract-address"
 export function getTestOrderTmplate(type: "sell" | "bid", orderId: number, itemId: FlowItemId, price: BigNumber): FlowOrder {
 	const left: FlowAsset = {
 		"@type": "nft",
-		contract: toFlowContractAddress(`A.${FLOW_ZERO_ADDRESS}.NFT`),
+		contract: toFlowContractAddress(itemId.split(":")[0]),
 		value: toBigNumber("1"),
 		tokenId: toBigNumber(extractTokenId(itemId).toString()),
 	}
 	const right: FlowAsset = {
 		"@type": "fungible",
-		contract: toFlowContractAddress(`A.${FLOW_ZERO_ADDRESS}.Fungible`),
+		contract: toFlowContractAddress("A.0x0000000000000000.FlowToken"),
 		value: price,
 	}
 	return {

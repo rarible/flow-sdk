@@ -168,7 +168,7 @@ describe("Test fill on emulator", () => {
 		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
 		expect(result.data.itemId).toEqual(1)
 
-		const itemId = toFlowItemId(`${evolutionCollection}:1`)
+		const itemId = toFlowItemId(`${evolutionCollection}:${result.data.itemId}`)
 
 		const sellTx = await acc1.sdk.order.sell(
 			{

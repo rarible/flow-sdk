@@ -52,6 +52,7 @@ import OneFootballCollectible from 0xf8d6e0586b0a20c7
 import RaribleNFTv2 from 0xf8d6e0586b0a20c7
 import SoftCollection from 0xf8d6e0586b0a20c7
 import MetadataViews from 0xf8d6e0586b0a20c7
+import EnglishAuction from 0xf8d6e0586b0a20c7
 
 transaction {
   prepare(account: AuthAccount) {
