@@ -1,6 +1,6 @@
 {
   "name": "@rarible/flow-test-common",
-  "version": "0.5.33-alpha.5",
+  "version": "0.5.33-alpha.10",
   "repository": "https://github.com/rarible/flow-sdk",
   "license": "MIT",
   "main": "build/index.js",
@@ -18,7 +18,7 @@
   "dependencies": {
     "@onflow/config": "^0.0.2",
     "elliptic": "^6.5.4",
-    "flow-js-testing": "~0.1.13",
+    "flow-js-testing": "~0.1.15",
     "sha3": "^2.1.4"
   },
   "devDependencies": {

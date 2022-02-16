@@ -29,9 +29,9 @@ describe("Test fill on emulator", () => {
 
 	test.skip("Should fill order on testnet", async () => {
 		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_3.address, FLOW_TESTNET_ACCOUNT_3.privKey)
-		const testnetSdk = createFlowSdk(fcl, "dev", {}, testnetAuth)
+		const testnetSdk = createFlowSdk(fcl, "staging", {}, testnetAuth)
 		const testnetAuth2 = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_4.address, FLOW_TESTNET_ACCOUNT_4.privKey)
-		const testnetSdk2 = createFlowSdk(fcl, "dev", {}, testnetAuth2)
+		const testnetSdk2 = createFlowSdk(fcl, "staging", {}, testnetAuth2)
 		const testnetCollection = getContractAddress("testnet", "RaribleNFT")
 		const acc1bal = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(FLOW_TESTNET_ACCOUNT_3.address), "FLOW")
 		const mintTx = await testnetSdk.nft.mint(
@@ -60,6 +60,37 @@ describe("Test fill on emulator", () => {
 
 		expect(buyTx.status).toEqual(4)
 
+	}, 1000000)
+
+	test.skip("Should fill RaribleNFT bid order for FLOW tokens on testnet", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_3.address, FLOW_TESTNET_ACCOUNT_3.privKey)
+		const testnetSdk = createFlowSdk(fcl, "staging", {}, testnetAuth)
+		const testnetAuth2 = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_4.address, FLOW_TESTNET_ACCOUNT_4.privKey)
+		const testnetSdk2 = createFlowSdk(fcl, "staging", {}, testnetAuth2)
+		const testnetCollection = getContractAddress("testnet", "RaribleNFT")
+		const acc1bal = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(FLOW_TESTNET_ACCOUNT_3.address), "FLOW")
+		const mintTx = await testnetSdk.nft.mint(
+			testnetCollection,
+			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
+			[{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_3.address), value: toBigNumber("0.1") }],
+		)
+		expect(
+			toBn(await testnetSdk.wallet.getFungibleBalance(toFlowAddress(FLOW_TESTNET_ACCOUNT_3.address), "FLOW")).toString(),
+		).toEqual(toBn(acc1bal).minus("0.00001000").toString())
+		expect(mintTx.status).toEqual(4)
+		const tx = await testnetSdk2.order.bid(
+			collection,
+			"FLOW",
+			mintTx.tokenId,
+			toBigNumber("0.0001"),
+			[{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_2.address), value: toBigNumber("0.1") }],
+		)
+
+		const buyTx = await testnetSdk.order.fill(collection, "FLOW", tx.orderId, FLOW_TESTNET_ACCOUNT_4.address, [{
+			account: toFlowAddress(FLOW_TESTNET_ACCOUNT_4.address),
+			value: toBigNumber("0.2"),
+		}])
+		expect(buyTx.status).toEqual(4)
 	}, 1000000)
 
 	test("Should fill RaribleNFT order for FLOW tokens", async () => {

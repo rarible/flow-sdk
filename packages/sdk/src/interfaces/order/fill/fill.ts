@@ -16,9 +16,9 @@ import { calculateFees } from "../common/calculate-fees"
 import { runTransaction, waitForSeal } from "../../../common/transaction"
 import { getOrderCode } from "../../../blockchain-api/order/storefront"
 import { getOrderDetailsFromBlockchain } from "../common/get-order-details-from-blockchain"
-import { retry } from "../../../common/retry"
 import type { FlowContractAddress } from "../../../types/contract-address"
 import { getCollectionConfig } from "../../../config/utils"
+import { fetchItemRoyalties } from "../common/fetch-item-royalties"
 import { getAccountAddress } from "../../../common/get-account-address"
 import { fillBidOrder } from "./fill-bid-order"
 
@@ -74,18 +74,7 @@ export async function fill(
 				 * remove owner from payouts, owner receive the rest of the money automatically
 				 */
 				const filteredPayouts = payouts.filter(p => p.account !== from)
-				const { royalties } = network === "emulator" ?
-					{ royalties: [] } :
-					{
-						royalties: (
-							await retry(
-								10,
-								1000,
-								async () => itemApi.getNftItemRoyaltyById({ itemId: preparedOrder.itemId }),
-							)
-						).royalty,
-					}
-
+				const royalties = network === "emulator" ? [] : await fetchItemRoyalties(itemApi, preparedOrder.itemId)
 				/**
 				 * fees included in price, royalties, originFees, protocolFees
 				 */

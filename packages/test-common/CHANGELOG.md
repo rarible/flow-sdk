@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.10](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.9...v0.5.33-alpha.10) (2022-02-16)
+
+
+### Bug Fixes
+
+* fix flow-js-testing version ([d59be5d](https://github.com/rarible/flow-sdk/commit/d59be5d4c478cec0054d44c57c15f9f8197a250e))
+
+
+
+
+
+## [0.5.33-alpha.9](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.8...v0.5.33-alpha.9) (2022-02-16)
+
+
+### Bug Fixes
+
+* downgrade flow-js-testing ([a1519a1](https://github.com/rarible/flow-sdk/commit/a1519a1c3e464b48858fcd4bbb827a16a49a2342))
+* replace get royalties method ([7c0a0a2](https://github.com/rarible/flow-sdk/commit/7c0a0a21e078d86097659b05f3c815a1590e0c7e))
+
+
+
+
+
 ## [0.5.33-alpha.5](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.4...v0.5.33-alpha.5) (2022-02-07)
 
 **Note:** Version bump only for package @rarible/flow-test-common
