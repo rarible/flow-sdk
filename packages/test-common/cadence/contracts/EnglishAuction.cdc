@@ -25,23 +25,23 @@ pub contract EnglishAuction {
         isCancelled: Bool
     )
 
-    pub event OpenBid(
-        lotId: UInt64,
-        bidder: Address,
-        amount: UFix64
-    )
+    pub event OpenBid(lotId: UInt64, bidder: Address, amount: UFix64)
 
-    pub event IncreaseBid(
-        lotId: UInt64,
-        bidder: Address,
-        newAmount: UFix64
-    )
+    pub event IncreaseBid(lotId: UInt64, bidder: Address, newAmount: UFix64)
 
-    pub event CloseBid(
-        lotId: UInt64,
-        bidder: Address,
-        isWinner: Bool
-    )
+    pub event CloseBid(lotId: UInt64, bidder: Address, isWinner: Bool)
+
+    pub event PropertyUpdated(name: String, value: UFix64)
+
+    pub struct Part {
+        pub let address: Address
+        pub let rate: UFix64
+
+        init(address: Address, rate: UFix64) {
+            self.address = address
+            self.rate = rate
+        }
+    }
 
     pub struct Payout {
         pub var target: Capability<&{FungibleToken.Receiver}>
@@ -109,7 +109,7 @@ pub contract EnglishAuction {
     pub resource Bid {
         pub let mark: UInt64
         pub let reward: Capability<&{NonFungibleToken.CollectionPublic}>
-        pub var vault: @FungibleToken.Vault?
+        pub var vault: @FungibleToken.Vault
         pub var price: UFix64
         pub let refund: Capability<&{FungibleToken.Receiver}>
         pub let payouts: [Payout]
@@ -139,57 +139,57 @@ pub contract EnglishAuction {
 
             self.payouts = payouts
             self.vault <- source.borrow()!.withdraw(amount: amount)
-            assert(self.vault != nil, message: "AU: todo")
         }
 
         pub fun doRefund(bidType: Type): Bool {
-            log("doRefund")
             if self.vault == nil { return false }
 
-            let receiver = self.refund.borrow()
-            log(receiver.getType().identifier)
-            log(bidType.identifier)
-            if receiver != nil /*&& receiver.getType() == bidType*/ {
-                let vault <- self.vault <- nil
-                receiver!.deposit(from: <-vault!)
-                return true
+            if let receiver = self.refund.borrow() {
+                if receiver.getType() == bidType {
+                    let vault <- self.vault.withdraw(amount: self.vault.balance)
+                    receiver.deposit(from: <- vault!)
+                    return true
+                }
             }
             return false
         }
 
         pub fun doReward(lotPayouts: [Payout]) {
-            for payout in self.payouts {
-                payout.target.borrow()!.deposit(from: <-self.vault?.withdraw(amount: self.price * payout.rate)!)
-            }
-            assert(self.vault?.balance == self.price, message: "AU: may be")
+            var residualReceiver: &{FungibleToken.Receiver}? = nil
             for payout in lotPayouts {
-                payout.target.borrow()!.deposit(from: <-self.vault?.withdraw(amount: self.price * payout.rate)!)
+                if let receiver = payout.target.borrow() {
+                    receiver.deposit(from: <-self.vault.withdraw(amount: self.price * payout.rate))
+                    if (residualReceiver == nil) {
+                        residualReceiver = receiver
+                    }
+                }
             }
-            assert(self.vault?.balance == 0.0, message: "AU: may be 2")
+
+            for payout in self.payouts {
+                if let receiver = payout.target.borrow() {
+                    receiver.deposit(from: <-self.vault.withdraw(amount: self.price * payout.rate))
+                }
+            }
+
+            assert(residualReceiver != nil, message: "No valid payment receivers")
+            residualReceiver!.deposit(from: <- self.vault.withdraw(amount: self.vault.balance))
         }
 
         pub fun doIncrease(from: @FungibleToken.Vault) {
-            let dummy1 <- self.vault <- nil
-            if let dummy2 <- dummy1 {
-                dummy2.deposit(from: <-from)
-                let dummy3 <- self.vault <- dummy2
-                destroy dummy3
-            } else {
-                destroy dummy1
-                destroy from
-                panic("Something ")
-            }
+            self.vault.deposit(from: <-from)
 
-            let amount = self.vault?.balance!
             var rates = UFix64(0)
             for payout in self.payouts {
                 rates = rates + payout.rate
             }
-            self.price = amount / (1.0 + rates)
+
+            self.price = self.vault.balance / (1.0 + rates)
         }
 
-        destroy() { // todo if doReward make vault = 0.0, make it not nullable
-            assert(self.vault == nil || self.vault?.balance == 0.0, message: "AU: Can't destroy non-empty bid")
+        destroy() {
+            pre {
+                self.vault.balance == 0.0: "AU: Can't destroy non-empty bid"
+            }
             destroy self.vault
         }
     }
@@ -381,7 +381,7 @@ pub contract EnglishAuction {
             emit OpenBid(
                 lotId: auctionId,
                 bidder: self.owner!.address,
-                amount: bid.vault?.balance!,
+                amount: bid.vault.balance,
             )
 
             let beaten <- auction.appendBid(mark: self.uuid, bid: <- bid)
@@ -413,8 +413,7 @@ pub contract EnglishAuction {
             )
         }
 
-        pub fun addUnclaimedBid(bid: @Bid) {
-            log("addUnclaimedBid")
+        access(self) fun addUnclaimedBid(bid: @Bid) {
             let mark = bid.mark
             let bids <- !EnglishAuction.unclaimedBids.containsKey(mark) ? [] as @[EnglishAuction.Bid]: EnglishAuction.unclaimedBids.remove(key: mark)!
             bids.append(<-bid)
@@ -423,8 +422,8 @@ pub contract EnglishAuction {
         }
     }
 
-    pub let AuctionManagerStoragePath: StoragePath
-    pub let AuctionAdminStoragePath: StoragePath
+    pub let ManagerStoragePath: StoragePath
+    pub let AdminStoragePath: StoragePath
 
     pub var minimalDuration: UFix64
     pub var maximalDuration: UFix64
@@ -445,29 +444,45 @@ pub contract EnglishAuction {
         }
     }
 
+    pub fun auctionIDs(): [UInt64] {
+        return EnglishAuction.auctions.keys
+    }
+
+    pub fun unclaimedBidsIDs(): [UInt64] {
+        return EnglishAuction.unclaimedBids.keys
+    }
+
     pub resource Admin {
         pub fun setMinimalDuration(value: UFix64) {
-            EnglishAuction.minimalDuration = value
+            if (value != EnglishAuction.minimalDuration) {
+                emit PropertyUpdated(name: "minimalDuration", value: value)
+                EnglishAuction.minimalDuration = value
+            }
         }
 
         pub fun setMaximalDuration(value: UFix64) {
-            EnglishAuction.maximalDuration = value
+            if (value != EnglishAuction.maximalDuration) {
+                emit PropertyUpdated(name: "maximalDuration", value: value)
+                EnglishAuction.maximalDuration = value
+            }
         }
 
         pub fun setReservePrice(value: UFix64) {
-            EnglishAuction.reservePrice = value
+            if (value != EnglishAuction.reservePrice) {
+                emit PropertyUpdated(name: "reservePrice", value: value)
+                EnglishAuction.reservePrice = value
+            }
         }
     }
 
     init() {
         self.unclaimedBids <- {}
         self.auctions <- {}
-        self.AuctionManagerStoragePath = /storage/AuctionManager
-        self.AuctionAdminStoragePath = /storage/AuctionAdmin
+        self.ManagerStoragePath = /storage/AuctionManager
+        self.AdminStoragePath = /storage/AuctionAdmin
 
         // minimal auction duration 15m
-        // self.minimalDuration = 900.0
-        self.minimalDuration = 1.0
+        self.minimalDuration = 15.0 * 60.0
 
         // maximal auction duration 60d
         self.maximalDuration = 60.0 * 24.0 * 60.0 * 60.0
@@ -475,6 +490,6 @@ pub contract EnglishAuction {
         // a minimum acceptable price established by the seller
         self.reservePrice = 0.00001
 
-        self.account.save(<- create Admin(), to: self.AuctionAdminStoragePath)
+        self.account.save(<- create Admin(), to: self.AdminStoragePath)
     }
 }

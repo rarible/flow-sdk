@@ -19,6 +19,7 @@ import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork, FlowOriginFees, Flo
 import { checkPrice } from "../order/common/check-price"
 import { getCollectionConfig } from "../../config/utils"
 import { getEnglishAuctionCode } from "../../blockchain-api/auction/english-auction"
+import { CONFIGS } from "../../config/config"
 
 export type EnglishAuctionCreateRequest = {
 	collection: FlowContractAddress,
@@ -72,6 +73,7 @@ export async function createEnglishAuction(
 			fcl,
 			map,
 			getEnglishAuctionCode(fcl, name, currency).createLot({
+				auctionContractAddress: CONFIGS[network].mainAddressMap.EnglishAuction,
 				tokenId: extractTokenId(request.itemId),
 				minimumBid,
 				buyoutPrice,
