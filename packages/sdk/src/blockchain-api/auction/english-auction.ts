@@ -6,9 +6,11 @@ import type { PreparedTransactionParamsResponse } from "../domain"
 import { logger } from "../../test/logger"
 import type { FlowCurrency, FlowFee, NonFungibleContract } from "../../types/types"
 import { prepareOrderCode } from "../order/common/prepare-order-code"
-import { prepareFees } from "../common/convert-fee-to-cadence"
+import { sansPrefix } from "../../common/prefix"
+import { convertToAuctionParts } from "./common/convert-to-auction-parts"
 
-type TxCreateEnglishAutcionLotRequest = {
+type TxCreateEnglishAuctionLotRequest = {
+	auctionContractAddress: string
 	tokenId: number,
 	parts: FlowFee[],
 	minimumBid: string,
@@ -19,28 +21,40 @@ type TxCreateEnglishAutcionLotRequest = {
 }
 
 interface GetEnglishAuctionCode {
-	createLot(request: TxCreateEnglishAutcionLotRequest): PreparedTransactionParamsResponse
+	createLot(request: TxCreateEnglishAuctionLotRequest): PreparedTransactionParamsResponse
 
 	cancelLot(lotId: number): PreparedTransactionParamsResponse
 
 	completeLot(lotId: number): PreparedTransactionParamsResponse
 
-	createBid(lotId: number, amount: string, parts: FlowFee[]): PreparedTransactionParamsResponse
+	createBid(
+		auctionContractAddress: string, lotId: number, amount: string, parts: FlowFee[],
+	): PreparedTransactionParamsResponse
 
 	increaseBid(lotId: number, amount: string): PreparedTransactionParamsResponse
 
+}
+
+function getEnglishAuctionPartsType(auctionContractAddress: string) {
+	return t.Array(t.Struct(
+		`A.${sansPrefix(auctionContractAddress)}.EnglishAuction.Part`,
+		[
+			{ value: t.Address },
+			{ value: t.UFix64 },
+		],
+	))
 }
 
 export function getEnglishAuctionCode(
 	fcl: Fcl, name: NonFungibleContract, currency: FlowCurrency,
 ): GetEnglishAuctionCode {
 	return {
-		createLot: ({ tokenId, minimumBid, buyoutPrice, increment, startAt, duration, parts }) => {
+		createLot: ({ auctionContractAddress, tokenId, minimumBid, buyoutPrice, increment, startAt, duration, parts }) => {
 			logger("create lot")
 			logger(
 				"create lot", "\n",
 				"tokenId", tokenId, "\n",
-				"parts", prepareFees(parts), "\n",
+				"parts", convertToAuctionParts(parts), "\n",
 				"minimumBid", fixAmount(minimumBid), "\n",
 				"buyoutPrice", buyoutPrice ? fixAmount(buyoutPrice) : null, "\n",
 				"increment", fixAmount(increment), "\n",
@@ -51,10 +65,7 @@ export function getEnglishAuctionCode(
 				cadence: prepareOrderCode(englishAuctionTxCode.addLot, name, currency),
 				args: fcl.args([
 					fcl.arg(tokenId, t.UInt64),
-					fcl.arg(prepareFees(parts), t.Dictionary({
-						key: t.Address,
-						value: t.UFix64,
-					})),
+					fcl.arg(convertToAuctionParts(parts), getEnglishAuctionPartsType(auctionContractAddress)),
 					fcl.arg(fixAmount(minimumBid), t.UFix64),
 					fcl.arg(buyoutPrice ? fixAmount(buyoutPrice) : null, t.Optional(t.UFix64)),
 					fcl.arg(fixAmount(increment), t.UFix64),
@@ -79,22 +90,19 @@ export function getEnglishAuctionCode(
 				args: fcl.args([fcl.arg(lotId, t.UInt64)]),
 			}
 		},
-		createBid: (lotId, amount, parts) => {
+		createBid: (auctionContractAddress, lotId, amount, parts) => {
 			logger(
 				"createBid", "\n",
 				"lotId", lotId, "\n",
 				"amount", fixAmount(amount), "\n",
-				"parts", prepareFees(parts), "\n",
+				"parts", convertToAuctionParts(parts), "\n",
 			)
 			return {
 				cadence: prepareOrderCode(englishAuctionTxCode.addBid, name, currency),
 				args: fcl.args([
 					fcl.arg(lotId, t.UInt64),
 					fcl.arg(fixAmount(amount), t.UFix64),
-					fcl.arg(prepareFees(parts), t.Dictionary({
-						key: t.Address,
-						value: t.UFix64,
-					})),
+					fcl.arg(convertToAuctionParts(parts), getEnglishAuctionPartsType(auctionContractAddress)),
 				]),
 			}
 		},

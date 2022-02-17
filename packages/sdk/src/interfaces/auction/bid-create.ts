@@ -10,6 +10,7 @@ import type { AuthWithPrivateKey, FlowFee, FlowNetwork, FlowTransaction } from "
 import { checkPrice } from "../order/common/check-price"
 import { getCollectionConfig } from "../../config/utils"
 import { getEnglishAuctionCode } from "../../blockchain-api/auction/english-auction"
+import { CONFIGS } from "../../config/config"
 import { getLot } from "./common/get-lot"
 
 export type EnglishAuctionCreateBidRequest = {
@@ -35,7 +36,8 @@ export async function createBid(
 		const txId = await runTransaction(
 			fcl,
 			map,
-			getEnglishAuctionCode(fcl, name, currency).createBid(lotId, amount, parts),
+			getEnglishAuctionCode(fcl, name, currency)
+				.createBid(CONFIGS[network].mainAddressMap.EnglishAuction, lotId, amount, parts),
 			auth,
 		)
 		return await waitForSeal(fcl, txId)
