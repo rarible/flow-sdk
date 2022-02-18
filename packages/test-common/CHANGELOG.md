@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.13](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.12...v0.5.33-alpha.13) (2022-02-18)
+
+
+### Features
+
+* support secondary collections, Moments, Fanfare, Barter, Kicks ([7070381](https://github.com/rarible/flow-sdk/commit/707038147275a82a7e23b4ac7b52462155b8c382))
+
+
+
+
+
 ## [0.5.33-alpha.12](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.11...v0.5.33-alpha.12) (2022-02-17)
 
 **Note:** Version bump only for package @rarible/flow-test-common
