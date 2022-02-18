@@ -91,6 +91,25 @@ const nftCodeConfig: Record<NonFungibleContract, NftStaticVariables> = {
 		"%nftStoragePath%": "/storage/ChainmonstersRewardCollection",
 		"%publicTypeAddon%": "ChainmonstersRewards.ChainmonstersRewardCollectionPublic",
 	},
+	BarterYardPackNFT: {
+		"%nftPublicPath%": "BarterYardPackNFT.CollectionPublicPath",
+		"%nftStoragePath%": "BarterYardPackNFT.CollectionStoragePath",
+		"%publicTypeAddon%": "BarterYardPackNFT.BarterYardPackNFTCollectionPublic",
+	},
+	FanfareNFTContract: {
+		"%nftPublicPath%": "FanfareNFTContract.CollectionPublicPath",
+		"%nftStoragePath%": "FanfareNFTContract.CollectionStoragePath",
+		"%publicTypeAddon%": "FanfareNFTContract.FanfareNFTCollectionPublic",
+	},
+	Kicks: {
+		"%nftPublicPath%": "Kicks.CollectionPublicPath",
+		"%nftStoragePath%": "Kicks.CollectionStoragePath",
+	},
+	Moments: {
+		"%nftPublicPath%": "Moments.CollectionPublicPath",
+		"%nftStoragePath%": "Moments.CollectionStoragePath",
+		"%publicTypeAddon%": "Moments.CollectionPublic",
+	},
 }
 export type NftCodeConfig = NftStaticVariables & {
 	"%nftContract%": string

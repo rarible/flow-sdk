@@ -29,6 +29,12 @@ export const CONTRACTS: Record<Contracts, string> = {
 	OneFootballCollectible: "OneFootballCollectible",
 	ChainmonstersRewards: "ChainmonstersRewards",
 	Content: "Content",
+	MetadataViews: "MetadataViews",
+	BarterYardPackNFT: "BarterYardPackNFT",
+	Moments: "Moments",
+	FanfareNFTContract: "FanfareNFTContract",
+	Kicks: "Kicks",
+	NFTLX: "NFTLX",
 
 }
 type Contracts =
@@ -59,7 +65,13 @@ type Contracts =
 	"StarlyCard" |
 	"OneFootballCollectible" |
 	"ChainmonstersRewards" |
-	"Content"
+	"Content" |
+	"MetadataViews" |
+	"BarterYardPackNFT" |
+	"Moments" |
+	"FanfareNFTContract" |
+	"Kicks" |
+	"NFTLX"
 
 type TestAccount = {
 	address: string

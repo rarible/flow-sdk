@@ -1,4 +1,4 @@
-import type { CommonFlowTransaction } from "@rarible/fcl-types/build"
+import type { CommonFlowTransaction } from "@rarible/fcl-types"
 import type { FlowRoyalty } from "@rarible/flow-api-client"
 
 export type FlowCurrency = "FLOW" | "FUSD"
@@ -27,6 +27,10 @@ export const NON_FUNGIBLE_CONTRACTS = [
 	"StarlyCard",
 	"OneFootballCollectible",
 	"ChainmonstersRewards",
+	"BarterYardPackNFT",
+	"Moments",
+	"FanfareNFTContract",
+	"Kicks",
 ] as const
 
 export type NonFungibleContracts = typeof NON_FUNGIBLE_CONTRACTS
@@ -41,6 +45,7 @@ export type FlowContractName =
 	| LicensedNFTType
 	| TopShotFeeType
 	| RaribleOpenBid
+	| MetadataViews
 	| FungibleContracts
 	| NonFungibleContract
 
@@ -63,3 +68,4 @@ export type RaribleOrderType = "RaribleOrder"
 export type LicensedNFTType = "LicensedNFT"
 export type TopShotFeeType = "TopShotFee"
 export type RaribleOpenBid = "RaribleOpenBid"
+export type MetadataViews = "MetadataViews"

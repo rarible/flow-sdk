@@ -49,6 +49,12 @@ import ChainmonstersRewards from 0xf8d6e0586b0a20c7
 import StarlyCard from 0xf8d6e0586b0a20c7
 import DisruptArt from 0xf8d6e0586b0a20c7
 import OneFootballCollectible from 0xf8d6e0586b0a20c7
+import BarterYardPackNFT from 0xf8d6e0586b0a20c7
+import MetadataViews from 0xf8d6e0586b0a20c7
+import FanfareNFTContract from 0xf8d6e0586b0a20c7
+import NFTLX from 0xf8d6e0586b0a20c7
+import Kicks from 0xf8d6e0586b0a20c7
+import Moments from 0xf8d6e0586b0a20c7
 
 transaction {
   prepare(account: AuthAccount) {
