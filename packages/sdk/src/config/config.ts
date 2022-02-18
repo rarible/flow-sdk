@@ -44,6 +44,10 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			StarlyCard: EMULATOR_ADDRESS,
 			OneFootballCollectible: EMULATOR_ADDRESS,
 			ChainmonstersRewards: EMULATOR_ADDRESS,
+			BarterYardPackNFT: EMULATOR_ADDRESS,
+			Moments: EMULATOR_ADDRESS,
+			FanfareNFTContract: EMULATOR_ADDRESS,
+			Kicks: EMULATOR_ADDRESS,
 		},
 	},
 	testnet: {
@@ -76,6 +80,10 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			StarlyCard: TESTNET_RARIBLE_ADDRESS,
 			OneFootballCollectible: TESTNET_RARIBLE_ADDRESS,
 			ChainmonstersRewards: TESTNET_RARIBLE_ADDRESS,
+			BarterYardPackNFT: toFlowAddress("0x4300fc3a11778a9a"),
+			Moments: TESTNET_RARIBLE_ADDRESS,
+			FanfareNFTContract: TESTNET_RARIBLE_ADDRESS,
+			Kicks: TESTNET_RARIBLE_ADDRESS,
 		},
 	},
 	mainnet: {
@@ -108,6 +116,10 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			StarlyCard: toFlowAddress("0x5b82f21c0edf76e3"),
 			OneFootballCollectible: toFlowAddress("0x6831760534292098"),
 			ChainmonstersRewards: toFlowAddress("0x93615d25d14fa337"),
+			BarterYardPackNFT: toFlowAddress("0xa95b021cf8a30d80"),
+			Moments: toFlowAddress("0xd4ad4740ee426334"),
+			FanfareNFTContract: toFlowAddress("0xe3d6aefbdc74f65f"),
+			Kicks: toFlowAddress("0xf3cc54f4d91c2f6c"),
 		},
 	},
 }
@@ -164,6 +176,18 @@ export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> 
 		features: ["TRANSFER", "BURN"],
 	},
 	ChainmonstersRewards: {
+		features: ["TRANSFER", "BURN"],
+	},
+	BarterYardPackNFT: {
+		features: ["TRANSFER", "BURN"],
+	},
+	FanfareNFTContract: {
+		features: ["TRANSFER", "BURN"],
+	},
+	Kicks: {
+		features: ["TRANSFER", "BURN"],
+	},
+	Moments: {
 		features: ["TRANSFER", "BURN"],
 	},
 }

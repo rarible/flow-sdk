@@ -240,4 +240,42 @@ export async function deployAll(address: string) {
 			LicensedNFT: address,
 		},
 	})
+	await deployContractByName({
+		name: CONTRACTS.BarterYardPackNFT,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			MetadataViews: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.FanfareNFTContract,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.NFTLX,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.Kicks,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			TopShot: address,
+			NFTLX: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.Moments,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
 }

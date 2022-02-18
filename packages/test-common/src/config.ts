@@ -35,6 +35,11 @@ export const CONTRACTS: Record<Contracts, string> = {
 	RaribleNFTv2: "RaribleNFTv2",
 	MetadataViews: "MetadataViews",
 	EnglishAuction: "EnglishAuction",
+	BarterYardPackNFT: "BarterYardPackNFT",
+	Moments: "Moments",
+	FanfareNFTContract: "FanfareNFTContract",
+	Kicks: "Kicks",
+	NFTLX: "NFTLX",
 }
 type Contracts =
 	"NonFungibleToken" |
@@ -69,7 +74,12 @@ type Contracts =
 	"SoftCollection" |
 	"RaribleNFTv2" |
 	"MetadataViews" |
-	"EnglishAuction"
+	"EnglishAuction" |
+	"BarterYardPackNFT" |
+	"Moments" |
+	"FanfareNFTContract" |
+	"Kicks" |
+	"NFTLX"
 
 type TestAccount = {
 	address: string
