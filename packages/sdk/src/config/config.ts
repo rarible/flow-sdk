@@ -3,6 +3,13 @@ import { toBigNumber, toFlowAddress, ZERO_ADDRESS } from "@rarible/types"
 import type { FlowContractAddressName } from "../common/flow-address"
 import type { FlowContractName, FlowFee, FlowNetwork, NonFungibleContract } from "../types"
 
+export const NODE_TRANSPORT_CONFIG: Record<FlowNetwork, string> = {
+	emulator: "not exist",
+	testnet: "https://rest-testnet.onflow.org",
+	mainnet: "https://rest-mainnet.onflow.org",
+}
+
+export const METADATA_HOST = "https://gateway.pinata.cloud"
 export const MIN_ORDER_PRICE = "0.0001"
 export type FlowNftFeatures = "MINT" | "BURN" | "TRANSFER"
 export type FlowConfigData = {
