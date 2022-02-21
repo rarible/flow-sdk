@@ -216,4 +216,5 @@ export { toFlowContractAddress, isFlowContractAddress } from "./common/flow-addr
 export type { FlowEnv } from "./config/env"
 export const FLOW_ENV_CONFIG: FlowEnvConfig = ENV_CONFIG
 export { FlowOrder } from "@rarible/flow-api-client"
+export { getFungibleBalanceSimple } from "./wallet/get-ft-balance-simple"
 export const getFlowFungibleBalance = getFungibleBalanceTemplate
