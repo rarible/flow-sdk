@@ -4,7 +4,7 @@ import type { FlowContractAddressName } from "../common/flow-address"
 import type { FlowContractName, FlowFee, FlowNetwork, NonFungibleContract } from "../types"
 
 export const NODE_TRANSPORT_CONFIG: Record<FlowNetwork, string> = {
-	emulator: "not exist",
+	emulator: "http://localhost:8888",
 	testnet: "https://rest-testnet.onflow.org",
 	mainnet: "https://rest-mainnet.onflow.org",
 }
