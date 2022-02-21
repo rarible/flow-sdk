@@ -3,7 +3,6 @@ import type { Fcl } from "@rarible/fcl-types"
 import type { FlowNftItemControllerApi } from "@rarible/flow-api-client"
 import { toBigNumber } from "@rarible/types"
 import type { FlowSellResponse } from "../order/sell"
-import { retry } from "../../common/retry"
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import { fixAmount } from "../../common/fix-amount"
 import { getProtocolFee } from "../order/get-protocol-fee"
@@ -20,6 +19,7 @@ import { checkPrice } from "../order/common/check-price"
 import { getCollectionConfig } from "../../config/utils"
 import { getEnglishAuctionCode } from "../../blockchain-api/auction/english-auction"
 import { CONFIGS } from "../../config/config"
+import { fetchItemRoyalties } from "../order/common/fetch-item-royalties"
 
 export type EnglishAuctionCreateRequest = {
 	collection: FlowContractAddress,
@@ -55,9 +55,7 @@ export async function createEnglishAuction(
 		startAt && validateDecimalNumber(fixAmount(startAt))
 		checkPrice(increment)
 		checkPrice(minimumBid)
-		const { royalties } = network === "emulator" ?
-			{ royalties: [] } :
-			await retry(10, 1000, async () => itemApi.getNftItemById({ itemId }))
+		const royalties = network === "emulator" ? [] : await fetchItemRoyalties(itemApi, itemId)
 		const { name, map } = getCollectionConfig(network, collection)
 		const parts = calculateSaleCuts(
 			from,

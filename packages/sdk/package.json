@@ -19,7 +19,7 @@
   "dependencies": {
     "@onflow/fcl": "~0.0.77",
     "@onflow/types": "~0.0.5",
-    "@rarible/flow-api-client": "~0.0.3",
+    "@rarible/flow-api-client": "~0.0.5-alpha.0",
     "@rarible/flow-sdk-scripts": "^0.5.33-alpha.12",
     "@rarible/utils": "~0.5.0"
   },

@@ -32,14 +32,13 @@ export function getTestOrderTmplate(type: "sell" | "bid", orderId: number, itemI
 		},
 		fill: toBigNumber("0"),
 		cancelled: false,
-		createdAt: "2019-08-24T14:15:22Z",
-		lastUpdateAt: "2019-08-24T14:15:22Z",
+		createdAt: new Date("2019-08-24T14:15:22Z"),
+		lastUpdateAt: new Date("2019-08-24T14:15:22Z"),
 		amount: toBigNumber("1"),
-		offeredNftId: "string",
 		priceUsd: toBigNumber("0"),
 		makeStock: toBigNumber("0"),
-		start: "2019-08-24T14:15:22Z",
-		end: "2019-08-24T14:15:22Z",
+		start: new Date("2019-08-24T14:15:22Z"),
+		end: new Date("2019-08-24T14:15:22Z"),
 		status: FlowOrderStatusEnum.ACTIVE,
 	}
 }
