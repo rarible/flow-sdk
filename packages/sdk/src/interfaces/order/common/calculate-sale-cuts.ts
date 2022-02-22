@@ -1,7 +1,7 @@
 import { toBn } from "@rarible/utils"
 import type { FlowAddress } from "@rarible/types"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
-import type { FlowFee } from "../../../types/types"
+import type { FlowFee } from "../../../types"
 import { withPrefix } from "../../../common/prefix"
 
 /**

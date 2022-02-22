@@ -1,6 +1,6 @@
 import type { FlowNftItemControllerApi } from "@rarible/flow-api-client"
 import { retry } from "../../../common/retry"
-import type { FlowFee } from "../../../types/types"
+import type { FlowFee } from "../../../types"
 
 export async function fetchItemRoyalties(
 	itemApi: FlowNftItemControllerApi,

@@ -18,27 +18,31 @@ import { bidUpdate } from "./interfaces/order/bid-update"
 import { cancelBid } from "./interfaces/order/cancel-bid"
 import { setupAccount } from "./interfaces/collection/setup-account"
 import type { CreateCollectionRequest, CreateCollectionResponse } from "./interfaces/collection/create-collection"
-import { createCollection as createCollectionTemplate } from "./interfaces/collection/create-collection"
+import { createCollection } from "./interfaces/collection/create-collection"
 import type { ProtocolFees } from "./interfaces/order/get-protocol-fee"
 import { getProtocolFee } from "./interfaces/order/get-protocol-fee"
-import type { AuthWithPrivateKey, FlowCurrency, FlowEnv, FlowOriginFees, FlowTransaction } from "./types/types"
+import type { AuthWithPrivateKey, FlowCurrency, FlowEnv, FlowOriginFees, FlowTransaction } from "./types"
 import type { FlowUpdateOrderRequest } from "./interfaces/order/update-order"
 import { updateOrder } from "./interfaces/order/update-order"
 import type { FlowItemId } from "./types/item"
 import { FLOW_ENV_CONFIG } from "./config/env"
 import type { FlowContractAddress } from "./types/contract-address"
 import type { UpdateCollectionRequest, UpdateCollectionResponse } from "./interfaces/collection/update-collection"
-import { updateCollection as updateCollectionTemplate } from "./interfaces/collection/update-collection"
-import type { EnglishAuctionCreateRequest } from "./interfaces/auction/auction-create"
+import { updateCollection } from "./interfaces/collection/update-collection"
 import { createEnglishAuction } from "./interfaces/auction/auction-create"
-import type { EnglishAuctionCancelRequest } from "./interfaces/auction/auction-cancel"
 import { cancelEnglishAuction } from "./interfaces/auction/auction-cancel"
-import type { EnglishAuctionCompleteRequest } from "./interfaces/auction/auction-complete"
 import { completeEnglishAuction } from "./interfaces/auction/auction-complete"
-import type { EnglishAuctionCreateBidRequest } from "./interfaces/auction/bid-create"
 import { createBid } from "./interfaces/auction/bid-create"
-import type { EnglishAuctionIncreaseBidRequest } from "./interfaces/auction/bid-increase"
 import { increaseBid } from "./interfaces/auction/bid-increase"
+import type {
+	EnglishAuctionCancelRequest,
+	EnglishAuctionCompleteRequest,
+	EnglishAuctionCreateBidRequest,
+	EnglishAuctionCreateRequest,
+	EnglishAuctionIncreaseBidRequest,
+	FlowEnglishAuctionTransaction,
+} from "./interfaces/auction/domain"
+import { getFrom } from "./interfaces/wallet/get-from"
 
 export interface FlowApisSdk {
 	order: ApiClient.FlowOrderControllerApi
@@ -144,7 +148,7 @@ export interface FlowOrderSdk {
 }
 
 export interface FlowEnglishAuctionSdk {
-	createLot(request: EnglishAuctionCreateRequest): Promise<FlowSellResponse>
+	createLot(request: EnglishAuctionCreateRequest): Promise<FlowEnglishAuctionTransaction>
 
 	cancelLot(request: EnglishAuctionCancelRequest): Promise<FlowTransaction>
 
@@ -157,6 +161,8 @@ export interface FlowEnglishAuctionSdk {
 
 export interface FlowWalletSdk {
 	getFungibleBalance(address: FlowAddress, currency: FlowCurrency): Promise<string>
+
+	getFrom(): Promise<FlowAddress>
 }
 
 export interface FlowCollectionSdk {
@@ -256,10 +262,11 @@ export function createFlowSdk(
 		},
 		wallet: {
 			getFungibleBalance: getFungibleBalance.bind(null, fcl, blockchainNetwork),
+			getFrom: getFrom.bind(null, fcl, auth),
 		},
 		collection: {
-			createCollection: createCollectionTemplate.bind(null, fcl, auth, blockchainNetwork),
-			updateCollection: updateCollectionTemplate.bind(null, fcl, auth, blockchainNetwork),
+			createCollection: createCollection.bind(null, fcl, auth, blockchainNetwork),
+			updateCollection: updateCollection.bind(null, fcl, auth, blockchainNetwork),
 			setupAccount: setupAccount.bind(null, fcl, auth, blockchainNetwork),
 		},
 		signUserMessage: signUserMessage.bind(null, fcl),
@@ -274,8 +281,8 @@ export type {
 	FlowFee,
 	FlowEnv,
 	NonFungibleContract,
-} from "./types/types"
-export { NON_FUNGIBLE_CONTRACTS } from "./types/types"
+} from "./types"
+export { NON_FUNGIBLE_CONTRACTS } from "./types"
 export type { FlowRoyalty } from "@rarible/flow-api-client"
 export { toFlowItemId, isFlowItemId } from "./types/item/index"
 export type { FlowItemId } from "./types/item/index"

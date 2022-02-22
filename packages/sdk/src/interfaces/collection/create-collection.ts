@@ -1,7 +1,7 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import { toFlowAddress } from "@rarible/types"
-import type { AuthWithPrivateKey, FlowFee, FlowNetwork, FlowTransaction } from "../../types/types"
+import type { AuthWithPrivateKey, FlowFee, FlowNetwork, FlowTransaction } from "../../types"
 import { validateRoyalties } from "../nft/common/validate-royalties"
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import { getNftCode } from "../../blockchain-api/nft"

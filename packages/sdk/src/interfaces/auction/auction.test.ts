@@ -48,7 +48,7 @@ describe("Test English Auction", () => {
 			},
 		)
 
-		const cancelLotTx = await sdk.auction.cancelLot({ collection: emulatorCollection, lotId: tx.orderId })
+		const cancelLotTx = await sdk.auction.cancelLot({ collection: emulatorCollection, lotId: tx.lotId })
 		checkEvent(cancelLotTx, "LotCompleted", "EnglishAuction")
 		expect(cancelLotTx.status).toEqual(4)
 	}, 10000)
@@ -68,7 +68,7 @@ describe("Test English Auction", () => {
 
 		const bid = await sdk2.auction.createBid({
 			collection: emulatorCollection,
-			lotId: tx.orderId,
+			lotId: tx.lotId,
 			amount: "0.1",
 			originFee: [],
 		})
@@ -77,7 +77,7 @@ describe("Test English Auction", () => {
 		await testDelay(6 * 1000)
 		await mintRaribleNftTest(sdk, emulatorCollection)
 
-		const cancelLotTx = await sdk.auction.completeLot({ collection: emulatorCollection, lotId: tx.orderId })
+		const cancelLotTx = await sdk.auction.completeLot({ collection: emulatorCollection, lotId: tx.lotId })
 		checkEvent(cancelLotTx, "LotCompleted", "EnglishAuction")
 		expect(cancelLotTx.status).toEqual(4)
 	}, 100000)
@@ -98,18 +98,22 @@ describe("Test English Auction", () => {
 
 		const bid = await sdk2.auction.createBid({
 			collection: emulatorCollection,
-			lotId: tx.orderId,
+			lotId: tx.lotId,
 			amount: "1",
 			originFee: [],
 		})
 		checkEvent(bid, "OpenBid", "EnglishAuction")
-		const increase = await sdk2.auction.increaseBid({ collection: emulatorCollection, lotId: tx.orderId, amount: "2" })
+		const increase = await sdk2.auction.increaseBid({
+			collection: emulatorCollection,
+			lotId: tx.lotId,
+			amount: "2",
+		})
 		checkEvent(increase, "IncreaseBid", "EnglishAuction")
 
 		await testDelay(6 * 1000)
 		await mintRaribleNftTest(sdk, emulatorCollection) //for generate new block
 
-		const cancelLotTx = await sdk.auction.completeLot({ collection: emulatorCollection, lotId: tx.orderId })
+		const cancelLotTx = await sdk.auction.completeLot({ collection: emulatorCollection, lotId: tx.lotId })
 		checkEvent(cancelLotTx, "LotCompleted", "EnglishAuction")
 		expect(cancelLotTx.status).toEqual(4)
 	}, 100000)

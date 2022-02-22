@@ -1,5 +1,5 @@
 import type { FlowContractAddress, FlowFee, FlowItemId, FlowSdk } from "../../index"
-import type { FlowSellResponse } from "../../interfaces/order/sell"
+import type { FlowEnglishAuctionTransaction } from "../../interfaces/auction/domain"
 
 const MINIMAL_DURATION = (15 * 60).toString()
 
@@ -14,7 +14,7 @@ export async function createLotEngAucTest(
 		payouts?: FlowFee[],
 		originFees?: FlowFee[]
 	}):
-	Promise<FlowSellResponse> {
+	Promise<FlowEnglishAuctionTransaction> {
 	const { itemId, buyoutPrice, duration, payouts, originFees, startAt } = request
 	const tx = await sdk.auction.createLot({
 		collection,
@@ -28,6 +28,6 @@ export async function createLotEngAucTest(
 		payouts,
 		originFees,
 	})
-	expect(tx.orderId).toBeGreaterThanOrEqual(0)
+	expect(parseInt(tx.lotId)).toBeGreaterThanOrEqual(0)
 	return tx
 }

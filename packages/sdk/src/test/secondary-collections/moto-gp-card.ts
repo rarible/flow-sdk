@@ -8,7 +8,7 @@ import {
 import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { runScript, runTransaction, waitForSeal } from "../../common/transaction"
-import type { AuthWithPrivateKey } from "../../types/types"
+import type { AuthWithPrivateKey } from "../../types"
 import type { FlowSdk } from "../../index"
 import { createFlowSdk } from "../../index"
 
@@ -26,7 +26,7 @@ export async function initAccountMotoGp(fcl: Fcl, auth: AuthWithPrivateKey, cont
 		},
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
 
 async function addMotoGpPackType(fcl: Fcl, auth: AuthWithPrivateKey, contractOwner: string) {
@@ -45,7 +45,7 @@ async function addMotoGpPackType(fcl: Fcl, auth: AuthWithPrivateKey, contractOwn
 		},
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
 
 async function mintMotoGpPackToAddress(fcl: Fcl, auth: AuthWithPrivateKey, contractOwner: string, recipient: string) {
@@ -69,7 +69,7 @@ async function mintMotoGpPackToAddress(fcl: Fcl, auth: AuthWithPrivateKey, contr
 		},
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
 
 async function transferMotoGpPackToOpener(
@@ -96,7 +96,7 @@ async function transferMotoGpPackToOpener(
 		},
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
 
 async function openMotoGpPack(
@@ -199,7 +199,7 @@ export async function borrowMotoGpCardId(
 		MotoGPCard: contractOwner,
 	}
 	const args = fcl.args([fcl.arg(address, t.Address), fcl.arg(tokenId, t.UInt64)])
-	return await runScript(
+	return runScript(
 		fcl,
 		{
 			cadence,

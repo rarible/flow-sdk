@@ -1,4 +1,4 @@
-import type { FlowTransaction } from "../types/types"
+import type { FlowTransaction } from "../types"
 
 type EventNames =
 	| "Withdraw"
@@ -14,6 +14,7 @@ type EventNames =
 	| "Minted"
 	| "Changed"
 	| "LotAvailable"
+	| "OpenBid"
 
 export function parseEvents<T>(events: FlowTransaction["events"], eventName: EventNames, field: string): T {
 	const event = events.find(e => {

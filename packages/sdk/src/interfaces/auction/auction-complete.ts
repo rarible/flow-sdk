@@ -1,16 +1,12 @@
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { Fcl } from "@rarible/fcl-types"
+import { toBn } from "@rarible/utils"
 import { runTransaction, waitForSeal } from "../../common/transaction"
-import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../types/types"
-import type { FlowContractAddress } from "../../types/contract-address"
+import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../types"
 import { getCollectionConfig } from "../../config/utils"
 import { getEnglishAuctionCode } from "../../blockchain-api/auction/english-auction"
 import { getLot } from "./common/get-lot"
-
-export type EnglishAuctionCompleteRequest = {
-	collection: FlowContractAddress,
-	lotId: number
-}
+import type { EnglishAuctionCompleteRequest } from "./domain"
 
 export async function completeEnglishAuction(
 	fcl: Maybe<Fcl>,
@@ -19,17 +15,18 @@ export async function completeEnglishAuction(
 	request: EnglishAuctionCompleteRequest,
 ): Promise<FlowTransaction> {
 	const { collection, lotId } = request
+	const preparedLotId = toBn(lotId).toNumber()
 	if (fcl) {
 		const { name, map } = getCollectionConfig(network, collection)
-		const { currency } = await getLot(fcl, network, lotId)
+		const { currency } = await getLot(fcl, network, preparedLotId)
 		try {
 			const txId = await runTransaction(
 				fcl,
 				map,
-				getEnglishAuctionCode(fcl, name, currency).completeLot(lotId),
+				getEnglishAuctionCode(fcl, name, currency).completeLot(preparedLotId),
 				auth,
 			)
-			return await waitForSeal(fcl, txId)
+			return waitForSeal(fcl, txId)
 		} catch (e) {
 			const isAuctionNotFinichedYet = String(e).search("self.finishAt ?? 0.0 < getCurrentBlock().timestamp")
 			if (isAuctionNotFinichedYet) {

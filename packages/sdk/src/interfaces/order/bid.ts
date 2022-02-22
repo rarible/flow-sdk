@@ -1,7 +1,7 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { BigNumber } from "@rarible/types"
-import type { AuthWithPrivateKey, FlowCurrency, FlowFee, FlowNetwork, FlowOriginFees } from "../../types/types"
+import type { AuthWithPrivateKey, FlowCurrency, FlowFee, FlowNetwork, FlowOriginFees } from "../../types"
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import { getBidCode } from "../../blockchain-api/order/rarible-open-bid"
 import { parseEvents } from "../../common/parse-tx-events"

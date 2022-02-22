@@ -5,7 +5,7 @@ import { runScript } from "../../../common/transaction"
 import { CONFIGS } from "../../../config/config"
 import { getCurrency } from "../../../common/get-currency"
 import { getEnglishAuctionScript } from "../../../blockchain-api/auction/english-auction-scripts"
-import type { FlowCurrency, FlowFee, FlowNetwork } from "../../../types/types"
+import type { FlowCurrency, FlowFee, FlowNetwork } from "../../../types"
 import { toFlowContractAddress } from "../../../types/contract-address"
 
 type FlowEnglishAuctionBlockchainLot = {

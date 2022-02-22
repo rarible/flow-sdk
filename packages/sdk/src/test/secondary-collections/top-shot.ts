@@ -8,7 +8,7 @@ import {
 import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { runScript, runTransaction, waitForSeal } from "../../common/transaction"
-import type { AuthWithPrivateKey } from "../../types/types"
+import type { AuthWithPrivateKey } from "../../types"
 import type { FlowSdk } from "../../index"
 import { createFlowSdk } from "../../index"
 
@@ -25,7 +25,7 @@ export async function initAccountTopShot(fcl: Fcl, auth: AuthWithPrivateKey, con
 		},
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
 
 async function createTopShotItem(fcl: Fcl, auth: AuthWithPrivateKey, contractOwner: string) {
@@ -72,7 +72,7 @@ async function createTopShotItem(fcl: Fcl, auth: AuthWithPrivateKey, contractOwn
 		},
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
 
 async function createTopShotSet(fcl: Fcl, auth: AuthWithPrivateKey, contractOwner: string) {
@@ -91,7 +91,7 @@ async function createTopShotSet(fcl: Fcl, auth: AuthWithPrivateKey, contractOwne
 		},
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
 
 async function addTopShotItemsToSet(
@@ -115,7 +115,7 @@ async function addTopShotItemsToSet(
 		},
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
 
 async function mintTopShotToAccount(
@@ -205,7 +205,7 @@ export async function getTopShotIds(
 		TopShot: contractOwner,
 	}
 	const args = fcl.args([fcl.arg(address, t.Address)])
-	return await runScript(
+	return runScript(
 		fcl,
 		{
 			cadence,

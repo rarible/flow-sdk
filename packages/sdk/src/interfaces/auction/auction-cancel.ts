@@ -1,16 +1,12 @@
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { Fcl } from "@rarible/fcl-types"
+import { toBn } from "@rarible/utils"
 import { runTransaction, waitForSeal } from "../../common/transaction"
-import type { FlowContractAddress } from "../../types/contract-address"
-import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../types/types"
+import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../types"
 import { getCollectionConfig } from "../../config/utils"
 import { getEnglishAuctionCode } from "../../blockchain-api/auction/english-auction"
 import { getLot } from "./common/get-lot"
-
-export type EnglishAuctionCancelRequest = {
-	collection: FlowContractAddress,
-	lotId: number
-}
+import type { EnglishAuctionCancelRequest } from "./domain"
 
 export async function cancelEnglishAuction(
 	fcl: Maybe<Fcl>,
@@ -21,14 +17,15 @@ export async function cancelEnglishAuction(
 	const { collection, lotId } = request
 	if (fcl) {
 		const { name, map } = getCollectionConfig(network, collection)
-		const { currency } = await getLot(fcl, network, lotId)
+		const preparedLotId = toBn(lotId).toNumber()
+		const { currency } = await getLot(fcl, network, preparedLotId)
 		const txId = await runTransaction(
 			fcl,
 			map,
-			getEnglishAuctionCode(fcl, name, currency).cancelLot(lotId),
+			getEnglishAuctionCode(fcl, name, currency).cancelLot(preparedLotId),
 			auth,
 		)
-		return await waitForSeal(fcl, txId)
+		return waitForSeal(fcl, txId)
 	}
 	throw new Error("Fcl is required for cancel lot")
 }

@@ -9,12 +9,12 @@ describe("Test English Auction", () => {
 	const testnetCollection = getContractAddress("testnet", "RaribleNFT")
 
 	test.skip("test auctions on testnet", async () => {
-		const { sdk: testnetSdk, address } = await createFlowTestnetSdk()
+		const { sdk, address } = await createFlowTestnetSdk()
 
-		const mint = await mintRaribleNftTest(testnetSdk, testnetCollection)
+		const mint = await mintRaribleNftTest(sdk, testnetCollection)
 
 		const tx = await createLotEngAucTest(
-			testnetSdk,
+			sdk,
 			testnetCollection,
 			{
 				itemId: mint.tokenId,
@@ -22,7 +22,15 @@ describe("Test English Auction", () => {
 				payouts: [{ account: address, value: toBigNumber("0.03") }],
 			},
 		)
-		const lot = await retry(10, 1000, async () => testnetSdk.apis.auction.getAuctionById({ id: tx.orderId }))
+		const lot = await retry(10, 1000, async () => sdk.apis.auction.getAuctionById({ id: parseInt(tx.lotId) }))
 		expect(lot.status).toEqual("ACTIVE")
-	}, 60000)
+
+		const bid1tx = await sdk.auction.createBid({ lotId: tx.lotId, collection: testnetCollection, amount: "0.0002" })
+		expect(bid1tx.status).toEqual(4)
+		const bid2tx = await sdk.auction.createBid({ lotId: tx.lotId, collection: testnetCollection, amount: "0.0003" })
+		expect(bid2tx.status).toEqual(4)
+
+		const bids = await retry(10, 1000, async () => sdk.apis.auction.getAuctionBidsById({ id: parseInt(tx.lotId) }))
+		expect(bids.bids.length).toEqual(2)
+	}, 600000)
 })

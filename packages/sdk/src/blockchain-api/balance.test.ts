@@ -1,6 +1,6 @@
 import { FLOW_ZERO_ADDRESS } from "@rarible/types"
 import * as fcl from "@onflow/fcl"
-import type { FlowCurrency } from "../types/types"
+import type { FlowCurrency } from "../types"
 import { getBalanceCode } from "./balance"
 
 describe("getBalanceCode  test", () => {

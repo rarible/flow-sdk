@@ -1,20 +1,16 @@
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { Fcl } from "@rarible/fcl-types"
+import { toBn } from "@rarible/utils"
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import { fixAmount } from "../../common/fix-amount"
 import { validateDecimalNumber } from "../../common/data-validation/data-validators"
-import type { FlowContractAddress } from "../../types/contract-address"
-import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../types/types"
+import type { AuthWithPrivateKey, FlowNetwork } from "../../types"
+import type { FlowTransaction } from "../../types"
 import { checkPrice } from "../order/common/check-price"
 import { getCollectionConfig } from "../../config/utils"
 import { getEnglishAuctionCode } from "../../blockchain-api/auction/english-auction"
 import { getLot } from "./common/get-lot"
-
-export type EnglishAuctionIncreaseBidRequest = {
-	collection: FlowContractAddress,
-	lotId: number,
-	amount: string,
-}
+import type { EnglishAuctionIncreaseBidRequest } from "./domain"
 
 export async function increaseBid(
 	fcl: Maybe<Fcl>,
@@ -27,14 +23,15 @@ export async function increaseBid(
 	checkPrice(amount)
 	if (fcl) {
 		const { name, map } = getCollectionConfig(network, collection)
-		const { currency } = await getLot(fcl, network, lotId)
+		const preparedLotId = toBn(lotId).toNumber()
+		const { currency } = await getLot(fcl, network, preparedLotId)
 		const txId = await runTransaction(
 			fcl,
 			map,
-			getEnglishAuctionCode(fcl, name, currency).increaseBid(lotId, amount),
+			getEnglishAuctionCode(fcl, name, currency).increaseBid(preparedLotId, amount),
 			auth,
 		)
-		return await waitForSeal(fcl, txId)
+		return waitForSeal(fcl, txId)
 	}
 	throw new Error("Fcl is required for create auction bid")
 }

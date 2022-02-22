@@ -1,5 +1,5 @@
 import { fixAmount } from "../../../common/fix-amount"
-import type { FlowFee } from "../../../types/types"
+import type { FlowFee } from "../../../types"
 
 type EnglishAuctionFeePart = {
 	fields: [

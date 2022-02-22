@@ -9,7 +9,7 @@ import type {
 	FlowNetwork,
 	FlowOriginFees,
 	FlowTransaction,
-} from "../../../types/types"
+} from "../../../types"
 import { getProtocolFee } from "../get-protocol-fee"
 import { getPreparedOrder } from "../common/get-prepared-order"
 import { calculateFees } from "../common/calculate-fees"

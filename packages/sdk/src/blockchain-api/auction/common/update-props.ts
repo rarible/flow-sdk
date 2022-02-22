@@ -1,5 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
-import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../../types/types"
+import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../../types"
 import { runTransaction, waitForSeal } from "../../../common/transaction"
 import { getEnglishAuctionCode } from "../english-auction"
 import { CONFIGS } from "../../../config/config"

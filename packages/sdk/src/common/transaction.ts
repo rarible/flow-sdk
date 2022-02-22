@@ -1,5 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
-import type { AuthWithPrivateKey, FlowTransaction } from "../types/types"
+import type { AuthWithPrivateKey, FlowTransaction } from "../types"
 import { replaceImportAddresses } from "../blockchain-api/common/template-replacer"
 
 export type MethodArgs = {
@@ -14,7 +14,7 @@ export const runScript = async (
 ) => {
 	const cadence = replaceImportAddresses(params.cadence, addressMap)
 	const result = await fcl.send([fcl.script`${cadence}`, params.args])
-	return await fcl.decode(result)
+	return fcl.decode(result)
 }
 
 export const runTransaction = async (

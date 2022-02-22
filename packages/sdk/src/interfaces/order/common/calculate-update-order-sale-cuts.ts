@@ -1,6 +1,6 @@
 import { toBn } from "@rarible/utils"
 import { toBigNumber } from "@rarible/types"
-import type { FlowFee } from "../../../types/types"
+import type { FlowFee } from "../../../types"
 
 export function calculateUpdateOrderSaleCuts(oldPrice: string, price: string, fees: FlowFee[]): FlowFee[] {
 	return fees.map(fee => {

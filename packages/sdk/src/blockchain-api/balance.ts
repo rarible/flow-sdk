@@ -1,7 +1,7 @@
 import type { Fcl } from "@rarible/fcl-types"
 import { getBalanceScripts } from "@rarible/flow-sdk-scripts"
 import * as t from "@onflow/types"
-import type { FlowCurrency } from "../types/types"
+import type { FlowCurrency } from "../types"
 import type { PreparedTransactionParamsResponse } from "./domain"
 
 

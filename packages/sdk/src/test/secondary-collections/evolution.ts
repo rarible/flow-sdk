@@ -8,7 +8,7 @@ import {
 import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { runScript, runTransaction, waitForSeal } from "../../common/transaction"
-import type { AuthWithPrivateKey } from "../../types/types"
+import type { AuthWithPrivateKey } from "../../types"
 import type { FlowSdk } from "../../index"
 import { createFlowSdk } from "../../index"
 
@@ -25,7 +25,7 @@ export async function initAccountEvolution(fcl: Fcl, auth: AuthWithPrivateKey, c
 		},
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
 
 async function createEvolutionItem(fcl: Fcl, auth: AuthWithPrivateKey, contractOwner: string) {
@@ -44,7 +44,7 @@ async function createEvolutionItem(fcl: Fcl, auth: AuthWithPrivateKey, contractO
 		},
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
 
 async function createEvolutionSet(fcl: Fcl, auth: AuthWithPrivateKey, contractOwner: string) {
@@ -63,7 +63,7 @@ async function createEvolutionSet(fcl: Fcl, auth: AuthWithPrivateKey, contractOw
 		},
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
 
 async function addEvolutionItemsToSet(
@@ -87,7 +87,7 @@ async function addEvolutionItemsToSet(
 		},
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
 
 async function mintEvolutionToAccount(
@@ -178,7 +178,7 @@ export async function getEvolutionIds(
 		NonFungibleToken: contractOwner,
 	}
 	const args = fcl.args([fcl.arg(address, t.Address), fcl.arg(tokenId, t.UInt64)])
-	return await runScript(
+	return runScript(
 		fcl,
 		{
 			cadence,

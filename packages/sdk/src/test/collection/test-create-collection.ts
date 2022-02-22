@@ -1,5 +1,5 @@
 import type { FlowContractAddress, FlowSdk } from "../../index"
-import type { FlowFee } from "../../types/types"
+import type { FlowFee } from "../../types"
 
 export async function testCreateCollection(
 	sdk: FlowSdk,

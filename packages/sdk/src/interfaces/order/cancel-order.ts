@@ -1,6 +1,6 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
-import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../types/types"
+import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../types"
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import { getOrderCode } from "../../blockchain-api/order/storefront"
 import type { FlowContractAddress } from "../../types/contract-address"

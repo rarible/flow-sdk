@@ -1,5 +1,5 @@
 import { FLOW_ZERO_ADDRESS, toBigNumber, toFlowAddress } from "@rarible/types"
-import type { FlowFee } from "../../../types/types"
+import type { FlowFee } from "../../../types"
 import { calculateSaleCuts } from "./calculate-sale-cuts"
 
 describe("Calculate sale cuts for transaction", () => {

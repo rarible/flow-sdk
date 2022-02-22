@@ -1,4 +1,4 @@
-import type { FlowFee } from "../../types/types"
+import type { FlowFee } from "../../types"
 import { fixAmount } from "../../common/fix-amount"
 
 type PreparedFees = { key: string, value: string }

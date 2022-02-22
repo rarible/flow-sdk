@@ -1,6 +1,6 @@
-import type { FlowAddress} from "@rarible/types"
+import type { FlowAddress } from "@rarible/types"
 import { toFlowAddress } from "@rarible/types"
-import type { FlowContractName } from "../types"
+import type { FlowContractName } from "../index"
 
 export type FlowContractAddress = string & {
 	__IS_FLOW_CONTRACT_ADDRESS__: true

@@ -1,4 +1,4 @@
-import type { FlowNetwork } from "../types/types"
+import type { FlowNetwork } from "../types"
 
 export type FlowEnv = "mainnet" | "dev" | "staging" | "emulator"
 

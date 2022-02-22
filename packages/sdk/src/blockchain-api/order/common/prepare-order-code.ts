@@ -1,4 +1,4 @@
-import type { FlowCurrency, NonFungibleContract } from "../../../types/types"
+import type { FlowCurrency, NonFungibleContract } from "../../../types"
 import type { FtCodeConfig } from "../../../config/cadence-code-config"
 import { getFtCodeConfig, getNftCodeConfig } from "../../../config/cadence-code-config"
 import { fillCodeTemplate } from "../../common/template-replacer"

@@ -8,7 +8,7 @@ import {
 import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { runScript, runTransaction, waitForSeal } from "../../common/transaction"
-import type { AuthWithPrivateKey } from "../../types/types"
+import type { AuthWithPrivateKey } from "../../types"
 import type { FlowSdk } from "../../index"
 import { createFlowSdk } from "../../index"
 
@@ -26,7 +26,7 @@ export async function initAccountMugenArt(fcl: Fcl, auth: AuthWithPrivateKey, co
 		},
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
 
 async function mintMugenArtToAccount(
@@ -113,7 +113,7 @@ export async function getMugenArtIds(
 		NonFungibleToken: contractOwner,
 	}
 	const args = fcl.args([fcl.arg(address, t.Address)])
-	return await runScript(
+	return runScript(
 		fcl,
 		{
 			cadence,

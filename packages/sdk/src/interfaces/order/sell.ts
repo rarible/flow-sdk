@@ -9,7 +9,7 @@ import type {
 	FlowOriginFees,
 	FlowPayouts,
 	FlowTransaction,
-} from "../../types/types"
+} from "../../types"
 import type { FlowItemId } from "../../types/item"
 import { extractTokenId } from "../../types/item"
 import { getCollectionConfig } from "../../config/utils"

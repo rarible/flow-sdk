@@ -1,5 +1,5 @@
-import type { NonFungibleContract } from "../types"
-import { NON_FUNGIBLE_CONTRACTS } from "../types"
+import type { NonFungibleContract } from "../index"
+import { NON_FUNGIBLE_CONTRACTS } from "../index"
 import type { FlowContractAddress } from "../contract-address"
 
 /** string like a:
