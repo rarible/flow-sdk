@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.14](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.13...v0.5.33-alpha.14) (2022-02-22)
+
+
+### Bug Fixes
+
+* update api client, improve auction tests ([8f8fabc](https://github.com/rarible/flow-sdk/commit/8f8fabc08b9d7b56ca934725a2c785305551d004))
+
+
+
+
+
 ## [0.5.33-alpha.12](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.11...v0.5.33-alpha.12) (2022-02-17)
 
 **Note:** Version bump only for package @rarible/flow-sdk-scripts
