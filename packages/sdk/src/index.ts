@@ -45,6 +45,7 @@ export interface FlowApisSdk {
 	collection: ApiClient.FlowNftCollectionControllerApi
 	item: ApiClient.FlowNftItemControllerApi
 	ownership: ApiClient.FlowNftOwnershipControllerApi
+	auction: ApiClient.FlowAuctionControllerApi
 }
 
 export interface FlowNftSdk {
@@ -208,6 +209,7 @@ export function createFlowApisSdk(
 		item: new ApiClient.FlowNftItemControllerApi(configuration),
 		ownership: new ApiClient.FlowNftOwnershipControllerApi(configuration),
 		order: new ApiClient.FlowOrderControllerApi(configuration),
+		auction: new ApiClient.FlowAuctionControllerApi(configuration),
 	}
 }
 

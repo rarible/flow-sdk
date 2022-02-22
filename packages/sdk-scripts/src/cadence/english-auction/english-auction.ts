@@ -1,4 +1,4 @@
-type FlowEnglishAuctionActions = "addLot" | "addBid" | "cancelLot" | "completeLot" | "incrementBid"
+type FlowEnglishAuctionActions = "addLot" | "addBid" | "cancelLot" | "completeLot" | "incrementBid" | "updateProps"
 export const englishAuctionTxCode: Record<FlowEnglishAuctionActions, string> = {
 	addLot: `
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
@@ -156,5 +156,23 @@ transaction (auctionId: UInt64, price: UFix64){
         self.manager.increaseBid(auctionId: auctionId, from: <-self.vault)
     }
 }
+	`,
+	updateProps: `
+	import EnglishAuction from 0xENGLISHAUCTION
+
+transaction(minimalDuration: UFix64?, maximalDuration: UFix64?, reservePrice: UFix64?) {
+    let admin: &EnglishAuction.Admin
+
+    prepare(account: AuthAccount) {
+        self.admin = account.borrow<&EnglishAuction.Admin>(from: EnglishAuction.AdminStoragePath)!
+    }
+
+    execute {
+        self.admin.setMinimalDuration(value: minimalDuration ?? EnglishAuction.minimalDuration)
+        self.admin.setMaximalDuration(value: maximalDuration ?? EnglishAuction.maximalDuration)
+        self.admin.setReservePrice(value: reservePrice ?? EnglishAuction.reservePrice)
+    }
+}
+
 	`,
 }
