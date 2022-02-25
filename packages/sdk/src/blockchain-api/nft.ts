@@ -9,7 +9,6 @@ import { NON_FUNGIBLE_CONTRACTS } from "../types"
 import { fetchMeta } from "../interfaces/nft/common/fetch-meta"
 import { fillCodeTemplate } from "./common/template-replacer"
 import { convertRoyalties } from "./common/convert-royalties"
-import { prepareFees } from "./common/convert-fee-to-cadence"
 
 type NftCodeReturnData = {
 	cadence: string
@@ -36,10 +35,12 @@ type CreateCollectionRequest = {
 
 type UpdateCollectionRequest = {
 	fcl: Fcl,
+	address: FlowAddress,
 	collectionIdNumber: number
 	icon?: string
 	description?: string
 	url?: string
+	royalties?: FlowFee[]
 }
 
 interface GetNftCode {
@@ -163,6 +164,13 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 													 supply,
 												 }) => {
 				const preparedMap = { ...map, "0xSOFTCOLLECTION": address }
+				const RoyaltiesType = t.Array(t.Struct(
+					`A.${fcl.sansPrefix(address)}.${name}.Royalty`,
+					[
+						{ value: t.Address },
+						{ value: t.UFix64 },
+					],
+				))
 				return {
 					cadence: fillCodeTemplate(SoftCollection.create, preparedMap),
 					args: fcl.args([
@@ -174,20 +182,26 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 						fcl.arg(description || null, t.Optional(t.String)),
 						fcl.arg(url || null, t.Optional(t.String)),
 						fcl.arg(supply === undefined ? null : supply, t.Optional(t.UInt64)),
-						fcl.arg(prepareFees(royalties), t.Dictionary({
-							key: t.Address,
-							value: t.UFix64,
-						})),
+						fcl.arg(convertRoyalties(royalties), RoyaltiesType),
 					]),
 				}
 			},
 			updateCollection: ({
 													 fcl,
+													 address,
 													 collectionIdNumber,
 													 icon,
 													 description,
 													 url,
+													 royalties,
 												 }) => {
+				const RoyaltiesType = t.Array(t.Struct(
+					`A.${fcl.sansPrefix(address)}.${name}.Royalty`,
+					[
+						{ value: t.Address },
+						{ value: t.UFix64 },
+					],
+				))
 				return {
 					cadence: fillCodeTemplate(SoftCollection.update, map),
 					args: fcl.args([
@@ -195,6 +209,7 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 						fcl.arg(icon || null, t.Optional(t.String)),
 						fcl.arg(description || null, t.Optional(t.String)),
 						fcl.arg(url || null, t.Optional(t.String)),
+						fcl.arg(royalties ? convertRoyalties(royalties) : null, t.Optional(RoyaltiesType)),
 					]),
 				}
 			},

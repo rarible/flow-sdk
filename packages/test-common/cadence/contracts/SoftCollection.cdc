@@ -1,7 +1,7 @@
-import NonFungibleToken from "core/NonFungibleToken.cdc"
-import MetadataViews from "core/MetadataViews.cdc"
-import LicensedNFT from "LicensedNFT.cdc"
-import RaribleNFTv2 from "RaribleNFTv2.cdc"
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import MetadataViews from 0xMETADATAVIEWS
+import LicensedNFT from 0xLICENSEDNFT
+import RaribleNFTv2 from 0xRARIBLENFTV2
 
 pub contract SoftCollection : NonFungibleToken, LicensedNFT {
 
@@ -15,9 +15,9 @@ pub contract SoftCollection : NonFungibleToken, LicensedNFT {
     pub event ContractInitialized()
     pub event Withdraw(id: UInt64, from: Address?)
     pub event Deposit(id: UInt64, to: Address?)
-    pub event Minted(id: UInt64, parentId: UInt64?, meta: Meta, creator: Address, royalties: [LicensedNFT.Royalty])
+    pub event Minted(id: UInt64, parentId: UInt64?, meta: Meta, creator: Address, royalties: [LicensedNFT.Royalty], supply: UInt64?)
     pub event Burned(id: UInt64)
-    pub event Changed(id: UInt64, meta: Meta)
+    pub event Changed(id: UInt64, meta: Meta, royalties: [Royalty]?)
 
     pub struct Royalty {
         pub let address: Address
@@ -55,21 +55,26 @@ pub contract SoftCollection : NonFungibleToken, LicensedNFT {
         pub let id: UInt64
         pub let parentId: UInt64?
         pub let creator: Address
+        pub let supply: UInt64?
         access(self) let meta: Meta
-        access(self) let royalties: [LicensedNFT.Royalty]
+        access(self) var royalties: [LicensedNFT.Royalty]
+        pub var totalSupply: UInt64
 
-        init (id: UInt64, parentId: UInt64?, meta: Meta, creator: Address, royalties: [LicensedNFT.Royalty]) {
+        init (id: UInt64, parentId: UInt64?, meta: Meta, creator: Address, royalties: [LicensedNFT.Royalty], supply: UInt64?) {
             self.id = id
             self.parentId = parentId
             self.meta = meta
             self.creator = creator
             self.royalties = royalties
+            self.supply = supply
+            self.totalSupply = UInt64(0)
             emit Minted(
                 id: id,
                 parentId: parentId,
                 meta: meta,
                 creator: creator,
                 royalties: royalties,
+                supply: supply,
             )
         }
 
@@ -85,9 +90,28 @@ pub contract SoftCollection : NonFungibleToken, LicensedNFT {
             return [Type<MetadataViews.Display>()]
         }
 
-        pub fun update(icon: String?, description: String?, url: String?) {
+        pub fun update(icon: String?, description: String?, url: String?, royalties: [Royalty]?) {
             self.meta.update(icon: icon, description: description, url: url)
-            emit Changed(id: self.id, meta: self.meta)
+            if (royalties != nil) {
+                self.royalties = royalties!
+            }
+            emit Changed(id: self.id, meta: self.meta, royalties: royalties)
+        }
+
+        pub fun mint(
+            receiver: Capability<&{NonFungibleToken.CollectionPublic}>
+            meta: RaribleNFTv2.Meta,
+            royalties: [LicensedNFT.Royalty],
+        ) {
+            assert(self.supply == nil || self.supply! < self.totalSupply, message: "SC01: collection exhausted")
+            RaribleNFTv2.mint(
+                receiver: receiver,
+                parentId: self.id,
+                creator: self.creator,
+                meta: meta,
+                royalties: royalties,
+            )
+            self.totalSupply = self.totalSupply + UInt64(1)
         }
 
         pub fun resolveView(_ view: Type): AnyStruct? {
@@ -156,20 +180,13 @@ pub contract SoftCollection : NonFungibleToken, LicensedNFT {
         ) {
             let ref = &self.ownedNFTs[softId] as auth &NonFungibleToken.NFT
             let minter = ref as! &NFT
-
-            RaribleNFTv2.mint(
-                receiver: receiver,
-                parentId: minter.id,
-                creator: minter.creator,
-                meta: meta,
-                royalties: royalties,
-            )
+            minter.mint(receiver: receiver, meta: meta, royalties: royalties)
         }
 
-        pub fun updateItem(id: UInt64, icon: String?, description: String?, url: String?) {
+        pub fun updateItem(id: UInt64, icon: String?, description: String?, url: String?, royalties: [Royalty]?) {
             let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT
             let minter = ref as! &NFT
-            minter.update(icon: icon, description: description, url: url)
+            minter.update(icon: icon, description: description, url: url, royalties: royalties)
         }
 
         init() {
@@ -220,6 +237,7 @@ pub contract SoftCollection : NonFungibleToken, LicensedNFT {
                 meta: meta,
                 creator: receiver.address,
                 royalties: royalties,
+                supply: supply,
             )
             SoftCollection.totalSupply = SoftCollection.totalSupply + 1
             receiver.borrow()!.deposit(token: <- token)

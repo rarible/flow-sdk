@@ -1,5 +1,6 @@
 import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
+import { toBigNumber, toFlowAddress } from "@rarible/types"
 import type { FlowSdk } from "../../index"
 import { createFlowSdk } from "../../index"
 import { testCreateCollection } from "../../test/collection/test-create-collection"
@@ -33,5 +34,12 @@ describe("Test update collection", () => {
 		expect(meta.icon).toEqual(metaNew.icon)
 		expect(meta.description).toEqual(metaNew.description)
 		expect(meta.url).toEqual(metaNew.url)
+		const tx3 = await sdk.collection.updateCollection({
+			collectionIdNumber: tx.collectionId,
+			...metaNew,
+			royalties: [{ account: toFlowAddress(address), value: toBigNumber("0.1") }],
+		})
+		const royalty: any = parseEvents(tx3.events, "Changed", "royalties")
+		expect(royalty.length).toEqual(1)
 	})
 })
