@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.16](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.15...v0.5.33-alpha.16) (2022-02-25)
+
+
+### Features
+
+* fb-619 update soft collections scripts, add royalties when updating collection ([c5431f7](https://github.com/rarible/flow-sdk/commit/c5431f7cb1b8ca7a2aee32840a06d7fd1e90ce68))
+
+
+
+
+
 ## [0.5.33-alpha.15](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.14...v0.5.33-alpha.15) (2022-02-22)
 
 **Note:** Version bump only for package @rarible/flow-sdk
