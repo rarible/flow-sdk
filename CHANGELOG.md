@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.38](https://github.com/rarible/flow-sdk/compare/v0.5.37...v0.5.38) (2022-02-25)
+
+
+### Bug Fixes
+
+* matrixWorldVaucher definitions ([e4868af](https://github.com/rarible/flow-sdk/commit/e4868af93148b4ce8f6413cafb963d4aa8ce3417))
+
+
+
+
+
 ## [0.5.37](https://github.com/rarible/flow-sdk/compare/v0.5.36...v0.5.37) (2022-02-21)
 
 
