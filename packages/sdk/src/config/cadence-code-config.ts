@@ -66,6 +66,7 @@ const nftCodeConfig: Record<NonFungibleContract, NftStaticVariables> = {
 	MatrixWorldVoucher: {
 		"%nftPublicPath%": "MatrixWorldVoucher.CollectionPublicPath",
 		"%nftStoragePath%": "MatrixWorldVoucher.CollectionStoragePath",
+		"%publicTypeAddon%": "MatrixWorldVoucher.MatrixWorldVoucherCollectionPublic",
 	},
 	DisruptArt: {
 		"%nftPublicPath%": "DisruptArt.disruptArtPublicPath",
