@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.17](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.16...v0.5.33-alpha.17) (2022-02-25)
+
+
+### Bug Fixes
+
+* create collection with royalties ([81d16fc](https://github.com/rarible/flow-sdk/commit/81d16fcf86fab7f177fe93513d0088397f6c72aa))
+
+
+
+
+
 ## [0.5.33-alpha.16](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.15...v0.5.33-alpha.16) (2022-02-25)
 
 
