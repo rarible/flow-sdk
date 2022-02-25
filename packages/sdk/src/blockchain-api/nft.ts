@@ -59,9 +59,9 @@ interface GetNftCode {
 	updateCollection(request: UpdateCollectionRequest): NftCodeReturnData
 }
 
-export function getNftCode(name: NonFungibleContract): GetNftCode {
-	if (NON_FUNGIBLE_CONTRACTS.includes(name)) {
-		const map = getNftCodeConfig(name)
+export function getNftCode(contractName: NonFungibleContract): GetNftCode {
+	if (NON_FUNGIBLE_CONTRACTS.includes(contractName)) {
+		const map = getNftCodeConfig(contractName)
 		return {
 			burn: (fcl: Fcl, tokenId: number) => {
 				return {
@@ -78,13 +78,13 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 			},
 			mint: async ({ fcl, address, metadata, royalties, minterId, receiver }) => {
 				const RoyaltiesType = t.Array(t.Struct(
-					`A.${fcl.sansPrefix(address)}.${name}.Royalty`,
+					`A.${fcl.sansPrefix(address)}.${contractName}.Royalty`,
 					[
 						{ value: t.Address },
 						{ value: t.UFix64 },
 					],
 				))
-				switch (name) {
+				switch (contractName) {
 					case "RaribleNFT": {
 						return {
 							cadence: RaribleNFT.mint,
@@ -113,7 +113,7 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 								],
 							},
 							t.Struct(
-								`A.${fcl.sansPrefix(address)}.${name}.Meta`,
+								`A.${fcl.sansPrefix(address)}.${contractName}.Meta`,
 								[
 									{ value: t.String },
 									{ value: t.Optional(t.String) },
@@ -165,7 +165,7 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 												 }) => {
 				const preparedMap = { ...map, "0xSOFTCOLLECTION": address }
 				const RoyaltiesType = t.Array(t.Struct(
-					`A.${fcl.sansPrefix(address)}.${name}.Royalty`,
+					`A.${fcl.sansPrefix(address)}.${contractName}.Royalty`,
 					[
 						{ value: t.Address },
 						{ value: t.UFix64 },
@@ -196,7 +196,7 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 													 royalties,
 												 }) => {
 				const RoyaltiesType = t.Array(t.Struct(
-					`A.${fcl.sansPrefix(address)}.${name}.Royalty`,
+					`A.${fcl.sansPrefix(address)}.${contractName}.Royalty`,
 					[
 						{ value: t.Address },
 						{ value: t.UFix64 },
@@ -215,5 +215,5 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 			},
 		}
 	}
-	throw new Error(`Flow-sdk: Unsupported collection: ${name}`)
+	throw new Error(`Flow-sdk: Unsupported collection: ${contractName}`)
 }
