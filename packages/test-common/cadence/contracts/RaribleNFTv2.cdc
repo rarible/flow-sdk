@@ -1,6 +1,6 @@
-import NonFungibleToken from "core/NonFungibleToken.cdc"
-import MetadataViews from "core/MetadataViews.cdc"
-import LicensedNFT from "LicensedNFT.cdc"
+import NonFungibleToken from 0xNONFUNGIBLETOKEN
+import MetadataViews from 0xMETADATAVIEWS
+import LicensedNFT from 0xLICENSEDNFT
 
 pub contract RaribleNFTv2 : NonFungibleToken, LicensedNFT {
 
@@ -12,7 +12,7 @@ pub contract RaribleNFTv2 : NonFungibleToken, LicensedNFT {
     pub event ContractInitialized()
     pub event Withdraw(id: UInt64, from: Address?)
     pub event Deposit(id: UInt64, to: Address?)
-    pub event Minted(id: UInt64, meta: Meta, creator: Address, royalties: [LicensedNFT.Royalty])
+    pub event Minted(id: UInt64, parentId: UInt64, creator: Address, meta: Meta, royalties: [LicensedNFT.Royalty])
     pub event Burned(id: UInt64)
 
     pub struct Royalty {
@@ -56,8 +56,9 @@ pub contract RaribleNFTv2 : NonFungibleToken, LicensedNFT {
             self.royalties = royalties
             emit Minted(
                 id: id,
-                meta: meta,
+                parentId: parentId,
                 creator: creator,
+                meta: meta,
                 royalties: royalties,
             )
         }
@@ -68,6 +69,10 @@ pub contract RaribleNFTv2 : NonFungibleToken, LicensedNFT {
 
         pub fun getRoyalties(): [LicensedNFT.Royalty] {
             return self.royalties
+        }
+
+        destroy() {
+            emit Burned(id: self.id)
         }
     }
 

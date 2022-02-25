@@ -1,6 +1,6 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
-import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../types"
+import type { AuthWithPrivateKey, FlowFee, FlowNetwork, FlowTransaction } from "../../types"
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import { getNftCode } from "../../blockchain-api/nft"
 import { getCollectionConfig, getContractAddress } from "../../config/utils"
@@ -11,6 +11,7 @@ export type UpdateCollectionRequest = {
 	icon?: string
 	description?: string
 	url?: string
+	royalties?: FlowFee[]
 }
 
 export type UpdateCollectionResponse = FlowTransaction & {
@@ -25,19 +26,21 @@ export async function updateCollection(
 	request: UpdateCollectionRequest,
 ): Promise<UpdateCollectionResponse> {
 	if (fcl) {
-		const { icon, description, url, collectionIdNumber } = request
+		const { icon, description, url, collectionIdNumber, royalties } = request
 		const collection = getContractAddress(network, "SoftCollection")
-		const { name, map } = getCollectionConfig(network, collection)
+		const { name, map, address } = getCollectionConfig(network, collection)
 		if (name === "SoftCollection") {
 			const txId = await runTransaction(
 				fcl,
 				map,
 				getNftCode(name).updateCollection({
 					fcl,
+					address,
 					collectionIdNumber: parseInt(collectionIdNumber),
 					icon,
 					description,
 					url,
+					royalties,
 				}),
 				auth,
 			)
