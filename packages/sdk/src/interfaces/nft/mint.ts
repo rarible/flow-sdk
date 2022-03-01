@@ -2,7 +2,7 @@ import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { FlowRoyalty } from "@rarible/flow-api-client"
 import { toFlowAddress } from "@rarible/types"
-import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../types"
+import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction, NonFungibleContract } from "../../types"
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import { getNftCode } from "../../blockchain-api/nft"
 import type { FlowItemId } from "../../types/item"
@@ -48,9 +48,10 @@ export async function mint(
 
 		if (txResult.events.length) {
 			const mintEvent = txResult.events.find(e => ["Mint", "Minted"].includes(e.type.split(".")[3]))
+			const preparedContractNameResponse: NonFungibleContract = name === "SoftCollection" ? "RaribleNFTv2" : name
 			if (mintEvent) {
 				return {
-					tokenId: toFlowItemId(`A.${sansPrefix(address)}.${name}:${mintEvent.data.id}`),
+					tokenId: toFlowItemId(`A.${sansPrefix(address)}.${preparedContractNameResponse}:${mintEvent.data.id}`),
 					...txResult,
 				}
 			}
