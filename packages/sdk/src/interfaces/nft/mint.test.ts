@@ -6,7 +6,6 @@ import { createEvolutionTestEnvironment, getEvolutionIds } from "../../test/seco
 import { createTopShotTestEnvironment, getTopShotIds } from "../../test/secondary-collections/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../../test/secondary-collections/moto-gp-card"
 import { createMugenArtTestEnvironment, getMugenArtIds } from "../../test/secondary-collections/mugen-art"
-import { testCreateCollection } from "../../test/collection/test-create-collection"
 import { getContractAddress } from "../../config/utils"
 
 describe("Minting on emulator", () => {
@@ -24,20 +23,6 @@ describe("Minting on emulator", () => {
 		const mintTx = await sdk.nft.mint(
 			contract, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
 		expect(mintTx.status).toEqual(4)
-	})
-
-	test("should mint nft to soft collection", async () => {
-		const raribleV2Collection = getContractAddress("emulator", "RaribleNFTv2")
-
-		const createCollectionTx = await testCreateCollection(sdk)
-
-		const mintTx = await sdk.nft.mint(
-			toFlowContractAddress(`${raribleV2Collection}:${createCollectionTx.collectionId}`),
-			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
-			[],
-		)
-		const mintEvent = mintTx.events.filter(e => e.type.split(".")[3] === "Minted")[0]
-		expect(mintEvent.data.meta.name).toEqual("Genesis")
 	})
 
 	test("should throw error invalid collection", async () => {

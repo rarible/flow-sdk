@@ -70,7 +70,6 @@ type Contracts =
 	"OneFootballCollectible" |
 	"ChainmonstersRewards" |
 	"Content" |
-	"MatrixWorldVoucher" |
 	"SoftCollection" |
 	"RaribleNFTv2" |
 	"MetadataViews" |

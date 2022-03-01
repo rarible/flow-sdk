@@ -77,8 +77,9 @@ export function getNftCode(contractName: NonFungibleContract): GetNftCode {
 				}
 			},
 			mint: async ({ fcl, address, metadata, royalties, minterId, receiver }) => {
+				const contractType: NonFungibleContract = contractName === "SoftCollection" ? "RaribleNFTv2" : contractName
 				const RoyaltiesType = t.Array(t.Struct(
-					`A.${fcl.sansPrefix(address)}.${contractName}.Royalty`,
+					`A.${fcl.sansPrefix(address)}.${contractType}.Royalty`,
 					[
 						{ value: t.Address },
 						{ value: t.UFix64 },
@@ -94,7 +95,7 @@ export function getNftCode(contractName: NonFungibleContract): GetNftCode {
 							]),
 						}
 					}
-					case "RaribleNFTv2": {
+					case "SoftCollection": {
 						const { name: nftName, description, attributes } = await fetchMeta(metadata)
 						const metaArg = fcl.arg(
 							{
@@ -113,7 +114,7 @@ export function getNftCode(contractName: NonFungibleContract): GetNftCode {
 								],
 							},
 							t.Struct(
-								`A.${fcl.sansPrefix(address)}.${contractName}.Meta`,
+								`A.${fcl.sansPrefix(address)}.${contractType}.Meta`,
 								[
 									{ value: t.String },
 									{ value: t.Optional(t.String) },

@@ -35,14 +35,14 @@ pub contract MetadataViews {
     //
     pub struct Display {
 
-        // The name of the object. 
+        // The name of the object.
         //
         // This field will be displayed in lists and therefore should
         // be short an concise.
         //
         pub let name: String
 
-        // A written description of the object. 
+        // A written description of the object.
         //
         // This field will be displayed in a detailed view of the object,
         // so can be more verbose (e.g. a paragraph instead of a single line).
@@ -75,7 +75,7 @@ pub contract MetadataViews {
         pub fun uri(): String
     }
 
-    // HTTPFile is a file that is accessible at an HTTP (or HTTPS) URL. 
+    // HTTPFile is a file that is accessible at an HTTP (or HTTPS) URL.
     //
     pub struct HTTPFile: File {
         pub let url: String
@@ -125,7 +125,7 @@ pub contract MetadataViews {
             if let path = self.path {
                 return "ipfs://".concat(self.cid).concat("/").concat(path)
             }
-            
+
             return "ipfs://".concat(self.cid)
         }
     }

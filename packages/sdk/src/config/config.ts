@@ -2,6 +2,12 @@ import type { BigNumber, FlowAddress } from "@rarible/types"
 import { toBigNumber, toFlowAddress, ZERO_ADDRESS } from "@rarible/types"
 import type { FlowContractName, FlowFee, FlowNetwork, NonFungibleContract } from "../types"
 
+export const NODE_TRANSPORT_CONFIG: Record<FlowNetwork, string> = {
+	emulator: "http://localhost:8888",
+	testnet: "https://rest-testnet.onflow.org",
+	mainnet: "https://rest-mainnet.onflow.org",
+}
+
 export const METADATA_HOST = "https://gateway.pinata.cloud"
 export const MIN_ORDER_PRICE = "0.0001"
 
@@ -161,7 +167,7 @@ export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> 
 		features: ["TRANSFER", "BURN", "MINT"],
 	},
 	RaribleNFTv2: {
-		features: ["TRANSFER", "BURN", "MINT"],
+		features: ["TRANSFER", "BURN"],
 	},
 	DisruptArt: {
 		features: ["TRANSFER", "BURN"],

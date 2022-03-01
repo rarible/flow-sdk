@@ -123,6 +123,60 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+## [0.5.38](https://github.com/rarible/flow-sdk/compare/v0.5.37...v0.5.38) (2022-02-25)
+
+
+### Bug Fixes
+
+* matrixWorldVaucher definitions ([e4868af](https://github.com/rarible/flow-sdk/commit/e4868af93148b4ce8f6413cafb963d4aa8ce3417))
+
+
+
+
+
+## [0.5.37](https://github.com/rarible/flow-sdk/compare/v0.5.36...v0.5.37) (2022-02-21)
+
+
+### Bug Fixes
+
+* fb-589 fix get balance function for emulator ([74d0e5e](https://github.com/rarible/flow-sdk/commit/74d0e5e8d505ce5a0c2ebd745ff10e34e0d65711))
+
+
+### Features
+
+* fb-589 implemented balance request without usin fcl package ([69b7642](https://github.com/rarible/flow-sdk/commit/69b7642c2f8008cf63c605d1f8c5a4658900c89c))
+
+
+
+
+
+## [0.5.36](https://github.com/rarible/flow-sdk/compare/v0.5.35...v0.5.36) (2022-02-18)
+
+**Note:** Version bump only for package root
+
+
+
+
+
+## [0.5.35](https://github.com/rarible/flow-sdk/compare/v0.5.34...v0.5.35) (2022-02-17)
+
+**Note:** Version bump only for package root
+
+
+
+
+
+## [0.5.34](https://github.com/rarible/flow-sdk/compare/v0.5.33...v0.5.34) (2022-02-16)
+
+
+### Bug Fixes
+
+* replace get royalties method ([#65](https://github.com/rarible/flow-sdk/issues/65)) ([6db4d54](https://github.com/rarible/flow-sdk/commit/6db4d5417f441e50091d3914d390daf5f89c1022))
+
+
+
+
+
 ## [0.5.33](https://github.com/rarible/flow-sdk/compare/v0.5.32...v0.5.33) (2022-02-03)
 
 
