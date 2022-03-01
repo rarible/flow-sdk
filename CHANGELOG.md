@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.20](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.19...v0.5.33-alpha.20) (2022-03-01)
+
+
+### Bug Fixes
+
+* mint tokenId response for soft collection ([598ac41](https://github.com/rarible/flow-sdk/commit/598ac41895997b66fb8124081a419dea390d1688))
+
+
+
+
+
 ## [0.5.33-alpha.19](https://github.com/rarible/flow-sdk/compare/v0.5.38...v0.5.33-alpha.19) (2022-03-01)
 
 
