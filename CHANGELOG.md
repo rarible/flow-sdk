@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.21](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.20...v0.5.33-alpha.21) (2022-03-02)
+
+
+### Bug Fixes
+
+* collection creation and minting RaribleNFTv2 ([576ea2c](https://github.com/rarible/flow-sdk/commit/576ea2cb9d79f82adacc72fcd9987f2c8b44f41c))
+
+
+
+
+
 ## [0.5.33-alpha.20](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.19...v0.5.33-alpha.20) (2022-03-01)
 
 
