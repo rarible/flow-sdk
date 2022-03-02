@@ -51,6 +51,7 @@ function getEnglishAuctionPartsType(auctionContractAddress: string) {
 export function getEnglishAuctionCode(
 	fcl: Fcl, name: NonFungibleContract, currency: FlowCurrency,
 ): GetEnglishAuctionCode {
+	name = name === "SoftCollection" ? "RaribleNFTv2" : name
 	return {
 		createLot: ({ auctionContractAddress, tokenId, minimumBid, buyoutPrice, increment, startAt, duration, parts }) => {
 			return {

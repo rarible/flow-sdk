@@ -167,7 +167,7 @@ export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> 
 		features: ["TRANSFER", "BURN", "MINT"],
 	},
 	RaribleNFTv2: {
-		features: ["TRANSFER", "BURN"],
+		features: ["TRANSFER", "BURN", "MINT"],
 	},
 	DisruptArt: {
 		features: ["TRANSFER", "BURN"],
