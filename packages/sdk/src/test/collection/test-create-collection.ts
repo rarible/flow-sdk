@@ -3,7 +3,7 @@ import type { FlowFee } from "../../types"
 
 export async function testCreateCollection(
 	sdk: FlowSdk,
-	collection?: FlowContractAddress,
+	parentCollection?: FlowContractAddress,
 	name: string = "TestCollection",
 	symbol: string = "TST",
 	royalties: FlowFee[] = [],
@@ -16,12 +16,13 @@ export async function testCreateCollection(
 		name,
 		symbol,
 		royalties,
-		collection,
+		parentCollection,
 		icon,
 		description,
 		url,
 		supply,
 	})
-	expect(parseInt(createCollectionTx.collectionId)).toBeGreaterThanOrEqual(0)
+	const [, collectionIdNumber] = createCollectionTx.collectionId.split(":")
+	expect(parseInt(collectionIdNumber)).toBeGreaterThanOrEqual(0)
 	return createCollectionTx
 }

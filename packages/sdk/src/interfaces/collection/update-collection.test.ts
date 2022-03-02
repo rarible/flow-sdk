@@ -25,7 +25,7 @@ describe("Test update collection", () => {
 		}
 
 		const tx2 = await sdk.collection.updateCollection({
-			collectionIdNumber: tx.collectionId,
+			collectionId: tx.collectionId,
 			...metaNew,
 
 		})
@@ -35,7 +35,7 @@ describe("Test update collection", () => {
 		expect(meta.description).toEqual(metaNew.description)
 		expect(meta.url).toEqual(metaNew.url)
 		const tx3 = await sdk.collection.updateCollection({
-			collectionIdNumber: tx.collectionId,
+			collectionId: tx.collectionId,
 			...metaNew,
 			royalties: [{ account: toFlowAddress(address), value: toBigNumber("0.1") }],
 		})

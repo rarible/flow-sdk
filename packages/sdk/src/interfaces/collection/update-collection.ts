@@ -4,10 +4,12 @@ import type { AuthWithPrivateKey, FlowFee, FlowNetwork, FlowTransaction } from "
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import { getNftCode } from "../../blockchain-api/nft"
 import { getCollectionConfig, getContractAddress } from "../../config/utils"
+import type { FlowCollectionId } from "../../types/collection"
+import { toFlowCollectionId } from "../../types/collection"
 
 
 export type UpdateCollectionRequest = {
-	collectionIdNumber: string
+	collectionId: FlowCollectionId
 	icon?: string
 	description?: string
 	url?: string
@@ -15,8 +17,8 @@ export type UpdateCollectionRequest = {
 }
 
 export type UpdateCollectionResponse = FlowTransaction & {
-	collectionId: string
-	parentId: string | null
+	collectionId: FlowCollectionId
+	parentId: FlowCollectionId | null
 }
 
 export async function updateCollection(
@@ -26,9 +28,11 @@ export async function updateCollection(
 	request: UpdateCollectionRequest,
 ): Promise<UpdateCollectionResponse> {
 	if (fcl) {
-		const { icon, description, url, collectionIdNumber, royalties } = request
-		const collection = getContractAddress(network, "SoftCollection")
-		const { name, map, address } = getCollectionConfig(network, collection)
+		const { icon, description, url, collectionId, royalties } = request
+		const { name, map, address, userCollectionId } = getCollectionConfig(network, collectionId)
+		if (userCollectionId === undefined) {
+			throw new Error("Collection id number is not  defined")
+		}
 		if (name === "SoftCollection") {
 			const txId = await runTransaction(
 				fcl,
@@ -36,7 +40,7 @@ export async function updateCollection(
 				getNftCode(name).updateCollection({
 					fcl,
 					address,
-					collectionIdNumber: parseInt(collectionIdNumber),
+					collectionIdNumber: parseInt(userCollectionId),
 					icon,
 					description,
 					url,
@@ -49,10 +53,11 @@ export async function updateCollection(
 				const mintEvent = txResult.events.find(e => e.type.split(".")[3] === "Changed")
 				if (mintEvent) {
 					const { id, parentId } = mintEvent.data
+					const softCollection = getContractAddress(network, "SoftCollection")
 					return {
 						...txResult,
-						collectionId: `${id}`,
-						parentId: typeof parentId === "number" ? `${parentId}` : null,
+						collectionId: toFlowCollectionId(`${softCollection}:${id}`),
+						parentId: typeof parentId === "number" ? toFlowCollectionId(`${softCollection}:${parentId}`) : null,
 					}
 				}
 				throw new Error("Update event not found in transaction response")

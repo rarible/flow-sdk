@@ -14,6 +14,7 @@ type GenerateBidCodeResponse = {
 }
 
 export function getOrderCode(fcl: Fcl, collectionName: NonFungibleContract): GenerateBidCodeResponse {
+	collectionName = collectionName === "SoftCollection" ? "RaribleNFTv2" : collectionName
 	return {
 		create(currency, itemId, fees) {
 			return {
