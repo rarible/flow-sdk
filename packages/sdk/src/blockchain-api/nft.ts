@@ -7,6 +7,7 @@ import { getNftCodeConfig } from "../config/cadence-code-config"
 import type { FlowFee, NonFungibleContract } from "../types"
 import { NON_FUNGIBLE_CONTRACTS } from "../types"
 import { fetchMeta } from "../interfaces/nft/common/fetch-meta"
+import { getIpfsCid } from "../common/get-ipfs-cid"
 import { fillCodeTemplate } from "./common/template-replacer"
 import { convertRoyalties } from "./common/convert-royalties"
 
@@ -96,13 +97,13 @@ export function getNftCode(contractName: NonFungibleContract): GetNftCode {
 						}
 					}
 					case "SoftCollection": {
-						const { name: nftName, description, attributes } = await fetchMeta(metadata)
+						const { name: nftName, description, attributes, image } = await fetchMeta(metadata)
 						const metaArg = fcl.arg(
 							{
 								fields: [
 									{ name: "name", value: nftName || "" },
 									{ name: "description", value: description || null },
-									{ name: "cid", value: "" },
+									{ name: "cid", value: getIpfsCid(image) },
 									{
 										name: "attributes",
 										value: attributes?.map(a => {
@@ -110,7 +111,7 @@ export function getNftCode(contractName: NonFungibleContract): GetNftCode {
 											return { key: attribute[0], value: attribute[1] }
 										}),
 									},
-									{ name: "contentUrls", value: [] },
+									{ name: "contentUrls", value: image ? [image] : [] },
 								],
 							},
 							t.Struct(

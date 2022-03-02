@@ -18,7 +18,7 @@
   "dependencies": {
     "@onflow/config": "^0.0.2",
     "elliptic": "^6.5.4",
-    "flow-js-testing": "~0.1.15",
+    "flow-js-testing": "~0.2.3-alpha.4",
     "sha3": "^2.1.4"
   },
   "devDependencies": {
