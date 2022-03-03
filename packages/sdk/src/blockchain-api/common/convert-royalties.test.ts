@@ -17,5 +17,7 @@ describe("convertRoyalties", () => {
 					{ name: "fee", value: "1.0" },
 				],
 			}])
+		expect(convertRoyalties([{ account: toFlowAddress(FLOW_ZERO_ADDRESS), value: toBigNumber("") }]))
+			.toStrictEqual([])
 	})
 })
