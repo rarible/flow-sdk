@@ -1,11 +1,21 @@
 import type { FlowRoyalty } from "@rarible/flow-api-client"
 import { fixAmount } from "../../common/fix-amount"
 
-export function convertRoyalties(royalties: FlowRoyalty[]) {
-	return royalties.map(royalty => ({
-		fields: [
-			{ name: "address", value: royalty.account },
-			{ name: "fee", value: fixAmount(royalty.value) },
-		],
-	}))
+type TxRoyaltyType = {
+	fields: { name: string, value: string }[]
+}
+
+export function convertRoyalties(royalties: FlowRoyalty[]): TxRoyaltyType[] {
+	let result: TxRoyaltyType[] = []
+	royalties.forEach(royalty => {
+		if (royalty.value && royalty.account) {
+			result.push({
+				fields: [
+					{ name: "address", value: royalty.account },
+					{ name: "fee", value: fixAmount(royalty.value) },
+				],
+			})
+		}
+	})
+	return result
 }
