@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.23](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.22...v0.5.33-alpha.23) (2022-03-03)
+
+
+### Bug Fixes
+
+* fb-639 fix royalty convertation with empty values ([44f2b22](https://github.com/rarible/flow-sdk/commit/44f2b22f32706cf5da63e7b2f10ec62550cb856d))
+
+
+
+
+
 ## [0.5.33-alpha.22](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.21...v0.5.33-alpha.22) (2022-03-03)
 
 
