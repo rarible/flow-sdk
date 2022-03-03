@@ -18,7 +18,6 @@ describe("Test bid on emulator", () => {
 	test("Should create RaribleNFT bid order", async () => {
 		const { sdk: sdk1, address: address1 } = await createFlowTestEmulatorSdk("accountName1")
 		const { sdk: sdk2, address: address2 } = await createFlowTestEmulatorSdk("accountName2")
-		// console.log("balance address1", await sdk1.wallet.getFungibleBalance(address1, "FLOW"))
 		const mintTx = await sdk1.nft.mint(
 			collection,
 			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
