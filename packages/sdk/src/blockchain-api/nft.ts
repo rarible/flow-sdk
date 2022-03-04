@@ -10,6 +10,7 @@ import { fetchMeta } from "../interfaces/nft/common/fetch-meta"
 import { getIpfsCid } from "../common/get-ipfs-cid"
 import { fillCodeTemplate } from "./common/template-replacer"
 import { convertRoyalties } from "./common/convert-royalties"
+import { convertIpfsAttributes } from "./common/convert-ipfs-attributes"
 
 type NftCodeReturnData = {
 	cadence: string
@@ -103,13 +104,10 @@ export function getNftCode(contractName: NonFungibleContract): GetNftCode {
 								fields: [
 									{ name: "name", value: nftName || "" },
 									{ name: "description", value: description || null },
-									{ name: "cid", value: getIpfsCid(image) },
+									{ name: "cid", value: getIpfsCid(metadata) },
 									{
 										name: "attributes",
-										value: attributes?.map(a => {
-											const attribute = Object.entries(a)[0]
-											return { key: attribute[0], value: attribute[1] }
-										}),
+										value: attributes ? convertIpfsAttributes(attributes) : [],
 									},
 									{ name: "contentUrls", value: image ? [image] : [] },
 								],
