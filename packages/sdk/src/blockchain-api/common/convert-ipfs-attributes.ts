@@ -5,10 +5,9 @@ type AttributesResponse = {
 
 export function convertIpfsAttributes(sourceAttributes: Record<string, string>[]): AttributesResponse[] {
 	return sourceAttributes.reduce((p, c) => {
-		const preparedArray: AttributesResponse[] = []
-		Object.keys(c).forEach(k => {
-			preparedArray.push({ key: k, value: c[k] })
-		})
-		return [...p, ...preparedArray]
+		if ("key" in c && "value" in c) {
+			return [...p, { key: c.key, value: c.value }]
+		}
+		throw new Error("Invalid ipfs attributes format, key or value keys are missing")
 	}, <AttributesResponse[]>[])
 }
