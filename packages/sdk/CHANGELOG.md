@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.25](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.24...v0.5.33-alpha.25) (2022-03-05)
+
+
+### Bug Fixes
+
+* added error messages handling for auctions ([c62f996](https://github.com/rarible/flow-sdk/commit/c62f9962574a8ab0ad32287c7ac0fe57a5b4364d))
+* ipfs attributes converter ([aa14129](https://github.com/rarible/flow-sdk/commit/aa141292e6af543746433012eca3bec4c49dfb64))
+
+
+
+
+
 ## [0.5.33-alpha.24](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.23...v0.5.33-alpha.24) (2022-03-04)
 
 

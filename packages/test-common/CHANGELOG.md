@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.25](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.24...v0.5.33-alpha.25) (2022-03-05)
+
+
+### Bug Fixes
+
+* added error messages handling for auctions ([c62f996](https://github.com/rarible/flow-sdk/commit/c62f9962574a8ab0ad32287c7ac0fe57a5b4364d))
+
+
+
+
+
 ## [0.5.33-alpha.19](https://github.com/rarible/flow-sdk/compare/v0.5.38...v0.5.33-alpha.19) (2022-03-01)
 
 
