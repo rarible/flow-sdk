@@ -17,6 +17,7 @@ import { getCollectionConfig } from "../../config/utils"
 import { getEnglishAuctionCode } from "../../blockchain-api/auction/english-auction"
 import { CONFIGS } from "../../config/config"
 import { fetchItemRoyalties } from "../order/common/fetch-item-royalties"
+import { getErrorMessage } from "../../blockchain-api/errors"
 import type { EnglishAuctionCreateRequest, FlowEnglishAuctionTransaction } from "./domain"
 
 export async function createEnglishAuction(
@@ -52,26 +53,31 @@ export async function createEnglishAuction(
 			],
 			payouts || [],
 		)
-		const txId = await runTransaction(
-			fcl,
-			map,
-			getEnglishAuctionCode(fcl, name, currency).createLot({
-				auctionContractAddress: CONFIGS[network].mainAddressMap.EnglishAuction,
-				tokenId: extractTokenId(request.itemId),
-				minimumBid,
-				buyoutPrice,
-				increment,
-				startAt,
-				duration,
-				parts,
-			}),
-			auth,
-		)
-		const tx = await waitForSeal(fcl, txId)
-		const simpleOrderId = parseEvents<string>(tx.events, "LotAvailable", "lotId")
-		return {
-			...tx,
-			lotId: String(simpleOrderId),
+		try {
+			const txId = await runTransaction(
+				fcl,
+				map,
+				getEnglishAuctionCode(fcl, name, currency).createLot({
+					auctionContractAddress: CONFIGS[network].mainAddressMap.EnglishAuction,
+					tokenId: extractTokenId(request.itemId),
+					minimumBid,
+					buyoutPrice,
+					increment,
+					startAt,
+					duration,
+					parts,
+				}),
+				auth,
+			)
+			const tx = await waitForSeal(fcl, txId)
+			const simpleOrderId = parseEvents<string>(tx.events, "LotAvailable", "lotId")
+			return {
+				...tx,
+				lotId: String(simpleOrderId),
+			}
+		} catch (e) {
+			const error = getErrorMessage(e as string, "englishAuction")
+			throw new Error(error)
 		}
 	}
 	throw new Error("Fcl is required for creating lot")

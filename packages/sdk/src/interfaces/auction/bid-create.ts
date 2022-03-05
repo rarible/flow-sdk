@@ -11,6 +11,7 @@ import { checkPrice } from "../order/common/check-price"
 import { getCollectionConfig } from "../../config/utils"
 import { getEnglishAuctionCode } from "../../blockchain-api/auction/english-auction"
 import { CONFIGS } from "../../config/config"
+import { getErrorMessage } from "../../blockchain-api/errors"
 import { getLot } from "./common/get-lot"
 import type { EnglishAuctionCreateBidRequest } from "./domain"
 
@@ -28,14 +29,19 @@ export async function createBid(
 		const { name, map } = getCollectionConfig(network, collection)
 		const { currency } = await getLot(fcl, network, preparedLotId)
 		const parts = concatNonUniqueFees([...originFee || [], getProtocolFee.percents(network).buyerFee])
-		const txId = await runTransaction(
-			fcl,
-			map,
-			getEnglishAuctionCode(fcl, name, currency)
-				.createBid(CONFIGS[network].mainAddressMap.EnglishAuction, preparedLotId, amount, parts),
-			auth,
-		)
-		return waitForSeal(fcl, txId)
+		try {
+			const txId = await runTransaction(
+				fcl,
+				map,
+				getEnglishAuctionCode(fcl, name, currency)
+					.createBid(CONFIGS[network].mainAddressMap.EnglishAuction, preparedLotId, amount, parts),
+				auth,
+			)
+			return waitForSeal(fcl, txId)
+		} catch (e) {
+			const error = getErrorMessage(e as string, "englishAuction")
+			throw new Error(error)
+		}
 	}
 	throw new Error("Fcl is required for create auction bid")
 }

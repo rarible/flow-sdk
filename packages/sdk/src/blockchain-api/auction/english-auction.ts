@@ -30,8 +30,6 @@ interface GetEnglishAuctionCode {
 		auctionContractAddress: string, lotId: number, amount: string, parts: FlowFee[],
 	): PreparedTransactionParamsResponse
 
-	increaseBid(lotId: number, amount: string): PreparedTransactionParamsResponse
-
 	updateProps(
 		request: { minimalDuration?: string, maximalDuration?: string, reservePrice?: string },
 	): PreparedTransactionParamsResponse
@@ -89,15 +87,7 @@ export function getEnglishAuctionCode(
 				]),
 			}
 		},
-		increaseBid: (lotId, amount) => {
-			return {
-				cadence: prepareOrderCode(englishAuctionTxCode.incrementBid, name, currency),
-				args: fcl.args([
-					fcl.arg(lotId, t.UInt64),
-					fcl.arg(fixAmount(amount), t.UFix64),
-				]),
-			}
-		},
+
 		updateProps: ({ minimalDuration, maximalDuration, reservePrice }) => {
 			return {
 				cadence: englishAuctionTxCode.updateProps,

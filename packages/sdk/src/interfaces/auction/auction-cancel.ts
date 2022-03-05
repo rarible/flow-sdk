@@ -5,6 +5,7 @@ import { runTransaction, waitForSeal } from "../../common/transaction"
 import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../types"
 import { getCollectionConfig } from "../../config/utils"
 import { getEnglishAuctionCode } from "../../blockchain-api/auction/english-auction"
+import { getErrorMessage } from "../../blockchain-api/errors"
 import { getLot } from "./common/get-lot"
 import type { EnglishAuctionCancelRequest } from "./domain"
 
@@ -19,13 +20,18 @@ export async function cancelEnglishAuction(
 		const { name, map } = getCollectionConfig(network, collection)
 		const preparedLotId = toBn(lotId).toNumber()
 		const { currency } = await getLot(fcl, network, preparedLotId)
-		const txId = await runTransaction(
-			fcl,
-			map,
-			getEnglishAuctionCode(fcl, name, currency).cancelLot(preparedLotId),
-			auth,
-		)
-		return waitForSeal(fcl, txId)
+		try {
+			const txId = await runTransaction(
+				fcl,
+				map,
+				getEnglishAuctionCode(fcl, name, currency).cancelLot(preparedLotId),
+				auth,
+			)
+			return waitForSeal(fcl, txId)
+		} catch (e) {
+			const error = getErrorMessage(e as string, "englishAuction")
+			throw new Error(error)
+		}
 	}
 	throw new Error("Fcl is required for cancel lot")
 }

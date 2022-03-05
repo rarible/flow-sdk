@@ -3,6 +3,8 @@ import NonFungibleToken from 0xNONFUNGIBLETOKEN
 
 pub contract EnglishAuction {
 
+    // LotAvailable
+    // A lot has been created and available for bids
     pub event LotAvailable(
         lotId: UInt64,
         seller: Address,
@@ -17,6 +19,11 @@ pub contract EnglishAuction {
         finishAt: UFix64?
     )
 
+    // LotCompleted
+    // The lot has been resolved
+    // If the item was sold, then bidder is the address of the winning bid
+    // and HammerPrice is the selling price, otherwise both are nil.
+    // isCancelled == true when lot was cancelled before auction is finished.
     pub event LotCompleted(
         lotId: UInt64,
         seller: Address,
@@ -25,9 +32,14 @@ pub contract EnglishAuction {
         isCancelled: Bool
     )
 
-    pub event OpenBid(lotId: UInt64, bidder: Address, amount: UFix64)
+    // LotEndTimeChanged
+    // The lot finishAt was changed due to soft close or buyout
+    pub event LotEndTimeChanged(
+        lotId: UInt64,
+        finishAt: UFix64?
+    )
 
-    pub event IncreaseBid(lotId: UInt64, bidder: Address, newAmount: UFix64)
+    pub event OpenBid(lotId: UInt64, bidder: Address, amount: UFix64)
 
     pub event CloseBid(lotId: UInt64, bidder: Address, isWinner: Bool)
 
@@ -43,6 +55,9 @@ pub contract EnglishAuction {
         }
     }
 
+    // Payout
+    // A struct representing the payment to be made by the buyer or seller
+    // upon the successful completion of the auction.
     pub struct Payout {
         pub var target: Capability<&{FungibleToken.Receiver}>
         pub var rate: UFix64
@@ -52,8 +67,8 @@ pub contract EnglishAuction {
             rate: UFix64
         ) {
             pre {
-                0.0 < rate && rate <= 1.0: "AU09: payout: rate must be in range (0,1]"
-                target.check(): "AU10: payout: capability not available"
+                0.0 < rate && rate <= 1.0: "AU18: payout: rate must be in range (0,1]"
+                target.check(): "AU19: payout: capability not available"
             }
             self.target = target
             self.rate = rate
@@ -73,20 +88,20 @@ pub contract EnglishAuction {
             payouts: [Payout],
         ) {
             pre {
-                source.check() : "AU: bid: broken item collection capability"
+                source.check() : "AU11: bid: broken item collection capability"
             }
             self.mark = mark
             self.refund = source
 
             self.item <- source.borrow()!.withdraw(withdrawID: itemId)
-            assert(self.item != nil, message: "AU: Not found token in collection")
+            assert(self.item != nil, message: "AU17: not found token in collection")
 
             var total = UFix64(0)
             for payout in payouts {
-                assert(payout.target.check(), message: "AU: Broken payout cap")
+                assert(payout.target.check(), message: "AU12: broken payout capability")
                 total = total + payout.rate
             }
-            assert(total == 1.0, message: "AU: Total payout rates must be equal to 1.0")
+            assert(total == 1.0, message: "AU28: total payout rate must be equal to 1.0")
             self.payouts = payouts
         }
 
@@ -101,7 +116,7 @@ pub contract EnglishAuction {
         }
 
         destroy() {
-            assert(self.item == nil, message: "AU: Can't destroy non-empty lot")
+            assert(self.item == nil, message: "AU35: can't destroy non-empty lot")
             destroy self.item
         }
     }
@@ -122,8 +137,8 @@ pub contract EnglishAuction {
             payouts: [Payout],
         ) {
             pre {
-                source.check(): "AU: Broken token vault"
-                reward.check(): "AU: Broken reward cap"
+                source.check(): "AU15: broken token vault"
+                reward.check(): "AU14: broken reward capability"
             }
 
             self.mark = mark
@@ -133,7 +148,7 @@ pub contract EnglishAuction {
 
             var amount = price
             for payout in payouts {
-                assert(payout.target.check(), message: "AU: Broken payout")
+                assert(payout.target.check(), message: "AU13: broken payout capability")
                 amount = amount + payout.rate * price
             }
 
@@ -171,24 +186,13 @@ pub contract EnglishAuction {
                 }
             }
 
-            assert(residualReceiver != nil, message: "No valid payment receivers")
+            assert(residualReceiver != nil, message: "AU16: no valid payment receivers")
             residualReceiver!.deposit(from: <- self.vault.withdraw(amount: self.vault.balance))
-        }
-
-        pub fun doIncrease(from: @FungibleToken.Vault) {
-            self.vault.deposit(from: <-from)
-
-            var rates = UFix64(0)
-            for payout in self.payouts {
-                rates = rates + payout.rate
-            }
-
-            self.price = self.vault.balance / (1.0 + rates)
         }
 
         destroy() {
             pre {
-                self.vault.balance == 0.0: "AU: Can't destroy non-empty bid"
+                self.vault.balance == 0.0: "AU34: can't destroy non-empty bid"
             }
             destroy self.vault
         }
@@ -220,10 +224,11 @@ pub contract EnglishAuction {
             duration: UFix64
         ) {
             pre {
-                duration >= EnglishAuction.minimalDuration
-                minimumBid >= EnglishAuction.reservePrice
-                increment >= EnglishAuction.reservePrice
-                buyoutPrice == nil || buyoutPrice! >= minimumBid
+                duration >= EnglishAuction.minimalDuration : "AU27: too short duration"
+                duration <= EnglishAuction.maximalDuration : "AU23: too long duration"
+                minimumBid >= EnglishAuction.reservePrice : "AU26: too low minimum bid"
+                increment >= EnglishAuction.reservePrice : "AU25: too low increment"
+                buyoutPrice == nil || buyoutPrice! >= minimumBid : "AU24: too low buyoutPrice"
             }
             self.lot <- lot
             self.bid <- nil
@@ -242,30 +247,81 @@ pub contract EnglishAuction {
             destroy self.bid
         }
 
-        pub fun appendBid(mark: UInt64, bid: @Bid): @Bid? {
+        pub fun createBid(
+            mark: UInt64,
+            reward: Capability<&{NonFungibleToken.CollectionPublic}>,
+            source: Capability<&{FungibleToken.Receiver,FungibleToken.Provider}>,
+            price: UFix64,
+            payouts: [Payout],
+        ) {
             pre {
-                bid.price >= self.minimumBid: "AU: Bid price must be greater than minimumBid"
-                bid.price >= (self.bid?.price ?? 0.0) + self.increment: "AU: Bid price must me greater than current bid price + increment"
+                price >= self.minimumBid: "AU21: bid price must be greater than minimumBid"
+                price >= (self.bid?.price ?? 0.0) + self.increment: "AU22: bid price must me greater than current bid price + increment"
             }
+
+            let dummy <- self.bid <- nil
+            if let beaten <- dummy {
+                emit CloseBid(
+                    lotId: self.uuid,
+                    bidder: beaten.refund.address,
+                    isWinner: false,
+                )
+                if beaten.doRefund(bidType: self.bidType) {
+                    destroy beaten
+                } else {
+                    self.addUnclaimedBid(bid: <-beaten)
+                }
+            } else {
+                destroy dummy
+            }
+
+            self.bid <-! create Bid(mark: mark, reward: reward, source: source, price: price, payouts: payouts)
+
+            emit OpenBid(
+                lotId: self.uuid,
+                bidder: self.owner!.address,
+                amount: self.bid?.price!,
+            )
+
             let timestamp = getCurrentBlock().timestamp
-            assert(timestamp >= self.startAt, message: "AU: The auction has not started yet")
-            assert(self.finishAt == nil || timestamp < self.finishAt!, message: "AU: The auction is already finished")
+            assert(timestamp >= self.startAt, message: "AU38: the auction has not started yet")
+            assert(self.finishAt == nil || timestamp < self.finishAt!, message: "AU39: the auction is already finished")
+
+            if self.buyoutPrice != nil && price >= self.buyoutPrice! {
+                self.finishAt = timestamp
+                emit LotEndTimeChanged(lotId: self.uuid, finishAt: self.finishAt)
+                self.complete()
+            }
 
             if self.finishAt == nil {
                 self.finishAt = timestamp + self.duration
+                emit LotEndTimeChanged(lotId: self.uuid, finishAt: self.finishAt)
+            } else {
+                if timestamp + EnglishAuction.minimalDuration > self.finishAt! {
+                    self.finishAt = timestamp + EnglishAuction.minimalDuration
+                    emit LotEndTimeChanged(lotId: self.uuid, finishAt: self.finishAt)
+                }
             }
-            if timestamp + EnglishAuction.minimalDuration > self.finishAt! {
-                self.finishAt = timestamp + EnglishAuction.minimalDuration
-            }
+        }
 
-            let beaten <- self.bid <- bid
-            return <-beaten
+        access(self) fun addUnclaimedBid(bid: @Bid) {
+            let mark = bid.mark
+            if let bids <- EnglishAuction.unclaimedBids.remove(key: mark) {
+                bids.append(<-bid)
+                let dummy <- EnglishAuction.unclaimedBids[mark] <- bids
+                destroy dummy
+            } else {
+                let bids: @[EnglishAuction.Bid] <- []
+                bids.append(<-bid)
+                let dummy <- EnglishAuction.unclaimedBids[mark] <- bids
+                destroy dummy
+            }
         }
 
         pub fun complete() {
             pre {
-                self.bid != nil: "AU: no bids"
-                self.finishAt ?? 0.0 < getCurrentBlock().timestamp
+                self.bid != nil: "AU37: no bids"
+                self.finishAt ?? 0.0 <= getCurrentBlock().timestamp : "AU30: auction is not over yet"
             }
             let lotRef = &self.lot as &Lot
             self.lot.doReward(receiver: self.bid?.reward!)
@@ -278,19 +334,6 @@ pub contract EnglishAuction {
                 hammerPrice: self.bid?.price!,
                 isCancelled: false,
             )
-        }
-
-        pub fun increaseBid(mark: UInt64, from: @FungibleToken.Vault) {
-            let dummy1 <- self.bid <- nil
-            if let dummy2 <- dummy1 {
-                dummy2.doIncrease(from: <-from)
-                let dummy3 <- self.bid <- dummy2
-                destroy dummy3
-            } else {
-                destroy dummy1
-                destroy from
-                panic("Something ")
-            }
         }
     }
 
@@ -346,8 +389,8 @@ pub contract EnglishAuction {
 
         pub fun cancelLot(auctionId: UInt64) {
             let auction <- EnglishAuction.auctions.remove(key: auctionId)!
-            assert(auction.lot.mark == self.uuid, message: "can only cancel your auction")
-            assert(auction.bid == nil, message: "Can't cancel auction with bids")
+            assert(auction.lot.mark == self.uuid, message: "AU36: cancellation of the auction is prohibited")
+            assert(auction.bid == nil, message: "AU33: can't cancel auction with bids")
 
             emit LotCompleted(
                 lotId: auctionId,
@@ -361,64 +404,22 @@ pub contract EnglishAuction {
             destroy auction
         }
 
-        pub fun completeLot(auctionId: UInt64) {
-            let auction <- EnglishAuction.auctions.remove(key: auctionId)!
-
-            auction.complete()
-            destroy auction
-        }
-
         pub fun createBid(
             auctionId: UInt64,
             reward: Capability<&{NonFungibleToken.CollectionPublic}>,
             source: Capability<&{FungibleToken.Receiver,FungibleToken.Provider}>
             price: UFix64
             payouts: [Payout]
-        ): UInt64 {
+        ) {
             let auction = &EnglishAuction.auctions[auctionId] as? &Auction
-            let bid <- create Bid(mark: self.uuid, reward: reward, source: source, price: price, payouts: payouts)
 
-            emit OpenBid(
-                lotId: auctionId,
-                bidder: self.owner!.address,
-                amount: bid.vault.balance,
+            auction.createBid(
+                mark: self.uuid,
+                reward: reward,
+                source: source,
+                price: price,
+                payouts: payouts,
             )
-
-            let beaten <- auction.appendBid(mark: self.uuid, bid: <- bid)
-
-            if beaten != nil {
-                let b <- beaten!
-                if b.doRefund(bidType: auction.bidType) {
-                    destroy b
-                } else {
-                    self.addUnclaimedBid(bid: <-b)
-                }
-            } else {
-                destroy beaten
-            }
-
-            return 0
-        }
-
-        pub fun increaseBid(auctionId: UInt64, from: @FungibleToken.Vault) {
-            let auction = &EnglishAuction.auctions[auctionId] as? &Auction
-            assert(auction.bid != nil, message: "AU: bid not found")
-            assert(auction.bid?.mark == self.uuid, message: "AU: you are not owner of bid")
-            auction.increaseBid(mark: self.uuid, from: <-from)
-
-            emit IncreaseBid(
-                lotId: auction.uuid,
-                bidder: auction.bid?.refund?.address!,
-                newAmount: auction.bid?.price!,
-            )
-        }
-
-        access(self) fun addUnclaimedBid(bid: @Bid) {
-            let mark = bid.mark
-            let bids <- !EnglishAuction.unclaimedBids.containsKey(mark) ? [] as @[EnglishAuction.Bid]: EnglishAuction.unclaimedBids.remove(key: mark)!
-            bids.append(<-bid)
-            let dummy <- EnglishAuction.unclaimedBids[mark] <- bids
-            destroy dummy
         }
     }
 
@@ -434,6 +435,13 @@ pub contract EnglishAuction {
 
     pub fun createAuctionManager(): @AuctionManager {
         return <-create AuctionManager()
+    }
+
+    pub fun completeLot(auctionId: UInt64) {
+        let auction <- EnglishAuction.auctions.remove(key: auctionId)!
+
+        auction.complete()
+        destroy auction
     }
 
     pub fun borrow(auctionId: UInt64): &Auction? {

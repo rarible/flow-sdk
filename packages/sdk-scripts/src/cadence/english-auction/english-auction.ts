@@ -1,4 +1,4 @@
-type FlowEnglishAuctionActions = "addLot" | "addBid" | "cancelLot" | "completeLot" | "incrementBid" | "updateProps"
+type FlowEnglishAuctionActions = "addLot" | "addBid" | "cancelLot" | "completeLot" | "updateProps"
 export const englishAuctionTxCode: Record<FlowEnglishAuctionActions, string> = {
 	addLot: `
 import NonFungibleToken from 0xNONFUNGIBLETOKEN
@@ -127,33 +127,11 @@ import EnglishAuction from 0xENGLISHAUCTION
 // Complete lot
 //
 transaction(auctionId: UInt64) {
-    let manager: &EnglishAuction.AuctionManager
 
-    prepare(account: AuthAccount) {
-        self.manager = account.borrow<&EnglishAuction.AuctionManager>(from: EnglishAuction.ManagerStoragePath)!
-    }
+    prepare(account: AuthAccount) {}
 
     execute {
-        self.manager.completeLot(auctionId: auctionId)
-    }
-}
-	`,
-	incrementBid: `
-import FungibleToken from 0xFUNGIBLETOKEN
-import EnglishAuction from 0xENGLISHAUCTION
-
-transaction (auctionId: UInt64, price: UFix64){
-    let manager: &EnglishAuction.AuctionManager
-    let vault: @FungibleToken.Vault
-
-    prepare (account: AuthAccount) {
-        self.manager = account.borrow<&EnglishAuction.AuctionManager>(from: EnglishAuction.ManagerStoragePath)!
-        let main = account.borrow<&FungibleToken.Vault>(from: %ftStoragePath%)!
-        self.vault <- main.withdraw(amount: price)
-    }
-
-    execute {
-        self.manager.increaseBid(auctionId: auctionId, from: <-self.vault)
+        EnglishAuction.completeLot(auctionId: auctionId)
     }
 }
 	`,
