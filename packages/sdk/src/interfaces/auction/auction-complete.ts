@@ -5,6 +5,7 @@ import { runTransaction, waitForSeal } from "../../common/transaction"
 import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../types"
 import { getCollectionConfig } from "../../config/utils"
 import { getEnglishAuctionCode } from "../../blockchain-api/auction/english-auction"
+import { getErrorMessage } from "../../blockchain-api/errors"
 import { getLot } from "./common/get-lot"
 import type { EnglishAuctionCompleteRequest } from "./domain"
 
@@ -28,10 +29,8 @@ export async function completeEnglishAuction(
 			)
 			return waitForSeal(fcl, txId)
 		} catch (e) {
-			const isAuctionNotFinichedYet = String(e).search("self.finishAt ?? 0.0 < getCurrentBlock().timestamp")
-			if (isAuctionNotFinichedYet) {
-				throw new Error("Еhe end of the auction has not yet come: auction.finishAt > currentBlock timestamp")
-			}
+			const error = getErrorMessage(e as string, "englishAuction")
+			throw new Error(error)
 		}
 	}
 	throw new Error("Fcl is required for complete lot")

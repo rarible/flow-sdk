@@ -33,13 +33,11 @@ import { createEnglishAuction } from "./interfaces/auction/auction-create"
 import { cancelEnglishAuction } from "./interfaces/auction/auction-cancel"
 import { completeEnglishAuction } from "./interfaces/auction/auction-complete"
 import { createBid } from "./interfaces/auction/bid-create"
-import { increaseBid } from "./interfaces/auction/bid-increase"
 import type {
 	EnglishAuctionCancelRequest,
 	EnglishAuctionCompleteRequest,
 	EnglishAuctionCreateBidRequest,
 	EnglishAuctionCreateRequest,
-	EnglishAuctionIncreaseBidRequest,
 	FlowEnglishAuctionTransaction,
 } from "./interfaces/auction/domain"
 import { getFrom } from "./interfaces/wallet/get-from"
@@ -155,8 +153,6 @@ export interface FlowEnglishAuctionSdk {
 	completeLot(request: EnglishAuctionCompleteRequest): Promise<FlowTransaction>
 
 	createBid(request: EnglishAuctionCreateBidRequest): Promise<FlowTransaction>
-
-	increaseBid(request: EnglishAuctionIncreaseBidRequest): Promise<FlowTransaction>
 }
 
 export interface FlowWalletSdk {
@@ -258,7 +254,6 @@ export function createFlowSdk(
 			cancelLot: cancelEnglishAuction.bind(null, fcl, auth, blockchainNetwork),
 			completeLot: completeEnglishAuction.bind(null, fcl, auth, blockchainNetwork),
 			createBid: createBid.bind(null, fcl, auth, blockchainNetwork),
-			increaseBid: increaseBid.bind(null, fcl, auth, blockchainNetwork),
 		},
 		wallet: {
 			getFungibleBalance: getFungibleBalance.bind(null, fcl, blockchainNetwork),

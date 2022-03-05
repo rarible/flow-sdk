@@ -103,7 +103,7 @@ pub contract SoftCollection : NonFungibleToken, LicensedNFT {
             meta: RaribleNFTv2.Meta,
             royalties: [LicensedNFT.Royalty],
         ) {
-            assert(self.supply == nil || self.supply! < self.totalSupply, message: "SC01: collection exhausted")
+            assert(self.supply == nil || self.totalSupply < self.supply!, message: "SC01: collection exhausted")
             RaribleNFTv2.mint(
                 receiver: receiver,
                 parentId: self.id,

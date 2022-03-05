@@ -103,12 +103,12 @@ describe("Test English Auction", () => {
 			originFee: [],
 		})
 		checkEvent(bid, "OpenBid", "EnglishAuction")
-		const increase = await sdk2.auction.increaseBid({
+		const increase = await sdk2.auction.createBid({
 			collection: emulatorCollection,
 			lotId: tx.lotId,
 			amount: "2",
 		})
-		checkEvent(increase, "IncreaseBid", "EnglishAuction")
+		checkEvent(increase, "OpenBid", "EnglishAuction")
 
 		await testDelay(6 * 1000)
 		await mintRaribleNftTest(sdk, emulatorCollection) //for generate new block
