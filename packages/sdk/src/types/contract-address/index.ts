@@ -1,3 +1,7 @@
+import type { FlowAddress } from "@rarible/types"
+import { toFlowAddress } from "@rarible/types"
+import type { FlowContractName } from "../index"
+
 export type FlowContractAddress = string & {
 	__IS_FLOW_CONTRACT_ADDRESS__: true
 }
@@ -13,4 +17,20 @@ export function toFlowContractAddress(str: string): FlowContractAddress {
 
 export function isFlowContractAddress(x: string): x is FlowContractAddress {
 	return flowContractRegExp.test(x)
+}
+
+export type FlowContractAddressData = {
+	address: FlowAddress
+	name: FlowContractName
+}
+
+export function parseContractAddress(x: FlowContractAddress): FlowContractAddressData {
+	const [, address, name] = x.split(".")
+	if (!address || !name) {
+		throw new Error("Invalid contract address")
+	}
+	return {
+		address: toFlowAddress(address),
+		name: name as FlowContractName,
+	}
 }

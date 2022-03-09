@@ -1,5 +1,5 @@
 import { FLOW_ZERO_ADDRESS, toBigNumber, toFlowAddress } from "@rarible/types"
-import type { FlowFee } from "../../types/types"
+import type { FlowFee } from "../../types"
 import { checkSellFees } from "./check-sell-fees-test"
 
 describe("test checkFees function", () => {

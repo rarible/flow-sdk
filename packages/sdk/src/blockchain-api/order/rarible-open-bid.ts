@@ -1,24 +1,21 @@
-import type { Fcl, FclArgs } from "@rarible/fcl-types"
+import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { openBidTransactionCode } from "@rarible/flow-sdk-scripts"
-import type { FlowCurrency, FlowFee, NonFungibleContract } from "../../types/types"
+import type { FlowCurrency, FlowFee, NonFungibleContract } from "../../types"
 import { prepareFees } from "../common/convert-fee-to-cadence"
 import { fixAmount } from "../../common/fix-amount"
+import type { PreparedTransactionParamsResponse } from "../domain"
 import { prepareOrderCode } from "./common/prepare-order-code"
 
-type GenerateCodeMethodResponse = {
-	cadence: string,
-	args: ReturnType<FclArgs>
-}
-
 type GenerateBidCodeResponse = {
-	create: (currency: FlowCurrency, itemId: number, price: string, fees: FlowFee[]) => GenerateCodeMethodResponse
-	close: (currency: FlowCurrency, bidId: number, address: string, fees: FlowFee[]) => GenerateCodeMethodResponse
-	update: (currency: FlowCurrency, bidId: number, price: string, fees: FlowFee[]) => GenerateCodeMethodResponse
-	cancel: (bidId: number) => GenerateCodeMethodResponse
+	create: (currency: FlowCurrency, itemId: number, price: string, fees: FlowFee[]) => PreparedTransactionParamsResponse
+	close: (currency: FlowCurrency, bidId: number, address: string, fees: FlowFee[]) => PreparedTransactionParamsResponse
+	update: (currency: FlowCurrency, bidId: number, price: string, fees: FlowFee[]) => PreparedTransactionParamsResponse
+	cancel: (bidId: number) => PreparedTransactionParamsResponse
 }
 
 export function getBidCode(fcl: Fcl, collectionName: NonFungibleContract): GenerateBidCodeResponse {
+	collectionName = collectionName === "SoftCollection" ? "RaribleNFTv2" : collectionName
 	return {
 		create(currency, itemId, price, fees) {
 			return {

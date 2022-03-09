@@ -1,7 +1,7 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
-import { toFlowAddress } from "@rarible/types"
 import type { FlowNftItemControllerApi } from "@rarible/flow-api-client"
+import type { FlowContractAddress } from "../../types/contract-address"
 import type {
 	AuthWithPrivateKey,
 	FlowCurrency,
@@ -9,16 +9,16 @@ import type {
 	FlowOriginFees,
 	FlowPayouts,
 	FlowTransaction,
-} from "../../types/types"
-import { runTransaction, waitForSeal } from "../../common/transaction"
-import { parseEvents } from "../../common/parse-tx-events"
+} from "../../types"
 import type { FlowItemId } from "../../types/item"
 import { extractTokenId } from "../../types/item"
-import { retry } from "../../common/retry"
+import { getCollectionConfig } from "../../config/utils"
+import { runTransaction, waitForSeal } from "../../common/transaction"
 import { getOrderCode } from "../../blockchain-api/order/storefront"
 import { fixAmount } from "../../common/fix-amount"
-import type { FlowContractAddress } from "../../types/contract-address"
-import { getCollectionConfig } from "../../config/utils"
+import { parseEvents } from "../../common/parse-tx-events"
+import { getAccountAddress } from "../../common/get-account-address"
+import { fetchItemRoyalties } from "./common/fetch-item-royalties"
 import { checkPrice } from "./common/check-price"
 import { getProtocolFee } from "./get-protocol-fee"
 import { calculateSaleCuts } from "./common/calculate-sale-cuts"
@@ -46,14 +46,10 @@ export async function sell(
 	const { collection, currency, itemId, sellItemPrice, payouts, originFees } = request
 	checkPrice(sellItemPrice)
 	if (fcl) {
-		const from = auth ? toFlowAddress((await auth()).addr) : toFlowAddress((await fcl.currentUser().snapshot()).addr!)
-		if (!from) {
-			throw new Error("FLOW-SDK: Can't get current user address")
-		}
+		const from = await getAccountAddress(fcl, auth)
+
 		// condition only for tests on local emulator
-		const item = network === "emulator" ?
-			{ royalties: [] } :
-			{ royalties: (await retry(10, 1000, async () => itemApi.getNftItemRoyaltyById({ itemId }))).royalty }
+		const royalties = network === "emulator" ? [] : await fetchItemRoyalties(itemApi, itemId)
 		const { name, map } = getCollectionConfig(network, collection)
 		const txId = await runTransaction(
 			fcl,
@@ -67,7 +63,7 @@ export async function sell(
 					[
 						getProtocolFee.percents(network).sellerFee,
 						...(originFees || []),
-						...(item.royalties || []),
+						...(royalties || []),
 					],
 					[...(payouts || [])],
 				),

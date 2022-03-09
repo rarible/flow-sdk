@@ -3,6 +3,55 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.25](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.24...v0.5.33-alpha.25) (2022-03-05)
+
+
+### Bug Fixes
+
+* added error messages handling for auctions ([c62f996](https://github.com/rarible/flow-sdk/commit/c62f9962574a8ab0ad32287c7ac0fe57a5b4364d))
+
+
+
+
+
+## [0.5.33-alpha.16](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.15...v0.5.33-alpha.16) (2022-02-25)
+
+
+### Features
+
+* fb-619 update soft collections scripts, add royalties when updating collection ([c5431f7](https://github.com/rarible/flow-sdk/commit/c5431f7cb1b8ca7a2aee32840a06d7fd1e90ce68))
+
+
+
+
+
+## [0.5.33-alpha.14](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.13...v0.5.33-alpha.14) (2022-02-22)
+
+
+### Bug Fixes
+
+* update api client, improve auction tests ([8f8fabc](https://github.com/rarible/flow-sdk/commit/8f8fabc08b9d7b56ca934725a2c785305551d004))
+
+
+
+
+
+## [0.5.33-alpha.12](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.11...v0.5.33-alpha.12) (2022-02-17)
+
+**Note:** Version bump only for package @rarible/flow-sdk-scripts
+
+
+
+
+
+## [0.5.33-alpha.11](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.10...v0.5.33-alpha.11) (2022-02-16)
+
+**Note:** Version bump only for package @rarible/flow-sdk-scripts
+
+
+
+
+
 ## [0.5.33-alpha.5](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.4...v0.5.33-alpha.5) (2022-02-07)
 
 **Note:** Version bump only for package @rarible/flow-sdk-scripts
@@ -55,6 +104,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Bug Fixes
 
 * update scripts ([ec611ca](https://github.com/rarible/flow-sdk/commit/ec611ca898302e864a822949d0e80cecd71bd9d2))
+
+
+
+
+
+## [0.5.30-ac.0](https://github.com/rarible/flow-sdk/compare/v0.5.28...v0.5.30-ac.0) (2021-12-30)
+
+**Note:** Version bump only for package @rarible/flow-sdk-scripts
 
 
 

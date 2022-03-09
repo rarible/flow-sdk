@@ -1,6 +1,6 @@
 import { toFlowContractAddress } from "../types/contract-address"
 import { isFlowAddress } from "../types/flow-address"
-import { NON_FUNGIBLE_CONTRACTS } from "../types/types"
+import { NON_FUNGIBLE_CONTRACTS } from "../types"
 import { toFlowCollectionId } from "../types/collection"
 import { getCollectionConfig, getCollectionData } from "./utils"
 

@@ -1,6 +1,6 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { FlowAddress } from "@rarible/types"
-import type { AuthWithPrivateKey, FlowCurrency, FlowFee, FlowTransaction, NonFungibleContract } from "../../../types/types"
+import type { AuthWithPrivateKey, FlowCurrency, FlowFee, FlowTransaction, NonFungibleContract } from "../../../types"
 import { runTransaction, waitForSeal } from "../../../common/transaction"
 import { getBidCode } from "../../../blockchain-api/order/rarible-open-bid"
 

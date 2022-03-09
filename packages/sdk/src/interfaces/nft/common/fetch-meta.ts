@@ -1,4 +1,4 @@
-import type { PinataMetaData } from "../../../types/types"
+import type { PinataMetaData } from "../../../types"
 import { METADATA_HOST } from "../../../config/config"
 import { retry } from "../../../common/retry"
 

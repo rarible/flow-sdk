@@ -1,14 +1,11 @@
-import type { Fcl, FclArgs } from "@rarible/fcl-types"
+import type { Fcl } from "@rarible/fcl-types"
 import { getBalanceScripts } from "@rarible/flow-sdk-scripts"
 import * as t from "@onflow/types"
-import type { FlowCurrency } from "../types/types"
+import type { FlowCurrency } from "../types"
+import type { PreparedTransactionParamsResponse } from "./domain"
 
-type GetBalanceCode = {
-	cadence: string
-	args: ReturnType<FclArgs>
-}
 
-export function getBalanceCode(fcl: Fcl, currency: FlowCurrency, address: string): GetBalanceCode {
+export function getBalanceCode(fcl: Fcl, currency: FlowCurrency, address: string): PreparedTransactionParamsResponse {
 	const args = fcl.args([fcl.arg(address, t.Address)])
 	switch (currency) {
 		case "FLOW":

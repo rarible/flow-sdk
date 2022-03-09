@@ -4,37 +4,50 @@ import type { ConfigurationParameters, FlowOrder, FlowRoyalty } from "@rarible/f
 import * as ApiClient from "@rarible/flow-api-client"
 import type { BigNumber, FlowAddress } from "@rarible/types"
 import type { FlowMintResponse } from "./interfaces/nft/mint"
-import { mint as mintTemplate } from "./interfaces/nft/mint"
-import { burn as burnTemplate } from "./interfaces/nft/burn"
+import { mint } from "./interfaces/nft/mint"
+import { burn } from "./interfaces/nft/burn"
 import { transfer as transferTemplate } from "./interfaces/nft/transfer"
 import type { FlowSellRequest, FlowSellResponse } from "./interfaces/order/sell"
-import { sell as sellTemplate } from "./interfaces/order/sell"
-import { fill as buyTemplate } from "./interfaces/order/fill/fill"
-import { cancelOrder as cancelOrderTmeplate } from "./interfaces/order/cancel-order"
-import { signUserMessage as signUserMessageTemplate } from "./interfaces/signature/sign-user-message"
-import { getFungibleBalance as getFungibleBalanceTemplate } from "./interfaces/wallet/get-fungible-balance"
-import { bid as bidTemplate } from "./interfaces/order/bid"
-import { bidUpdate as bidUpdateTemplate } from "./interfaces/order/bid-update"
-import { cancelBid as cancelBidTmeplate } from "./interfaces/order/cancel-bid"
-import { setupAccount as setupAccountTemplate } from "./interfaces/collection/setup-account"
+import { sell } from "./interfaces/order/sell"
+import { fill } from "./interfaces/order/fill/fill"
+import { cancelOrder } from "./interfaces/order/cancel-order"
+import { signUserMessage } from "./interfaces/signature/sign-user-message"
+import { getFungibleBalance } from "./interfaces/wallet/get-fungible-balance"
+import { bid } from "./interfaces/order/bid"
+import { bidUpdate } from "./interfaces/order/bid-update"
+import { cancelBid } from "./interfaces/order/cancel-bid"
+import { setupAccount } from "./interfaces/collection/setup-account"
 import type { CreateCollectionRequest, CreateCollectionResponse } from "./interfaces/collection/create-collection"
-import { createCollection as createCollectionTemplate } from "./interfaces/collection/create-collection"
+import { createCollection } from "./interfaces/collection/create-collection"
 import type { ProtocolFees } from "./interfaces/order/get-protocol-fee"
-import { getProtocolFee as getProtocolFeeUpdateTemplate } from "./interfaces/order/get-protocol-fee"
-import type { AuthWithPrivateKey, FlowCurrency, FlowEnv, FlowOriginFees, FlowTransaction } from "./types/types"
+import { getProtocolFee } from "./interfaces/order/get-protocol-fee"
+import type { AuthWithPrivateKey, FlowCurrency, FlowEnv, FlowOriginFees, FlowTransaction } from "./types"
 import type { FlowUpdateOrderRequest } from "./interfaces/order/update-order"
-import { updateOrder as updateOrderTemplate } from "./interfaces/order/update-order"
+import { updateOrder } from "./interfaces/order/update-order"
 import type { FlowItemId } from "./types/item"
 import { FLOW_ENV_CONFIG } from "./config/env"
 import type { FlowContractAddress } from "./types/contract-address"
 import type { UpdateCollectionRequest, UpdateCollectionResponse } from "./interfaces/collection/update-collection"
-import { updateCollection as updateCollectionTemplate } from "./interfaces/collection/update-collection"
+import { updateCollection } from "./interfaces/collection/update-collection"
+import { createEnglishAuction } from "./interfaces/auction/auction-create"
+import { cancelEnglishAuction } from "./interfaces/auction/auction-cancel"
+import { completeEnglishAuction } from "./interfaces/auction/auction-complete"
+import { createBid } from "./interfaces/auction/bid-create"
+import type {
+	EnglishAuctionCancelRequest,
+	EnglishAuctionCompleteRequest,
+	EnglishAuctionCreateBidRequest,
+	EnglishAuctionCreateRequest,
+	FlowEnglishAuctionTransaction,
+} from "./interfaces/auction/domain"
+import { getFrom } from "./interfaces/wallet/get-from"
 
 export interface FlowApisSdk {
 	order: ApiClient.FlowOrderControllerApi
 	collection: ApiClient.FlowNftCollectionControllerApi
 	item: ApiClient.FlowNftItemControllerApi
 	ownership: ApiClient.FlowNftOwnershipControllerApi
+	auction: ApiClient.FlowAuctionControllerApi
 }
 
 export interface FlowNftSdk {
@@ -132,8 +145,20 @@ export interface FlowOrderSdk {
 	getProtocolFee(): ProtocolFees
 }
 
+export interface FlowEnglishAuctionSdk {
+	createLot(request: EnglishAuctionCreateRequest): Promise<FlowEnglishAuctionTransaction>
+
+	cancelLot(request: EnglishAuctionCancelRequest): Promise<FlowTransaction>
+
+	completeLot(request: EnglishAuctionCompleteRequest): Promise<FlowTransaction>
+
+	createBid(request: EnglishAuctionCreateBidRequest): Promise<FlowTransaction>
+}
+
 export interface FlowWalletSdk {
 	getFungibleBalance(address: FlowAddress, currency: FlowCurrency): Promise<string>
+
+	getFrom(): Promise<FlowAddress>
 }
 
 export interface FlowCollectionSdk {
@@ -168,6 +193,7 @@ export interface FlowSdk {
 	order: FlowOrderSdk
 	collection: FlowCollectionSdk
 	wallet: FlowWalletSdk
+	auction: FlowEnglishAuctionSdk
 
 	signUserMessage(message: string): Promise<string>
 }
@@ -185,6 +211,7 @@ export function createFlowApisSdk(
 		item: new ApiClient.FlowNftItemControllerApi(configuration),
 		ownership: new ApiClient.FlowNftOwnershipControllerApi(configuration),
 		order: new ApiClient.FlowOrderControllerApi(configuration),
+		auction: new ApiClient.FlowAuctionControllerApi(configuration),
 	}
 }
 
@@ -206,31 +233,38 @@ export function createFlowSdk(
 	return {
 		apis,
 		nft: {
-			mint: mintTemplate.bind(null, fcl, auth, blockchainNetwork),
-			burn: burnTemplate.bind(null, fcl, auth, blockchainNetwork),
+			mint: mint.bind(null, fcl, auth, blockchainNetwork),
+			burn: burn.bind(null, fcl, auth, blockchainNetwork),
 			transfer: transferTemplate.bind(null, fcl, auth, blockchainNetwork),
 		},
 		order: {
-			sell: sellTemplate.bind(null, fcl, apis.item, auth, blockchainNetwork),
-			fill: buyTemplate.bind(null, fcl, auth, blockchainNetwork, apis.order).bind(null, apis.item),
-			cancelOrder: cancelOrderTmeplate.bind(null, fcl, auth, blockchainNetwork),
-			updateOrder: updateOrderTemplate.bind(
+			sell: sell.bind(null, fcl, apis.item, auth, blockchainNetwork),
+			fill: fill.bind(null, fcl, auth, blockchainNetwork, apis.order).bind(null, apis.item),
+			cancelOrder: cancelOrder.bind(null, fcl, auth, blockchainNetwork),
+			updateOrder: updateOrder.bind(
 				null, fcl, apis.order, auth).bind(null, blockchainNetwork,
 			),
-			bid: bidTemplate.bind(null, fcl, auth, blockchainNetwork),
-			bidUpdate: bidUpdateTemplate.bind(null, fcl, auth, blockchainNetwork, apis.order),
-			cancelBid: cancelBidTmeplate.bind(null, fcl, auth, blockchainNetwork),
-			getProtocolFee: getProtocolFeeUpdateTemplate.bind(null, blockchainNetwork),
+			bid: bid.bind(null, fcl, auth, blockchainNetwork),
+			bidUpdate: bidUpdate.bind(null, fcl, auth, blockchainNetwork, apis.order),
+			cancelBid: cancelBid.bind(null, fcl, auth, blockchainNetwork),
+			getProtocolFee: getProtocolFee.bind(null, blockchainNetwork),
+		},
+		auction: {
+			createLot: createEnglishAuction.bind(null, fcl, auth, blockchainNetwork, apis.item),
+			cancelLot: cancelEnglishAuction.bind(null, fcl, auth, blockchainNetwork),
+			completeLot: completeEnglishAuction.bind(null, fcl, auth, blockchainNetwork),
+			createBid: createBid.bind(null, fcl, auth, blockchainNetwork),
 		},
 		wallet: {
-			getFungibleBalance: getFungibleBalanceTemplate.bind(null, fcl, blockchainNetwork),
+			getFungibleBalance: getFungibleBalance.bind(null, fcl, blockchainNetwork),
+			getFrom: getFrom.bind(null, fcl, auth),
 		},
 		collection: {
-			setupAccount: setupAccountTemplate.bind(null, fcl, auth, blockchainNetwork),
-			createCollection: createCollectionTemplate.bind(null, fcl, auth, blockchainNetwork),
-			updateCollection: updateCollectionTemplate.bind(null, fcl, auth, blockchainNetwork),
+			createCollection: createCollection.bind(null, fcl, auth, blockchainNetwork),
+			updateCollection: updateCollection.bind(null, fcl, auth, blockchainNetwork),
+			setupAccount: setupAccount.bind(null, fcl, auth, blockchainNetwork),
 		},
-		signUserMessage: signUserMessageTemplate.bind(null, fcl),
+		signUserMessage: signUserMessage.bind(null, fcl),
 	}
 }
 
@@ -242,8 +276,8 @@ export type {
 	FlowFee,
 	FlowEnv,
 	NonFungibleContract,
-} from "./types/types"
-export { NON_FUNGIBLE_CONTRACTS } from "./types/types"
+} from "./types"
+export { NON_FUNGIBLE_CONTRACTS } from "./types"
 export type { FlowRoyalty } from "@rarible/flow-api-client"
 export { toFlowItemId, isFlowItemId } from "./types/item/index"
 export type { FlowItemId } from "./types/item/index"
@@ -251,3 +285,5 @@ export type { FlowContractAddress } from "./types/contract-address/index"
 export { toFlowContractAddress, isFlowContractAddress } from "./types/contract-address/index"
 export { FLOW_ENV_CONFIG } from "./config/env"
 export { FlowOrder } from "@rarible/flow-api-client"
+export { getFungibleBalanceSimple } from "./interfaces/wallet/get-ft-balance-simple"
+export const getFlowFungibleBalance = getFungibleBalance

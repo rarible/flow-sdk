@@ -1,4 +1,4 @@
-import type { FlowCurrency } from "../../../types/types"
+import type { FlowCurrency } from "../../../types"
 
 export function getCurrencyFromVaultType(vaultType: string): FlowCurrency {
 	const fungibleContract = vaultType.split(".")[2]

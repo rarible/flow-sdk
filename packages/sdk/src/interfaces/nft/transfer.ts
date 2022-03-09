@@ -1,6 +1,6 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
-import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../types/types"
+import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../../types"
 import { runScript, runTransaction, waitForSeal } from "../../common/transaction"
 import { getNftCode } from "../../blockchain-api/nft"
 import type { FlowContractAddress } from "../../types/contract-address"
@@ -20,7 +20,7 @@ export async function transfer(
 			const checkReceiver = await runScript(fcl, getNftCode(name).check(fcl, to), map)
 			if (checkReceiver) {
 				const txId = await runTransaction(fcl, map, getNftCode(name).transfer(fcl, tokenId, to), auth)
-				return await waitForSeal(fcl, txId)
+				return waitForSeal(fcl, txId)
 			}
 			throw new Error("The recipient has't yet initialized this collection on their account, and can't receive NFT from this collection")
 		}

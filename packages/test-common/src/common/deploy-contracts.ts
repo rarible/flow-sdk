@@ -1,5 +1,5 @@
 import { deployContractByName } from "flow-js-testing"
-import { CONTRACTS } from "../config"
+import { CONTRACTS, EMULATOR_FUNGIBLE_TOKEN_ADDRESS } from "../config"
 
 export async function deployAll(address: string) {
 	await deployContractByName({
@@ -124,7 +124,7 @@ export async function deployAll(address: string) {
 			MotoGPPack: address,
 			MotoGPCard: address,
 			NonFungibleToken: address,
-			FungibleToken: "0xee82856bf20e2aa6",
+			FungibleToken: EMULATOR_FUNGIBLE_TOKEN_ADDRESS,
 			FlowStorageFees: address,
 			ContractVersion: address,
 			PackOpener: address,
@@ -135,7 +135,7 @@ export async function deployAll(address: string) {
 		to: address,
 		addressMap: {
 			NonFungibleToken: address,
-			FungibleToken: "0xee82856bf20e2aa6",
+			FungibleToken: EMULATOR_FUNGIBLE_TOKEN_ADDRESS,
 		},
 	})
 	await deployContractByName({
@@ -150,6 +150,14 @@ export async function deployAll(address: string) {
 		to: address,
 		addressMap: {
 			NonFungibleToken: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.EnglishAuction,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			FungibleToken: EMULATOR_FUNGIBLE_TOKEN_ADDRESS,
 		},
 	})
 	await deployContractByName({
@@ -230,6 +238,44 @@ export async function deployAll(address: string) {
 			MetadataViews: address,
 			RaribleNFTv2: address,
 			LicensedNFT: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.BarterYardPackNFT,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			MetadataViews: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.FanfareNFTContract,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.NFTLX,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.Kicks,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			TopShot: address,
+			NFTLX: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.Moments,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
 		},
 	})
 }

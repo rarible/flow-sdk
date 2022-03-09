@@ -6,9 +6,9 @@ import { createEvolutionTestEnvironment, getEvolutionIds } from "../../test/seco
 import { createTopShotTestEnvironment, getTopShotIds } from "../../test/secondary-collections/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../../test/secondary-collections/moto-gp-card"
 import { createMugenArtTestEnvironment, getMugenArtIds } from "../../test/secondary-collections/mugen-art"
-import { testCreateCollection } from "../../test/collection/test-create-collection"
 import { getContractAddress } from "../../config/utils"
 import { mintTest } from "../test/mint-test"
+import { testCreateCollection } from "../../test/collection/test-create-collection"
 
 describe("Minting on emulator", () => {
 	let sdk: FlowSdk
@@ -26,11 +26,8 @@ describe("Minting on emulator", () => {
 	})
 
 	test("should mint nft to soft collection", async () => {
-		const raribleV2Collection = getContractAddress("emulator", "RaribleNFTv2")
-
 		const createCollectionTx = await testCreateCollection(sdk)
-		const softCollection = toFlowContractAddress(`${raribleV2Collection}:${createCollectionTx.collectionId}`)
-		const mintTx = await mintTest(sdk, softCollection)
+		const mintTx = await mintTest(sdk, createCollectionTx.collectionId)
 		const mintEvent = mintTx.events.filter(e => e.type.split(".")[3] === "Minted")[0]
 		expect(mintEvent.data.meta.name).toEqual("Genesis")
 	})

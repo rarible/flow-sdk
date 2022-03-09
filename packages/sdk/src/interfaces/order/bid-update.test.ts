@@ -5,6 +5,8 @@ import { createFlowSdk } from "../../index"
 import { getTestOrderTmplate } from "../../test/order-template"
 import { checkEvent } from "../../test/check-event"
 import { getContractAddress } from "../../config/utils"
+import { bidTest } from "../test/bid-test"
+import { mintTest } from "../test/mint-test"
 
 describe("Bid update", () => {
 	createFlowEmulator({})
@@ -17,17 +19,8 @@ describe("Bid update", () => {
 		const auth1 = createTestAuth(fcl, "emulator", address1, pk1, 0)
 		const sdk1 = createFlowSdk(fcl, "emulator", {}, auth1)
 
-		const mintTx = await sdk.nft.mint(
-			collection,
-			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
-			[],
-		)
-		const tx = await sdk1.order.bid(
-			collection,
-			"FLOW",
-			mintTx.tokenId,
-			toBigNumber("0.01"),
-		)
+		const mintTx = await mintTest(sdk, collection)
+		const tx = await bidTest(sdk, collection, "FLOW", mintTx.tokenId, "0.0001")
 		const order = getTestOrderTmplate("bid", tx.orderId, mintTx.tokenId, toBigNumber("0.01"))
 		const updateTx = await sdk1.order.bidUpdate(
 			collection, "FLOW", order, toBigNumber("0.02"),

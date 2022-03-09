@@ -1,5 +1,7 @@
 export const EMULATOR_SERVICE_ACCOUNT_PK = "9929788f279238828e7da0592d87f1ada84b6bc373a50639bdff13a483e04fd4"
 
+export const EMULATOR_FUNGIBLE_TOKEN_ADDRESS = "0xee82856bf20e2aa6"
+
 export const CONTRACTS: Record<Contracts, string> = {
 	NonFungibleToken: "NonFungibleToken",
 	FUSD: "FUSD",
@@ -32,6 +34,12 @@ export const CONTRACTS: Record<Contracts, string> = {
 	SoftCollection: "SoftCollection",
 	RaribleNFTv2: "RaribleNFTv2",
 	MetadataViews: "MetadataViews",
+	EnglishAuction: "EnglishAuction",
+	BarterYardPackNFT: "BarterYardPackNFT",
+	Moments: "Moments",
+	FanfareNFTContract: "FanfareNFTContract",
+	Kicks: "Kicks",
+	NFTLX: "NFTLX",
 }
 type Contracts =
 	"NonFungibleToken" |
@@ -62,10 +70,15 @@ type Contracts =
 	"OneFootballCollectible" |
 	"ChainmonstersRewards" |
 	"Content" |
-	"MatrixWorldVoucher" |
 	"SoftCollection" |
 	"RaribleNFTv2" |
-	"MetadataViews"
+	"MetadataViews" |
+	"EnglishAuction" |
+	"BarterYardPackNFT" |
+	"Moments" |
+	"FanfareNFTContract" |
+	"Kicks" |
+	"NFTLX"
 
 type TestAccount = {
 	address: string

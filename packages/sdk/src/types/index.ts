@@ -36,6 +36,10 @@ export const NON_FUNGIBLE_CONTRACTS = [
 	"ChainmonstersRewards",
 	"RaribleNFTv2",
 	"SoftCollection",
+	"BarterYardPackNFT",
+	"Moments",
+	"FanfareNFTContract",
+	"Kicks",
 ] as const
 
 export type NonFungibleContracts = typeof NON_FUNGIBLE_CONTRACTS
@@ -53,6 +57,7 @@ export type FlowContractName =
 	| FungibleContracts
 	| NonFungibleContract
 	| MetadataViews
+	| EnglishAuction
 
 export type AuthWithPrivateKey = undefined | ((account?: any) => Promise<any>)
 
@@ -73,3 +78,4 @@ export type LicensedNFTType = "LicensedNFT"
 export type TopShotFeeType = "TopShotFee"
 export type RaribleOpenBid = "RaribleOpenBid"
 export type MetadataViews = "MetadataViews"
+export type EnglishAuction = "EnglishAuction"

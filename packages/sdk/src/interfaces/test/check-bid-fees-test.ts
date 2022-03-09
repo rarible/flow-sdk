@@ -1,6 +1,6 @@
 import { toBigNumber } from "@rarible/types"
 import { toBn } from "@rarible/utils"
-import type { FlowFee } from "../../types/types"
+import type { FlowFee } from "../../types"
 import { withPrefix } from "../../common/prefix"
 import { calculateFees } from "../order/common/calculate-fees"
 

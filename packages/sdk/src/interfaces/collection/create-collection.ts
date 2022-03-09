@@ -1,16 +1,18 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import { toFlowAddress } from "@rarible/types"
-import type { AuthWithPrivateKey, FlowFee, FlowNetwork, FlowTransaction } from "../../types/types"
+import type { AuthWithPrivateKey, FlowFee, FlowNetwork, FlowTransaction } from "../../types"
 import { validateRoyalties } from "../nft/common/validate-royalties"
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import { getNftCode } from "../../blockchain-api/nft"
 import type { FlowContractAddress } from "../../types/contract-address"
 import { getCollectionConfig, getContractAddress } from "../../config/utils"
+import type { FlowCollectionId } from "../../types/collection"
+import { toFlowCollectionId } from "../../types/collection"
 
 
 export type CreateCollectionRequest = {
-	collection?: FlowContractAddress
+	parentCollection?: FlowContractAddress
 	name: string
 	symbol: string
 	royalties: FlowFee[]
@@ -21,8 +23,8 @@ export type CreateCollectionRequest = {
 }
 
 export type CreateCollectionResponse = FlowTransaction & {
-	collectionId: string
-	parentId: string | null
+	collectionId: FlowCollectionId
+	parentId: FlowCollectionId | null
 }
 
 export async function createCollection(
@@ -36,8 +38,9 @@ export async function createCollection(
 		if (!from) {
 			throw new Error("FLOW-SDK: Can't get current user address")
 		}
-		const { royalties, url, icon, name: requestName, description, symbol, supply } = request
-		const preparedCollection = request.collection || getContractAddress(network, "SoftCollection")
+		const { royalties, url, icon, name: requestName, description, symbol, supply, parentCollection } = request
+		const softCollection = getContractAddress(network, "SoftCollection")
+		const preparedCollection = parentCollection || softCollection
 		const { address, name, map, userCollectionId } = getCollectionConfig(
 			network, preparedCollection,
 		)
@@ -70,8 +73,8 @@ export async function createCollection(
 					const { id, parentId } = mintEvent.data
 					return {
 						...txResult,
-						collectionId: `${id}`,
-						parentId: typeof parentId === "number" ? `${parentId}` : null,
+						collectionId: toFlowCollectionId(`${softCollection}:${id}`),
+						parentId: typeof parentId === "number" ? toFlowCollectionId(`${softCollection}:${parentId}`) : null,
 					}
 				}
 				throw new Error("Minted event not found in transaction response")

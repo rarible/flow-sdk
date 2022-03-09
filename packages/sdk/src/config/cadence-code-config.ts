@@ -1,4 +1,4 @@
-import type { FlowContractName, FungibleContracts, NonFungibleContract } from "../types/types"
+import type { FlowContractName, FungibleContracts, NonFungibleContract } from "../types"
 
 export type FtCodeConfig = Record<"%ftPublicPath%" | "%ftPrivateType%" | "%ftPrivatePath%" | "%ftStoragePath%" | "%ftContract%", string>
 
@@ -66,6 +66,7 @@ const nftCodeConfig: Record<NonFungibleContract, NftStaticVariables> = {
 	MatrixWorldVoucher: {
 		"%nftPublicPath%": "MatrixWorldVoucher.CollectionPublicPath",
 		"%nftStoragePath%": "MatrixWorldVoucher.CollectionStoragePath",
+		"%publicTypeAddon%": "MatrixWorldVoucher.MatrixWorldVoucherCollectionPublic",
 	},
 	DisruptArt: {
 		"%nftPublicPath%": "DisruptArt.disruptArtPublicPath",
@@ -98,6 +99,25 @@ const nftCodeConfig: Record<NonFungibleContract, NftStaticVariables> = {
 	RaribleNFTv2: {
 		"%nftPublicPath%": "RaribleNFTv2.CollectionPublicPath",
 		"%nftStoragePath%": "RaribleNFTv2.CollectionStoragePath",
+	},
+	BarterYardPackNFT: {
+		"%nftPublicPath%": "BarterYardPackNFT.CollectionPublicPath",
+		"%nftStoragePath%": "BarterYardPackNFT.CollectionStoragePath",
+		"%publicTypeAddon%": "BarterYardPackNFT.BarterYardPackNFTCollectionPublic",
+	},
+	FanfareNFTContract: {
+		"%nftPublicPath%": "FanfareNFTContract.CollectionPublicPath",
+		"%nftStoragePath%": "FanfareNFTContract.CollectionStoragePath",
+		"%publicTypeAddon%": "FanfareNFTContract.FanfareNFTCollectionPublic",
+	},
+	Kicks: {
+		"%nftPublicPath%": "Kicks.CollectionPublicPath",
+		"%nftStoragePath%": "Kicks.CollectionStoragePath",
+	},
+	Moments: {
+		"%nftPublicPath%": "Moments.CollectionPublicPath",
+		"%nftStoragePath%": "Moments.CollectionStoragePath",
+		"%publicTypeAddon%": "Moments.CollectionPublic",
 	},
 }
 export type NftCodeConfig = NftStaticVariables & {

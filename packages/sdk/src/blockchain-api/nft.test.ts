@@ -1,4 +1,4 @@
-import type { NonFungibleContract } from "../types/types"
+import type { NonFungibleContract } from "../types"
 import { getNftCode } from "./nft"
 
 describe("getNftCode function", () => {

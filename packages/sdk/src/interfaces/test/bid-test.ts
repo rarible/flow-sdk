@@ -1,5 +1,4 @@
 import { toBn } from "@rarible/utils"
-import type { BigNumber } from "@rarible/types"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import type { FlowContractAddress, FlowCurrency, FlowFee, FlowItemId, FlowSdk } from "../../index"
 import type { FlowSellResponse } from "../order/sell"
@@ -11,14 +10,14 @@ export async function bidTest(
 	collection: FlowContractAddress,
 	currency: FlowCurrency,
 	itemId: FlowItemId,
-	bidPrice: BigNumber = toBigNumber("1"),
+	bidPrice: string = "1",
 	originFees: FlowFee[] = [],
 ): Promise<FlowSellResponse> {
 	const bidTx = await sdk.order.bid(
 		collection,
 		currency,
 		itemId,
-		bidPrice,
+		toBigNumber(bidPrice),
 		originFees,
 	)
 	expect(bidTx.status).toEqual(4)

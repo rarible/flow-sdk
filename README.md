@@ -1,6 +1,7 @@
 # Flow SDK
 
-Rarible Protocol Flow combines smart contracts for minting, exchanging tokens, APIs for order creation, discovery, standards used in smart contracts.
+Rarible Protocol Flow combines smart contracts for minting, exchanging tokens, APIs for order creation, discovery,
+standards used in smart contracts.
 
 Flow SDK enables applications to interact with protocol easily.
 
@@ -43,13 +44,15 @@ Otherwise, the `yarn` commands will not work.
 
 To run tests, you need to install [flow-cli](https://docs.onflow.org/flow-cli/install/).
 
-nodejs version 16.9.0 is interrupting on tests with Flow emulator in some cases. It's an upstream bug in V8 present in node 16.9.0. [Here's](https://github.com/nodejs/node/issues/40030) more info about the bug.
+nodejs version 16.9.0 is interrupting on tests with Flow emulator in some cases. It's an upstream bug in V8 present in
+node 16.9.0. [Here's](https://github.com/nodejs/node/issues/40030) more info about the bug.
 
 ### Usage
 
 #### Configure fcl
 
-Flow-sdk use [@onflow/fcl-js](link:https://github.com/onflow/fcl-js). You can find configuration details for fcl in [this page](https://docs.onflow.org/fcl/tutorials/flow-app-quickstart/#configuration).
+Flow-sdk use [@onflow/fcl-js](link:https://github.com/onflow/fcl-js). You can find configuration details for fcl
+in [this page](https://docs.onflow.org/fcl/tutorials/flow-app-quickstart/#configuration).
 
 ```javascript
 //example config for testnet
@@ -77,6 +80,11 @@ const sdk = createFlowSdk(fcl, "testnet")
 Mint response represents transaction result extended with `txId` and minted `tokenId`
 
 ```typescript
+import { toBigNumber, toFlowAddress } from "@rarible/types"
+
+// royalties - array of objects: {account: FlowAddress, value: BigNumber}, value must be a number between 0 and 1
+const yourRoyalties = [{ account: toFlowAddress("0x1234567890abcdef"), value: toBigNumber("0.1") }]
+
 const {
   txId, // transaction id
   tokenId, // minted tokenId
@@ -84,7 +92,7 @@ const {
   statusCode, // flow transaction statusCode - for example: value 4 for sealed transaction
   errorMessage,
   events, // events generated from contract and include all events produced by transaction, deopsits withdrown etc.
-} = await sdk.nft.mint(collection, "your meta info", [])
+} = await sdk.nft.mint(collection, "your meta info", yourRoyalties)
 ```
 
 #### Transfer
@@ -159,7 +167,8 @@ const {
 
 ### Suggestions
 
-You are welcome to [suggest features](https://github.com/rarible/protocol/discussions) and [report bugs found](https://github.com/rarible/protocol/issues)!
+You are welcome to [suggest features](https://github.com/rarible/protocol/discussions)
+and [report bugs found](https://github.com/rarible/protocol/issues)!
 
 ### License
 

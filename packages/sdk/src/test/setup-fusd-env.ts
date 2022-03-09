@@ -2,13 +2,13 @@ import {
 	createEmulatorAccount,
 	createTestAuth,
 	getServiceAccountAddress,
+	testScripts,
 	testTransactions,
 } from "@rarible/flow-test-common"
 import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
-import { testScripts } from "@rarible/flow-test-common/build/common/scripts"
 import { runScript, runTransaction, waitForSeal } from "../common/transaction"
-import type { AuthWithPrivateKey, FlowNetwork } from "../types/types"
+import type { AuthWithPrivateKey, FlowNetwork } from "../types"
 import type { FlowSdk } from "../index"
 import { createFlowSdk } from "../index"
 import { CONFIGS } from "../config/config"
@@ -28,7 +28,7 @@ async function runFusdTransaction(
 		},
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
 
 async function depositFusdMinter(
@@ -48,7 +48,7 @@ async function depositFusdMinter(
 		},
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
 
 async function mintFusdToAccount(
@@ -68,7 +68,7 @@ async function mintFusdToAccount(
 		},
 		auth,
 	)
-	return await waitForSeal(fcl, txId)
+	return waitForSeal(fcl, txId)
 }
 
 type TestAccount = {
@@ -137,7 +137,7 @@ export async function getEvolutionIds(
 		NonFungibleToken: contractOwner,
 	}
 	const args = fcl.args([fcl.arg(address, t.Address), fcl.arg(tokenId, t.UInt64)])
-	return await runScript(
+	return runScript(
 		fcl,
 		{
 			cadence,

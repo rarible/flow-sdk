@@ -8,10 +8,12 @@ npm i -S @rarible/flow-sdk
 
 ## Usage
 
+### Simple code [example](https://github.com/rarible/flow-sdk/tree/master/packages/sdk/example/index.ts)
+
 Quick start
 
 1. [Configure fcl](https://github.com/rarible/flow-sdk/tree/master/packages/sdk#configure-fcl)
-2. [Create and use flow-sdk](https://github.com/rarible/flow-sdk/tree/master/packages/flow-sdk#create-and-use-flow-sdk)
+2. [Create and use flow-sdk](https://github.com/rarible/flow-sdk/tree/master/packages/sdk#create-and-use-flow-sdk)
 
 ### Configure fcl
 
@@ -45,83 +47,129 @@ const sdk = createFlowSdk(fcl, "testnet")
 Mint response represents transaction result extended with `txId` and minted `tokenId`
 
 ```typescript
-const {
-  txId, // transaction id
-  tokenId, // minted tokenId
-  status, // flow transaction status
-  statusCode, // flow transaction statusCode - for example: value 4 for sealed transaction
-  errorMessage,
-  events, // events generated from contract and include all events produced by transaction, deopsits withdrown etc.
-} = await sdk.nft.mint(collection, "your meta info", [])
+import { toFlowContractAddress } from "@rarible/flow-sdk"
+import { toFlowAddress } from "@rarible/types"
+
+// collection = Contact address A.[contactAddress].[contractName]
+const collection = toFlowContractAddress("A.0x1234567890abcdef.RaribleNFT")
+// royalties - array of objects: {account: FlowAddress, value: BigNumber}, value must be a number between 0 and 1
+const royalties = [{ account: toFlowAddress("0x1234567890abcdef"), value: toBigNumber("0.1") }]
+const metaData = "your meta info" // usually ipfs url
+
+const { tokenId } = await sdk.nft.mint(collection, metaData, royalties)
 ```
+
+Returns `FlowTransaction` object with minted tokenId
 
 #### Transfer
 
 ```typescript
-const {
-  status,
-  statusCode,
-  errorMessage,
-  events,
-} = await sdk.nft.transfer(collection, tokenId, toFlowAddress)
+import { toFlowAddress } from "@rarible/types"
+import { toFlowContractAddress } from "@rarible/flow-sdk"
+
+const collection = toFlowContractAddress("A.0x1234567890abcdef.RaribleNFT")
+const tokenId = 123
+const receiver = toFlowAddress("0x1234567890abcdef")
+
+const tx = await sdk.nft.transfer(collection, tokenId, receiver)
 ```
+
+Returns `FlowTransaction` object
 
 #### Burn
 
 ```typescript
-const {
-  status,
-  statusCode,
-  errorMessage,
-  events,
-} = await sdk.nft.burn(collection, tokenId)
+import { toFlowContractAddress } from "@rarible/flow-sdk"
+
+const collection = toFlowContractAddress("A.0x1234567890abcdef.RaribleNFT")
+const tokenId = 123
+
+const tx = await sdk.nft.burn(collection, tokenId)
 ```
+
+Returns `FlowTransaction` object
 
 #### Create sell order
 
 ```typescript
-const {
-  status,
-  statusCode,
-  errorMessage,
-  events,
-} = await sdk.nft.sell(collection, currency, tokenId, price)
-// supported currencies for now "FLOW" and "FUSD"
-// price must be a string of flow fungible token amount with 8 decimals,  for example: 1.123 or 0.1 or 0.00000001
+import { toFlowContractAddress, toFlowItemId } from "@rarible/flow-sdk"
+
+const collection = toFlowContractAddress("A.0x1234567890abcdef.RaribleNFT")
+const itemId = toFlowItemId(`${collection}:123`)
+const tx = await sdk.nft.sell(collection, currency, itemId, price)
+
+/** supported currencies for now "FLOW" and "FUSD" */
+
+/** FlowItemId you can find in FlowNftItem response from api,
+ for example sdk.apis.item.getNftItemsByOwner({address: <your account address>})
+ */
+
+/** price must be a string of flow fungible token amount with 8 decimals,  for example: 1.123 or 0.1 or 0.00000001 */
 ```
+
+Returns `FlowTransaction` object with orderId
 
 #### Update order
 
 ```typescript
-const {
-  status,
-  statusCode,
-  errorMessage,
-  events,
-} = await sdk.nft.sell(collection, currency, orderId, price)
-// supported currencies for now "FLOW" and "FUSD"
-// price must be a string of flow fungible token amount with 8 decimals,  for example: 1.123 or 0.1 or 0.00000001
+const tx = await sdk.nft.updateOrder(collection, currency, orderId, price)
+// orderId can be a orderId number or full FlowOrder object received from order api
 ```
+
+Returns `FlowTransaction` object with updated orderId
 
 #### Cancel order
 
 ```typescript
-const {
-  status,
-  statusCode,
-  errorMessage,
-  events,
-} = await sdk.nft.sell(collection, orderId)
+const tx = await sdk.nft.cancelOrder(collection, orderId)
 ```
+
+Returns `FlowTransaction` object
 
 #### Buy an item
 
 ```typescript
-const {
-  status,
-  statusCode,
-  errorMessage,
-  events,
-} = await sdk.nft.fill(collection, orderId, owner)
+const tx = await sdk.nft.fill(collection, orderId, owner)
+// owner: FlowAddress - order owner address
 ```
 
+Returns `FlowTransaction` object
+
+#### Create bid
+
+```typescript
+import { toFlowContractAddress, toFlowItemId } from "@rarible/flow-sdk"
+
+const collection = toFlowContractAddress("A.0x1234567890abcdef.RaribleNFT")
+const itemId = toFlowItemId(`${collection}:123`)
+const tx = await sdk.nft.bid(collection, currency, itemId, price)
+// params the same as regular order creation
+```
+
+Returns `FlowTransaction` object with orderId
+
+#### Update bid
+
+```typescript
+const tx = await sdk.nft.updateBid(collection, currency, bidId, price)
+```
+
+Returns `FlowTransaction` object with updated orderId
+
+#### Cancel bid
+
+```typescript
+const tx = await sdk.nft.cancelBid(collection, bidId)
+```
+
+Returns `FlowTransaction` object
+
+#### Accept bid
+
+The same as buy order `sdk.order.fill`
+
+#### Get account fungible tokens balance
+
+```typescript
+const balance = await sdk.wallet.getFungibleBalance(accountAddress, "FUSD")
+```

@@ -9,13 +9,13 @@ import { toFlowContractAddress } from "../types/contract-address"
 export function getTestOrderTmplate(type: "sell" | "bid", orderId: number, itemId: FlowItemId, price: BigNumber): FlowOrder {
 	const left: FlowAsset = {
 		"@type": "nft",
-		contract: toFlowContractAddress(`A.${FLOW_ZERO_ADDRESS}.NFT`),
+		contract: toFlowContractAddress(itemId.split(":")[0]),
 		value: toBigNumber("1"),
 		tokenId: toBigNumber(extractTokenId(itemId).toString()),
 	}
 	const right: FlowAsset = {
 		"@type": "fungible",
-		contract: toFlowContractAddress(`A.${FLOW_ZERO_ADDRESS}.Fungible`),
+		contract: toFlowContractAddress("A.0x0000000000000000.FlowToken"),
 		value: price,
 	}
 	return {
@@ -32,14 +32,13 @@ export function getTestOrderTmplate(type: "sell" | "bid", orderId: number, itemI
 		},
 		fill: toBigNumber("0"),
 		cancelled: false,
-		createdAt: "2019-08-24T14:15:22Z",
-		lastUpdateAt: "2019-08-24T14:15:22Z",
+		createdAt: new Date("2019-08-24T14:15:22Z"),
+		lastUpdateAt: new Date("2019-08-24T14:15:22Z"),
 		amount: toBigNumber("1"),
-		offeredNftId: "string",
 		priceUsd: toBigNumber("0"),
 		makeStock: toBigNumber("0"),
-		start: "2019-08-24T14:15:22Z",
-		end: "2019-08-24T14:15:22Z",
+		start: new Date("2019-08-24T14:15:22Z"),
+		end: new Date("2019-08-24T14:15:22Z"),
 		status: FlowOrderStatusEnum.ACTIVE,
 	}
 }

@@ -1,6 +1,6 @@
-import { createFlowEmulator } from "@rarible/flow-test-common"
 import { toBigNumber } from "@rarible/types"
 import fcl from "@onflow/fcl"
+import { createFlowEmulator } from "@rarible/flow-test-common"
 import type { FlowFee } from "../../index"
 import { toFlowItemId } from "../../index"
 import { createFlowTestEmulatorSdk } from "../../test/create-flow-test-sdk"
@@ -29,7 +29,7 @@ describe("Test bid on emulator", () => {
 		await sdk1.order.fill(collection, "FLOW", order, address2, [])
 
 		const originFees: FlowFee[] = [{ account: address1, value: toBigNumber("0.12") }]
-		const bid2 = await bidTest(sdk1, collection, "FLOW", mintTx.tokenId, toBigNumber("1"), originFees)
+		const bid2 = await bidTest(sdk1, collection, "FLOW", mintTx.tokenId, "1", originFees)
 		const order2 = getTestOrderTmplate("bid", bid2.orderId, mintTx.tokenId, toBigNumber("1"))
 		await sdk2.order.fill(collection, "FLOW", order2, address1, [])
 	})
@@ -40,7 +40,7 @@ describe("Test bid on emulator", () => {
 
 		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
 		expect(result.data.itemId).toEqual(1)
-		await bidTest(acc2.sdk, evolutionCollection, "FLOW", toFlowItemId(`${evolutionCollection}:1`), toBigNumber("0.0001"))
+		await bidTest(acc2.sdk, evolutionCollection, "FLOW", toFlowItemId(`${evolutionCollection}:1`), "0.0001")
 	})
 
 	test("Should create sell order from TopShot nft", async () => {
@@ -49,7 +49,7 @@ describe("Test bid on emulator", () => {
 
 		const [result] = await getTopShotIds(fcl, serviceAcc.address, acc1.address)
 		expect(result).toEqual(1)
-		await bidTest(acc1.sdk, topShotColletion, "FLOW", toFlowItemId(`${topShotColletion}:${result}`), toBigNumber("0.0001"))
+		await bidTest(acc1.sdk, topShotColletion, "FLOW", toFlowItemId(`${topShotColletion}:${result}`), "0.0001")
 	})
 
 	test("Should create sell order from MotoCpCard nft", async () => {
@@ -64,7 +64,7 @@ describe("Test bid on emulator", () => {
 			motoGpColletion,
 			"FLOW",
 			toFlowItemId(`${motoGpColletion}:${result.cardID}`),
-			toBigNumber("0.0001"),
+			"0.0001",
 		)
 	})
 	test("Should create sell order from MugenArt nft", async () => {
@@ -79,7 +79,7 @@ describe("Test bid on emulator", () => {
 			mugenArtCollection,
 			"FLOW",
 			toFlowItemId(`${mugenArtCollection}:${id}`),
-			toBigNumber("0.0001"),
+			"0.0001",
 		)
 	})
 })

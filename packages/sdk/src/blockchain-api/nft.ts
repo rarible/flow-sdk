@@ -4,12 +4,13 @@ import { commonNft, RaribleNFT, RaribleNFTv2, SoftCollection } from "@rarible/fl
 import type { FlowRoyalty } from "@rarible/flow-api-client"
 import type { FlowAddress } from "@rarible/types"
 import { getNftCodeConfig } from "../config/cadence-code-config"
-import type { FlowFee, NonFungibleContract } from "../types/types"
-import { NON_FUNGIBLE_CONTRACTS } from "../types/types"
+import type { FlowFee, NonFungibleContract } from "../types"
+import { NON_FUNGIBLE_CONTRACTS } from "../types"
 import { fetchMeta } from "../interfaces/nft/common/fetch-meta"
+import { getIpfsCid } from "../common/get-ipfs-cid"
 import { fillCodeTemplate } from "./common/template-replacer"
 import { convertRoyalties } from "./common/convert-royalties"
-import { prepareFees } from "./common/convert-fee-to-cadence"
+import { convertIpfsAttributes } from "./common/convert-ipfs-attributes"
 
 type NftCodeReturnData = {
 	cadence: string
@@ -36,10 +37,12 @@ type CreateCollectionRequest = {
 
 type UpdateCollectionRequest = {
 	fcl: Fcl,
+	address: FlowAddress,
 	collectionIdNumber: number
 	icon?: string
 	description?: string
 	url?: string
+	royalties?: FlowFee[]
 }
 
 interface GetNftCode {
@@ -58,9 +61,9 @@ interface GetNftCode {
 	updateCollection(request: UpdateCollectionRequest): NftCodeReturnData
 }
 
-export function getNftCode(name: NonFungibleContract): GetNftCode {
-	if (NON_FUNGIBLE_CONTRACTS.includes(name)) {
-		const map = getNftCodeConfig(name)
+export function getNftCode(contractName: NonFungibleContract): GetNftCode {
+	if (NON_FUNGIBLE_CONTRACTS.includes(contractName)) {
+		const map = getNftCodeConfig(contractName)
 		return {
 			burn: (fcl: Fcl, tokenId: number) => {
 				return {
@@ -76,14 +79,15 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 				}
 			},
 			mint: async ({ fcl, address, metadata, royalties, minterId, receiver }) => {
+				const contractType: NonFungibleContract = contractName === "SoftCollection" ? "RaribleNFTv2" : contractName
 				const RoyaltiesType = t.Array(t.Struct(
-					`A.${fcl.sansPrefix(address)}.${name}.Royalty`,
+					`A.${fcl.sansPrefix(address)}.${contractType}.Royalty`,
 					[
 						{ value: t.Address },
 						{ value: t.UFix64 },
 					],
 				))
-				switch (name) {
+				switch (contractName) {
 					case "RaribleNFT": {
 						return {
 							cadence: RaribleNFT.mint,
@@ -93,26 +97,23 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 							]),
 						}
 					}
-					case "RaribleNFTv2": {
-						const { name: nftName, description, attributes } = await fetchMeta(metadata)
+					case "SoftCollection": {
+						const { name: nftName, description, attributes, image } = await fetchMeta(metadata)
 						const metaArg = fcl.arg(
 							{
 								fields: [
 									{ name: "name", value: nftName || "" },
 									{ name: "description", value: description || null },
-									{ name: "cid", value: "" },
+									{ name: "cid", value: getIpfsCid(metadata) },
 									{
 										name: "attributes",
-										value: attributes?.map(a => {
-											const attribute = Object.entries(a)[0]
-											return { key: attribute[0], value: attribute[1] }
-										}),
+										value: attributes ? convertIpfsAttributes(attributes) : [],
 									},
-									{ name: "contentUrls", value: [] },
+									{ name: "contentUrls", value: image ? [image] : [] },
 								],
 							},
 							t.Struct(
-								`A.${fcl.sansPrefix(address)}.${name}.Meta`,
+								`A.${fcl.sansPrefix(address)}.${contractType}.Meta`,
 								[
 									{ value: t.String },
 									{ value: t.Optional(t.String) },
@@ -163,6 +164,13 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 													 supply,
 												 }) => {
 				const preparedMap = { ...map, "0xSOFTCOLLECTION": address }
+				const RoyaltiesType = t.Array(t.Struct(
+					`A.${fcl.sansPrefix(address)}.${contractName}.Royalty`,
+					[
+						{ value: t.Address },
+						{ value: t.UFix64 },
+					],
+				))
 				return {
 					cadence: fillCodeTemplate(SoftCollection.create, preparedMap),
 					args: fcl.args([
@@ -174,20 +182,26 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 						fcl.arg(description || null, t.Optional(t.String)),
 						fcl.arg(url || null, t.Optional(t.String)),
 						fcl.arg(supply === undefined ? null : supply, t.Optional(t.UInt64)),
-						fcl.arg(prepareFees(royalties), t.Dictionary({
-							key: t.Address,
-							value: t.UFix64,
-						})),
+						fcl.arg(convertRoyalties(royalties), RoyaltiesType),
 					]),
 				}
 			},
 			updateCollection: ({
 													 fcl,
+													 address,
 													 collectionIdNumber,
 													 icon,
 													 description,
 													 url,
+													 royalties,
 												 }) => {
+				const RoyaltiesType = t.Array(t.Struct(
+					`A.${fcl.sansPrefix(address)}.${contractName}.Royalty`,
+					[
+						{ value: t.Address },
+						{ value: t.UFix64 },
+					],
+				))
 				return {
 					cadence: fillCodeTemplate(SoftCollection.update, map),
 					args: fcl.args([
@@ -195,10 +209,11 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 						fcl.arg(icon || null, t.Optional(t.String)),
 						fcl.arg(description || null, t.Optional(t.String)),
 						fcl.arg(url || null, t.Optional(t.String)),
+						fcl.arg(royalties ? convertRoyalties(royalties) : null, t.Optional(RoyaltiesType)),
 					]),
 				}
 			},
 		}
 	}
-	throw new Error(`Flow-sdk: Unsupported collection: ${name}`)
+	throw new Error(`Flow-sdk: Unsupported collection: ${contractName}`)
 }

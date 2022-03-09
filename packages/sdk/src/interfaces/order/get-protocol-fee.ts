@@ -1,6 +1,6 @@
 import { toBigNumber } from "@rarible/types"
 import { toBn } from "@rarible/utils"
-import type { FlowFee, FlowNetwork } from "../../types/types"
+import type { FlowFee, FlowNetwork } from "../../types"
 import { CONFIGS } from "../../config/config"
 
 export type ProtocolFees = {
