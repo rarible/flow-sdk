@@ -13,5 +13,9 @@ export async function mintTest(
 	)
 	expect(mintTx.status).toEqual(4)
 	expect(parseInt(mintTx.tokenId.split(":")[1])).toBeGreaterThanOrEqual(0)
+	const RaribleV2MintEvent = mintTx.events.filter(e => e.type.split(".")[3] === "Minted")[0]
+	if (RaribleV2MintEvent) {
+		expect(RaribleV2MintEvent.data.meta.name).toEqual("Genesis")
+	}
 	return mintTx
 }

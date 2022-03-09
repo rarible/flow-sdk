@@ -4,7 +4,7 @@ import { toBigNumber, toFlowAddress } from "@rarible/types"
 import type { FlowSdk } from "../../index"
 import { createFlowSdk } from "../../index"
 import { testCreateCollection } from "../../test/collection/test-create-collection"
-import { parseEvents } from "../../common/parse-tx-events"
+import { updateCollectionTest } from "../test/update-collection-test"
 
 describe("Test update collection", () => {
 	let sdk: FlowSdk
@@ -18,36 +18,14 @@ describe("Test update collection", () => {
 		const tx = await testCreateCollection(sdk)
 		expect(tx.parentId).toBeFalsy()
 
-		const metaNew = {
-			icon: "http://new.icon",
-			description: "new description",
-			url: "htp://new.url",
-		}
+		await updateCollectionTest(sdk, tx.collectionId)
 
-		const tx2 = await sdk.collection.updateCollection({
-			collectionId: tx.collectionId,
-			...metaNew,
+		const royalties = [{ account: toFlowAddress(address), value: toBigNumber("0.0") }]
+		await updateCollectionTest(sdk, tx.collectionId, royalties)
 
-		})
-		const meta: any = parseEvents(tx2.events, "Changed", "meta")
-		expect(tx2.collectionId).toEqual(tx.collectionId)
-		expect(meta.icon).toEqual(metaNew.icon)
-		expect(meta.description).toEqual(metaNew.description)
-		expect(meta.url).toEqual(metaNew.url)
-		const tx3 = await sdk.collection.updateCollection({
-			collectionId: tx.collectionId,
-			...metaNew,
-			royalties: [{ account: toFlowAddress(address), value: toBigNumber("0.0") }],
-		})
-		const royalty: any = parseEvents(tx3.events, "Changed", "royalties")
-		expect(royalty.length).toEqual(1)
-
-		const tx4 = await sdk.collection.updateCollection({
-			collectionId: tx.collectionId,
-			...metaNew,
-			royalties: [{ account: toFlowAddress(address), value: toBigNumber("") }],
-		})
-		const royalty4: any = parseEvents(tx4.events, "Changed", "royalties")
-		expect(royalty4.length).toEqual(0)
+		const brokenRoyalties = [{ account: toFlowAddress(address), value: toBigNumber("") }]
+		await expect(updateCollectionTest(sdk, tx.collectionId, brokenRoyalties))
+			.rejects
+			.toThrow("Royalties: value field is undefined")
 	})
 })

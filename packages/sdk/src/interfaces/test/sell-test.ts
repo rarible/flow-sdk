@@ -35,7 +35,7 @@ export async function sellTest(
 	expect(order.currency).toEqual(currency)
 
 	const [prefix, contractAddress, contractName] = order.nftType.split(".")
-	expect(`${prefix}.${contractAddress}.${contractName}`).toEqual(collection)
+	expect(`${prefix}.${contractAddress}.${contractName}`).toEqual(itemId.split(":")[0])
 
 	expect(order.nftID).toEqual(parseInt(itemId.split(":")[1]))
 

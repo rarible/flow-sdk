@@ -5,10 +5,12 @@ import {
 	FLOW_TESTNET_ACCOUNT_4,
 } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
-import { toBigNumber } from "@rarible/types"
 import type { FlowSdk } from "../../index"
 import { createFlowSdk, toFlowContractAddress } from "../../index"
 import { testCreateCollection } from "../../test/collection/test-create-collection"
+import { mintTest } from "../test/mint-test"
+import { sellTest } from "../test/sell-test"
+import { bidTest } from "../test/bid-test"
 
 describe("Test create collection", () => {
 	let sdk: FlowSdk
@@ -45,24 +47,10 @@ describe("Test create collection", () => {
 		sdk = createFlowSdk(fcl, "emulator", {}, testAuth)
 
 		const { collectionId } = await testCreateCollection(sdk)
-		const mintTx = await sdk.nft.mint(
-			collectionId,
-			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
-			[],
-		)
-		const mintEvent = mintTx.events.filter(e => e.type.split(".")[3] === "Minted")[0]
-		expect(mintEvent.data.meta.name).toEqual("Genesis")
-		const { orderId } = await sdk.order.sell({
-			collection: collectionId,
-			currency: "FLOW",
-			itemId: mintTx.tokenId,
-			sellItemPrice: "1",
-			payouts: [],
-			originFees: [],
-		})
-		expect(orderId).toBeGreaterThanOrEqual(0)
-		const bidTx = await sdk.order.bid(collectionId, "FLOW", mintTx.tokenId, toBigNumber("1"))
-		expect(bidTx.orderId).toBeGreaterThanOrEqual(0)
+		const mintTx = await mintTest(sdk, collectionId)
+
+		await sellTest(fcl, sdk, "emulator", collectionId, "FLOW", mintTx.tokenId)
+		await bidTest(sdk, collectionId, "FLOW", mintTx.tokenId)
 	}, 50000)
 
 	test.skip("should mint nft to soft collection and sell on testnet", async () => {
@@ -70,23 +58,10 @@ describe("Test create collection", () => {
 		const testnetSdk = createFlowSdk(fcl, "dev", {}, testnetAuth)
 
 		const { collectionId } = await testCreateCollection(testnetSdk)
-		const mintTx = await testnetSdk.nft.mint(
-			collectionId,
-			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
-			[],
-		)
-		const mintEvent = mintTx.events.filter(e => e.type.split(".")[3] === "Minted")[0]
-		expect(mintEvent.data.meta.name).toEqual("Genesis")
-		const { orderId } = await testnetSdk.order.sell({
-			collection: collectionId,
-			currency: "FLOW",
-			itemId: mintTx.tokenId,
-			sellItemPrice: "1",
-			payouts: [],
-			originFees: [],
-		})
+		const mintTx = await mintTest(testnetSdk, collectionId)
+
+		const { orderId } = await sellTest(fcl, sdk, "testnet", collectionId, "FLOW", mintTx.tokenId)
 		expect(orderId).toBeGreaterThanOrEqual(0)
-		const bidTx = await testnetSdk.order.bid(collectionId, "FLOW", mintTx.tokenId, toBigNumber("1"))
-		expect(bidTx.orderId).toBeGreaterThanOrEqual(0)
+		await bidTest(testnetSdk, collectionId, "FLOW", mintTx.tokenId)
 	}, 2000000)
 })
