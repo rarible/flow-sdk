@@ -15,6 +15,10 @@ export function convertRoyalties(royalties: FlowRoyalty[]): TxRoyaltyType[] {
 					{ name: "fee", value: fixAmount(royalty.value) },
 				],
 			})
+		} else if (!royalty.value.length) {
+			throw new Error("Royalties: value is undefined")
+		} else if (!royalty.account.length) {
+			throw new Error("Royalties: account is undefined")
 		}
 	})
 	return result

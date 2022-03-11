@@ -8,6 +8,7 @@ import { createTopShotTestEnvironment, getTopShotIds } from "../../test/secondar
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../../test/secondary-collections/moto-gp-card"
 import { extractTokenId } from "../../types/item"
 import { getContractAddress } from "../../config/utils"
+import { mintTest } from "../test/mint-test"
 
 describe("Test burn on emulator", () => {
 	let sdk: FlowSdk
@@ -21,7 +22,7 @@ describe("Test burn on emulator", () => {
 	})
 
 	test("Should burn NFT", async () => {
-		const txMint = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
+		const txMint = await mintTest(sdk, collection)
 		const txBurn = await sdk.nft.burn(collection, extractTokenId(txMint.tokenId))
 		checkEvent(txBurn, "Withdraw", "RaribleNFT")
 		checkEvent(txBurn, "Destroy", "RaribleNFT")

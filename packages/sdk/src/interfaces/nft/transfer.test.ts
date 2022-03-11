@@ -8,6 +8,7 @@ import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../../test/seco
 import { extractTokenId } from "../../types/item"
 import { createFlowSdk } from "../../index"
 import { getContractAddress } from "../../config/utils"
+import { mintTest } from "../test/mint-test"
 
 describe("Test transfer on emulator", () => {
 	const collection = getContractAddress("emulator", "RaribleNFT")
@@ -18,7 +19,7 @@ describe("Test transfer on emulator", () => {
 		const auth = createTestAuth(fcl, "emulator", address, pk, 0)
 		const sdk = createFlowSdk(fcl, "emulator", {}, auth)
 
-		const mintTx = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
+		const mintTx = await mintTest(sdk, collection)
 		const tx = await sdk.nft.transfer(collection, extractTokenId(mintTx.tokenId), toFlowAddress(address))
 
 		checkEvent(tx, "Withdraw", "RaribleNFT")
@@ -28,7 +29,7 @@ describe("Test transfer on emulator", () => {
 		const { address, pk } = await createEmulatorAccount("accountName")
 		const auth = createTestAuth(fcl, "emulator", address, pk, 0)
 		const sdk = createFlowSdk(fcl, "emulator", {}, auth)
-		const mintTx = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
+		const mintTx = await mintTest(sdk, collection)
 		try {
 			await sdk.nft.transfer(collection, extractTokenId(mintTx.tokenId), toFlowAddress("0xdd05e3acd01cf833"))
 		} catch (e: unknown) {

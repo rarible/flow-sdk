@@ -7,6 +7,8 @@ import { createTopShotTestEnvironment, getTopShotIds } from "../../test/secondar
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../../test/secondary-collections/moto-gp-card"
 import { createMugenArtTestEnvironment, getMugenArtIds } from "../../test/secondary-collections/mugen-art"
 import { getContractAddress } from "../../config/utils"
+import { mintTest } from "../test/mint-test"
+import { testCreateCollection } from "../../test/collection/test-create-collection"
 
 describe("Minting on emulator", () => {
 	let sdk: FlowSdk
@@ -20,16 +22,21 @@ describe("Minting on emulator", () => {
 
 	test("should mint nft", async () => {
 		const contract = getContractAddress("emulator", "RaribleNFT")
-		const mintTx = await sdk.nft.mint(
-			contract, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
-		expect(mintTx.status).toEqual(4)
+		await mintTest(sdk, contract)
+	})
+
+	test("should mint nft to soft collection", async () => {
+		const createCollectionTx = await testCreateCollection(sdk)
+		const mintTx = await mintTest(sdk, createCollectionTx.collectionId)
+		const mintEvent = mintTx.events.filter(e => e.type.split(".")[3] === "Minted")[0]
+		expect(mintEvent.data.meta.name).toEqual("Genesis")
 	})
 
 	test("should throw error invalid collection", async () => {
 		expect.assertions(1)
 		try {
 			const contract = toFlowContractAddress("A.0x0000000000000000.CustomCollection")
-			await sdk.nft.mint(contract, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
+			await mintTest(sdk, contract)
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error)
 		}

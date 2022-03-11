@@ -1,5 +1,6 @@
 import { toBigNumber } from "@rarible/types"
-import { createFlowTestnetSdk } from "../../test/create-flow-test-sdk"
+import * as fcl from "@onflow/fcl"
+import { createFlowTestTestnetSdk } from "../../test/create-flow-test-sdk"
 import { createLotEngAucTest } from "../../test/transactions/create-lot-eng-auc-test"
 import { getContractAddress } from "../../config/utils"
 import { mintRaribleNftTest } from "../../test/transactions/mint-test"
@@ -9,7 +10,7 @@ describe("Test English Auction", () => {
 	const testnetCollection = getContractAddress("testnet", "RaribleNFT")
 
 	test.skip("test auctions on testnet", async () => {
-		const { sdk, address } = await createFlowTestnetSdk()
+		const [{ sdk, address }] = createFlowTestTestnetSdk(fcl, "dev")
 
 		const mint = await mintRaribleNftTest(sdk, testnetCollection)
 
