@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.26](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.25...v0.5.33-alpha.26) (2022-03-11)
+
+
+### Bug Fixes
+
+* follback flow-js-testing package ([0f270d4](https://github.com/rarible/flow-sdk/commit/0f270d44af4f063d288bd7280a1f66d9b5e8bcd7))
+
+
+
+
+
 ## [0.5.33-alpha.25](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.24...v0.5.33-alpha.25) (2022-03-05)
 
 
