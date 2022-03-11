@@ -26,6 +26,6 @@ describe("Test update collection", () => {
 		const brokenRoyalties = [{ account: toFlowAddress(address), value: toBigNumber("") }]
 		await expect(updateCollectionTest(sdk, tx.collectionId, brokenRoyalties))
 			.rejects
-			.toThrow("Royalties: value field is undefined")
+			.toThrow("Royalties: value is undefined")
 	})
 })
