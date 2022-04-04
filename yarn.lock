@@ -1692,7 +1692,22 @@
   resolved "https://registry.yarnpkg.com/@onflow/fcl-config/-/fcl-config-0.0.1.tgz#e983f6bdad96a09753ca2000633d7bfed7587527"
   integrity sha512-umvYsAwejX2yGJ5OFxM1dEaKmFEXf+34f4rJfVkfEYztgJqLkUbBkEB8HQsI8M78QUpWkWuNArqwbFvFerBbHA==
 
-"@onflow/fcl@^0.0.77", "@onflow/fcl@~0.0.77":
+"@onflow/fcl@^0.0.78":
+  version "0.0.78"
+  resolved "https://registry.yarnpkg.com/@onflow/fcl/-/fcl-0.0.78.tgz#45c57a3556c139e61d6458b8f4eb96a22b492144"
+  integrity sha512-zWtzCjG2URWXLblSsXiSKr3qBroq2BSVGsZrWeosbmup/03fb/MJ10w3ECF83Cd2m/M0TevSSp+hcpdBVLZSfw==
+  dependencies:
+    "@onflow/interaction" "0.0.11"
+    "@onflow/rlp" "0.0.3"
+    "@onflow/sdk" "0.0.56"
+    "@onflow/types" "0.0.6"
+    "@onflow/util-actor" "0.0.2"
+    "@onflow/util-address" "0.0.0"
+    "@onflow/util-invariant" "0.0.0"
+    "@onflow/util-template" "0.0.1"
+    "@onflow/util-uid" "0.0.1"
+
+"@onflow/fcl@~0.0.77":
   version "0.0.77"
   resolved "https://registry.yarnpkg.com/@onflow/fcl/-/fcl-0.0.77.tgz#2a2da9ec8f90e0cf012d9a459a3472b57e416549"
   integrity sha512-hgFW51Va29KwlzhDy6Fm15UesfXluRTR5RJn+zrm5d5HFfkquaxKOnMGT5waKVFn5u4THQIE6v+OnaDDchGNpg==
@@ -1725,6 +1740,22 @@
   resolved "https://registry.yarnpkg.com/@onflow/rlp/-/rlp-0.0.3.tgz#42e10944309732bfd9acca79710c8210b9aabd4c"
   integrity sha512-oAf0VEiMjX8eC6Vd66j1BdGYTHOM6UBaS/sLSScnc7bKX5gICqe2gtEsCeJVE9rUzRk3GD3JqXRnPAW6YFWd/Q==
 
+"@onflow/sdk@0.0.56":
+  version "0.0.56"
+  resolved "https://registry.yarnpkg.com/@onflow/sdk/-/sdk-0.0.56.tgz#6f4528b8c3a78207ec5cb35d1133ff466e950428"
+  integrity sha512-yYOE+5Tvgprqo01vSxIgYTu4fO6sDFfyueVYFgzXx/F0fdHqy0zfAq+gEVjtWG+LvVD/YvR8eRbcBpfvXu1USA==
+  dependencies:
+    "@improbable-eng/grpc-web" "^0.14.0"
+    "@improbable-eng/grpc-web-node-http-transport" "^0.14.0"
+    "@onflow/protobuf" "^0.1.8"
+    "@onflow/rlp" "^0.0.3"
+    "@onflow/util-actor" "0.0.2"
+    "@onflow/util-address" "^0.0.0"
+    "@onflow/util-invariant" "^0.0.0"
+    "@onflow/util-template" "0.0.1"
+    deepmerge "^4.2.2"
+    sha3 "^2.1.4"
+
 "@onflow/sdk@^0.0.54":
   version "0.0.54"
   resolved "https://registry.yarnpkg.com/@onflow/sdk/-/sdk-0.0.54.tgz#e5aae23c0a1f3707e47ddab1ca2c1d78e5e75d7a"
@@ -1740,15 +1771,15 @@
     "@onflow/util-template" "0.0.1"
     deepmerge "^4.2.2"
 
+"@onflow/types@0.0.6", "@onflow/types@^0.0.6", "@onflow/types@~0.0.5":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@onflow/types/-/types-0.0.6.tgz#4fb20754565da4995a1b0b71b01210947f899841"
+  integrity sha512-2eBrmqiFO37EUOJvzksygP8Wu6lL/m9az36AF0qYdGQW/79KGCHBCchUsIzxyGt8UDXl/dgnIcMkiTH7tWZqXg==
+
 "@onflow/types@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@onflow/types/-/types-0.0.4.tgz#d4a9c3e301d23182dd256b73d3679c952fe653f0"
   integrity sha512-47r0qTM45mR7FSvyEE0njGljkpgy3MCf/2W82pfZ/PTFGWr1nsGV/4j2bUfK9Sry4Ymz2W20iRZVP3xpqOhqGw==
-
-"@onflow/types@^0.0.6", "@onflow/types@~0.0.5":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@onflow/types/-/types-0.0.6.tgz#4fb20754565da4995a1b0b71b01210947f899841"
-  integrity sha512-2eBrmqiFO37EUOJvzksygP8Wu6lL/m9az36AF0qYdGQW/79KGCHBCchUsIzxyGt8UDXl/dgnIcMkiTH7tWZqXg==
 
 "@onflow/util-actor@0.0.2":
   version "0.0.2"
@@ -3963,34 +3994,37 @@ flatted@^3.1.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.4.tgz#28d9969ea90661b5134259f312ab6aa7929ac5e2"
   integrity sha512-8/sOawo8tJ4QOBX8YlQBMxL8+RLZfxMQOif9o0KUKTNTjMYElWPE0r/m5VNFxTRd0NSw8qSy8dajrwX4RYI1Hw==
 
-flow-cadut@^0.1.13:
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/flow-cadut/-/flow-cadut-0.1.14.tgz#31da3d300ccf0c0bc6b6d4e61e1fdfe8acb0356c"
-  integrity sha512-/s3lmfR/Ojt/7RS56otR48RjHgIaSDi5+bNWa7DHZUDZk2Q7VLxhN4yFD9PQoRjNfxmuL4vzG+G7FTDXG3Y6/g==
+flow-cadut@^0.1.15-alpha.12:
+  version "0.1.15-alpha.23"
+  resolved "https://registry.yarnpkg.com/flow-cadut/-/flow-cadut-0.1.15-alpha.23.tgz#1232ca7072d18ef4dac6615094a0886b3a4eacb5"
+  integrity sha512-EMLVDiZzmRMdHQKEsn+vXiQCISfe5s0rc2wW4kqE/bWmK+lRMr+6dlf0itzQDlV7zchwEZsemz7usKzw4i+7eQ==
   dependencies:
     "@onflow/config" "0.0.2"
-    "@onflow/fcl" "^0.0.77"
+    "@onflow/fcl" "^0.0.78"
     "@onflow/types" "^0.0.6"
+    elliptic "^6.5.4"
     esm "^3.2.25"
     handlebars "^4.7.7"
     handlebars-loader "^1.7.1"
     prettier "^2.3.0"
     rimraf "^3.0.2"
+    rlp "^3.0.0"
+    sha3 "^2.1.4"
     simple-git "^2.40.0"
     yargs "^15.4.1"
 
-flow-js-testing@~0.1.15:
-  version "0.1.15"
-  resolved "https://registry.yarnpkg.com/flow-js-testing/-/flow-js-testing-0.1.15.tgz#1aec1efa5092e0768ace09218b87133b8c48683d"
-  integrity sha512-ouBf4BRB6UEn234pMYnsX/4bYVVxfAYZ1+lTn+kQ/fiSBXdr9faRDx0MjMJ1C372aRP/MuClLGoFNCsiBw2ElA==
+flow-js-testing@~0.2.3-alpha.4:
+  version "0.2.3-alpha.4"
+  resolved "https://registry.yarnpkg.com/flow-js-testing/-/flow-js-testing-0.2.3-alpha.4.tgz#872862f2c9c0586ca97e04b1a19dda0337f84e0a"
+  integrity sha512-dQQYlQnaCdZH6HUZGVp+zTUHAw57SZJB6hy0miBSTqAjxf2/+dE22n4EnMddSm8M7hsgcD/My1ugjvYzMk+GDw==
   dependencies:
     "@onflow/config" "^0.0.2"
-    "@onflow/fcl" "^0.0.77"
+    "@onflow/fcl" "^0.0.78"
     "@onflow/fcl-config" "^0.0.1"
     "@onflow/types" "^0.0.6"
     elliptic "^6.5.4"
     esm "^3.2.25"
-    flow-cadut "^0.1.13"
+    flow-cadut "^0.1.15-alpha.12"
     jest-environment-uint8array "^1.0.0"
     rimraf "^3.0.2"
     rlp "^2.2.6"
@@ -7485,6 +7519,11 @@ rlp@^2.2.6:
   integrity sha512-d5gdPmgQ0Z+AklL2NVXr/IoSjNZFfTVvQWzL/AM2AOcSzYP2xjlb0AC8YyCLc41MSNf6P6QVtjgPdmVtzb+4lQ==
   dependencies:
     bn.js "^5.2.0"
+
+rlp@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/rlp/-/rlp-3.0.0.tgz#5a60725ca4314a3a165feecca1836e4f2c1e2343"
+  integrity sha512-PD6U2PGk6Vq2spfgiWZdomLvRGDreBLxi5jv5M8EpRo3pU6VEm31KO+HFxE18Q3vgqfDrQ9pZA3FP95rkijNKw==
 
 rsvp@^4.8.4:
   version "4.8.5"

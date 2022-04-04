@@ -24,7 +24,7 @@ export type FlowCollectionId = FlowContractAddress & {
 	__IS_FLOW_COLLECTION_ID__: true
 }
 
-const collectionIdRegExp = /^A\.0*x*[0-9a-f]{16}\.[0-9A-Za-z_]{3,}(:[0-9]+)?$/
+const collectionIdRegExp = /^A\.0*x*[0-9a-f]{16}\.[0-9A-Za-z_]{3,}(\.[0-9]+)?$/
 
 export function isFlowCollectionId(x: string): x is FlowCollectionId {
 	return collectionIdRegExp.test(x)

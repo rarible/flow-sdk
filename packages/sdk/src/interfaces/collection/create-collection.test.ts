@@ -33,7 +33,7 @@ describe("Test create collection", () => {
 
 		/** Create collection */
 		const tx = await testCreateCollection(sdk)
-		const collectionIdNumber = tx.collectionId.split(":")[1]
+		const collectionIdNumber = tx.collectionId.split(".")[3]
 		expect(collectionIdNumber).toEqual("0")
 		expect(tx.parentId).toBeFalsy()
 		/** And create new one with parent collection Id */
