@@ -73,8 +73,8 @@ export async function createCollection(
 					const { id, parentId } = mintEvent.data
 					return {
 						...txResult,
-						collectionId: toFlowCollectionId(`${softCollection}:${id}`),
-						parentId: typeof parentId === "number" ? toFlowCollectionId(`${softCollection}:${parentId}`) : null,
+						collectionId: toFlowCollectionId(`${softCollection}.${id}`),
+						parentId: typeof parentId === "number" ? toFlowCollectionId(`${softCollection}.${parentId}`) : null,
 					}
 				}
 				throw new Error("Minted event not found in transaction response")

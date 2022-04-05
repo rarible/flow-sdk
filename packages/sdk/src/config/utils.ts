@@ -33,8 +33,7 @@ export type FlowCollectionData = {
  * Parse collection id string and return part of it
  */
 export function getCollectionData(x: FlowCollectionId): FlowCollectionData {
-	const [collectionAddress, softCollectionId] = x.split(":")
-	const [, address, name] = collectionAddress.split(".")
+	const [prefix, address, name, softCollectionId] = x.split(".")
 	const collectionName = toFlowCollectionName(name)
 	if (!address || !collectionName) {
 		throw new Error("Invalid collection address")
@@ -44,7 +43,7 @@ export function getCollectionData(x: FlowCollectionId): FlowCollectionData {
 	return {
 		address: toFlowAddress(address),
 		name: collectionName,
-		contractAddress: toFlowContractAddress(collectionAddress),
+		contractAddress: toFlowContractAddress(`${prefix}.${address}.${name}`),
 		softCollectionIdNumber: softCollectionId,
 		softCollectionIdFull: x,
 	}

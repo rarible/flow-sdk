@@ -22,7 +22,7 @@ export async function testCreateCollection(
 		url,
 		supply,
 	})
-	const [, collectionIdNumber] = createCollectionTx.collectionId.split(":")
+	const [, , , collectionIdNumber] = createCollectionTx.collectionId.split(".")
 	expect(parseInt(collectionIdNumber)).toBeGreaterThanOrEqual(0)
 	return createCollectionTx
 }

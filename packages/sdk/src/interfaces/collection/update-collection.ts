@@ -56,8 +56,8 @@ export async function updateCollection(
 					const softCollection = getContractAddress(network, "SoftCollection")
 					return {
 						...txResult,
-						collectionId: toFlowCollectionId(`${softCollection}:${id}`),
-						parentId: typeof parentId === "number" ? toFlowCollectionId(`${softCollection}:${parentId}`) : null,
+						collectionId: toFlowCollectionId(`${softCollection}.${id}`),
+						parentId: typeof parentId === "number" ? toFlowCollectionId(`${softCollection}.${parentId}`) : null,
 					}
 				}
 				throw new Error("Update event not found in transaction response")
