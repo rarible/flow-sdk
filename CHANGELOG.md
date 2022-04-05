@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.27](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.26...v0.5.33-alpha.27) (2022-04-05)
+
+
+### Bug Fixes
+
+* refactor collection id delimiter ([732c8cc](https://github.com/rarible/flow-sdk/commit/732c8cc20df8bc665ef1486d0a43d3566a3d0876))
+* turn back flow-js-testing ([3d43624](https://github.com/rarible/flow-sdk/commit/3d43624fe4ab39fd1520b0d7a49936aa54c56468))
+
+
+
+
+
 ## [0.5.33-alpha.26](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.25...v0.5.33-alpha.26) (2022-03-11)
 
 
