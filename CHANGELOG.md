@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.40](https://github.com/rarible/flow-sdk/compare/v0.5.39...v0.5.40) (2022-04-06)
+
+
+### Bug Fixes
+
+* skip simple balance test ([bd4d3a1](https://github.com/rarible/flow-sdk/commit/bd4d3a10aad30021ffbe31c68f42a8a25208d538))
+
+
+
+
+
 ## [0.5.39](https://github.com/rarible/flow-sdk/compare/v0.5.38...v0.5.39) (2022-04-04)
 
 
