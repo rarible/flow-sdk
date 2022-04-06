@@ -25,7 +25,7 @@ describe("Test get balance functions", () => {
 	})
 
 	createFlowEmulator({})
-	test.skip("Sould get balance without fcl package", async () => {
+	test("Sould get balance without fcl package", async () => {
 		const { address } = await createEmulatorAccount("asd")
 		fcl.config()
 			.put("accessNode.api", "http://localhost:8888")
