@@ -4,10 +4,10 @@ import type { FlowContractAddress } from "../contract-address"
 
 /** string like a:
  *
- * A.<FlowAddress>.<ContractName>[:<CollectionId>]
+ * A.<FlowAddress>.<ContractName>[.<CollectionId>]
  *
  * * ContractName - usually one of NFT contract name
- * * CollectionId ia optional
+ * * CollectionId is optional
  *
  * __________________________
  * Examples:
@@ -15,7 +15,7 @@ import type { FlowContractAddress } from "../contract-address"
  * A.0x1234567890abcdef.RaribleNFT
  *
  * or with id:
- * A.0x1234567890abcdef.RaribleNFT:12345
+ * A.0x1234567890abcdef.RaribleNFT.12345
  *
  * __________________________
  * To validate your collection id string and type casting use toFlowCollectionId function
