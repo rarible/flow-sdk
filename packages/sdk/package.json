@@ -24,6 +24,8 @@
     "@rarible/utils": "~0.5.0"
   },
   "devDependencies": {
+    "@improbable-eng/grpc-web": "~0.15.0",
+    "@onflow/protobuf": "~0.1.8",
     "@rarible/fcl-types": "^0.5.33-alpha.11",
     "@rarible/flow-test-common": "^0.5.33-alpha.25",
     "@rarible/types": "0.5.3",

@@ -2,10 +2,16 @@ import type { BigNumber, FlowAddress } from "@rarible/types"
 import { toBigNumber, toFlowAddress, ZERO_ADDRESS } from "@rarible/types"
 import type { FlowContractName, FlowFee, FlowNetwork, NonFungibleContract } from "../types"
 
-export const NODE_TRANSPORT_CONFIG: Record<FlowNetwork, string> = {
+export const NODE_HTTP_TRANSPORT_CONFIG: Record<FlowNetwork, string> = {
 	emulator: "http://localhost:8888",
 	testnet: "https://rest-testnet.onflow.org",
 	mainnet: "https://rest-mainnet.onflow.org",
+}
+
+export const NODE_GRPC_TRANSPORT_CONFIG: Record<FlowNetwork, string> = {
+	emulator: "http://localhost:8888",
+	testnet: "https://access-testnet.onflow.org",
+	mainnet: "https://access-mainnet-beta.onflow.org",
 }
 
 export const METADATA_HOST = "https://gateway.pinata.cloud"
