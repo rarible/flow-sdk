@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33-alpha.28](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.27...v0.5.33-alpha.28) (2022-04-12)
+
+
+### Bug Fixes
+
+* fix config for grpc balances ([7a21a1d](https://github.com/rarible/flow-sdk/commit/7a21a1d232e01d40716b4fc7aad8b0c1595ee880))
+
+
+### Features
+
+* add get balance thru grpc ([6d8cd1c](https://github.com/rarible/flow-sdk/commit/6d8cd1c105b8adc7b90022ad7e9fbe9bdab90e65))
+
+
+
+
+
 ## [0.5.33-alpha.27](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.26...v0.5.33-alpha.27) (2022-04-05)
 
 
