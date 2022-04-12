@@ -1,6 +1,6 @@
 import type { FlowNetwork } from "../types"
 
-export type FlowEnv = "mainnet" | "dev" | "staging" | "emulator"
+export type FlowEnv = "mainnet" | "dev" | "staging" | "emulator" | "dev-testnet"
 
 export type FlowEnvConfig = Record<FlowEnv, {
 	basePath: string
@@ -23,5 +23,9 @@ export const ENV_CONFIG: FlowEnvConfig = {
 	mainnet: {
 		basePath: "https://flow-api.rarible.com",
 		network: "mainnet",
+	},
+	"dev-testnet": {
+		basePath: "https://dev-flow-api.rarible.org/",
+		network: "testnet",
 	},
 }
