@@ -19,7 +19,7 @@ describe("Test auth", () => {
 		])
 		const result = await fcl.tx(tx).onceSealed()
 		expect(result.status).toEqual(4)
-	}, 20000)
+	}, 40000)
 })
 
 const CODE = `

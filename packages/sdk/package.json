@@ -13,7 +13,7 @@
   "scripts": {
     "build": "tsc --project tsconfig-build.json",
     "clean": "rimraf ./build",
-    "test": "jest --passWithNoTests --maxWorkers=1 --testTimeout=600000",
+    "test": "jest --passWithNoTests --maxWorkers=1 --testTimeout=700000",
     "verify": "tsc --noEmit"
   },
   "dependencies": {
