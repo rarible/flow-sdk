@@ -3,6 +3,93 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.42-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.41-alpha.1...v0.5.42-alpha.0) (2022-04-13)
+
+
+
+## [0.5.33-alpha.25](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.24...v0.5.33-alpha.25) (2022-03-05)
+
+
+### Bug Fixes
+
+* added error messages handling for auctions ([c62f996](https://github.com/rarible/flow-sdk/commit/c62f9962574a8ab0ad32287c7ac0fe57a5b4364d))
+
+
+
+## [0.5.33-alpha.19](https://github.com/rarible/flow-sdk/compare/v0.5.38...v0.5.33-alpha.19) (2022-03-01)
+
+
+### Bug Fixes
+
+* update branch from master, fb-637 fix soft collection minting ([19cb3ef](https://github.com/rarible/flow-sdk/commit/19cb3ef6571ebb77fa3cb1720de491a1866e298d))
+
+
+
+## [0.5.33-alpha.16](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.15...v0.5.33-alpha.16) (2022-02-25)
+
+
+### Bug Fixes
+
+* downgrade flow-js-testing ([2765cd9](https://github.com/rarible/flow-sdk/commit/2765cd9fd7f653fe35d7600eb023050536a0a65e))
+
+
+### Features
+
+* fb-619 update soft collections scripts, add royalties when updating collection ([c5431f7](https://github.com/rarible/flow-sdk/commit/c5431f7cb1b8ca7a2aee32840a06d7fd1e90ce68))
+
+
+
+## [0.5.33-alpha.13](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.12...v0.5.33-alpha.13) (2022-02-18)
+
+
+### Features
+
+* support secondary collections, Moments, Fanfare, Barter, Kicks ([7070381](https://github.com/rarible/flow-sdk/commit/707038147275a82a7e23b4ac7b52462155b8c382))
+
+
+
+## [0.5.33-alpha.12](https://github.com/rarible/flow-sdk/compare/v0.5.35...v0.5.33-alpha.12) (2022-02-17)
+
+
+
+## [0.5.33-alpha.11](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.10...v0.5.33-alpha.11) (2022-02-16)
+
+
+
+## [0.5.33-alpha.10](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.9...v0.5.33-alpha.10) (2022-02-16)
+
+
+### Bug Fixes
+
+* fix flow-js-testing version ([d59be5d](https://github.com/rarible/flow-sdk/commit/d59be5d4c478cec0054d44c57c15f9f8197a250e))
+
+
+
+## [0.5.33-alpha.9](https://github.com/rarible/flow-sdk/compare/v0.5.34...v0.5.33-alpha.9) (2022-02-16)
+
+
+### Bug Fixes
+
+* downgrade flow-js-testing ([a1519a1](https://github.com/rarible/flow-sdk/commit/a1519a1c3e464b48858fcd4bbb827a16a49a2342))
+* replace get royalties method ([7c0a0a2](https://github.com/rarible/flow-sdk/commit/7c0a0a21e078d86097659b05f3c815a1590e0c7e))
+
+
+
+## [0.5.33-alpha.5](https://github.com/rarible/flow-sdk/compare/v0.5.33...v0.5.33-alpha.5) (2022-02-07)
+
+
+
+## [0.5.33-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.32...v0.5.33-alpha.0) (2022-02-02)
+
+
+### Bug Fixes
+
+* test timeouts in test-common package ([6e21404](https://github.com/rarible/flow-sdk/commit/6e214042634adbcf8d0ce4cfdb990407f86d5446))
+
+
+
+
+
 ## [0.5.41-alpha.1](https://github.com/rarible/flow-sdk/compare/v0.5.41-alpha.0...v0.5.41-alpha.1) (2022-04-12)
 
 
