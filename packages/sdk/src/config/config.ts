@@ -60,6 +60,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			Moments: EMULATOR_ADDRESS,
 			FanfareNFTContract: EMULATOR_ADDRESS,
 			Kicks: EMULATOR_ADDRESS,
+			SomePlaceCollectible: EMULATOR_ADDRESS,
 		},
 	},
 	testnet: {
@@ -96,6 +97,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			Moments: TESTNET_RARIBLE_ADDRESS,
 			FanfareNFTContract: TESTNET_RARIBLE_ADDRESS,
 			Kicks: TESTNET_RARIBLE_ADDRESS,
+			SomePlaceCollectible: toFlowAddress("0x0c153e28da9f988a"),
 		},
 	},
 	mainnet: {
@@ -132,6 +134,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			Moments: toFlowAddress("0xd4ad4740ee426334"),
 			FanfareNFTContract: toFlowAddress("0xe3d6aefbdc74f65f"),
 			Kicks: toFlowAddress("0xf3cc54f4d91c2f6c"),
+			SomePlaceCollectible: toFlowAddress("0x667a16294a089ef8"),
 		},
 	},
 }
@@ -200,6 +203,9 @@ export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> 
 		features: ["TRANSFER", "BURN"],
 	},
 	Moments: {
+		features: ["TRANSFER", "BURN"],
+	},
+	SomePlaceCollectible: {
 		features: ["TRANSFER", "BURN"],
 	},
 }

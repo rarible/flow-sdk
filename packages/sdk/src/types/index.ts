@@ -40,6 +40,7 @@ export const NON_FUNGIBLE_CONTRACTS = [
 	"Moments",
 	"FanfareNFTContract",
 	"Kicks",
+	"SomePlaceCollectible",
 ] as const
 
 export type NonFungibleContracts = typeof NON_FUNGIBLE_CONTRACTS

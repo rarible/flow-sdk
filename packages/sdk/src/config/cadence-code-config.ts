@@ -119,6 +119,11 @@ const nftCodeConfig: Record<NonFungibleContract, NftStaticVariables> = {
 		"%nftStoragePath%": "Moments.CollectionStoragePath",
 		"%publicTypeAddon%": "Moments.CollectionPublic",
 	},
+	SomePlaceCollectible: {
+		"%nftPublicPath%": "SomePlaceCollectible.CollectionPublicPath",
+		"%nftStoragePath%": "SomePlaceCollectible.CollectionStoragePath",
+		"%publicTypeAddon%": "SomePlaceCollectible.CollectibleCollectionPublic",
+	},
 }
 export type NftCodeConfig = NftStaticVariables & {
 	"%nftContract%": string

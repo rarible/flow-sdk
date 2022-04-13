@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.41-alpha.1](https://github.com/rarible/flow-sdk/compare/v0.5.41-alpha.0...v0.5.41-alpha.1) (2022-04-12)
+
+
+### Bug Fixes
+
+* increase test timeouts ([ef6fd81](https://github.com/rarible/flow-sdk/commit/ef6fd81a845054a8e32ac504aa0b14072a2d983f))
+
+
+
+
+
+## [0.5.41-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.40...v0.5.41-alpha.0) (2022-04-12)
+
+**Note:** Version bump only for package root
+
+
+
+
+
+## [0.5.40](https://github.com/rarible/flow-sdk/compare/v0.5.39...v0.5.40) (2022-04-06)
+
+
+### Bug Fixes
+
+* skip simple balance test ([bd4d3a1](https://github.com/rarible/flow-sdk/commit/bd4d3a10aad30021ffbe31c68f42a8a25208d538))
+
+
+
+
+
+## [0.5.39](https://github.com/rarible/flow-sdk/compare/v0.5.38...v0.5.39) (2022-04-04)
+
+
+### Bug Fixes
+
+* update rarible/types package ([17dd368](https://github.com/rarible/flow-sdk/commit/17dd3688348bd547986d706e56dd5aca3be2be3d))
+* update rarible/types package ([b785c71](https://github.com/rarible/flow-sdk/commit/b785c71a87eea850f8ac155ebbced29adf057902))
+
+
+
+
+
 ## [0.5.33-alpha.28](https://github.com/rarible/flow-sdk/compare/v0.5.33-alpha.27...v0.5.33-alpha.28) (2022-04-12)
 
 

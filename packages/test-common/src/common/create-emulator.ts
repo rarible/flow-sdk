@@ -16,7 +16,7 @@ export function createFlowEmulator(params: CreateFlowEmulatorParams): void {
 
 	afterAll(async () => {
 		await emulator.stop()
-	})
+	}, 40000)
 
 }
 
