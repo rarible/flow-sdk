@@ -46,4 +46,6 @@ const collections: NonFungibleContracts = [
 	"FanfareNFTContract",
 	"Kicks",
 	"SomePlaceCollectible",
+	"IrNFT",
+	"IrVoucher",
 ]
