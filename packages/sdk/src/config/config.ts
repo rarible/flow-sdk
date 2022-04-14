@@ -96,6 +96,14 @@ export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> 
 		contractsNames: ["SomePlaceCollectible"] as FlowContractAddressName[],
 		features: ["TRANSFER", "BURN"],
 	},
+	IrNFT: {
+		contractsNames: ["IrNFT"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
+	IrVoucher: {
+		contractsNames: ["IrVoucher"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
 }
 
 const MAINNET_RARIBLE_ADDRESS = toFlowAddress("0x01ab36aaf654a13e")
@@ -140,6 +148,8 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			FanfareNFTContract: EMULATOR_ADDRESS,
 			Kicks: EMULATOR_ADDRESS,
 			SomePlaceCollectible: EMULATOR_ADDRESS,
+			IrNFT: EMULATOR_ADDRESS,
+			IrVoucher: EMULATOR_ADDRESS,
 		},
 	},
 	testnet: {
@@ -174,6 +184,8 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			FanfareNFTContract: TESTNET_RARIBLE_ADDRESS,
 			Kicks: TESTNET_RARIBLE_ADDRESS,
 			SomePlaceCollectible: toFlowAddress("0x0c153e28da9f988a"),
+			IrNFT: toFlowAddress("0x0131dc3d737d7735"),
+			IrVoucher: toFlowAddress("0x0131dc3d737d7735"),
 		},
 	},
 	mainnet: {
@@ -208,6 +220,8 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			FanfareNFTContract: toFlowAddress("0xe3d6aefbdc74f65f"),
 			Kicks: toFlowAddress("0xf3cc54f4d91c2f6c"),
 			SomePlaceCollectible: toFlowAddress("0x667a16294a089ef8"),
+			IrNFT: toFlowAddress("0x276a7cc9316712af"),
+			IrVoucher: toFlowAddress("0x276a7cc9316712af"),
 		},
 	},
 }

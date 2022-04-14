@@ -116,6 +116,16 @@ const nftCodeConfig: Record<NonFungibleContract, NftStaticVariables> = {
 		"%nftStoragePath%": "SomePlaceCollectible.CollectionStoragePath",
 		"%publicTypeAddon%": "SomePlaceCollectible.CollectibleCollectionPublic",
 	},
+	IrNFT: {
+		"%nftPublicPath%": "IrNFT.CollectionPublicPath",
+		"%nftStoragePath%": "IrNFT.CollectionStoragePath",
+		"%publicTypeAddon%": "IrNFT.CollectionPublic",
+	},
+	IrVoucher: {
+		"%nftPublicPath%": "IrVoucher.CollectionPublicPath",
+		"%nftStoragePath%": "IrVoucher.CollectionStoragePath",
+		"%publicTypeAddon%": "IrVoucher.CollectionPublic",
+	},
 }
 export type NftCodeConfig = NftStaticVariables & {
 	"%nftContract%": string
