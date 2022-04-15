@@ -134,7 +134,7 @@ const nftCodeConfig: Record<NonFungibleContract, NftStaticVariables> = {
 	CryptoPiggo: {
 		"%nftPublicPath%": "CryptoPiggo.CollectionPublicPath",
 		"%nftStoragePath%": "CryptoPiggo.CollectionStoragePath",
-		"%publicTypeAddon%": "GeniaceNFT.CryptoPiggoCollectionPublic",
+		"%publicTypeAddon%": "CryptoPiggo.CryptoPiggoCollectionPublic",
 	},
 }
 export type NftCodeConfig = NftStaticVariables & {
