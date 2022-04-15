@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.44](https://github.com/rarible/flow-sdk/compare/v0.5.43...v0.5.44) (2022-04-15)
+
+
+### Bug Fixes
+
+* actualize collections features ([241f617](https://github.com/rarible/flow-sdk/commit/241f617b1ea812307e82a5853ba70b68f87f56d9))
+* fix build warnings ([11b6ab4](https://github.com/rarible/flow-sdk/commit/11b6ab43a74afc8f5dc57a501502f30caf43d363))
+* remove BURN feature on CryptoPiggo collection ([b90c43a](https://github.com/rarible/flow-sdk/commit/b90c43ab686bdec49921135e0b881e9515c89f52))
+* remove BURN feature on GENIANCE collection ([2681e1a](https://github.com/rarible/flow-sdk/commit/2681e1a8d66136f812a9a4abcde0145af20294cb))
+
+
+
+
+
 ## [0.5.43](https://github.com/rarible/flow-sdk/compare/v0.5.41-alpha.1...v0.5.43) (2022-04-14)
 
 **Note:** Version bump only for package @rarible/flow-sdk
