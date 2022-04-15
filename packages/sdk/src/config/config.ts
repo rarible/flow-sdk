@@ -110,7 +110,7 @@ export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> 
 	},
 	CryptoPiggo: {
 		contractsNames: ["CryptoPiggo"] as FlowContractAddressName[],
-		features: ["TRANSFER", "BURN"],
+		features: ["TRANSFER"],
 	},
 }
 
