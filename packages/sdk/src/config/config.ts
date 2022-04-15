@@ -104,6 +104,14 @@ export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> 
 		contractsNames: ["IrVoucher"] as FlowContractAddressName[],
 		features: ["TRANSFER", "BURN"],
 	},
+	GeniaceNFT: {
+		contractsNames: ["GeniaceNFT"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
+	CryptoPiggo: {
+		contractsNames: ["CryptoPiggo"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
 }
 
 const MAINNET_RARIBLE_ADDRESS = toFlowAddress("0x01ab36aaf654a13e")
@@ -150,6 +158,8 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			SomePlaceCollectible: EMULATOR_ADDRESS,
 			IrNFT: EMULATOR_ADDRESS,
 			IrVoucher: EMULATOR_ADDRESS,
+			GeniaceNFT: EMULATOR_ADDRESS,
+			CryptoPiggo: EMULATOR_ADDRESS,
 		},
 	},
 	testnet: {
@@ -186,6 +196,8 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			SomePlaceCollectible: toFlowAddress("0x0c153e28da9f988a"),
 			IrNFT: toFlowAddress("0x0131dc3d737d7735"),
 			IrVoucher: toFlowAddress("0x0131dc3d737d7735"),
+			GeniaceNFT: toFlowAddress("0x99eb28310626e56a"),
+			CryptoPiggo: toFlowAddress("0x57e1b27618c5bb69"),
 		},
 	},
 	mainnet: {
@@ -222,6 +234,8 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			SomePlaceCollectible: toFlowAddress("0x667a16294a089ef8"),
 			IrNFT: toFlowAddress("0x276a7cc9316712af"),
 			IrVoucher: toFlowAddress("0x276a7cc9316712af"),
+			GeniaceNFT: toFlowAddress("0xabda6627c70c7f52"),
+			CryptoPiggo: toFlowAddress("0xd3df824bf81910a4"),
 		},
 	},
 }

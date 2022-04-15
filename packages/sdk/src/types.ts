@@ -34,6 +34,9 @@ export const NON_FUNGIBLE_CONTRACTS = [
 	"SomePlaceCollectible",
 	"IrNFT",
 	"IrVoucher",
+	"GeniaceNFT",
+	"CryptoPiggo",
+
 ] as const
 
 export type NonFungibleContracts = typeof NON_FUNGIBLE_CONTRACTS
