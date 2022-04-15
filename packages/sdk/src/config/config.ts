@@ -50,11 +50,11 @@ export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> 
 	},
 	MatrixWorldFlowFestNFT: {
 		contractsNames: ["MatrixWorldFlowFestNFT"] as FlowContractAddressName[],
-		features: ["TRANSFER", "BURN"],
+		features: ["TRANSFER"],
 	},
 	MatrixWorldVoucher: {
 		contractsNames: ["MatrixWorldVoucher"] as FlowContractAddressName[],
-		features: ["TRANSFER", "BURN"],
+		features: ["TRANSFER"],
 	},
 	DisruptArt: {
 		contractsNames: ["DisruptArt"] as FlowContractAddressName[],
@@ -62,7 +62,7 @@ export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> 
 	},
 	Art: {
 		contractsNames: ["Art"] as FlowContractAddressName[],
-		features: ["TRANSFER", "BURN"],
+		features: ["TRANSFER"],
 	},
 	StarlyCard: {
 		contractsNames: ["StarlyCard"] as FlowContractAddressName[],
@@ -90,7 +90,7 @@ export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> 
 	},
 	FanfareNFTContract: {
 		contractsNames: ["FanfareNFTContract"] as FlowContractAddressName[],
-		features: ["TRANSFER", "BURN"],
+		features: ["TRANSFER"],
 	},
 	SomePlaceCollectible: {
 		contractsNames: ["SomePlaceCollectible"] as FlowContractAddressName[],
