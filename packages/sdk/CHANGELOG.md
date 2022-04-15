@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.45](https://github.com/rarible/flow-sdk/compare/v0.5.44...v0.5.45) (2022-04-15)
+
+
+### Bug Fixes
+
+* cryptoPiggo definitions ([003fb5a](https://github.com/rarible/flow-sdk/commit/003fb5a427bf0711b601c4127248896766b4ca20))
+
+
+
+
+
 ## [0.5.44](https://github.com/rarible/flow-sdk/compare/v0.5.43...v0.5.44) (2022-04-15)
 
 
