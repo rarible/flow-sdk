@@ -106,7 +106,7 @@ export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> 
 	},
 	GeniaceNFT: {
 		contractsNames: ["GeniaceNFT"] as FlowContractAddressName[],
-		features: ["TRANSFER", "BURN"],
+		features: ["TRANSFER"],
 	},
 	CryptoPiggo: {
 		contractsNames: ["CryptoPiggo"] as FlowContractAddressName[],
