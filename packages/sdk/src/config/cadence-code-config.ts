@@ -126,6 +126,16 @@ const nftCodeConfig: Record<NonFungibleContract, NftStaticVariables> = {
 		"%nftStoragePath%": "IrVoucher.CollectionStoragePath",
 		"%publicTypeAddon%": "IrVoucher.CollectionPublic",
 	},
+	GeniaceNFT: {
+		"%nftPublicPath%": "GeniaceNFT.CollectionPublicPath",
+		"%nftStoragePath%": "GeniaceNFT.CollectionStoragePath",
+		"%publicTypeAddon%": "GeniaceNFT.GeniaceNFTCollectionPublic",
+	},
+	CryptoPiggo: {
+		"%nftPublicPath%": "CryptoPiggo.CollectionPublicPath",
+		"%nftStoragePath%": "CryptoPiggo.CollectionStoragePath",
+		"%publicTypeAddon%": "GeniaceNFT.CryptoPiggoCollectionPublic",
+	},
 }
 export type NftCodeConfig = NftStaticVariables & {
 	"%nftContract%": string

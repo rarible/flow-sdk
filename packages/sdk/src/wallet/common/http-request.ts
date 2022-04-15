@@ -64,12 +64,12 @@ export async function httpRequest({
 	}
 	let nodeHttpsTransport: any
 	try {
-		nodeHttpsTransport = await import("https").catch(_ => undefined)
+		nodeHttpsTransport = await import("https").catch(() => undefined)
 	} catch (e) {
 	}
 	let nodeHttpTransport: any
 	try {
-		nodeHttpTransport = await import("http").catch(_ => undefined)
+		nodeHttpTransport = await import("http").catch(() => undefined)
 	} catch (e) {
 	}
 
@@ -116,7 +116,7 @@ export async function httpRequest({
 		return new Promise((resolve, reject) => {
 
 			const hostnameParts = hostname.split(":")
-			const port = hostnameParts.length == 3 ? hostnameParts[2] : undefined
+			const port = hostnameParts.length === 3 ? hostnameParts[2] : undefined
 
 			let parsedHostname = hostnameParts.length > 1 ? hostnameParts[1].substring(2) : hostnameParts[0]
 
