@@ -5,9 +5,9 @@ standards used in smart contracts.
 
 Flow SDK enables applications to interact with protocol easily.
 
-For more information, see [Rarible Protocol Flow documentation](https://docs.rarible.org/flow/flow-overview/).
+You can find detailed documentation at [docs.rarible.org](https://docs.rarible.org).
 
-### Installation
+## Installation
 
 ```shell
 npm i -S @rarible/flow-sdk
@@ -40,19 +40,17 @@ export NPM_TOKEN="123"
 
 Otherwise, the `yarn` commands will not work.
 
-### Testing
+## Testing
 
 To run tests, you need to install [flow-cli](https://docs.onflow.org/flow-cli/install/).
 
-nodejs version 16.9.0 is interrupting on tests with Flow emulator in some cases. It's an upstream bug in V8 present in
-node 16.9.0. [Here's](https://github.com/nodejs/node/issues/40030) more info about the bug.
+nodejs version 16.9.0 is interrupting on tests with Flow emulator in some cases. It's an upstream bug in V8 present in node 16.9.0. [Here's](https://github.com/nodejs/node/issues/40030) more info about the bug.
 
-### Usage
+## Usage
 
-#### Configure fcl
+### Configure fcl
 
-Flow-sdk use [@onflow/fcl-js](link:https://github.com/onflow/fcl-js). You can find configuration details for fcl
-in [this page](https://docs.onflow.org/fcl/tutorials/flow-app-quickstart/#configuration).
+Flow-sdk use [@onflow/fcl-js](link:https://github.com/onflow/fcl-js). You can find configuration details for fcl in [this page](https://docs.onflow.org/fcl/tutorials/flow-app-quickstart/#configuration).
 
 ```javascript
 //example config for testnet
@@ -64,7 +62,7 @@ config({
 })
 ```
 
-#### Create and use flow-sdk
+### Create and use flow-sdk
 
 Then we create the SDK according to the network that we configured in the previous step.
 
@@ -75,7 +73,7 @@ import * as fcl from "@onflow/fcl"
 const sdk = createFlowSdk(fcl, "testnet")
 ```
 
-#### Minting
+### Minting
 
 Mint response represents transaction result extended with `txId` and minted `tokenId`
 
@@ -95,7 +93,7 @@ const {
 } = await sdk.nft.mint(collection, "your meta info", yourRoyalties)
 ```
 
-#### Transfer
+### Transfer
 
 ```typescript
 const {
@@ -106,7 +104,7 @@ const {
 } = await sdk.nft.transfer(collection, tokenId, toFlowAddress)
 ```
 
-#### Burn
+### Burn
 
 ```typescript
 const {
@@ -117,7 +115,7 @@ const {
 } = await sdk.nft.burn(collection, tokenId)
 ```
 
-#### Create sell order
+### Create sell order
 
 ```typescript
 const {
@@ -130,7 +128,7 @@ const {
 // price must be a string of flow fungible token amount with 8 decimals,  for example: 1.123 or 0.1 or 0.00000001
 ```
 
-#### Update order
+### Update order
 
 ```typescript
 const {
@@ -143,7 +141,7 @@ const {
 // price must be a string of flow fungible token amount with 8 decimals,  for example: 1.123 or 0.1 or 0.00000001
 ```
 
-#### Cancel order
+### Cancel order
 
 ```typescript
 const {
@@ -154,7 +152,7 @@ const {
 } = await sdk.nft.sell(collection, orderId)
 ```
 
-#### Buy an item
+### Buy an item
 
 ```typescript
 const {
@@ -165,11 +163,16 @@ const {
 } = await sdk.nft.fill(collection, orderId, owner)
 ```
 
-### Suggestions
+## Suggestions
 
-You are welcome to [suggest features](https://github.com/rarible/protocol/discussions)
-and [report bugs found](https://github.com/rarible/protocol/issues)!
+You are welcome to [suggest features](https://github.com/rarible/protocol/discussions) and [report bugs found](https://github.com/rarible/protocol/issues)!
 
-### License
+## Contributing
+
+The codebase is maintained using the "contributor workflow" where everyone without exception contributes patch proposals using "pull requests" (PRs). This facilitates social contribution, easy testing, and peer review.
+
+See more information on [CONTRIBUTING.md](https://github.com/rarible/protocol/blob/main/CONTRIBUTING.md).
+
+## License
 
 Rarible Protocol Flow SDK is available under the [MIT License](LICENSE).
