@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.42-alpha.2](https://github.com/rarible/flow-sdk/compare/v0.5.42-alpha.1...v0.5.42-alpha.2) (2022-04-29)
+
+
+### Bug Fixes
+
+* api url for new dev env ([049591e](https://github.com/rarible/flow-sdk/commit/049591ef046e3ea922fe3775461fa9f9f00151d2))
+
+
+
+
+
 ## [0.5.42-alpha.1](https://github.com/rarible/flow-sdk/compare/v0.5.42-alpha.0...v0.5.42-alpha.1) (2022-04-13)
 
 
