@@ -2,8 +2,8 @@ import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rari
 import fcl from "@onflow/fcl"
 import { toBigNumber } from "@rarible/types"
 import { createFlowSdk, toFlowContractAddress } from "../index"
-import { getTestOrderTmplate } from "../test/order-template"
-import { checkEvent } from "../test/check-event"
+import { getTestOrderTmplate } from "../test/helpers/order-template"
+import { checkEvent } from "../test/helpers/check-event"
 import { EmulatorCollections } from "../config/config"
 
 describe("Bid update", () => {

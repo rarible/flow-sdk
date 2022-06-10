@@ -3,10 +3,10 @@ import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rari
 import type { FlowSdk } from "../index"
 import { createFlowSdk, toFlowContractAddress } from "../index"
 import { EmulatorCollections } from "../config/config"
-import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
-import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
-import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
-import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/mugen-art"
+import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/helpers/emulator/evolution"
+import { createTopShotTestEnvironment, getTopShotIds } from "../test/helpers/emulator/top-shot"
+import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/helpers/emulator/moto-gp-card"
+import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/helpers/emulator/mugen-art"
 
 describe("Minting on emulator", () => {
 	let sdk: FlowSdk

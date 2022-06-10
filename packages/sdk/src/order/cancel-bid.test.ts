@@ -2,8 +2,8 @@ import { createFlowEmulator } from "@rarible/flow-test-common"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import { toFlowContractAddress } from "../index"
 import { EmulatorCollections } from "../config/config"
-import { createFlowTestEmulatorSdk } from "../test/create-flow-test-sdk"
-import { checkEvent } from "../test/check-event"
+import { createFlowTestEmulatorSdk } from "../test/helpers/emulator/create-flow-test-sdk"
+import { checkEvent } from "../test/helpers/check-event"
 
 describe("Test cancel order on emulator", () => {
 	createFlowEmulator({})
