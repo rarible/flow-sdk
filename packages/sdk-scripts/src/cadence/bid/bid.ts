@@ -1,6 +1,6 @@
 export const openBidTransactionCode: Record<"openBid" | "closeBid" | "cancelBid" | "updateBid", string> = {
 	openBid: `
-		import FungibleToken from address
+import FungibleToken from address
 import NonFungibleToken from address
 import RaribleOpenBid from address
 import %ftContract% from address
@@ -67,9 +67,10 @@ transaction(nftId: UInt64, price: UFix64, parts: {Address:UFix64}) {
     }
 }
 
+
 		`,
 	closeBid: `
-	import FungibleToken from address
+import FungibleToken from address
 import NonFungibleToken from address
 import RaribleOpenBid from address
 import %ftContract% from address
@@ -110,9 +111,10 @@ transaction(bidId: UInt64, openBidAddress: Address, parts: {Address:UFix64}) {
         self.openBid.cleanup(bidId: bidId)
     }
 }
+
 `,
 	cancelBid: `
-		import RaribleOpenBid from adress
+import RaribleOpenBid from address
 
 transaction(bidId: UInt64) {
     let openBid: &RaribleOpenBid.OpenBid{RaribleOpenBid.OpenBidManager}
@@ -125,9 +127,11 @@ transaction(bidId: UInt64) {
     execute {
         self.openBid.removeBid(bidId: bidId)
     }
-}`,
+}
+
+`,
 	updateBid: `
-		import FungibleToken from address
+import FungibleToken from address
 import NonFungibleToken from address
 import RaribleOpenBid from address
 import %ftContract% from address
