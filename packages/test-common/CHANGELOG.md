@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.48-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.47...v0.5.48-alpha.0) (2022-06-13)
+
+
+### Bug Fixes
+
+* update flow scripts for new spork ([3aea784](https://github.com/rarible/flow-sdk/commit/3aea78450fb7c5b7249ab4cb299102cd01db9c78))
+
+
+
+
+
 ## [0.5.43](https://github.com/rarible/flow-sdk/compare/v0.5.41-alpha.1...v0.5.43) (2022-04-14)
 
 **Note:** Version bump only for package @rarible/flow-test-common
