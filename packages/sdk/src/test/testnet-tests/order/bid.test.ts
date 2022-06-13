@@ -3,7 +3,7 @@ import { TestnetCollections } from "../../../config/config"
 import { createFlowTestTestnetSdk } from "../../helpers/testnet/create-flow-test-testnet-sdk"
 import { getTestOrderTmplate } from "../../helpers/order-template"
 
-describe("Test bid on emulator", () => {
+describe.skip("Test bid on emulator", () => {
 	const collection = toFlowContractAddress(TestnetCollections.RARIBLE)
 	const [{ sdk: sdk1, address: address1 }, { sdk: sdk2, address: address2 }] = createFlowTestTestnetSdk()
 

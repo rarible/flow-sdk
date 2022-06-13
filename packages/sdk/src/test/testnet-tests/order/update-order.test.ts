@@ -5,7 +5,7 @@ import { TestnetCollections } from "../../../config/config"
 import { getTestOrderTmplate } from "../../helpers/order-template"
 import { checkEvent } from "../../helpers/check-event"
 
-describe("Test update sell order on testnet", () => {
+describe.skip("Test update sell order on testnet", () => {
 	const collection = toFlowContractAddress(TestnetCollections.RARIBLE)
 	const [{ sdk }] = createFlowTestTestnetSdk()
 

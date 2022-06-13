@@ -1,7 +1,7 @@
 import { createFlowTestTestnetSdk } from "../../helpers/testnet/create-flow-test-testnet-sdk"
 import { getProtocolFee } from "../../../order/get-protocol-fee"
 
-describe("Get protocol fee", () => {
+describe.skip("Get protocol fee", () => {
 	const [{ sdk }] = createFlowTestTestnetSdk()
 	test("should get protocol fees", async () => {
 		const fees = sdk.order.getProtocolFee()

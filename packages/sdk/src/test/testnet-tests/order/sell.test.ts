@@ -3,7 +3,7 @@ import { toBigNumber, toFlowAddress, toFlowContractAddress } from "@rarible/type
 import { TestnetCollections } from "../../../config/config"
 import { createFlowTestTestnetSdk } from "../../helpers/testnet/create-flow-test-testnet-sdk"
 
-describe("Test sell on testnet", () => {
+describe.skip("Test sell on testnet", () => {
 	const collection = toFlowContractAddress(TestnetCollections.RARIBLE)
 	const [{ sdk }] = createFlowTestTestnetSdk()
 

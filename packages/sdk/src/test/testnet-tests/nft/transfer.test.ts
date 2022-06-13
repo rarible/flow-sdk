@@ -4,7 +4,7 @@ import { extractTokenId } from "../../../common/item"
 import { checkEvent } from "../../helpers/check-event"
 import { createFlowTestTestnetSdk } from "../../helpers/testnet/create-flow-test-testnet-sdk"
 
-describe("Test transfer on emulator", () => {
+describe.skip("Test transfer on emulator", () => {
 	const collection = toFlowContractAddress(TestnetCollections.RARIBLE)
 	const [{ sdk, address }] = createFlowTestTestnetSdk()
 

@@ -4,7 +4,7 @@ import { extractTokenId } from "../../../common/item"
 import { checkEvent } from "../../helpers/check-event"
 import { createFlowTestTestnetSdk } from "../../helpers/testnet/create-flow-test-testnet-sdk"
 
-describe("Test burn on testnet", () => {
+describe.skip("Test burn on testnet", () => {
 	const collection = toFlowContractAddress(TestnetCollections.RARIBLE)
 	const [{ sdk }] = createFlowTestTestnetSdk()
 	test("Should burn NFT", async () => {

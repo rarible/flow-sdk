@@ -4,7 +4,7 @@ import { createFlowTestTestnetSdk } from "../../helpers/testnet/create-flow-test
 import { getTestOrderTmplate } from "../../helpers/order-template"
 import { checkEvent } from "../../helpers/check-event"
 
-describe("Bid update", () => {
+describe.skip("Bid update", () => {
 	const collection = toFlowContractAddress(TestnetCollections.RARIBLE)
 	const [{ sdk }, { sdk: sdk1 }] = createFlowTestTestnetSdk()
 	test("Should update RaribleNFT bid order", async () => {

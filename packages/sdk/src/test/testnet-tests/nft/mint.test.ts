@@ -2,7 +2,7 @@ import { TestnetCollections } from "../../../config/config"
 import { toFlowContractAddress } from "../../../index"
 import { createFlowTestTestnetSdk } from "../../helpers/testnet/create-flow-test-testnet-sdk"
 
-describe("Minting on testnet", () => {
+describe.skip("Minting on testnet", () => {
 	const [{ sdk }] = createFlowTestTestnetSdk()
 
 	test("should mint nft", async () => {
