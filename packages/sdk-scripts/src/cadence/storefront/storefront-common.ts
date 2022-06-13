@@ -1,6 +1,6 @@
 export const StorefrontCommon = {
 	read_listing_details: `
-import NFTStorefront from 0xNFTSTOREFRONT
+import NFTStorefront from address
 
 // This script returns the details for a listing within a storefront
 
@@ -19,7 +19,7 @@ pub fun main(address: Address, listingResourceID: UInt64): NFTStorefront.Listing
 }
 `,
 	read_storefront_ids: `
-import NFTStorefront from 0xNFTSTOREFRONT
+import NFTStorefront from address
 
 // This script returns an array of all the nft uuids for sale through a Storefront
 

@@ -1,5 +1,5 @@
-import FungibleToken from "core/FungibleToken.cdc"
-import NonFungibleToken from "core/NonFungibleToken.cdc"
+import FungibleToken from "flow/FungibleToken.cdc"
+import NonFungibleToken from "flow/NonFungibleToken.cdc"
 
 pub contract RaribleOpenBid {
 
@@ -223,7 +223,7 @@ pub contract RaribleOpenBid {
 
         pub fun borrowBid(bidId: UInt64): &Bid{BidPublic}? {
             if self.bids[bidId] != nil {
-                return &self.bids[bidId] as! &Bid{BidPublic}
+                return &self.bids[bidId] as! &Bid{BidPublic}?
             } else {
                 return nil
             }

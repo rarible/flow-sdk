@@ -1,4 +1,5 @@
-import NonFungibleToken from "core/NonFungibleToken.cdc"
+import NonFungibleToken from "flow/NonFungibleToken.cdc"
+import MetadataViews from "flow/MetadataViews.cdc"
 import LicensedNFT from "LicensedNFT.cdc"
 
 // RaribleNFT token contract
@@ -29,7 +30,7 @@ pub contract RaribleNFT : NonFungibleToken, LicensedNFT {
         }
     }
 
-    pub resource NFT: NonFungibleToken.INFT {
+    pub resource NFT: NonFungibleToken.INFT, MetadataViews.Resolver {
         pub let id: UInt64
         pub let creator: Address
         access(self) let metadata: {String:String}
@@ -40,6 +41,22 @@ pub contract RaribleNFT : NonFungibleToken, LicensedNFT {
             self.creator = creator
             self.metadata = metadata
             self.royalties = royalties
+        }
+
+        pub fun getViews(): [Type] {
+            return [Type<MetadataViews.Display>()]
+        }
+
+        pub fun resolveView(_ view: Type): AnyStruct? {
+            switch view {
+                case Type<MetadataViews.Display>():
+                    return MetadataViews.Display(
+                        name: self.metadata["name"] ?? "",
+                        description: self.metadata["description"] ?? "",
+                        thumbnail: MetadataViews.HTTPFile(url: self.metadata["metaURI"] ?? ""),
+                    )
+            }
+            return nil
         }
 
         pub fun getMetadata(): {String:String} {
@@ -55,7 +72,11 @@ pub contract RaribleNFT : NonFungibleToken, LicensedNFT {
         }
     }
 
-    pub resource Collection: NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic, LicensedNFT.CollectionPublic {
+    pub resource interface CollectionPublic {
+        pub fun borrow(id: UInt64): &NFT?
+    }
+
+    pub resource Collection: NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic, MetadataViews.ResolverCollection, LicensedNFT.CollectionPublic, CollectionPublic {
         pub var ownedNFTs: @{UInt64: NonFungibleToken.NFT}
 
         init() {
@@ -81,16 +102,27 @@ pub contract RaribleNFT : NonFungibleToken, LicensedNFT {
         }
 
         pub fun borrowNFT(id: UInt64): &NonFungibleToken.NFT {
-            return &self.ownedNFTs[id] as &NonFungibleToken.NFT
+            return (&self.ownedNFTs[id] as &NonFungibleToken.NFT?)!
+        }
+
+        pub fun borrowViewResolver(id: UInt64): &{MetadataViews.Resolver} {
+            let authRef = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT?
+            let ref = authRef as! &NFT
+            return ref as! &{MetadataViews.Resolver}
+        }
+
+        pub fun borrow(id: UInt64): &NFT? {
+            let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT?
+            return ref as! &RaribleNFT.NFT
         }
 
         pub fun getMetadata(id: UInt64): {String:String} {
-            let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT
+            let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT?
             return (ref as! &RaribleNFT.NFT).getMetadata()
         }
 
         pub fun getRoyalties(id: UInt64): [LicensedNFT.Royalty] {
-            let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT
+            let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT?
             return (ref as! &LicensedNFT.NFT).getRoyalties()
         }
 

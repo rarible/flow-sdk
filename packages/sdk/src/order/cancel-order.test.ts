@@ -2,14 +2,14 @@ import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rari
 import fcl from "@onflow/fcl"
 import type { FlowSdk } from "../index"
 import { createFlowSdk, toFlowContractAddress } from "../index"
-import { checkEvent } from "../test/check-event"
+import { checkEvent } from "../test/helpers/check-event"
 import { EmulatorCollections } from "../config/config"
-import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
-import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
-import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
-import { createFusdTestEnvironment } from "../test/setup-fusd-env"
+import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/helpers/emulator/evolution"
+import { createTopShotTestEnvironment, getTopShotIds } from "../test/helpers/emulator/top-shot"
+import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/helpers/emulator/moto-gp-card"
+import { createFusdTestEnvironment } from "../test/helpers/emulator/setup-fusd-env"
 import { toFlowItemId } from "../common/item"
-import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/mugen-art"
+import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/helpers/emulator/mugen-art"
 
 describe("Test cancel order on emulator", () => {
 	let sdk: FlowSdk

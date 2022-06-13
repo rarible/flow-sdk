@@ -1,6 +1,6 @@
 export const commonNft = {
 	transfer: `
-	import NonFungibleToken from address
+import NonFungibleToken from address
 import %nftContract% from address
 
 // transfer %nftContract% token with tokenId to given address
@@ -22,9 +22,10 @@ transaction(tokenId: UInt64, to: Address) {
         receiver.deposit(token: <- self.token)
     }
 }
+
 	`,
 	burn: `
-	import NonFungibleToken from address
+import NonFungibleToken from address
 import %nftContract% from address
 
 // Burn %nftContract% on signer account by tokenId
@@ -36,9 +37,10 @@ transaction(tokenId: UInt64) {
         destroy collection.withdraw(withdrawID: tokenId)
     }
 }
+
 `,
 	setupAccount: `
-	import NonFungibleToken from address
+import NonFungibleToken from address
 import %nftContract% from address
 
 // Setup storage for %nftContract% on signer account
@@ -57,9 +59,10 @@ transaction {
         }
     }
 }
+
 	`,
 	check: `
-	import NonFungibleToken from address
+import NonFungibleToken from address
 import %nftContract% from address
 
 // check %nftContract% collection is available on given address

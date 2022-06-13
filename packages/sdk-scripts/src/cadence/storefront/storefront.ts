@@ -1,6 +1,6 @@
 export const Storefront = {
 	createSellOrder: `
-	import FungibleToken from address
+import FungibleToken from address
 import NonFungibleToken from address
 import NFTStorefront from address
 import %ftContract% from address
@@ -52,7 +52,7 @@ transaction(tokenId: UInt64, parts: {Address: UFix64}) {
 }
 	`,
 	buy: `
-	import FungibleToken from address
+import FungibleToken from address
 import NonFungibleToken from address
 import NFTStorefront from address
 import %ftContract% from address
@@ -114,7 +114,6 @@ transaction(orderId: UInt64, storefrontAddress: Address, parts: {Address:UFix64}
         self.storefront.cleanup(listingResourceID: orderId)
     }
 }
-
 	`,
 	cancelOrder: `
 import NFTStorefront from address
@@ -134,7 +133,7 @@ transaction(orderId: UInt64) {
 }
 		`,
 	updateOrder: `
-	import FungibleToken from address
+import FungibleToken from address
 import NonFungibleToken from address
 import NFTStorefront from address
 import %ftContract% from address
@@ -191,6 +190,5 @@ transaction(orderId: UInt64, parts: {Address: UFix64}) {
         )
     }
 }
-
 	`,
 }

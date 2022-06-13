@@ -8,15 +8,15 @@ import {
 import fcl from "@onflow/fcl"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import { EmulatorCollections, TestnetCollections } from "../config/config"
-import { checkEvent } from "../test/check-event"
-import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/evolution"
-import { createTopShotTestEnvironment, getTopShotIds } from "../test/top-shot"
-import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/moto-gp-card"
-import { createFusdTestEnvironment } from "../test/setup-fusd-env"
+import { checkEvent } from "../test/helpers/check-event"
+import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/helpers/emulator/evolution"
+import { createTopShotTestEnvironment, getTopShotIds } from "../test/helpers/emulator/top-shot"
+import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/helpers/emulator/moto-gp-card"
+import { createFusdTestEnvironment } from "../test/helpers/emulator/setup-fusd-env"
 import { toFlowItemId } from "../common/item"
-import { getTestOrderTmplate } from "../test/order-template"
+import { getTestOrderTmplate } from "../test/helpers/order-template"
 import { createFlowSdk, toFlowContractAddress } from "../index"
-import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/mugen-art"
+import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/helpers/emulator/mugen-art"
 
 describe("Test update sell order on emulator", () => {
 	createFlowEmulator({})

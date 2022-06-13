@@ -54,7 +54,7 @@ export async function getOrderDetailsFromBlockchain(
 		},
 		map,
 	)
-	const fungibleContract = "vaultType" in details ? details.vaultType.split(".")[2] : details.salePaymentVaultType.split(".")[2]
+	const fungibleContract = "vaultType" in details ? details.vaultType.typeID.split(".")[2] : details.salePaymentVaultType.split(".")[2]
 	const protocolFeeReceiver = CONFIGS[network].protocolFee.account
 	const data = {
 		...details,

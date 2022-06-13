@@ -7,11 +7,11 @@ import {
 import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import { testScripts } from "@rarible/flow-test-common/build/common/scripts"
-import { runScript, runTransaction, waitForSeal } from "../common/transaction"
-import type { AuthWithPrivateKey, FlowNetwork } from "../types"
-import type { FlowSdk } from "../index"
-import { createFlowSdk } from "../index"
-import { CONFIGS } from "../config/config"
+import { runScript, runTransaction, waitForSeal } from "../../../common/transaction"
+import type { AuthWithPrivateKey, FlowNetwork } from "../../../types"
+import type { FlowSdk } from "../../../index"
+import { createFlowSdk } from "../../../index"
+import { CONFIGS } from "../../../config/config"
 
 async function runFusdTransaction(
 	fcl: Fcl, network: FlowNetwork, auth: AuthWithPrivateKey, contractOwner: string, code: string,
