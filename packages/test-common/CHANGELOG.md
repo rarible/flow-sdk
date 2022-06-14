@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.48-alpha.1](https://github.com/rarible/flow-sdk/compare/v0.5.48-alpha.0...v0.5.48-alpha.1) (2022-06-14)
+
+
+### Bug Fixes
+
+* remove todos.md, extend createAuth function ([f2951ef](https://github.com/rarible/flow-sdk/commit/f2951ef0723975cb5ab8faa32bcdc274f19ae54b))
+
+
+
+
+
 ## [0.5.48-alpha.0](https://github.com/rarible/flow-sdk/compare/v0.5.47...v0.5.48-alpha.0) (2022-06-13)
 
 
