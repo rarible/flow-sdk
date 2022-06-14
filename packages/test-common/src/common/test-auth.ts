@@ -3,13 +3,24 @@ import { FlowService } from "./authorizer"
 
 export function createTestAuth(
 	fcl: Fcl,
-	network: "emulator" | "testnet",
+	network: "emulator" | "testnet" | "mainnet",
 	accountAddress: string,
 	privateKey: string,
 	keyIndex: number = 0,
 ) {
-	fcl.config()
-		.put("accessNode.api", network === "testnet" ? "https://access-testnet.onflow.org" : "http://127.0.0.1:8080")
+	switch (network) {
+		case "emulator": {
+			fcl.config()
+				.put("accessNode.api", "http://127.0.0.1:8080")
+		}
+		case "testnet": {
+			fcl.config().put("accessNode.api", "https://access-testnet.onflow.org")
+		}
+		case "mainnet": {
+			fcl.config().put("accessNode.api", "https://access.onflow.org")
+		}
+	}
+
 	const flowService = new FlowService(
 		fcl,
 		accountAddress,
