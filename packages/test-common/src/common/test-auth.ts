@@ -12,12 +12,15 @@ export function createTestAuth(
 		case "emulator": {
 			fcl.config()
 				.put("accessNode.api", "http://127.0.0.1:8080")
+			break
 		}
 		case "testnet": {
 			fcl.config().put("accessNode.api", "https://access-testnet.onflow.org")
+			break
 		}
 		case "mainnet": {
 			fcl.config().put("accessNode.api", "https://access.onflow.org")
+			break
 		}
 	}
 
