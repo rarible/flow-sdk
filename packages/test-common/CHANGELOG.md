@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.48-alpha.2](https://github.com/rarible/flow-sdk/compare/v0.5.48-alpha.1...v0.5.48-alpha.2) (2022-06-15)
+
+
+### Bug Fixes
+
+* test-common package auth initialisation ([affd30a](https://github.com/rarible/flow-sdk/commit/affd30abf1152bdf8c996e7b85aa03cbb4af172d))
+
+
+
+
+
 ## [0.5.48-alpha.1](https://github.com/rarible/flow-sdk/compare/v0.5.48-alpha.0...v0.5.48-alpha.1) (2022-06-14)
 
 
