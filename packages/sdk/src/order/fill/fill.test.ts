@@ -40,8 +40,8 @@ describe("Test fill on emulator", () => {
 			[{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_3.address), value: toBigNumber("0.1") }],
 		)
 		expect(
-			toBn(await testnetSdk.wallet.getFungibleBalance(toFlowAddress(FLOW_TESTNET_ACCOUNT_3.address), "FLOW")).toString(),
-		).toEqual(toBn(acc1bal).minus("0.00001000").toString())
+			toBn(await testnetSdk.wallet.getFungibleBalance(toFlowAddress(FLOW_TESTNET_ACCOUNT_3.address), "FLOW")).toNumber(),
+		).toBeGreaterThanOrEqual(toBn(acc1bal).minus("0.00001000").toNumber())
 
 		const orderTx = await testnetSdk.order.sell({
 			collection: testnetCollection,

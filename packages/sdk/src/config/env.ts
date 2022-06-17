@@ -17,7 +17,7 @@ export const ENV_CONFIG: FlowEnvConfig = {
 		network: "testnet",
 	},
 	staging: {
-		basePath: "https://flow-api-staging.rarible.com",
+		basePath: "https://flow-api-staging.rarible.org",
 		network: "testnet",
 	},
 	mainnet: {

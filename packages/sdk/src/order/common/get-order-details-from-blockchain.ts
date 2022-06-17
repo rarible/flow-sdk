@@ -54,7 +54,14 @@ export async function getOrderDetailsFromBlockchain(
 		},
 		map,
 	)
-	const fungibleContract = "vaultType" in details ? details.vaultType.typeID.split(".")[2] : details.salePaymentVaultType.split(".")[2]
+	let fungibleContract: string
+	if ("vaultType" in details) {
+		fungibleContract = details.vaultType.typeID.split(".")[2]
+	} else if ("salePaymentVaultType" in details) {
+		fungibleContract = details.salePaymentVaultType.typeID.split(".")[2]
+	} else {
+		throw new Error("Unknown order object type returned from blockchain")
+	}
 	const protocolFeeReceiver = CONFIGS[network].protocolFee.account
 	const data = {
 		...details,
