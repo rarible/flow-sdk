@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.48-alpha.3](https://github.com/rarible/flow-sdk/compare/v0.5.48-alpha.2...v0.5.48-alpha.3) (2022-06-17)
+
+
+### Bug Fixes
+
+* getOrderFromBlockchain handler ([efc4fe3](https://github.com/rarible/flow-sdk/commit/efc4fe34b2eb387852366fddd755c6217cbf97e7))
+
+
+
+
+
 ## [0.5.48-alpha.2](https://github.com/rarible/flow-sdk/compare/v0.5.48-alpha.1...v0.5.48-alpha.2) (2022-06-15)
 
 
