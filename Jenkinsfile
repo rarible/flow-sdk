@@ -14,12 +14,10 @@ pipeline {
           docker { image 'cueage/flow-cli:latest' }
       }
       when {
-         not {
-            anyOf {
-              branch 'master';
-              branch 'develop'
-            }
-         }
+        anyOf {
+          branch 'master';
+          branch 'develop'
+        }
       }
       steps {
 				sh 'yarn'
