@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.48-alpha.4](https://github.com/rarible/flow-sdk/compare/v0.5.48-alpha.3...v0.5.48-alpha.4) (2022-07-15)
+
+
+### Bug Fixes
+
+* testnet config insted of staging ([921426e](https://github.com/rarible/flow-sdk/commit/921426e74efff93336b770c437762cebc49a8f1b))
+
+
+
+
+
 ## [0.5.48-alpha.3](https://github.com/rarible/flow-sdk/compare/v0.5.48-alpha.2...v0.5.48-alpha.3) (2022-06-17)
 
 
