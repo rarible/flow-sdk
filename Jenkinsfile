@@ -13,6 +13,14 @@ pipeline {
       agent {
           docker { image 'cueage/flow-cli:latest' }
       }
+      when {
+         not {
+            anyOf {
+              branch 'master';
+              branch 'develop'
+            }
+         }
+      }
       steps {
 				sh 'yarn'
 				sh 'yarn bootstrap'
