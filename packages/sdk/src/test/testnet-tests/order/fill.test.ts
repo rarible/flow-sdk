@@ -7,7 +7,7 @@ import { createFlowTestTestnetSdk } from "../../helpers/testnet/create-flow-test
 
 describe("Fill tests", () => {
 	const testnetCollection = toFlowContractAddress(TestnetCollections.RARIBLE)
-	const [{ sdk: testnetSdk }, { sdk: testnetSdk2 }] = createFlowTestTestnetSdk("staging")
+	const [{ sdk: testnetSdk }, { sdk: testnetSdk2 }] = createFlowTestTestnetSdk("testnet")
 
 	test("Should fill order on testnet", async () => {
 		const testnetCollection = toFlowContractAddress(TestnetCollections.RARIBLE)
