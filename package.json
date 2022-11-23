@@ -8,7 +8,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap && lerna link",
     "clean": "lerna run clean --parallel",
-    "build-all": "sh ./scripts/build.sh",
+    "build": "sh ./scripts/build.sh",
     "build-sdk": "yarn workspace @rarible/flow-sdk run build",
     "build-scripts": "yarn workspace @rarible/flow-sdk-scripts run build",
     "build-test": "yarn workspace @rarible/flow-test-common run build",
