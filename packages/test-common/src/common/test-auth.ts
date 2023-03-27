@@ -22,6 +22,7 @@ export function createTestAuth(
 			fcl.config().put("accessNode.api", "https://access.onflow.org")
 			break
 		}
+		default: throw new Error(`Unrecognized network = ${network}`)
 	}
 
 	const flowService = new FlowService(

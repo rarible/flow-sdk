@@ -3,6 +3,7 @@ import type { Maybe } from "@rarible/types/build/maybe"
 import type { BigNumber } from "@rarible/types"
 import { toFlowAddress } from "@rarible/types"
 import type { FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
+import { txInitNFTContractsAndStorefrontV2 } from "@rarible/flow-sdk-scripts/build/cadence/nft/mattel-contracts-orders"
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getCollectionConfig } from "../common/collection/get-config"
@@ -10,7 +11,12 @@ import { checkPrice } from "../common/check-price"
 import { parseEvents } from "../common/parse-tx-events"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCode } from "../tx-code-store/order/storefront"
-import { getOrderDetailsFromBlockchain } from "./common/get-order-details-from-blockchain"
+import { getMattelOrderCode } from "../tx-code-store/order/mattel-storefront"
+import { fixAmount } from "../common/fix-amount"
+import {
+	getOrderDetailsFromBlockchain,
+	getStorefrontV2OrderDetailsFromBlockchain,
+} from "./common/get-order-details-from-blockchain"
 import { getPreparedOrder } from "./common/get-prepared-order"
 import type { FlowSellResponse } from "./sell"
 import { calculateUpdateOrderSaleCuts } from "./common/calculate-update-order-sale-cuts"
@@ -38,6 +44,46 @@ export async function updateOrder(
 		}
 		const preparedOrder = await getPreparedOrder(orderApi, order)
 		const { name, map } = getCollectionConfig(network, collection)
+
+		if (name === "HWGarageCard" || name === "HWGaragePack") {
+			const initTx = await runTransaction(
+				fcl,
+				map,
+				{
+					cadence: txInitNFTContractsAndStorefrontV2,
+					args: fcl.args([]),
+				},
+				auth
+			)
+			await waitForSeal(fcl, initTx)
+
+			const details = await getStorefrontV2OrderDetailsFromBlockchain(fcl, network, from, preparedOrder.id)
+			if (details.purchased) {
+				throw new Error("Item was purchased")
+			}
+
+			const txId = await runTransaction(
+				fcl,
+				map,
+				getMattelOrderCode(fcl, name).update({
+					collectionName: name,
+					orderId: preparedOrder.id,
+					itemId: details.nftID,
+					saleItemPrice: fixAmount(request.sellItemPrice),
+					customID: "RARIBLE",
+					commissionAmount: fixAmount(details.commissionAmount),
+					expiry: details.expiry,
+					marketplacesAddress: [],
+				}),
+				auth
+			)
+			const tx = await waitForSeal(fcl, txId)
+			const simpleOrderId = parseEvents<string>(tx.events, "ListingAvailable", "listingResourceID")
+			return {
+				...tx,
+				orderId: parseInt(simpleOrderId),
+			}
+		}
 
 		const orderSaleCuts = await getOrderDetailsFromBlockchain(fcl, network, "sell", from, preparedOrder.id)
 		const txId = await runTransaction(

@@ -30,7 +30,9 @@ type NftStaticVariables = {
 	"%nftPublicPath%": string
 	"%nftStoragePath%": string
 	"%publicTypeAddon%"?: string
+	"%nftPrivatePath%"?: string
 }
+
 const nftCodeConfig: Record<NonFungibleContract, NftStaticVariables> = {
 	RaribleNFT: {
 		"%nftPublicPath%": "RaribleNFT.collectionPublicPath",
@@ -137,7 +139,20 @@ const nftCodeConfig: Record<NonFungibleContract, NftStaticVariables> = {
 		"%nftStoragePath%": "CryptoPiggo.CollectionStoragePath",
 		"%publicTypeAddon%": "CryptoPiggo.CryptoPiggoCollectionPublic",
 	},
+	HWGaragePack: {
+		"%nftPublicPath%": "HWGaragePack.CollectionPublicPath",
+		"%nftStoragePath%": "HWGaragePack.CollectionStoragePath",
+		"%nftPrivatePath%": "/private/HWGaragePackCollection",
+		"%publicTypeAddon%": "HWGaragePack.PackCollectionPublic",
+	},
+	HWGarageCard: {
+		"%nftPublicPath%": "HWGarageCard.CollectionPublicPath",
+		"%nftStoragePath%": "HWGarageCard.CollectionStoragePath",
+		"%nftPrivatePath%": "/private/HWGarageCardCollection",
+		"%publicTypeAddon%": "HWGarageCard.HWGarageCardCollectionPublic",
+	},
 }
+
 export type NftCodeConfig = NftStaticVariables & {
 	"%nftContract%": string
 	"%nftStorageType%": string
@@ -156,7 +171,7 @@ export function getNftCodeConfig(contract: FlowContractName): NftCodeConfig {
 		...staticConfig,
 		"%nftContract%": contract,
 		"%nftStorageType%": `${contract}.Collection`,
-		"%nftPrivatePath%": `/private/${contract}_collectionRef`,
+		"%nftPrivatePath%": staticConfig["%nftPrivatePath%"] || `/private/${contract}_collectionRef`,
 		"%nftPrivateType%": "NonFungibleToken.CollectionPublic,NonFungibleToken.Provider,NonFungibleToken.Receiver",
 		"%nftPublicType%": `${staticConfig["%publicTypeAddon%"] ? staticConfig["%publicTypeAddon%"] + "," : ""}NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver`,
 		"%nftPublicTypeMin%": staticConfig["%publicTypeAddon%"] || "NonFungibleToken.CollectionPublic",

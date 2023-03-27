@@ -3,6 +3,7 @@ import type { Maybe } from "@rarible/types/build/maybe"
 import type { FlowAddress } from "@rarible/types"
 import { toFlowAddress } from "@rarible/types"
 import type { FlowNftItemControllerApi, FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
+import { txInitNFTContractsAndStorefrontV2 } from "@rarible/flow-sdk-scripts/build/cadence/nft/mattel-contracts-orders"
 import type {
 	AuthWithPrivateKey,
 	FlowCurrency,
@@ -18,8 +19,11 @@ import { calculateFees } from "../../common/calculate-fees"
 import type { FlowContractAddress } from "../../common/flow-address"
 import { runTransaction, waitForSeal } from "../../common/transaction"
 import { getOrderCode } from "../../tx-code-store/order/storefront"
-import { getOrderDetailsFromBlockchain } from "../common/get-order-details-from-blockchain"
+import {
+	getOrderDetailsFromBlockchain,
+} from "../common/get-order-details-from-blockchain"
 import { fetchItemRoyalties } from "../common/fetch-item-royalties"
+import { getMattelOrderCode } from "../../tx-code-store/order/mattel-storefront"
 import { fillBidOrder } from "./fill-bid-order"
 
 export type FlowOrderType = "LIST" | "BID"
@@ -46,7 +50,34 @@ export async function fill(
 		const preparedOrder = await getPreparedOrder(orderApi, order)
 		const { name, map } = getCollectionConfig(network, collection)
 		switch (preparedOrder.type) {
-			case "LIST":
+			case "LIST": {
+				if (name === "HWGarageCard" || name === "HWGaragePack") {
+					const initTx = await runTransaction(
+						fcl,
+						map,
+						{
+							cadence: txInitNFTContractsAndStorefrontV2,
+							args: fcl.args([]),
+						},
+						auth
+					)
+					await waitForSeal(fcl, initTx)
+
+					// const details = await getStorefrontV2OrderDetailsFromBlockchain(fcl, network, from, preparedOrder.id)
+
+					console.log("orderid, owner, comrec", preparedOrder.id, owner)
+					const txId = await runTransaction(
+						fcl,
+						map,
+						getMattelOrderCode(fcl, name).buy({
+							orderId: preparedOrder.id,
+							address: owner,
+							comissionRecipient: owner,
+						}),
+						auth,
+					)
+					return waitForSeal(fcl, txId)
+				}
 				const blockChainOrder = await getOrderDetailsFromBlockchain(
 					fcl, network, "sell", owner, preparedOrder.id,
 				)
@@ -69,6 +100,7 @@ export async function fill(
 					auth,
 				)
 				return waitForSeal(fcl, txId)
+			}
 			case "BID":
 				const protocolFee: FlowFee[] = [getProtocolFee.percents(network).sellerFee]
 				const { payouts: orderPayouts } = preparedOrder.data

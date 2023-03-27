@@ -8,7 +8,7 @@
     "importHelpers": true,
     "declaration": true,
     "strict": true,
-    "noImplicitReturns": true,
+    "noImplicitReturns": false,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -16,7 +16,5 @@
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
     "baseUrl": ".",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
   },
 }

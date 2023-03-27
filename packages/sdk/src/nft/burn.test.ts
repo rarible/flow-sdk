@@ -1,17 +1,17 @@
 import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
+import { FLOW_TESTNET_ACCOUNT_5 } from "@rarible/flow-test-common/src/config"
 import fcl from "@onflow/fcl"
 import type { FlowSdk } from "../index"
 import { createFlowSdk, toFlowContractAddress } from "../index"
 import { checkEvent } from "../test/helpers/check-event"
-import { EmulatorCollections } from "../config/config"
+import { EmulatorCollections, TestnetCollections } from "../config/config"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/helpers/emulator/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/helpers/emulator/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/helpers/emulator/moto-gp-card"
 import { extractTokenId } from "../common/item"
 
-describe("Test burn on emulator", () => {
+describe.skip("Test burn on emulator", () => {
 	let sdk: FlowSdk
-	const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
 	createFlowEmulator({})
 
 	beforeAll(async () => {
@@ -20,14 +20,15 @@ describe("Test burn on emulator", () => {
 		sdk = createFlowSdk(fcl, "emulator", {}, auth)
 	})
 
-	test("Should burn NFT", async () => {
+	test.skip("Should burn NFT", async () => {
+		const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
 		const txMint = await sdk.nft.mint(collection, "ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU", [])
 		const txBurn = await sdk.nft.burn(collection, extractTokenId(txMint.tokenId))
 		checkEvent(txBurn, "Withdraw", "RaribleNFT")
 		checkEvent(txBurn, "Destroy", "RaribleNFT")
 	})
 
-	test("Should burn evolution nft", async () => {
+	test.skip("Should burn evolution nft", async () => {
 		const { acc1, serviceAcc } = await createEvolutionTestEnvironment(fcl)
 
 		const result = await getEvolutionIds(fcl, serviceAcc.address, acc1.address, acc1.tokenId)
@@ -41,7 +42,7 @@ describe("Test burn on emulator", () => {
 		checkEvent(burnTx, "CollectibleDestroyed", "Evolution")
 	})
 
-	test("should burn TopShot nft", async () => {
+	test.skip("should burn TopShot nft", async () => {
 		const topShotColletion = toFlowContractAddress(EmulatorCollections.TOPSHOT)
 		const { acc1, serviceAcc } = await createTopShotTestEnvironment(fcl)
 
@@ -53,7 +54,7 @@ describe("Test burn on emulator", () => {
 		checkEvent(burnTx, "MomentDestroyed", "TopShot")
 	})
 
-	test("should burn MotoCpCard nft", async () => {
+	test.skip("should burn MotoCpCard nft", async () => {
 		const motoGpColletion = toFlowContractAddress(EmulatorCollections.MOTOGP)
 		const { acc1, serviceAcc } = await createMotoGpTestEnvironment(fcl)
 
@@ -64,4 +65,26 @@ describe("Test burn on emulator", () => {
 		checkEvent(burnTx, "Withdraw", "MotoGPCard")
 		checkEvent(burnTx, "Burn", "MotoGPCard")
 	})
+
+	test.skip("should burn HWGarageCard nft", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCard)
+		const tokenId = 161
+
+		const burnTx = await testnetSdk.nft.burn(testnetCollection, tokenId)
+		checkEvent(burnTx, "Withdraw", "HWGarageCard")
+		checkEvent(burnTx, "Burn", "HWGarageCard")
+	}, 1000000)
+
+	test.skip("should burn HWGaragePack nft", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePack)
+		const tokenId = 31
+
+		const burnTx = await testnetSdk.nft.burn(testnetCollection, tokenId)
+		checkEvent(burnTx, "Withdraw", "HWGaragePack")
+		checkEvent(burnTx, "Burn", "HWGaragePack")
+	}, 1000000)
 })

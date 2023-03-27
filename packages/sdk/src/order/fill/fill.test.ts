@@ -1,9 +1,10 @@
 import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
+import { FLOW_TESTNET_ACCOUNT_5, FLOW_TESTNET_ACCOUNT_6 } from "@rarible/flow-test-common/build/config"
 import type { FlowSdk } from "../../index"
 import { createFlowSdk, toFlowContractAddress } from "../../index"
-import { EmulatorCollections } from "../../config/config"
+import { EmulatorCollections, TestnetCollections } from "../../config/config"
 import { createFusdTestEnvironment } from "../../test/helpers/emulator/setup-fusd-env"
 import { checkEvent } from "../../test/helpers/check-event"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../../test/helpers/emulator/evolution"
@@ -185,4 +186,52 @@ describe("Test fill on emulator", () => {
 		const [buyItemId] = await getMugenArtIds(fcl, serviceAcc.address, acc2.address)
 		expect(buyItemId).toEqual(0)
 	})
+
+	test("Should fill Mattel StorefrontV2 sell order with HWGaragePack item", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_6.address, FLOW_TESTNET_ACCOUNT_6.privKey)
+		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
+
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePack)
+		const tokenId = "30"
+		const itemId = toFlowItemId(`${testnetCollection}:${tokenId}`)
+
+		const sellTx = await testnetSdk.order.sell({
+			collection: testnetCollection,
+			currency: "FLOW",
+			itemId,
+			sellItemPrice: "0.0001",
+		})
+		checkEvent(sellTx, "ListingAvailable", "NFTStorefrontV2")
+
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.0001"))
+		const buyTx = await testnetBuyerSdk.order.fill(testnetCollection, "FLOW", order, FLOW_TESTNET_ACCOUNT_5.address, [])
+		checkEvent(buyTx, "ListingCompleted", "NFTStorefrontV2")
+	}, 1000000)
+
+	test("Should fill Mattel StorefrontV2 sell order with HWGarageCard item", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_6.address, FLOW_TESTNET_ACCOUNT_6.privKey)
+		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
+
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCard)
+		const tokenId = "155"
+		const itemId = toFlowItemId(`${testnetCollection}:${tokenId}`)
+
+		const sellTx = await testnetSdk.order.sell({
+			collection: testnetCollection,
+			currency: "FLOW",
+			itemId,
+			sellItemPrice: "0.0001",
+		})
+		checkEvent(sellTx, "ListingAvailable", "NFTStorefrontV2")
+
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.0001"))
+		const buyTx = await testnetBuyerSdk.order.fill(testnetCollection, "FLOW", order, FLOW_TESTNET_ACCOUNT_5.address, [])
+		checkEvent(buyTx, "ListingCompleted", "NFTStorefrontV2")
+	}, 1000000)
 })

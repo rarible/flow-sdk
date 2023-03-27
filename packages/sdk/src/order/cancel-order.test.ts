@@ -1,9 +1,10 @@
 import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
+import { FLOW_TESTNET_ACCOUNT_5 } from "@rarible/flow-test-common/src/config"
 import type { FlowSdk } from "../index"
 import { createFlowSdk, toFlowContractAddress } from "../index"
 import { checkEvent } from "../test/helpers/check-event"
-import { EmulatorCollections } from "../config/config"
+import { EmulatorCollections, TestnetCollections } from "../config/config"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/helpers/emulator/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/helpers/emulator/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/helpers/emulator/moto-gp-card"
@@ -135,4 +136,18 @@ describe("Test cancel order on emulator", () => {
 		const cancelTx = await acc1.sdk.order.cancelOrder(mugenArtCollection, sellTx.orderId)
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
+
+	test("Should cancel sell Storefront Mattel order", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePack)
+
+		const cancelOrderTx = await testnetSdk.order.cancelOrder(
+			testnetCollection,
+			141070269
+		)
+		console.log("init tx", JSON.stringify(cancelOrderTx, null, "	"))
+
+		checkEvent(cancelOrderTx, "ListingCompleted", "NFTStorefrontV2")
+	}, 1000000)
 })
