@@ -14,7 +14,8 @@ import { withPrefix } from "../../common/prefix"
  */
 export function calculateSaleCuts(
 	mainPayoutAddress: FlowAddress,
-	price: string, fees: FlowFee[],
+	price: string,
+	fees: FlowFee[],
 	payouts: FlowFee[]
 ): FlowFee[] {
 	const startPrice = toBn(price)

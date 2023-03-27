@@ -1,9 +1,10 @@
 import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
 import { toFlowAddress } from "@rarible/types"
+import { FLOW_TESTNET_ACCOUNT_5, FLOW_TESTNET_ACCOUNT_6 } from "@rarible/flow-test-common/build/config"
 import { createFlowSdk, toFlowContractAddress } from "../index"
 import { checkEvent } from "../test/helpers/check-event"
-import { EmulatorCollections } from "../config/config"
+import { EmulatorCollections, TestnetCollections } from "../config/config"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/helpers/emulator/evolution"
 import { createTopShotTestEnvironment, getTopShotIds } from "../test/helpers/emulator/top-shot"
 import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/helpers/emulator/moto-gp-card"
@@ -73,4 +74,34 @@ describe("Test transfer on emulator", () => {
 		checkEvent(transferTx, "Withdraw", "MotoGPCard")
 		checkEvent(transferTx, "Deposit", "MotoGPCard")
 	})
+
+	test.skip("should transfer HWGaragePack", async () => {
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_6.address, FLOW_TESTNET_ACCOUNT_6.privKey)
+		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
+
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePack)
+		const tokenId = 30
+		const transferTx = await testnetBuyerSdk.nft.transfer(
+			testnetCollection,
+			tokenId,
+			toFlowAddress(FLOW_TESTNET_ACCOUNT_5.address)
+		)
+		checkEvent(transferTx, "Withdraw", "HWGaragePack")
+		checkEvent(transferTx, "Deposit", "HWGaragePack")
+	}, 1000000)
+
+	test.skip("should transfer HWGarageCard", async () => {
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_6.address, FLOW_TESTNET_ACCOUNT_6.privKey)
+		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
+
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCard)
+		const tokenId = 155
+		const transferTx = await testnetBuyerSdk.nft.transfer(
+			testnetCollection,
+			tokenId,
+			toFlowAddress(FLOW_TESTNET_ACCOUNT_5.address)
+		)
+		checkEvent(transferTx, "Withdraw", "HWGarageCard")
+		checkEvent(transferTx, "Deposit", "HWGarageCard")
+	}, 1000000)
 })

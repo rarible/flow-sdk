@@ -112,6 +112,14 @@ export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> 
 		contractsNames: ["CryptoPiggo"] as FlowContractAddressName[],
 		features: ["TRANSFER"],
 	},
+	HWGaragePack: {
+		contractsNames: ["HWGaragePack"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
+	HWGarageCard: {
+		contractsNames: ["HWGarageCard"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
 }
 
 const MAINNET_RARIBLE_ADDRESS = toFlowAddress("0x01ab36aaf654a13e")
@@ -132,6 +140,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			FlowToken: toFlowAddress("0x0ae53cb6e3f42a79"),
 			FUSD: EMULATOR_ADDRESS,
 			NFTStorefront: EMULATOR_ADDRESS,
+			NFTStorefrontV2: EMULATOR_ADDRESS,
 			MotoGPCard: EMULATOR_ADDRESS,
 			Evolution: EMULATOR_ADDRESS,
 			TopShot: EMULATOR_ADDRESS,
@@ -160,6 +169,8 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			IrVoucher: EMULATOR_ADDRESS,
 			GeniaceNFT: EMULATOR_ADDRESS,
 			CryptoPiggo: EMULATOR_ADDRESS,
+			HWGaragePack: EMULATOR_ADDRESS,
+			HWGarageCard: EMULATOR_ADDRESS,
 		},
 	},
 	testnet: {
@@ -170,6 +181,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			FUSD: toFlowAddress("0xe223d8a629e49c68"),
 			FlowToken: toFlowAddress("0x7e60df042a9c0868"),
 			NFTStorefront: toFlowAddress("0x94b06cfca1d8a476"),
+			NFTStorefrontV2: toFlowAddress("0x80102bce1de42dc4"),
 			MotoGPCard: toFlowAddress("0x01658d9b94068f3c"),
 			Evolution: toFlowAddress("0x01658d9b94068f3c"),
 			TopShot: toFlowAddress("0x01658d9b94068f3c"),
@@ -198,6 +210,8 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			IrVoucher: toFlowAddress("0x0131dc3d737d7735"),
 			GeniaceNFT: toFlowAddress("0x99eb28310626e56a"),
 			CryptoPiggo: toFlowAddress("0x57e1b27618c5bb69"),
+			HWGaragePack: toFlowAddress("0x80102bce1de42dc4"),
+			HWGarageCard: toFlowAddress("0x80102bce1de42dc4"),
 		},
 	},
 	mainnet: {
@@ -208,6 +222,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			FUSD: toFlowAddress("0x3c5959b568896393"),
 			FlowToken: toFlowAddress("0x1654653399040a61"),
 			NFTStorefront: toFlowAddress("0x4eb8a10cb9f87357"),
+			NFTStorefrontV2: toFlowAddress("0x4eb8a10cb9f87357"),
 			MotoGPCard: toFlowAddress("0xa49cc0ee46c54bfb"),
 			Evolution: toFlowAddress("0xf4264ac8f3256818"),
 			TopShot: toFlowAddress("0b2a3299cc857e29"),
@@ -236,6 +251,8 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			IrVoucher: toFlowAddress("0x276a7cc9316712af"),
 			GeniaceNFT: toFlowAddress("0xabda6627c70c7f52"),
 			CryptoPiggo: toFlowAddress("0xd3df824bf81910a4"),
+			HWGaragePack: toFlowAddress("0xd0bcefdf1e67ea85"),
+			HWGarageCard: toFlowAddress("0xd0bcefdf1e67ea85"),
 		},
 	},
 }
@@ -264,6 +281,8 @@ export enum TestnetCollections {
 	MUGENNFT = "A.ebf4ae01d1284af8.MugenNFT",
 	CNNNFT = "A.ebf4ae01d1284af8.CNN_NFT",
 	MATRIXFEST = "A.e2f1b000e0203c1d.MatrixWorldFlowFestNFT",
+	HWGarageCard = "A.80102bce1de42dc4.HWGarageCard",
+	HWGaragePack = "A.80102bce1de42dc4.HWGaragePack"
 }
 
 export enum MainnetCollections {

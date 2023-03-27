@@ -5,6 +5,7 @@ import { runTransaction, waitForSeal } from "../common/transaction"
 import { getCollectionConfig } from "../common/collection/get-config"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCode } from "../tx-code-store/order/storefront"
+import { getMattelOrderCode } from "../tx-code-store/order/mattel-storefront"
 
 export async function cancelOrder(
 	fcl: Maybe<Fcl>,
@@ -15,6 +16,17 @@ export async function cancelOrder(
 ): Promise<FlowTransaction> {
 	if (fcl) {
 		const { name, map } = getCollectionConfig(network, collection)
+
+		if (name === "HWGarageCard" || name === "HWGaragePack") {
+			const txId = await runTransaction(
+				fcl,
+				map,
+				getMattelOrderCode(fcl, name).cancel(orderId),
+				auth
+			)
+			return waitForSeal(fcl, txId)
+		}
+
 		const txId = await runTransaction(
 			fcl,
 			map,

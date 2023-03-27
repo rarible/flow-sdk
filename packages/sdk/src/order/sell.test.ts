@@ -1,12 +1,13 @@
 import {
-	createEmulatorAccount,
+	// createEmulatorAccount,
 	createFlowEmulator,
 	createTestAuth,
 	FLOW_TESTNET_ACCOUNT_4,
 } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
-import type { FlowSdk } from "../index"
+// import type { FlowSdk } from "../index"
+import { FLOW_TESTNET_ACCOUNT_5 } from "@rarible/flow-test-common/build/config"
 import { createFlowSdk, toFlowContractAddress } from "../index"
 import { checkEvent } from "../test/helpers/check-event"
 import { EmulatorCollections, TestnetCollections } from "../config/config"
@@ -18,14 +19,14 @@ import { toFlowItemId } from "../common/item"
 import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/helpers/emulator/mugen-art"
 
 describe("Test sell on emulator", () => {
-	let sdk: FlowSdk
+	// let sdk: FlowSdk
 	createFlowEmulator({})
 	const collection = toFlowContractAddress(EmulatorCollections.RARIBLE)
 
 	beforeAll(async () => {
-		const { address, pk } = await createEmulatorAccount("accountName")
-		const auth = createTestAuth(fcl, "emulator", address, pk, 0)
-		sdk = createFlowSdk(fcl, "emulator", {}, auth)
+		// const { address, pk } = await createEmulatorAccount("accountName")
+		// const auth = createTestAuth(fcl, "emulator", address, pk, 0)
+		// sdk = createFlowSdk(fcl, "emulator", {}, auth)
 	})
 
 	test.skip("Should create new sell order on testnet", async () => {
@@ -50,7 +51,61 @@ describe("Test sell on emulator", () => {
 
 	}, 1000000)
 
+
+	test("Should create HWGaragePack sell order on testnet", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePack)
+		const tokenId = "30"
+
+		const orderTx = await testnetSdk.order.sell({
+			collection: testnetCollection,
+			currency: "FLOW",
+			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
+			sellItemPrice: "1",
+		})
+
+		expect(orderTx.orderId).toBeTruthy()
+
+	}, 1000000)
+
+	test("Should create HWGarageCard sell order on testnet", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCard)
+		const tokenId = "155"
+
+		const orderTx = await testnetSdk.order.sell({
+			collection: testnetCollection,
+			currency: "FLOW",
+			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
+			sellItemPrice: "1",
+		})
+
+		expect(orderTx.orderId).toBeTruthy()
+
+	}, 1000000)
+
+	test.skip("Should create HWGarageCard sell order on testnet", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCard)
+		const tokenId = "156"
+
+		const orderTx = await testnetSdk.order.sell({
+			collection: testnetCollection,
+			currency: "FLOW",
+			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
+			sellItemPrice: "1",
+		})
+
+		expect(orderTx.orderId).toBeTruthy()
+
+	}, 1000000)
+
 	test("Should create RaribleNFT sell order", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_4.address, FLOW_TESTNET_ACCOUNT_4.privKey)
+		const sdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
 		const mintTx = await sdk.nft.mint(
 			collection,
 			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
@@ -65,7 +120,7 @@ describe("Test sell on emulator", () => {
 			originFees: [],
 		})
 		expect(tx.status).toEqual(4)
-	})
+	}, 1000000)
 
 	test("Should create RaribleNFT sell order for FUSD", async () => {
 		const { acc1 } = await createFusdTestEnvironment(fcl, "emulator")

@@ -18,3 +18,7 @@ source/locales/_build/
 storybook-static
 yarn-error.log
 lerna-debug.log
+
+user.pkey
+user_1.pkey
+flow.json

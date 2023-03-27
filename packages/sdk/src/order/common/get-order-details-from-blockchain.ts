@@ -1,4 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
+import { scriptOrderDetails } from "@rarible/flow-sdk-scripts/build/cadence/nft/mattel-contracts-orders"
 import { openBidCommon, StorefrontCommon } from "@rarible/flow-sdk-scripts"
 import * as t from "@onflow/types"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
@@ -24,7 +25,7 @@ type FlowOrderDetails = {
 export async function getOrderDetailsFromBlockchain(
 	fcl: Fcl,
 	network: FlowNetwork,
-	orderType: "bid" | "sell",
+	orderType: "bid" | "sell" | "sellV2",
 	address: string,
 	orderId: number,
 ): Promise<FlowOrderDetails> {
@@ -34,6 +35,12 @@ export async function getOrderDetailsFromBlockchain(
 			cadence = StorefrontCommon.read_listing_details
 			map = {
 				NFTStorefront: CONFIGS[network].mainAddressMap.NFTStorefront,
+			}
+			break
+		case "sellV2":
+			cadence = scriptOrderDetails
+			map = {
+				NFTStorefrontV2: CONFIGS[network].mainAddressMap.NFTStorefrontV2,
 			}
 			break
 		case "bid":
@@ -87,4 +94,28 @@ export async function getOrderDetailsFromBlockchain(
 		default:
 			throw new Error("Unsupported fungible token")
 	}
+}
+
+type FlowOrderV2Details = {
+	"nftID": number,
+	"customID": "RARIBLE",
+	"commissionAmount": string,
+	"expiry": number
+	"purchased": boolean
+}
+
+export async function getStorefrontV2OrderDetailsFromBlockchain(
+	fcl: Fcl,
+	network: FlowNetwork,
+	address: string,
+	orderId: number,
+): Promise<FlowOrderV2Details> {
+	return runScript(
+		fcl,
+		{
+			cadence: scriptOrderDetails,
+			args: fcl.args([fcl.arg(address, t.Address), fcl.arg(orderId, t.UInt64)]),
+		},
+		{ NFTStorefrontV2: CONFIGS[network].mainAddressMap.NFTStorefrontV2 },
+	)
 }

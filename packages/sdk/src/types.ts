@@ -36,6 +36,8 @@ export const NON_FUNGIBLE_CONTRACTS = [
 	"IrVoucher",
 	"GeniaceNFT",
 	"CryptoPiggo",
+	"HWGaragePack",
+	"HWGarageCard",
 ] as const
 
 export type NonFungibleContracts = typeof NON_FUNGIBLE_CONTRACTS
@@ -45,6 +47,7 @@ export type FlowContractName =
 	| NonFungibleTokenType
 	| FungibleTokenType
 	| NFTStorefrontType
+	| NFTStorefrontV2
 	| RaribleFeeType
 	| RaribleOrderType
 	| LicensedNFTType
@@ -68,6 +71,7 @@ export type FungibleTokenType = "FungibleToken"
 export type FUSDType = "FUSD"
 export type FlowTokenType = "FlowToken"
 export type NFTStorefrontType = "NFTStorefront"
+export type NFTStorefrontV2 = "NFTStorefrontV2"
 export type RaribleFeeType = "RaribleFee"
 export type RaribleOrderType = "RaribleOrder"
 export type LicensedNFTType = "LicensedNFT"

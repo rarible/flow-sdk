@@ -50,4 +50,6 @@ const collections: NonFungibleContracts = [
 	"IrVoucher",
 	"GeniaceNFT",
 	"CryptoPiggo",
+	"HWGaragePack",
+	"HWGarageCard",
 ]
