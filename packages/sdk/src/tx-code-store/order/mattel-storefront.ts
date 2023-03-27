@@ -48,11 +48,8 @@ type GenerateBidCodeResponse = {
 export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract): GenerateBidCodeResponse {
 	return {
 		create(o) {
-			console.log("compiled template", fillCodeTemplate(getTxListItemStorefrontV2(o.collectionName), getNftCodeConfig(collectionName)))
 			return {
 				cadence: fillCodeTemplate(getTxListItemStorefrontV2(o.collectionName), getNftCodeConfig(collectionName)),
-				// cadence: prepareOrderCode(txListItemStorefrontV2, collectionName, currency),
-				// cadence: txListItemStorefrontV2,
 				args: fcl.args([
 					fcl.arg(o.itemId, t.UInt64),
 					fcl.arg(o.saleItemPrice, t.UFix64),

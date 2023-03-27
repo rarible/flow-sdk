@@ -25,6 +25,7 @@ import { fixAmount } from "../common/fix-amount"
 import { getMattelOrderCode } from "../tx-code-store/order/mattel-storefront"
 import { getProtocolFee } from "./get-protocol-fee"
 import { calculateSaleCuts } from "./common/calculate-sale-cuts"
+import { fetchItemRoyalties } from "./common/fetch-item-royalties"
 
 export type FlowSellRequest = {
 	collection: FlowContractAddress,
@@ -55,9 +56,7 @@ export async function sell(
 			throw new Error("FLOW-SDK: Can't get current user address")
 		}
 
-		// condition only for tests on local emulator
-		// const royalties = network === "emulator" ? [] : await fetchItemRoyalties(itemApi, itemId)
-		const royalties: any = []
+		const royalties = network === "emulator" ? [] : await fetchItemRoyalties(itemApi, itemId)
 
 		const { name, map } = getCollectionConfig(network, collection)
 
@@ -67,7 +66,6 @@ export async function sell(
 				fcl,
 				map,
 				{
-					// cadence: txInitNFTContractsAndStorefront,
 					cadence: txInitNFTContractsAndStorefrontV2,
 					args: fcl.args([]),
 				},

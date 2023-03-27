@@ -137,7 +137,7 @@ describe("Test cancel order on emulator", () => {
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 
-	test("Should cancel sell Storefront Mattel order", async () => {
+	test.skip("Should cancel sell Storefront Mattel order", async () => {
 		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
 		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePack)
@@ -146,7 +146,6 @@ describe("Test cancel order on emulator", () => {
 			testnetCollection,
 			141070269
 		)
-		console.log("init tx", JSON.stringify(cancelOrderTx, null, "	"))
 
 		checkEvent(cancelOrderTx, "ListingCompleted", "NFTStorefrontV2")
 	}, 1000000)

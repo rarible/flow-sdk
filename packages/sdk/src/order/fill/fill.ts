@@ -63,9 +63,6 @@ export async function fill(
 					)
 					await waitForSeal(fcl, initTx)
 
-					// const details = await getStorefrontV2OrderDetailsFromBlockchain(fcl, network, from, preparedOrder.id)
-
-					console.log("orderid, owner, comrec", preparedOrder.id, owner)
 					const txId = await runTransaction(
 						fcl,
 						map,

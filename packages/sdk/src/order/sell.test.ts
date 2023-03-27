@@ -65,7 +65,6 @@ describe("Test sell on emulator", () => {
 			sellItemPrice: "1",
 		})
 
-		console.log("orderTx", orderTx)
 		expect(orderTx.orderId).toBeTruthy()
 
 	}, 1000000)
@@ -83,7 +82,6 @@ describe("Test sell on emulator", () => {
 			sellItemPrice: "1",
 		})
 
-		console.log("orderTx", orderTx)
 		expect(orderTx.orderId).toBeTruthy()
 
 	}, 1000000)
@@ -101,14 +99,12 @@ describe("Test sell on emulator", () => {
 			sellItemPrice: "1",
 		})
 
-		console.log("orderTx", orderTx)
 		expect(orderTx.orderId).toBeTruthy()
 
 	}, 1000000)
 
 	test("Should create RaribleNFT sell order", async () => {
 		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_4.address, FLOW_TESTNET_ACCOUNT_4.privKey)
-		console.log("FLOW_TESTNET_ACCOUNT_4.address", FLOW_TESTNET_ACCOUNT_4.address)
 		const sdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
 		const mintTx = await sdk.nft.mint(
 			collection,
@@ -123,7 +119,6 @@ describe("Test sell on emulator", () => {
 			payouts: [],
 			originFees: [],
 		})
-		console.log("tx", tx)
 		expect(tx.status).toEqual(4)
 	}, 1000000)
 

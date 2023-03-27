@@ -52,7 +52,6 @@ export async function getOrderDetailsFromBlockchain(
 		default:
 			throw new Error("Unsupported order type")
 	}
-	console.log("args:", address, "orderid", orderId)
 	const args = fcl.args([fcl.arg(address, t.Address), fcl.arg(orderId, t.UInt64)])
 	const details = await runScript(
 		fcl,

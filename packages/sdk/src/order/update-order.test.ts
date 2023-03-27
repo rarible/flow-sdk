@@ -216,7 +216,6 @@ describe("Test update sell order on emulator", () => {
 			order,
 			sellItemPrice: toBigNumber("0.001"),
 		})
-		console.log("updateTx", JSON.stringify(updateTx, null, "	"))
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 	}, 1000000)
 
