@@ -90,7 +90,6 @@ export async function sell(
 				auth
 			)
 			const tx = await waitForSeal(fcl, txId)
-			console.log("init tx", JSON.stringify(tx, null, "	"))
 			const simpleOrderId = parseEvents<string>(tx.events, "ListingAvailable", "listingResourceID")
 			return {
 				...tx,
