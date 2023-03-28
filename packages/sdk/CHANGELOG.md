@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.52](https://github.com/rarible/flow-sdk/compare/v0.5.51...v0.5.52) (2023-03-28)
+
+
+### Features
+
+* move init storefront scripts to tx ([#93](https://github.com/rarible/flow-sdk/issues/93)) ([faec543](https://github.com/rarible/flow-sdk/commit/faec543ffec909487846e0644b68b1380c7dabed))
+
+
+
+
+
 ## [0.5.51](https://github.com/rarible/flow-sdk/compare/v0.5.50...v0.5.51) (2023-03-28)
 
 
