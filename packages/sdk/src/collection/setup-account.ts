@@ -1,11 +1,11 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
-import { txInitNFTContractsAndStorefrontV2 } from "@rarible/flow-sdk-scripts/build/cadence/nft/mattel-contracts-orders"
 import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../types"
 import type { FlowContractAddress } from "../common/flow-address"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getNftCode } from "../tx-code-store/nft"
 import { getCollectionConfig } from "../common/collection/get-config"
+import { getMattelOrderCode } from "../tx-code-store/order/mattel-storefront"
 
 export async function setupAccount(
 	fcl: Maybe<Fcl>,
@@ -24,10 +24,7 @@ export async function setupAccount(
 		const txId = await runTransaction(
 			fcl,
 			map,
-			{
-				cadence: txInitNFTContractsAndStorefrontV2,
-				args: fcl.args([]),
-			},
+			getMattelOrderCode(fcl, name).setupAccount(),
 			auth,
 		)
 		return waitForSeal(fcl, txId)

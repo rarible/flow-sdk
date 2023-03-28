@@ -2,9 +2,6 @@ import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import { toFlowAddress } from "@rarible/types"
 import type { FlowNftItemControllerApi } from "@rarible/flow-api-client"
-import {
-	txInitNFTContractsAndStorefrontV2,
-} from "@rarible/flow-sdk-scripts/build/cadence/nft/mattel-contracts-orders"
 import type {
 	AuthWithPrivateKey,
 	FlowCurrency,
@@ -61,18 +58,6 @@ export async function sell(
 		const { name, map } = getCollectionConfig(network, collection)
 
 		if (name === "HWGarageCard" || name === "HWGaragePack") {
-			// init storefront and contracts
-			const initTxId = await runTransaction(
-				fcl,
-				map,
-				{
-					cadence: txInitNFTContractsAndStorefrontV2,
-					args: fcl.args([]),
-				},
-				auth
-			)
-			await waitForSeal(fcl, initTxId)
-
 			const txId = await runTransaction(
 				fcl,
 				map,

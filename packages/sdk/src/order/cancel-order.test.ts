@@ -1,5 +1,5 @@
 import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
-import fcl from "@onflow/fcl"
+import * as fcl from "@onflow/fcl"
 import { FLOW_TESTNET_ACCOUNT_5 } from "@rarible/flow-test-common/build/config"
 import type { FlowSdk } from "../index"
 import { createFlowSdk, toFlowContractAddress } from "../index"
@@ -137,14 +137,45 @@ describe("Test cancel order on emulator", () => {
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 
-	test.skip("Should cancel sell Storefront Mattel order", async () => {
+	test("Should cancel sell GaragePack Storefront Mattel order", async () => {
 		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
 		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePack)
 
+		const tokenId = "30"
+
+		const orderTx = await testnetSdk.order.sell({
+			collection: testnetCollection,
+			currency: "FLOW",
+			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
+			sellItemPrice: "1",
+		})
+
 		const cancelOrderTx = await testnetSdk.order.cancelOrder(
 			testnetCollection,
-			141070269
+			orderTx.orderId
+		)
+
+		checkEvent(cancelOrderTx, "ListingCompleted", "NFTStorefrontV2")
+	}, 1000000)
+
+	test("Should cancel sell GarageCard Storefront Mattel order", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCard)
+
+		const tokenId = 157
+
+		const orderTx = await testnetSdk.order.sell({
+			collection: testnetCollection,
+			currency: "FLOW",
+			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
+			sellItemPrice: "1",
+		})
+
+		const cancelOrderTx = await testnetSdk.order.cancelOrder(
+			testnetCollection,
+			orderTx.orderId
 		)
 
 		checkEvent(cancelOrderTx, "ListingCompleted", "NFTStorefrontV2")
