@@ -5,7 +5,7 @@ import {
 	getTxListItemStorefrontV2,
 	txBuyItemStorefrontV2,
 	txUnlistItemStorefrontV2,
-} from "@rarible/flow-sdk-scripts/src/cadence/nft/mattel-contracts-orders"
+} from "@rarible/flow-sdk-scripts/build/cadence/nft/mattel-contracts-orders"
 import type { Address} from "@rarible/types"
 import type { BigNumberValue } from "@rarible/utils"
 import type { NonFungibleContract } from "../../types"
