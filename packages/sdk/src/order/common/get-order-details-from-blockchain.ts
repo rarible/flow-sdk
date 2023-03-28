@@ -97,10 +97,10 @@ export async function getOrderDetailsFromBlockchain(
 }
 
 type FlowOrderV2Details = {
-	"nftID": number,
+	"nftID": string,
 	"customID": "RARIBLE",
 	"commissionAmount": string,
-	"expiry": number
+	"expiry": string
 	"purchased": boolean
 }
 

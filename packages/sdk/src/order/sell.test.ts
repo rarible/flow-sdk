@@ -79,24 +79,7 @@ describe("Test sell on emulator", () => {
 			collection: testnetCollection,
 			currency: "FLOW",
 			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
-			sellItemPrice: "1",
-		})
-
-		expect(orderTx.orderId).toBeTruthy()
-
-	}, 1000000)
-
-	test.skip("Should create HWGarageCard sell order on testnet", async () => {
-		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
-		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
-		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCard)
-		const tokenId = "156"
-
-		const orderTx = await testnetSdk.order.sell({
-			collection: testnetCollection,
-			currency: "FLOW",
-			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
-			sellItemPrice: "1",
+			sellItemPrice: "0.0001",
 		})
 
 		expect(orderTx.orderId).toBeTruthy()

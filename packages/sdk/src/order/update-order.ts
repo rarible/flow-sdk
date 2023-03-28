@@ -3,7 +3,6 @@ import type { Maybe } from "@rarible/types/build/maybe"
 import type { BigNumber } from "@rarible/types"
 import { toFlowAddress } from "@rarible/types"
 import type { FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
-import { txInitNFTContractsAndStorefrontV2 } from "@rarible/flow-sdk-scripts/build/cadence/nft/mattel-contracts-orders"
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getCollectionConfig } from "../common/collection/get-config"
@@ -46,17 +45,6 @@ export async function updateOrder(
 		const { name, map } = getCollectionConfig(network, collection)
 
 		if (name === "HWGarageCard" || name === "HWGaragePack") {
-			const initTx = await runTransaction(
-				fcl,
-				map,
-				{
-					cadence: txInitNFTContractsAndStorefrontV2,
-					args: fcl.args([]),
-				},
-				auth
-			)
-			await waitForSeal(fcl, initTx)
-
 			const details = await getStorefrontV2OrderDetailsFromBlockchain(fcl, network, from, preparedOrder.id)
 			if (details.purchased) {
 				throw new Error("Item was purchased")
@@ -68,11 +56,11 @@ export async function updateOrder(
 				getMattelOrderCode(fcl, name).update({
 					collectionName: name,
 					orderId: preparedOrder.id,
-					itemId: details.nftID,
+					itemId: parseInt(details.nftID),
 					saleItemPrice: fixAmount(request.sellItemPrice),
 					customID: "RARIBLE",
 					commissionAmount: fixAmount(details.commissionAmount),
-					expiry: details.expiry,
+					expiry: parseInt(details.expiry),
 					marketplacesAddress: [],
 				}),
 				auth

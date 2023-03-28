@@ -3,7 +3,6 @@ import type { Maybe } from "@rarible/types/build/maybe"
 import type { FlowAddress } from "@rarible/types"
 import { toFlowAddress } from "@rarible/types"
 import type { FlowNftItemControllerApi, FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
-import { txInitNFTContractsAndStorefrontV2 } from "@rarible/flow-sdk-scripts/build/cadence/nft/mattel-contracts-orders"
 import type {
 	AuthWithPrivateKey,
 	FlowCurrency,
@@ -52,17 +51,6 @@ export async function fill(
 		switch (preparedOrder.type) {
 			case "LIST": {
 				if (name === "HWGarageCard" || name === "HWGaragePack") {
-					const initTx = await runTransaction(
-						fcl,
-						map,
-						{
-							cadence: txInitNFTContractsAndStorefrontV2,
-							args: fcl.args([]),
-						},
-						auth
-					)
-					await waitForSeal(fcl, initTx)
-
 					const txId = await runTransaction(
 						fcl,
 						map,

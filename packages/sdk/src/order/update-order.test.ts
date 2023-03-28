@@ -5,7 +5,7 @@ import {
 	FLOW_TESTNET_ACCOUNT_2,
 	FLOW_TESTNET_ACCOUNT_3,
 } from "@rarible/flow-test-common"
-import fcl from "@onflow/fcl"
+import * as fcl from "@onflow/fcl"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import { FLOW_TESTNET_ACCOUNT_5 } from "@rarible/flow-test-common/build/config"
 import { EmulatorCollections, TestnetCollections } from "../config/config"
@@ -199,13 +199,13 @@ describe("Test update sell order on emulator", () => {
 		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
 
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePack)
-		const tokenId = "30"
+		const tokenId = 30
 		const itemId = toFlowItemId(`${testnetCollection}:${tokenId}`)
 
 		const orderTx = await testnetSdk.order.sell({
 			collection: testnetCollection,
 			currency: "FLOW",
-			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
+			itemId: itemId,
 			sellItemPrice: "1",
 		})
 
@@ -230,7 +230,7 @@ describe("Test update sell order on emulator", () => {
 		const orderTx = await testnetSdk.order.sell({
 			collection: testnetCollection,
 			currency: "FLOW",
-			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
+			itemId: itemId,
 			sellItemPrice: "1",
 		})
 
@@ -241,7 +241,6 @@ describe("Test update sell order on emulator", () => {
 			order,
 			sellItemPrice: toBigNumber("0.001"),
 		})
-		console.log("updateTx", JSON.stringify(updateTx, null, "	"))
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 	}, 1000000)
 })

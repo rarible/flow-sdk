@@ -3,7 +3,7 @@ import * as t from "@onflow/types"
 import {
 	getTxChangePriceStorefrontV2,
 	getTxListItemStorefrontV2,
-	txBuyItemStorefrontV2,
+	txBuyItemStorefrontV2, txInitNFTContractsAndStorefrontV2,
 	txUnlistItemStorefrontV2,
 } from "@rarible/flow-sdk-scripts/build/cadence/nft/mattel-contracts-orders"
 import type { Address} from "@rarible/types"
@@ -43,6 +43,7 @@ type GenerateBidCodeResponse = {
 		comissionRecipient?: string
 	}) => GenerateCodeMethodResponse
 	cancel: (orderId: number) => GenerateCodeMethodResponse
+	setupAccount: () => GenerateCodeMethodResponse
 }
 
 export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract): GenerateBidCodeResponse {
@@ -87,8 +88,14 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 		},
 		cancel(orderId) {
 			return {
-				cadence: txUnlistItemStorefrontV2,
+				cadence: fillCodeTemplate(txUnlistItemStorefrontV2, getNftCodeConfig(collectionName)),
 				args: fcl.args([fcl.arg(orderId, t.UInt64)]),
+			}
+		},
+		setupAccount() {
+			return {
+				cadence: fillCodeTemplate(txInitNFTContractsAndStorefrontV2, getNftCodeConfig(collectionName)),
+				args: fcl.args([]),
 			}
 		},
 	}
