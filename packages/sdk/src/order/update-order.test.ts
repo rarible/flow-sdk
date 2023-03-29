@@ -210,7 +210,7 @@ describe("Mattel storefront order change testing", () => {
 			collection: testnetCollection,
 			currency: "FLOW",
 			itemId: itemId,
-			sellItemPrice: "1",
+			sellItemPrice: "99.99",
 		})
 
 		const order = getTestOrderTmplate("sell", orderTx.orderId, itemId, toBigNumber("0.0001"))

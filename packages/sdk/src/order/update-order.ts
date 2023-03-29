@@ -1,6 +1,7 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { BigNumber } from "@rarible/types"
+import { toBn } from "@rarible/utils"
 import { toFlowAddress } from "@rarible/types"
 import type { FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork } from "../types"
@@ -50,6 +51,11 @@ export async function updateOrder(
 				throw new Error("Item was purchased")
 			}
 
+			const comissionAmount = toBn(details.commissionAmount)
+				.div(details.salePrice)
+				.multipliedBy(request.sellItemPrice)
+				.decimalPlaces(8)
+
 			const txId = await runTransaction(
 				fcl,
 				map,
@@ -59,7 +65,7 @@ export async function updateOrder(
 					itemId: parseInt(details.nftID),
 					saleItemPrice: fixAmount(request.sellItemPrice),
 					customID: "RARIBLE",
-					commissionAmount: fixAmount(details.commissionAmount),
+					commissionAmount: fixAmount(comissionAmount.toString()),
 					expiry: parseInt(details.expiry),
 					marketplacesAddress: [],
 				}),
