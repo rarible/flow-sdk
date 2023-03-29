@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.53](https://github.com/rarible/flow-sdk/compare/v0.5.52...v0.5.53) (2023-03-29)
+
+
+### Bug Fixes
+
+* order transactions ([f4683c8](https://github.com/rarible/flow-sdk/commit/f4683c8ea1f0c1d65898a52d060541945eaad48a))
+
+
+
+
+
 ## [0.5.52](https://github.com/rarible/flow-sdk/compare/v0.5.51...v0.5.52) (2023-03-28)
 
 
