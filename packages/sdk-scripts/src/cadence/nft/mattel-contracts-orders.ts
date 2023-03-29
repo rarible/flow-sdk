@@ -216,7 +216,7 @@ transaction(saleItemID: UInt64, saleItemPrice: UFix64, customID: String?, commis
     var marketplacesCapability: [Capability<&AnyResource{${FungibleToken.name}.Receiver}>]
 
     prepare(acct: AuthAccount) {
-    ${preparePartOfInit}
+${preparePartOfInit}
 
         self.saleCuts = []
         self.marketplacesCapability = []
@@ -336,7 +336,7 @@ transaction(removalListingResourceID: UInt64, saleItemID: UInt64, saleItemPrice:
     var marketplacesCapability: [Capability<&AnyResource{FungibleToken.Receiver}>]
 
     prepare(acct: AuthAccount) {
-    ${preparePartOfInit}
+${preparePartOfInit}
 
         self.storefrontForRemove = acct.borrow<&NFTStorefrontV2.Storefront{NFTStorefrontV2.StorefrontManager}>(from: NFTStorefrontV2.StorefrontStoragePath)
             ?? panic("Missing or mis-typed NFTStorefrontV2.Storefront")
@@ -416,13 +416,13 @@ transaction(removalListingResourceID: UInt64, saleItemID: UInt64, saleItemPrice:
 export const txBuyItemStorefrontV2: string = `
 import ${FlowToken.name} from 0xFlowToken
 import ${FungibleToken.name} from 0xFungibleToken
+import ${MetadataViews.name} from 0xMetadataViews
 import ${NonFungibleToken.name} from 0xNonFungibleToken
 import ${NFTStorefrontV2.name} from 0xNFTStorefrontV2
-import %nftContract% from address
-
+import ${HWGarageCard.name} from 0xHWGarageCard
+import ${HWGaragePack.name} from 0xHWGaragePack
 
 transaction(listingResourceID: UInt64, storefrontAddress: Address, commissionRecipient: Address?) {
-${preparePartOfInit}
     let paymentVault: @${FungibleToken.name}.Vault
     let %nftContract%Collection: &%nftContract%.Collection{${NonFungibleToken.name}.Receiver}
     let storefront: &${NFTStorefrontV2.name}.Storefront{${NFTStorefrontV2.name}.StorefrontPublic}
@@ -430,6 +430,7 @@ ${preparePartOfInit}
     var commissionRecipientCap: Capability<&{${FungibleToken.name}.Receiver}>?
 
     prepare(acct: AuthAccount) {
+${preparePartOfInit}
         //self.commissionRecipientCap = nil // if nil then anyone can get commission
         self.commissionRecipientCap = getAccount(commissionRecipient!).getCapability<&{${FungibleToken.name}.Receiver}>(/public/flowTokenReceiver)
         // Access the storefront public resource of the seller to purchase the listing.

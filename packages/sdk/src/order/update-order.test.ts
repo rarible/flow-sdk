@@ -194,6 +194,10 @@ describe("Test update sell order on emulator", () => {
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefront")
 	})
 
+})
+
+describe("Mattel storefront order change testing", () => {
+
 	test("Should update sell Mattel order, HWGaragePack", async () => {
 		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
 		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)

@@ -137,6 +137,9 @@ describe("Test cancel order on emulator", () => {
 		checkEvent(cancelTx, "ListingCompleted", "NFTStorefront")
 	})
 
+})
+
+describe("Mattel storefront order cancel testing", () => {
 	test("Should cancel sell GaragePack Storefront Mattel order", async () => {
 		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
 		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
