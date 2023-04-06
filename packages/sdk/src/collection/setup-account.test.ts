@@ -1,4 +1,9 @@
-import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
+import {
+	createEmulatorAccount,
+	createFlowEmulator,
+	createTestAuth,
+	FLOW_TESTNET_ACCOUNT_4,
+} from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
 import type { FlowSdk } from "../index"
 import { createFlowSdk, toFlowContractAddress } from "../index"
@@ -30,7 +35,7 @@ describe("Colelction setup on account", () => {
 	})
 
 	test.skip("setup new account", async () => {
-		const testnetBuyerAuth = createTestAuth(fcl, "testnet", "0x41a36288184ff09c", "29738dd5e3ad320ac3bcc7b99909d139d52c93b9d2441439c29d8e5701c301ea")
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_4.address, FLOW_TESTNET_ACCOUNT_4.privKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 
 		const collection = await testnetBuyerSdk.collection.setupAccount(

@@ -51,10 +51,15 @@ export async function updateOrder(
 				throw new Error("Item was purchased")
 			}
 
-			const comissionAmount = toBn(details.commissionAmount)
-				.div(details.salePrice)
+			const [fee] = preparedOrder.data.originalFees
+			let comissionAmount = toBn(fee?.value || 0)
+				.div(10000)
 				.multipliedBy(request.sellItemPrice)
 				.decimalPlaces(8)
+
+			if (comissionAmount.gte(request.sellItemPrice)) {
+				comissionAmount = toBn(0)
+			}
 
 			const txId = await runTransaction(
 				fcl,
@@ -67,7 +72,7 @@ export async function updateOrder(
 					customID: "RARIBLE",
 					commissionAmount: fixAmount(comissionAmount.toString()),
 					expiry: parseInt(details.expiry),
-					marketplacesAddress: [],
+					marketplacesAddress: fee ? [toFlowAddress(fee.account)] : [],
 				}),
 				auth
 			)
