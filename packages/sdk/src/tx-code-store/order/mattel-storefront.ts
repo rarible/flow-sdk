@@ -6,7 +6,7 @@ import {
 	txBuyItemStorefrontV2, txInitNFTContractsAndStorefrontV2,
 	txUnlistItemStorefrontV2,
 } from "@rarible/flow-sdk-scripts/build/cadence/nft/mattel-contracts-orders"
-import type { Address} from "@rarible/types"
+import type { FlowAddress } from "@rarible/types"
 import type { BigNumberValue } from "@rarible/utils"
 import type { NonFungibleContract } from "../../types"
 import { fillCodeTemplate } from "../../common/template-replacer"
@@ -25,7 +25,7 @@ type GenerateBidCodeResponse = {
 		customID?: string,
 		commissionAmount: BigNumberValue,
 		expiry: number,
-		marketplacesAddress: Address[]
+		marketplacesAddress: FlowAddress[]
 	}) => GenerateCodeMethodResponse
 	update: (options: {
 		collectionName: "HWGaragePack" | "HWGarageCard",
@@ -35,7 +35,7 @@ type GenerateBidCodeResponse = {
 		customID?: string,
 		commissionAmount: BigNumberValue,
 		expiry: number,
-		marketplacesAddress: Address[]
+		marketplacesAddress: FlowAddress[]
 	}) => GenerateCodeMethodResponse
 	buy: (options: {
 		orderId: number,

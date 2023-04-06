@@ -51,13 +51,14 @@ export async function fill(
 		switch (preparedOrder.type) {
 			case "LIST": {
 				if (name === "HWGarageCard" || name === "HWGaragePack") {
+					const [fee] = preparedOrder.data.originalFees
 					const txId = await runTransaction(
 						fcl,
 						map,
 						getMattelOrderCode(fcl, name).buy({
 							orderId: preparedOrder.id,
 							address: owner,
-							comissionRecipient: owner,
+							comissionRecipient: fee ? toFlowAddress(fee.account) : undefined,
 						}),
 						auth,
 					)

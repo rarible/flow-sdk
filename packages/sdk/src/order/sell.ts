@@ -2,6 +2,7 @@ import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import { toFlowAddress } from "@rarible/types"
 import type { FlowNftItemControllerApi } from "@rarible/flow-api-client"
+import { toBn } from "@rarible/utils"
 import type {
 	AuthWithPrivateKey,
 	FlowCurrency,
@@ -58,6 +59,16 @@ export async function sell(
 		const { name, map } = getCollectionConfig(network, collection)
 
 		if (name === "HWGarageCard" || name === "HWGaragePack") {
+			const [fee] = originFees || []
+			let comissionAmount = toBn(fee?.value || 0)
+				.div(10000)
+				.multipliedBy(request.sellItemPrice)
+				.decimalPlaces(8)
+
+			if (comissionAmount.gte(request.sellItemPrice)) {
+				comissionAmount = toBn(0)
+			}
+
 			const txId = await runTransaction(
 				fcl,
 				map,
@@ -66,11 +77,11 @@ export async function sell(
 					itemId: extractTokenId(itemId),
 					saleItemPrice: fixAmount(sellItemPrice),
 					customID: "RARIBLE",
-					commissionAmount: fixAmount("0"),
+					commissionAmount: fixAmount(comissionAmount.toString()),
 					expiry: request.end instanceof Date
 						? Math.floor(request.end.getTime() / 1000)
 						: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 60,
-					marketplacesAddress: [],
+					marketplacesAddress: fee ? [toFlowAddress(fee.account)] : [],
 				}),
 				auth
 			)
