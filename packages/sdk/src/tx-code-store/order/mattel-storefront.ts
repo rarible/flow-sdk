@@ -19,7 +19,7 @@ type GenerateCodeMethodResponse = {
 
 type GenerateBidCodeResponse = {
 	create: (options: {
-		collectionName: "HWGaragePack" | "HWGarageCard"
+		collectionName: "HWGaragePack" | "HWGarageCard" | "HWGarageCardV2" | "HWGaragePackV2"
 		itemId: number,
 		saleItemPrice: BigNumberValue,
 		customID?: string,
@@ -28,7 +28,7 @@ type GenerateBidCodeResponse = {
 		marketplacesAddress: FlowAddress[]
 	}) => GenerateCodeMethodResponse
 	update: (options: {
-		collectionName: "HWGaragePack" | "HWGarageCard",
+		collectionName: "HWGaragePack" | "HWGarageCard" | "HWGarageCardV2" | "HWGaragePackV2",
 		orderId: number,
 		itemId: number,
 		saleItemPrice: BigNumberValue,

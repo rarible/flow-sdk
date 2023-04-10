@@ -61,6 +61,18 @@ const HWGaragePack: ContractsAddresses & ContractDetails & NFTColectionDetails =
 	nameOfMethodForCreateResource: "createEmptyCollection()",
 	privatePath: "/private/HWGaragePackCollection",
 }
+const HWGaragePackV2: ContractsAddresses & ContractDetails & NFTColectionDetails = {
+	name: "HWGaragePackV2",
+	mainnetAddress: "",
+	testnetAddress: "",
+	testnetAddressRaribleDeployed: "",
+	storagePath: "HWGaragePackV2.CollectionStoragePath",
+	publicPath: "HWGaragePackV2.CollectionPublicPath",
+	publicType: "&HWGaragePackV2.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, HWGaragePackV2.PackCollectionPublic, MetadataViews.ResolverCollection}",
+	contractType: TypeOfContract.COLLECTION,
+	nameOfMethodForCreateResource: "createEmptyCollection()",
+	privatePath: "/private/HWGaragePackV2Collection",
+}
 
 const HWGarageCard: ContractsAddresses & ContractDetails & NFTColectionDetails = {
 	name: "HWGarageCard",
@@ -73,6 +85,19 @@ const HWGarageCard: ContractsAddresses & ContractDetails & NFTColectionDetails =
 	contractType: TypeOfContract.COLLECTION,
 	nameOfMethodForCreateResource: "createEmptyCollection()",
 	privatePath: "/private/HWGarageCardCollection",
+}
+
+const HWGarageCardV2: ContractsAddresses & ContractDetails & NFTColectionDetails = {
+	name: "HWGarageCardV2",
+	mainnetAddress: "",
+	testnetAddress: "",
+	testnetAddressRaribleDeployed: "",
+	storagePath: "HWGarageCardV2.CollectionStoragePath",
+	publicPath: "HWGarageCardV2.CollectionPublicPath",
+	publicType: "&HWGarageCardV2.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, HWGarageCardV2.CardCollectionPublic, MetadataViews.ResolverCollection}",
+	contractType: TypeOfContract.COLLECTION,
+	nameOfMethodForCreateResource: "createEmptyCollection()",
+	privatePath: "/private/HWGarageCardV2Collection",
 }
 
 export const txInitNFTContracts: string = `
@@ -143,12 +168,28 @@ const preparePartOfInit = `
 					acct.link<${HWGarageCard.publicType}>(${HWGarageCard.publicPath}, target: ${HWGarageCard.storagePath})
 			}
 
+			if acct.borrow<&${HWGarageCardV2.name}.${HWGarageCardV2.contractType}>(from: ${HWGarageCardV2.storagePath}) == nil {
+					let collection <- ${HWGarageCardV2.name}.${HWGarageCardV2.nameOfMethodForCreateResource}
+					acct.save(<-collection, to: ${HWGarageCardV2.storagePath})
+			}
+			if acct.getCapability<${HWGarageCardV2.publicType}>(${HWGarageCardV2.publicPath}).borrow() == nil {
+					acct.link<${HWGarageCardV2.publicType}>(${HWGarageCardV2.publicPath}, target: ${HWGarageCardV2.storagePath})
+			}
+
 			if acct.borrow<&${HWGaragePack.name}.${HWGarageCard.contractType}>(from: ${HWGaragePack.storagePath}) == nil {
 					let collection <- ${HWGaragePack.name}.${HWGaragePack.nameOfMethodForCreateResource}
 					acct.save(<-collection, to: ${HWGaragePack.storagePath})
 			}
 			if acct.getCapability<${HWGaragePack.publicType}>(${HWGaragePack.publicPath}).borrow() == nil {
 					acct.link<${HWGaragePack.publicType}>(${HWGaragePack.publicPath}, target: ${HWGaragePack.storagePath})
+			}
+
+			if acct.borrow<&${HWGaragePackV2.name}.${HWGaragePackV2.contractType}>(from: ${HWGaragePackV2.storagePath}) == nil {
+					let collection <- ${HWGaragePackV2.name}.${HWGaragePackV2.nameOfMethodForCreateResource}
+					acct.save(<-collection, to: ${HWGaragePackV2.storagePath})
+			}
+			if acct.getCapability<${HWGaragePackV2.publicType}>(${HWGaragePackV2.publicPath}).borrow() == nil {
+					acct.link<${HWGaragePackV2.publicType}>(${HWGaragePackV2.publicPath}, target: ${HWGaragePackV2.storagePath})
 			}
 
 			if acct.borrow<&${NFTStorefrontV2.name}.${NFTStorefrontV2.contractType}>(from: ${NFTStorefrontV2.storagePath}) == nil {
@@ -190,12 +231,14 @@ transaction {
 }
 `
 
-export function getTxListItemStorefrontV2(collection: "HWGaragePack" | "HWGarageCard") {
+export function getTxListItemStorefrontV2(collection: "HWGaragePack" | "HWGarageCard" | "HWGarageCardV2" | "HWGaragePackV2") {
 	let borrowMethod: string
-	if (collection === "HWGaragePack") {
+	if (collection === "HWGaragePack" || collection === "HWGaragePackV2") {
 		borrowMethod = "borrowPack"
 	} else if (collection === "HWGarageCard") {
 		borrowMethod = "borrowHWGarageCard"
+	} else if (collection === "HWGarageCardV2") {
+		borrowMethod = "borrowCard"
 	} else {
 		throw new Error(`Unrecognized collection name (${collection}), expected HWGaragePack | HWGarageCard`)
 	}
@@ -207,6 +250,8 @@ import ${MetadataViews.name} from 0xMetadataViews
 import ${NFTStorefrontV2.name} from 0xNFTStorefrontV2
 import ${HWGarageCard.name} from 0xHWGarageCard
 import ${HWGaragePack.name} from 0xHWGaragePack
+import HWGarageCardV2 from 0xHWGarageCardV2
+import HWGaragePackV2 from 0xHWGaragePackV2
 
 transaction(saleItemID: UInt64, saleItemPrice: UFix64, customID: String?, commissionAmount: UFix64, expiry: UInt64, marketplacesAddress: [Address]) {
     let fiatReceiver: Capability<&AnyResource{${FungibleToken.name}.Receiver}>
@@ -307,12 +352,14 @@ transaction(listingResourceID: UInt64) {
 `
 
 // import ${HWGaragePack.name} from "${HWGaragePack.testnetAddressRaribleDeployed}"
-export function getTxChangePriceStorefrontV2(collection: "HWGaragePack" | "HWGarageCard") {
+export function getTxChangePriceStorefrontV2(collection: "HWGaragePack" | "HWGarageCard" | "HWGarageCardV2" | "HWGaragePackV2") {
 	let borrowMethod: string
-	if (collection === "HWGaragePack") {
+	if (collection === "HWGaragePack" || collection === "HWGaragePackV2") {
 		borrowMethod = "borrowPack"
 	} else if (collection === "HWGarageCard") {
 		borrowMethod = "borrowHWGarageCard"
+	} else if (collection === "HWGarageCardV2") {
+		borrowMethod = "borrowCard"
 	} else {
 		throw new Error(`Unrecognized collection name (${collection}), expected HWGaragePack | HWGarageCard`)
 	}
@@ -324,6 +371,8 @@ import MetadataViews from 0xMetadataViews
 import NFTStorefrontV2 from 0xNFTStorefrontV2
 import ${HWGarageCard.name} from 0xHWGarageCard
 import ${HWGaragePack.name} from 0xHWGaragePack
+import HWGarageCardV2 from 0xHWGarageCardV2
+import HWGaragePackV2 from 0xHWGaragePackV2
 
 transaction(removalListingResourceID: UInt64, saleItemID: UInt64, saleItemPrice: UFix64, customID: String?, commissionAmount: UFix64, expiry: UInt64, marketplacesAddress: [Address]) {
     let storefrontForRemove: &NFTStorefrontV2.Storefront{NFTStorefrontV2.StorefrontManager}
@@ -421,6 +470,8 @@ import ${NonFungibleToken.name} from 0xNonFungibleToken
 import ${NFTStorefrontV2.name} from 0xNFTStorefrontV2
 import ${HWGarageCard.name} from 0xHWGarageCard
 import ${HWGaragePack.name} from 0xHWGaragePack
+import HWGarageCardV2 from 0xHWGarageCardV2
+import HWGaragePackV2 from 0xHWGaragePackV2
 
 transaction(listingResourceID: UInt64, storefrontAddress: Address, commissionRecipient: Address?) {
     let paymentVault: @${FungibleToken.name}.Vault
