@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.56](https://github.com/rarible/flow-sdk/compare/v0.5.55...v0.5.56) (2023-04-19)
+
+
+### Features
+
+* card and pack v2 support ([#95](https://github.com/rarible/flow-sdk/issues/95)) ([20bcddb](https://github.com/rarible/flow-sdk/commit/20bcddb97d7d47bf3157eda58957ede8f2726faa))
+
+
+
+
+
 ## [0.5.53](https://github.com/rarible/flow-sdk/compare/v0.5.52...v0.5.53) (2023-03-29)
 
 
