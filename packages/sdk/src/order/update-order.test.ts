@@ -18,6 +18,7 @@ import { toFlowItemId } from "../common/item"
 import { getTestOrderTmplate } from "../test/helpers/order-template"
 import { createFlowSdk, toFlowContractAddress } from "../index"
 import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/helpers/emulator/mugen-art"
+import { awaitOrder } from "./common/await-order"
 
 describe("Test update sell order on emulator", () => {
 	createFlowEmulator({})
@@ -213,7 +214,7 @@ describe("Mattel storefront order change testing", () => {
 			sellItemPrice: "99.99",
 		})
 
-		const order = getTestOrderTmplate("sell", orderTx.orderId, itemId, toBigNumber("0.0001"))
+		const order = await awaitOrder(testnetSdk, orderTx.orderId)
 		const updateTx = await testnetSdk.order.updateOrder({
 			collection: testnetCollection,
 			currency: "FLOW",
@@ -238,7 +239,7 @@ describe("Mattel storefront order change testing", () => {
 			sellItemPrice: "99.99",
 		})
 
-		const order = getTestOrderTmplate("sell", orderTx.orderId, itemId, toBigNumber("0.0001"))
+		const order = await awaitOrder(testnetSdk, orderTx.orderId)
 		const updateTx = await testnetSdk.order.updateOrder({
 			collection: testnetCollection,
 			currency: "FLOW",
@@ -263,7 +264,7 @@ describe("Mattel storefront order change testing", () => {
 			sellItemPrice: "1",
 		})
 
-		const order = getTestOrderTmplate("sell", orderTx.orderId, itemId, toBigNumber("0.0001"))
+		const order = await awaitOrder(testnetSdk, orderTx.orderId)
 		const updateTx = await testnetSdk.order.updateOrder({
 			collection: testnetCollection,
 			currency: "FLOW",
@@ -288,7 +289,7 @@ describe("Mattel storefront order change testing", () => {
 			sellItemPrice: "1",
 		})
 
-		const order = getTestOrderTmplate("sell", orderTx.orderId, itemId, toBigNumber("0.0001"))
+		const order = await awaitOrder(testnetSdk, orderTx.orderId)
 		const updateTx = await testnetSdk.order.updateOrder({
 			collection: testnetCollection,
 			currency: "FLOW",

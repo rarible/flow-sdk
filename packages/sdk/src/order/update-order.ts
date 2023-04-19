@@ -56,7 +56,6 @@ export async function updateOrder(
 				.div(10000)
 				.multipliedBy(request.sellItemPrice)
 				.decimalPlaces(8)
-
 			if (comissionAmount.gte(request.sellItemPrice)) {
 				comissionAmount = toBn(0)
 			}

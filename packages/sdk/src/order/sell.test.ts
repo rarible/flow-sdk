@@ -217,6 +217,7 @@ describe("Mattel storefront sell testing", () => {
 			currency: "FLOW",
 			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
 			sellItemPrice: "0.0001",
+			end: new Date(Date.now() + 1000 * 60 * 60 * 24),
 		})
 
 		console.log("orderTx", JSON.stringify(orderTx, null, "	"))

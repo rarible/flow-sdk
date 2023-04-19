@@ -482,8 +482,8 @@ transaction(listingResourceID: UInt64, storefrontAddress: Address, commissionRec
 
     prepare(acct: AuthAccount) {
 ${preparePartOfInit}
-        //self.commissionRecipientCap = nil // if nil then anyone can get commission
-        self.commissionRecipientCap = getAccount(commissionRecipient!).getCapability<&{${FungibleToken.name}.Receiver}>(/public/flowTokenReceiver)
+        self.commissionRecipientCap = nil
+        // self.commissionRecipientCap = getAccount(commissionRecipient!).getCapability<&{${FungibleToken.name}.Receiver}>(/public/flowTokenReceiver)
         // Access the storefront public resource of the seller to purchase the listing.
         self.storefront = getAccount(storefrontAddress)
             .getCapability<&${NFTStorefrontV2.name}.Storefront{${NFTStorefrontV2.name}.StorefrontPublic}>(
