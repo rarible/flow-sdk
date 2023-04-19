@@ -50,7 +50,7 @@ export async function fill(
 		const { name, map } = getCollectionConfig(network, collection)
 		switch (preparedOrder.type) {
 			case "LIST": {
-				if (name === "HWGarageCard" || name === "HWGaragePack") {
+				if (name === "HWGarageCard" || name === "HWGaragePack" || name === "HWGarageCardV2" || name === "HWGaragePackV2") {
 					const [fee] = preparedOrder.data.originalFees
 					const txId = await runTransaction(
 						fcl,

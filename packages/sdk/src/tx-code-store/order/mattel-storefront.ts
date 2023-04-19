@@ -19,7 +19,7 @@ type GenerateCodeMethodResponse = {
 
 type GenerateBidCodeResponse = {
 	create: (options: {
-		collectionName: "HWGaragePack" | "HWGarageCard"
+		collectionName: "HWGaragePack" | "HWGarageCard" | "HWGarageCardV2" | "HWGaragePackV2"
 		itemId: number,
 		saleItemPrice: BigNumberValue,
 		customID?: string,
@@ -28,7 +28,7 @@ type GenerateBidCodeResponse = {
 		marketplacesAddress: FlowAddress[]
 	}) => GenerateCodeMethodResponse
 	update: (options: {
-		collectionName: "HWGaragePack" | "HWGarageCard",
+		collectionName: "HWGaragePack" | "HWGarageCard" | "HWGarageCardV2" | "HWGaragePackV2",
 		orderId: number,
 		itemId: number,
 		saleItemPrice: BigNumberValue,
@@ -54,7 +54,7 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 				args: fcl.args([
 					fcl.arg(o.itemId, t.UInt64),
 					fcl.arg(o.saleItemPrice, t.UFix64),
-					fcl.arg(o.customID || "", t.String),
+					fcl.arg(o.customID || null, t.Optional(t.String)),
 					fcl.arg(o.commissionAmount, t.UFix64),
 					fcl.arg(o.expiry, t.UInt64),
 					fcl.arg(o.marketplacesAddress, t.Array(t.Address)),
@@ -68,7 +68,7 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 					fcl.arg(o.orderId, t.UInt64),
 					fcl.arg(o.itemId, t.UInt64),
 					fcl.arg(o.saleItemPrice, t.UFix64),
-					fcl.arg(o.customID || "", t.String),
+					fcl.arg(o.customID || null, t.Optional(t.String)),
 					fcl.arg(o.commissionAmount, t.UFix64),
 					fcl.arg(o.expiry, t.UInt64),
 					fcl.arg(o.marketplacesAddress, t.Array(t.Address)),
@@ -82,7 +82,7 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 				args: fcl.args([
 					fcl.arg(o.orderId, t.UInt64),
 					fcl.arg(o.address, t.Address),
-					fcl.arg(o.comissionRecipient || "", t.Address),
+					fcl.arg(o.comissionRecipient || null, t.Optional(t.Address)),
 				]),
 			}
 		},

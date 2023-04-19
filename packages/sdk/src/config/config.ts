@@ -120,6 +120,14 @@ export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> 
 		contractsNames: ["HWGarageCard"] as FlowContractAddressName[],
 		features: ["TRANSFER", "BURN"],
 	},
+	HWGaragePackV2: {
+		contractsNames: ["HWGaragePack"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
+	HWGarageCardV2: {
+		contractsNames: ["HWGarageCard"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
 }
 
 const MAINNET_RARIBLE_ADDRESS = toFlowAddress("0x01ab36aaf654a13e")
@@ -171,6 +179,8 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			CryptoPiggo: EMULATOR_ADDRESS,
 			HWGaragePack: EMULATOR_ADDRESS,
 			HWGarageCard: EMULATOR_ADDRESS,
+			HWGaragePackV2: EMULATOR_ADDRESS,
+			HWGarageCardV2: EMULATOR_ADDRESS,
 		},
 	},
 	testnet: {
@@ -212,6 +222,8 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			CryptoPiggo: toFlowAddress("0x57e1b27618c5bb69"),
 			HWGaragePack: toFlowAddress("0x80102bce1de42dc4"),
 			HWGarageCard: toFlowAddress("0x80102bce1de42dc4"),
+			HWGaragePackV2: toFlowAddress("0x80102bce1de42dc4"),
+			HWGarageCardV2: toFlowAddress("0x80102bce1de42dc4"),
 		},
 	},
 	mainnet: {
@@ -253,6 +265,8 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			CryptoPiggo: toFlowAddress("0xd3df824bf81910a4"),
 			HWGaragePack: toFlowAddress("0xd0bcefdf1e67ea85"),
 			HWGarageCard: toFlowAddress("0xd0bcefdf1e67ea85"),
+			HWGaragePackV2: toFlowAddress("0xd0bcefdf1e67ea85"),
+			HWGarageCardV2: toFlowAddress("0xd0bcefdf1e67ea85"),
 		},
 	},
 }
@@ -282,7 +296,9 @@ export enum TestnetCollections {
 	CNNNFT = "A.ebf4ae01d1284af8.CNN_NFT",
 	MATRIXFEST = "A.e2f1b000e0203c1d.MatrixWorldFlowFestNFT",
 	HWGarageCard = "A.80102bce1de42dc4.HWGarageCard",
-	HWGaragePack = "A.80102bce1de42dc4.HWGaragePack"
+	HWGaragePack = "A.80102bce1de42dc4.HWGaragePack",
+	HWGarageCardV2 = "A.80102bce1de42dc4.HWGarageCardV2",
+	HWGaragePackV2 = "A.80102bce1de42dc4.HWGaragePackV2"
 }
 
 export enum MainnetCollections {

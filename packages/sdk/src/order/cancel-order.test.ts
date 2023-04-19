@@ -183,4 +183,48 @@ describe("Mattel storefront order cancel testing", () => {
 
 		checkEvent(cancelOrderTx, "ListingCompleted", "NFTStorefrontV2")
 	}, 1000000)
+
+	test("Should cancel sell GaragePackV2 Storefront Mattel order", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePackV2)
+
+		const tokenId = "14"
+
+		const orderTx = await testnetSdk.order.sell({
+			collection: testnetCollection,
+			currency: "FLOW",
+			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
+			sellItemPrice: "1",
+		})
+
+		const cancelOrderTx = await testnetSdk.order.cancelOrder(
+			testnetCollection,
+			orderTx.orderId
+		)
+		checkEvent(cancelOrderTx, "ListingCompleted", "NFTStorefrontV2")
+	}, 1000000)
+
+	test("Should cancel sell GarageCardV2 Storefront Mattel order", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)
+
+		const tokenId = 27
+
+		const orderTx = await testnetSdk.order.sell({
+			collection: testnetCollection,
+			currency: "FLOW",
+			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
+			sellItemPrice: "1",
+		})
+		console.log("orderTx", orderTx)
+
+		const cancelOrderTx = await testnetSdk.order.cancelOrder(
+			testnetCollection,
+			orderTx.orderId
+		)
+
+		checkEvent(cancelOrderTx, "ListingCompleted", "NFTStorefrontV2")
+	}, 1000000)
 })

@@ -58,7 +58,7 @@ export async function sell(
 
 		const { name, map } = getCollectionConfig(network, collection)
 
-		if (name === "HWGarageCard" || name === "HWGaragePack") {
+		if (name === "HWGarageCard" || name === "HWGaragePack" || name === "HWGarageCardV2" || name === "HWGaragePackV2") {
 			const [fee] = originFees || []
 			let comissionAmount = toBn(fee?.value || 0)
 				.div(10000)

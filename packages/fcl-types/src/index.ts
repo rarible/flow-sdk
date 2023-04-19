@@ -151,5 +151,5 @@ export type FlowUserData = {
 	services: Object[]
 }
 
-export type FclArg = (value: string | number | object, xform: any) => any
+export type FclArg = (value: string | number | object | null, xform: any) => any
 export type FclArgs = (args: FclArg[]) => any[]

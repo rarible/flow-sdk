@@ -17,7 +17,7 @@ export async function cancelOrder(
 	if (fcl) {
 		const { name, map } = getCollectionConfig(network, collection)
 
-		if (name === "HWGarageCard" || name === "HWGaragePack") {
+		if (name === "HWGarageCard" || name === "HWGaragePack" || name === "HWGarageCardV2" || name === "HWGaragePackV2") {
 			const txId = await runTransaction(
 				fcl,
 				map,
