@@ -26,6 +26,8 @@ import type { FlowItemId } from "./common/item"
 import type { FlowContractAddress } from "./common/flow-address"
 import type { FlowEnvConfig } from "./config/env"
 import { ENV_CONFIG } from "./config/env"
+import type { TransferFlowRequest } from "./tx-code-store/transfer-funds"
+import { transferFunds } from "./tx-code-store/transfer-funds"
 
 export interface FlowApisSdk {
 	order: ApiClient.FlowOrderControllerApi
@@ -131,6 +133,7 @@ export interface FlowOrderSdk {
 
 export interface FlowWalletSdk {
 	getFungibleBalance(address: FlowAddress, currency: FlowCurrency): Promise<string>
+	transferFunds(request: TransferFlowRequest): Promise<FlowTransaction>
 }
 
 export interface FlowCollectionSdk {
@@ -199,6 +202,7 @@ export function createFlowSdk(
 		},
 		wallet: {
 			getFungibleBalance: getFungibleBalanceTemplate.bind(null, fcl, blockchainNetwork),
+			transferFunds: transferFunds.bind(null, fcl, blockchainNetwork, auth),
 		},
 		collection: {
 			setupAccount: setupAccountTemplate.bind(null, fcl, auth, blockchainNetwork),

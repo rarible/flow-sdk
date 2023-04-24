@@ -104,4 +104,19 @@ describe("Test transfer on emulator", () => {
 		checkEvent(transferTx, "Withdraw", "HWGarageCard")
 		checkEvent(transferTx, "Deposit", "HWGarageCard")
 	}, 1000000)
+
+	test("should transfer HWGarageCard", async () => {
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_6.address, FLOW_TESTNET_ACCOUNT_6.privKey)
+		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
+
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)
+		const tokenId = 27
+		const transferTx = await testnetBuyerSdk.nft.transfer(
+			testnetCollection,
+			tokenId,
+			toFlowAddress("0x5391ccade6ea6e8b")
+		)
+		checkEvent(transferTx, "Withdraw", "HWGarageCardV2")
+		checkEvent(transferTx, "Deposit", "HWGarageCardV2")
+	}, 1000000)
 })

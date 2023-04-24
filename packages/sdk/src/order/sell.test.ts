@@ -174,7 +174,7 @@ describe("Mattel storefront sell testing", () => {
 		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
 		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePackV2)
-		const tokenId = "3"
+		const tokenId = "15"
 
 		const orderTx = await testnetSdk.order.sell({
 			collection: testnetCollection,

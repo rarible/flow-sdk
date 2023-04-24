@@ -13,6 +13,7 @@ type EventNames =
 	| "Burn"
 	| "BidCompleted"
 	| "BidAvailable"
+	| "TokensWithdrawn"
 
 export function checkEvent(txResult: FlowTransaction, eventName: EventNames, contractName?: FlowContractName) {
 	const result = !!txResult.events.find(e => {
