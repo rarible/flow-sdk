@@ -26,8 +26,8 @@ import type { FlowItemId } from "./common/item"
 import type { FlowContractAddress } from "./common/flow-address"
 import type { FlowEnvConfig } from "./config/env"
 import { ENV_CONFIG } from "./config/env"
-import type { TransferFlowRequest } from "./tx-code-store/transfer-funds"
-import { transferFunds } from "./tx-code-store/transfer-funds"
+import type { TransferFlowRequest } from "./wallet/transfer-funds"
+import { transferFunds } from "./wallet/transfer-funds"
 
 export interface FlowApisSdk {
 	order: ApiClient.FlowOrderControllerApi
