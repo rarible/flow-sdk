@@ -204,7 +204,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			MugenNFT: TESTNET_RARIBLE_ADDRESS,
 			CNN_NFT: TESTNET_RARIBLE_ADDRESS,
 			MatrixWorldFlowFestNFT: toFlowAddress("0xe2f1b000e0203c1d"),
-			MatrixWorldVoucher: toFlowAddress(ZERO_ADDRESS),
+			MatrixWorldVoucher: TESTNET_RARIBLE_ADDRESS,
 			DisruptArt: TESTNET_RARIBLE_ADDRESS,
 			Art: TESTNET_RARIBLE_ADDRESS,
 			StarlyCard: TESTNET_RARIBLE_ADDRESS,
