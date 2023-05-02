@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.59](https://github.com/rarible/flow-sdk/compare/v0.5.58...v0.5.59) (2023-05-02)
+
+
+### Bug Fixes
+
+* zero address ([51a1ea4](https://github.com/rarible/flow-sdk/commit/51a1ea471224cc9c0fd19924691b1ac9474c167d))
+
+
+
+
+
 ## [0.5.58](https://github.com/rarible/flow-sdk/compare/v0.5.57...v0.5.58) (2023-04-24)
 
 
