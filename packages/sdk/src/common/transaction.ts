@@ -1,6 +1,7 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { AuthWithPrivateKey, FlowTransaction } from "../types"
 import { replaceImportAddresses } from "./template-replacer"
+import {FlowRunScriptError, FlowRunTransactionError, FlowSealError} from "./errors"
 
 export type MethodArgs = {
 	cadence: string
@@ -12,9 +13,13 @@ export const runScript = async (
 	params: MethodArgs,
 	addressMap: Record<string, string>,
 ) => {
-	const cadence = replaceImportAddresses(params.cadence, addressMap)
-	const result = await fcl.send([fcl.script`${cadence}`, params.args])
-	return await fcl.decode(result)
+	try {
+		const cadence = replaceImportAddresses(params.cadence, addressMap)
+		const result = await fcl.send([fcl.script`${cadence}`, params.args])
+		return await fcl.decode(result)
+	} catch (error) {
+		throw new FlowRunScriptError({ error, params })
+	}
 }
 
 export const runTransaction = async (
@@ -24,27 +29,36 @@ export const runTransaction = async (
 	signature: AuthWithPrivateKey,
 	gasLimit: number = 999,
 ): Promise<string> => {
-	const code = replaceImportAddresses(params.cadence, addressMap)
-	const ix = [fcl.limit(gasLimit)]
-	ix.push(
-		fcl.payer(signature || fcl.authz),
-		fcl.proposer(signature || fcl.authz),
-		fcl.authorizations([signature || fcl.authz]),
-	)
+	try {
+		const code = replaceImportAddresses(params.cadence, addressMap)
+		const ix = [fcl.limit(gasLimit)]
+		ix.push(
+			fcl.payer(signature || fcl.authz),
+			fcl.proposer(signature || fcl.authz),
+			fcl.authorizations([signature || fcl.authz]),
+		)
 
-	if (params.args) {
-		ix.push(params.args)
+		if (params.args) {
+			ix.push(params.args)
+		}
+		ix.push(fcl.transaction(code))
+		const tx = await fcl.send(ix)
+		return tx.transactionId
+	} catch (error) {
+		throw new FlowRunTransactionError({error, params })
 	}
-	ix.push(fcl.transaction(code))
-	const tx = await fcl.send(ix)
-	return tx.transactionId
 }
 
+
 export const waitForSeal = async (fcl: Fcl, txId: string): Promise<FlowTransaction> => {
-	const sealed = await fcl.tx(txId).onceSealed()
-	return {
-		...sealed,
-		txId,
+	try {
+		const sealed = await fcl.tx(txId).onceSealed()
+		return {
+			...sealed,
+			txId,
+		}
+	} catch (error) {
+		throw new FlowSealError({ error, txId })
 	}
 }
 

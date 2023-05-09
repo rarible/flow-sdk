@@ -11,7 +11,7 @@ import { checkPrice } from "../common/check-price"
 import { parseEvents } from "../common/parse-tx-events"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCode } from "../tx-code-store/order/storefront"
-import { getMattelOrderCode } from "../tx-code-store/order/mattel-storefront"
+import {getMattelOrderCode, isMattelCollection} from "../tx-code-store/order/mattel-storefront"
 import { fixAmount } from "../common/fix-amount"
 import {
 	getOrderDetailsFromBlockchain,
@@ -45,7 +45,7 @@ export async function updateOrder(
 		const preparedOrder = await getPreparedOrder(orderApi, order)
 		const { name, map } = getCollectionConfig(network, collection)
 
-		if (name === "HWGarageCard" || name === "HWGaragePack" || name === "HWGarageCardV2" || name === "HWGaragePackV2") {
+		if (isMattelCollection(name)) {
 			const details = await getStorefrontV2OrderDetailsFromBlockchain(fcl, network, from, preparedOrder.id)
 			if (details.purchased) {
 				throw new Error("Item was purchased")

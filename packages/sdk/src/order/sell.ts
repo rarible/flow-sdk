@@ -20,7 +20,7 @@ import { extractTokenId } from "../common/item"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCode } from "../tx-code-store/order/storefront"
 import { fixAmount } from "../common/fix-amount"
-import { getMattelOrderCode } from "../tx-code-store/order/mattel-storefront"
+import {getMattelOrderCode, isMattelCollection} from "../tx-code-store/order/mattel-storefront"
 import { getProtocolFee } from "./get-protocol-fee"
 import { calculateSaleCuts } from "./common/calculate-sale-cuts"
 import { fetchItemRoyalties } from "./common/fetch-item-royalties"
@@ -58,7 +58,7 @@ export async function sell(
 
 		const { name, map } = getCollectionConfig(network, collection)
 
-		if (name === "HWGarageCard" || name === "HWGaragePack" || name === "HWGarageCardV2" || name === "HWGaragePackV2") {
+		if (isMattelCollection(name)) {
 			const [fee] = originFees || []
 			let comissionAmount = toBn(fee?.value || 0)
 				.div(10000)

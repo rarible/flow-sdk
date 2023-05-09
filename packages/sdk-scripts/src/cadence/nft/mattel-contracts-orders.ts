@@ -1,104 +1,16 @@
-interface ContractsAddresses {
-	name: string
-	mainnetAddress: string
-	testnetAddress: string
-	testnetAddressRaribleDeployed: string
-}
-
-enum TypeOfContract {
-	COLLECTION = "Collection",
-	STOREFRONT = "Storefront"
-}
-interface ContractDetails {
-	storagePath: string
-	publicPath: string
-	publicType: string
-	contractType: TypeOfContract
-	nameOfMethodForCreateResource: string
-}
-
-interface NFTColectionDetails {
-	privatePath: string
-}
-
-const NonFungibleToken: ContractsAddresses = {
-	name: "NonFungibleToken",
-	mainnetAddress: "0x1d7e57aa55817448",
-	testnetAddress: "0x631e88ae7f1d7c20",
-	testnetAddressRaribleDeployed: "0x631e88ae7f1d7c20",
-}
-
-const MetadataViews: ContractsAddresses = {
-	name: "MetadataViews",
-	mainnetAddress: "0x1d7e57aa55817448",
-	testnetAddress: "0x631e88ae7f1d7c20",
-	testnetAddressRaribleDeployed: "0x631e88ae7f1d7c20",
-}
-
-const FungibleToken: ContractsAddresses = {
-	name: "FungibleToken",
-	mainnetAddress: "0xf233dcee88fe0abe",
-	testnetAddress: "0x9a0766d93b6608b7",
-	testnetAddressRaribleDeployed: "0x9a0766d93b6608b7",
-}
-
-const FlowToken: ContractsAddresses = {
-	name: "FlowToken",
-	mainnetAddress: "0x1654653399040a61",
-	testnetAddress: "0x7e60df042a9c0868",
-	testnetAddressRaribleDeployed: "0x7e60df042a9c0868",
-}
-
-const HWGaragePack: ContractsAddresses & ContractDetails & NFTColectionDetails = {
-	name: "HWGaragePack",
-	mainnetAddress: "0xd0bcefdf1e67ea85",
-	testnetAddress: "0x9f36754d9b38f155",
-	testnetAddressRaribleDeployed: "0x80102bce1de42dc4",
-	storagePath: "HWGaragePack.CollectionStoragePath",
-	publicPath: "HWGaragePack.CollectionPublicPath",
-	publicType: "&HWGaragePack.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, HWGaragePack.PackCollectionPublic, MetadataViews.ResolverCollection}",
-	contractType: TypeOfContract.COLLECTION,
-	nameOfMethodForCreateResource: "createEmptyCollection()",
-	privatePath: "/private/HWGaragePackCollection",
-}
-const HWGaragePackV2: ContractsAddresses & ContractDetails & NFTColectionDetails = {
-	name: "HWGaragePackV2",
-	mainnetAddress: "",
-	testnetAddress: "",
-	testnetAddressRaribleDeployed: "",
-	storagePath: "HWGaragePackV2.CollectionStoragePath",
-	publicPath: "HWGaragePackV2.CollectionPublicPath",
-	publicType: "&HWGaragePackV2.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, HWGaragePackV2.PackCollectionPublic, MetadataViews.ResolverCollection}",
-	contractType: TypeOfContract.COLLECTION,
-	nameOfMethodForCreateResource: "createEmptyCollection()",
-	privatePath: "/private/HWGaragePackV2Collection",
-}
-
-const HWGarageCard: ContractsAddresses & ContractDetails & NFTColectionDetails = {
-	name: "HWGarageCard",
-	mainnetAddress: "0xd0bcefdf1e67ea85",
-	testnetAddress: "0x9f36754d9b38f155",
-	testnetAddressRaribleDeployed: "0x80102bce1de42dc4",
-	storagePath: "HWGarageCard.CollectionStoragePath",
-	publicPath: "HWGarageCard.CollectionPublicPath",
-	publicType: "&HWGarageCard.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, HWGarageCard.HWGarageCardCollectionPublic, MetadataViews.ResolverCollection}",
-	contractType: TypeOfContract.COLLECTION,
-	nameOfMethodForCreateResource: "createEmptyCollection()",
-	privatePath: "/private/HWGarageCardCollection",
-}
-
-const HWGarageCardV2: ContractsAddresses & ContractDetails & NFTColectionDetails = {
-	name: "HWGarageCardV2",
-	mainnetAddress: "",
-	testnetAddress: "",
-	testnetAddressRaribleDeployed: "",
-	storagePath: "HWGarageCardV2.CollectionStoragePath",
-	publicPath: "HWGarageCardV2.CollectionPublicPath",
-	publicType: "&HWGarageCardV2.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, HWGarageCardV2.CardCollectionPublic, MetadataViews.ResolverCollection}",
-	contractType: TypeOfContract.COLLECTION,
-	nameOfMethodForCreateResource: "createEmptyCollection()",
-	privatePath: "/private/HWGarageCardV2Collection",
-}
+import type {
+	ContractDetails,
+	ContractsAddresses, MattelCollection} from "./mattel-contracts"
+import {
+	BBxBarbieCard,
+	BBxBarbiePack,
+	FlowToken,
+	FungibleToken,
+	HWGarageCard, HWGarageCardV2,
+	HWGaragePack, HWGaragePackV2,
+	MetadataViews,
+	NonFungibleToken, TypeOfContract,
+} from "./mattel-contracts"
 
 export const txInitNFTContracts: string = `
 import ${NonFungibleToken.name} from "${NonFungibleToken.testnetAddressRaribleDeployed}"
@@ -192,6 +104,30 @@ const preparePartOfInit = `
 					acct.link<${HWGaragePackV2.publicType}>(${HWGaragePackV2.publicPath}, target: ${HWGaragePackV2.storagePath})
 			}
 
+      if acct.borrow<&BBxBarbieToken.Collection>(from: BBxBarbieToken.CollectionStoragePath) == nil {
+          let collection <- BBxBarbieToken.createEmptyCollection()
+          acct.save(<-collection, to: BBxBarbieToken.CollectionStoragePath)
+      }
+      if acct.getCapability<&BBxBarbieToken.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, BBxBarbieToken.TokenCollectionPublic, MetadataViews.ResolverCollection}>(BBxBarbieToken.CollectionPublicPath).borrow() == nil {
+          acct.link<&BBxBarbieToken.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, BBxBarbieToken.TokenCollectionPublic, MetadataViews.ResolverCollection}>(BBxBarbieToken.CollectionPublicPath, target: BBxBarbieToken.CollectionStoragePath)
+      }
+
+			if acct.borrow<&${BBxBarbiePack.name}.${BBxBarbiePack.contractType}>(from: ${BBxBarbiePack.storagePath}) == nil {
+					let collection <- ${BBxBarbiePack.name}.${BBxBarbiePack.nameOfMethodForCreateResource}
+					acct.save(<-collection, to: ${BBxBarbiePack.storagePath})
+			}
+			if acct.getCapability<${BBxBarbiePack.publicType}>(${BBxBarbiePack.publicPath}).borrow() == nil {
+					acct.link<${BBxBarbiePack.publicType}>(${BBxBarbiePack.publicPath}, target: ${BBxBarbiePack.storagePath})
+			}
+
+			if acct.borrow<&${BBxBarbieCard.name}.${BBxBarbieCard.contractType}>(from: ${BBxBarbieCard.storagePath}) == nil {
+					let collection <- ${BBxBarbieCard.name}.${BBxBarbieCard.nameOfMethodForCreateResource}
+					acct.save(<-collection, to: ${BBxBarbieCard.storagePath})
+			}
+			if acct.getCapability<${BBxBarbieCard.publicType}>(${BBxBarbieCard.publicPath}).borrow() == nil {
+					acct.link<${BBxBarbieCard.publicType}>(${BBxBarbieCard.publicPath}, target: ${BBxBarbieCard.storagePath})
+			}
+
 			if acct.borrow<&${NFTStorefrontV2.name}.${NFTStorefrontV2.contractType}>(from: ${NFTStorefrontV2.storagePath}) == nil {
 					let collection <- ${NFTStorefrontV2.name}.${NFTStorefrontV2.nameOfMethodForCreateResource}
 					acct.save(<-collection, to: ${NFTStorefrontV2.storagePath})
@@ -207,6 +143,10 @@ import FungibleToken from 0xFungibleToken
 import FlowToken from 0xFlowToken
 import ${HWGarageCard.name} from 0xHWGarageCard
 import ${HWGaragePack.name} from 0xHWGaragePack
+import HWGarageCardV2 from 0xHWGarageCardV2
+import HWGaragePackV2 from 0xHWGaragePackV2
+import BBxBarbiePack from 0xBBxBarbiePack
+import BBxBarbieCard from 0xBBxBarbieCard
 import NFTStorefrontV2 from 0xNFTStorefrontV2
 
 transaction() {
@@ -231,13 +171,13 @@ transaction {
 }
 `
 
-export function getTxListItemStorefrontV2(collection: "HWGaragePack" | "HWGarageCard" | "HWGarageCardV2" | "HWGaragePackV2") {
+export const getTxListItemStorefrontV2 = (collection: MattelCollection) => {
 	let borrowMethod: string
-	if (collection === "HWGaragePack" || collection === "HWGaragePackV2") {
+	if (["HWGaragePack", "HWGaragePackV2", "BBxBarbiePack"].includes(collection)) {
 		borrowMethod = "borrowPack"
 	} else if (collection === "HWGarageCard") {
 		borrowMethod = "borrowHWGarageCard"
-	} else if (collection === "HWGarageCardV2") {
+	} else if (["HWGarageCardV2", "BBxBarbieCard"].includes(collection)) {
 		borrowMethod = "borrowCard"
 	} else {
 		throw new Error(`Unrecognized collection name (${collection}), expected HWGaragePack | HWGarageCard`)
@@ -252,6 +192,9 @@ import ${HWGarageCard.name} from 0xHWGarageCard
 import ${HWGaragePack.name} from 0xHWGaragePack
 import HWGarageCardV2 from 0xHWGarageCardV2
 import HWGaragePackV2 from 0xHWGaragePackV2
+import BBxBarbiePack from 0xBBxBarbiePack
+import BBxBarbieCard from 0xBBxBarbieCard
+import BBxBarbieToken from 0xBBxBarbieToken
 
 transaction(saleItemID: UInt64, saleItemPrice: UFix64, customID: String?, commissionAmount: UFix64, expiry: UInt64, marketplacesAddress: [Address]) {
     let fiatReceiver: Capability<&AnyResource{${FungibleToken.name}.Receiver}>
@@ -351,14 +294,13 @@ transaction(listingResourceID: UInt64) {
 }
 `
 
-// import ${HWGaragePack.name} from "${HWGaragePack.testnetAddressRaribleDeployed}"
-export function getTxChangePriceStorefrontV2(collection: "HWGaragePack" | "HWGarageCard" | "HWGarageCardV2" | "HWGaragePackV2") {
+export const getTxChangePriceStorefrontV2 = (collection: MattelCollection) => {
 	let borrowMethod: string
-	if (collection === "HWGaragePack" || collection === "HWGaragePackV2") {
+	if (["HWGaragePack", "HWGaragePackV2", "BBxBarbiePack"].includes(collection)) {
 		borrowMethod = "borrowPack"
 	} else if (collection === "HWGarageCard") {
 		borrowMethod = "borrowHWGarageCard"
-	} else if (collection === "HWGarageCardV2") {
+	} else if (["HWGarageCardV2", "BBxBarbieCard"].includes(collection)) {
 		borrowMethod = "borrowCard"
 	} else {
 		throw new Error(`Unrecognized collection name (${collection}), expected HWGaragePack | HWGarageCard`)
@@ -373,6 +315,9 @@ import ${HWGarageCard.name} from 0xHWGarageCard
 import ${HWGaragePack.name} from 0xHWGaragePack
 import HWGarageCardV2 from 0xHWGarageCardV2
 import HWGaragePackV2 from 0xHWGaragePackV2
+import BBxBarbiePack from 0xBBxBarbiePack
+import BBxBarbieCard from 0xBBxBarbieCard
+import BBxBarbieToken from 0xBBxBarbieToken
 
 transaction(removalListingResourceID: UInt64, saleItemID: UInt64, saleItemPrice: UFix64, customID: String?, commissionAmount: UFix64, expiry: UInt64, marketplacesAddress: [Address]) {
     let storefrontForRemove: &NFTStorefrontV2.Storefront{NFTStorefrontV2.StorefrontManager}
@@ -472,6 +417,9 @@ import ${HWGarageCard.name} from 0xHWGarageCard
 import ${HWGaragePack.name} from 0xHWGaragePack
 import HWGarageCardV2 from 0xHWGarageCardV2
 import HWGaragePackV2 from 0xHWGaragePackV2
+import BBxBarbiePack from 0xBBxBarbiePack
+import BBxBarbieCard from 0xBBxBarbieCard
+import BBxBarbieToken from 0xBBxBarbieToken
 
 transaction(listingResourceID: UInt64, storefrontAddress: Address, commissionRecipient: Address?) {
     let paymentVault: @${FungibleToken.name}.Vault

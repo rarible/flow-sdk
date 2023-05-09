@@ -1,5 +1,4 @@
-export { commonNft } from "./cadence/nft/common"
-export { RaribleNFT } from "./cadence/nft/rarible-nft"
+export * from "./cadence/nft"
 
 export { Storefront } from "./cadence/storefront/storefront"
 export { StorefrontCommon } from "./cadence/storefront/storefront-common"
