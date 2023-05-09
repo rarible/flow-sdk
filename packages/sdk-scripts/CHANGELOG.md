@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.60](https://github.com/rarible/flow-sdk/compare/v0.5.59...v0.5.60) (2023-05-09)
+
+
+### Features
+
+* barbie collection ([#97](https://github.com/rarible/flow-sdk/issues/97)) ([caf5e7b](https://github.com/rarible/flow-sdk/commit/caf5e7b70a00fc7ff30b88f1d66a07d148aa8e69))
+
+
+
+
+
 ## [0.5.57](https://github.com/rarible/flow-sdk/compare/v0.5.56...v0.5.57) (2023-04-24)
 
 
