@@ -105,7 +105,7 @@ describe("Test transfer on emulator", () => {
 		checkEvent(transferTx, "Deposit", "HWGarageCard")
 	}, 1000000)
 
-	test("should transfer HWGarageCard", async () => {
+	test("should transfer HWGarageCardV2", async () => {
 		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_6.address, FLOW_TESTNET_ACCOUNT_6.privKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 
@@ -118,5 +118,35 @@ describe("Test transfer on emulator", () => {
 		)
 		checkEvent(transferTx, "Withdraw", "HWGarageCardV2")
 		checkEvent(transferTx, "Deposit", "HWGarageCardV2")
+	}, 1000000)
+
+	test("should transfer BarbiePack", async () => {
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
+
+		const testnetCollection = toFlowContractAddress(TestnetCollections.BBxBarbiePack)
+		const tokenId = 27
+		const transferTx = await testnetBuyerSdk.nft.transfer(
+			testnetCollection,
+			tokenId,
+			toFlowAddress("0x9d23622aa6ea2728")
+		)
+		checkEvent(transferTx, "Withdraw", "BBxBarbiePack")
+		checkEvent(transferTx, "Deposit", "BBxBarbiePack")
+	}, 1000000)
+
+	test("should transfer BarbieCard", async () => {
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
+
+		const testnetCollection = toFlowContractAddress(TestnetCollections.BBxBarbieCard)
+		const tokenId = 14
+		const transferTx = await testnetBuyerSdk.nft.transfer(
+			testnetCollection,
+			tokenId,
+			toFlowAddress("0x9d23622aa6ea2728")
+		)
+		checkEvent(transferTx, "Withdraw", "BBxBarbieCard")
+		checkEvent(transferTx, "Deposit", "BBxBarbieCard")
 	}, 1000000)
 })

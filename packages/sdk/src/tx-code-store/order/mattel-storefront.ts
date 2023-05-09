@@ -3,9 +3,10 @@ import * as t from "@onflow/types"
 import {
 	getTxChangePriceStorefrontV2,
 	getTxListItemStorefrontV2,
-	txBuyItemStorefrontV2, txInitNFTContractsAndStorefrontV2,
+	txBuyItemStorefrontV2,
+	txInitNFTContractsAndStorefrontV2,
 	txUnlistItemStorefrontV2,
-} from "@rarible/flow-sdk-scripts/build/cadence/nft/mattel-contracts-orders"
+} from "@rarible/flow-sdk-scripts"
 import type { FlowAddress } from "@rarible/types"
 import type { BigNumberValue } from "@rarible/utils"
 import type { NonFungibleContract } from "../../types"
@@ -17,38 +18,36 @@ type GenerateCodeMethodResponse = {
 	args: ReturnType<FclArgs>
 }
 
-type GenerateBidCodeResponse = {
-	create: (options: {
-		collectionName: "HWGaragePack" | "HWGarageCard" | "HWGarageCardV2" | "HWGaragePackV2"
-		itemId: number,
-		saleItemPrice: BigNumberValue,
-		customID?: string,
-		commissionAmount: BigNumberValue,
-		expiry: number,
-		marketplacesAddress: FlowAddress[]
-	}) => GenerateCodeMethodResponse
-	update: (options: {
-		collectionName: "HWGaragePack" | "HWGarageCard" | "HWGarageCardV2" | "HWGaragePackV2",
-		orderId: number,
-		itemId: number,
-		saleItemPrice: BigNumberValue,
-		customID?: string,
-		commissionAmount: BigNumberValue,
-		expiry: number,
-		marketplacesAddress: FlowAddress[]
-	}) => GenerateCodeMethodResponse
-	buy: (options: {
-		orderId: number,
-		address: string,
-		comissionRecipient?: string
-	}) => GenerateCodeMethodResponse
-	cancel: (orderId: number) => GenerateCodeMethodResponse
-	setupAccount: () => GenerateCodeMethodResponse
+export type MattelCollection =
+	| "HWGaragePack"
+	| "HWGarageCard"
+	| "HWGarageCardV2"
+	| "HWGaragePackV2"
+	| "BBxBarbiePack"
+	| "BBxBarbieCard"
+
+export function isMattelCollection(collection: string): collection is MattelCollection {
+	return [
+		"HWGaragePack",
+		"HWGarageCard",
+		"HWGarageCardV2",
+		"HWGaragePackV2",
+		"BBxBarbiePack",
+		"BBxBarbieCard",
+	].includes(collection)
 }
 
-export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract): GenerateBidCodeResponse {
+export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract) {
 	return {
-		create(o) {
+		create(o: {
+			collectionName: MattelCollection
+			itemId: number,
+			saleItemPrice: BigNumberValue,
+			customID?: string,
+			commissionAmount: BigNumberValue,
+			expiry: number,
+			marketplacesAddress: FlowAddress[]
+		}): GenerateCodeMethodResponse {
 			return {
 				cadence: fillCodeTemplate(getTxListItemStorefrontV2(o.collectionName), getNftCodeConfig(collectionName)),
 				args: fcl.args([
@@ -61,7 +60,16 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 				]),
 			}
 		},
-		update(o) {
+		update(o: {
+			collectionName: MattelCollection
+			orderId: number,
+			itemId: number,
+			saleItemPrice: BigNumberValue,
+			customID?: string,
+			commissionAmount: BigNumberValue,
+			expiry: number,
+			marketplacesAddress: FlowAddress[]
+		}): GenerateCodeMethodResponse {
 			return {
 				cadence: fillCodeTemplate(getTxChangePriceStorefrontV2(o.collectionName), getNftCodeConfig(collectionName)),
 				args: fcl.args([
@@ -75,9 +83,12 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 				]),
 			}
 		},
-		buy(o) {
+		buy(o: {
+			orderId: number,
+			address: string,
+			comissionRecipient?: string
+		}): GenerateCodeMethodResponse {
 			return {
-				// cadence: prepareOrderCode(, collectionName, currency),
 				cadence: fillCodeTemplate(txBuyItemStorefrontV2, getNftCodeConfig(collectionName)),
 				args: fcl.args([
 					fcl.arg(o.orderId, t.UInt64),
@@ -86,13 +97,13 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 				]),
 			}
 		},
-		cancel(orderId) {
+		cancel(orderId: number): GenerateCodeMethodResponse {
 			return {
 				cadence: fillCodeTemplate(txUnlistItemStorefrontV2, getNftCodeConfig(collectionName)),
 				args: fcl.args([fcl.arg(orderId, t.UInt64)]),
 			}
 		},
-		setupAccount() {
+		setupAccount(): GenerateCodeMethodResponse {
 			return {
 				cadence: fillCodeTemplate(txInitNFTContractsAndStorefrontV2, getNftCodeConfig(collectionName)),
 				args: fcl.args([]),

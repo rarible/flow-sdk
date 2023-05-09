@@ -22,7 +22,7 @@ import {
 	getOrderDetailsFromBlockchain,
 } from "../common/get-order-details-from-blockchain"
 import { fetchItemRoyalties } from "../common/fetch-item-royalties"
-import { getMattelOrderCode } from "../../tx-code-store/order/mattel-storefront"
+import {getMattelOrderCode, isMattelCollection} from "../../tx-code-store/order/mattel-storefront"
 import { fillBidOrder } from "./fill-bid-order"
 
 export type FlowOrderType = "LIST" | "BID"
@@ -50,7 +50,7 @@ export async function fill(
 		const { name, map } = getCollectionConfig(network, collection)
 		switch (preparedOrder.type) {
 			case "LIST": {
-				if (name === "HWGarageCard" || name === "HWGaragePack" || name === "HWGarageCardV2" || name === "HWGaragePackV2") {
+				if (isMattelCollection(name)) {
 					const [fee] = preparedOrder.data.originalFees
 					const txId = await runTransaction(
 						fcl,

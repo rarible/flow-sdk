@@ -163,6 +163,18 @@ const nftCodeConfig: Record<NonFungibleContract, NftStaticVariables> = {
 		"%nftPrivatePath%": "/private/HWGaragePackV2Collection",
 		"%publicTypeAddon%": "HWGaragePackV2.PackCollectionPublic",
 	},
+	BBxBarbieCard: {
+		"%nftPublicPath%": "BBxBarbieCard.CollectionPublicPath",
+		"%nftStoragePath%": "BBxBarbieCard.CollectionStoragePath",
+		"%nftPrivatePath%": "/private/BBxBarbieCardCollection",
+		"%publicTypeAddon%": "BBxBarbieCard.CardCollectionPublic",
+	},
+	BBxBarbiePack: {
+		"%nftPublicPath%": "BBxBarbiePack.CollectionPublicPath",
+		"%nftStoragePath%": "BBxBarbiePack.CollectionStoragePath",
+		"%nftPrivatePath%": "/private/BBxBarbiePackCollection",
+		"%publicTypeAddon%": "BBxBarbiePack.PackCollectionPublic",
+	},
 }
 
 export type NftCodeConfig = NftStaticVariables & {

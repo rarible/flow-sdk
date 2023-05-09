@@ -54,4 +54,6 @@ const collections: NonFungibleContracts = [
 	"HWGaragePackV2",
 	"HWGarageCard",
 	"HWGarageCardV2",
+	"BBxBarbiePack",
+	"BBxBarbieCard",
 ]

@@ -1,5 +1,5 @@
 import type { BigNumber, FlowAddress } from "@rarible/types"
-import { toBigNumber, toFlowAddress, ZERO_ADDRESS } from "@rarible/types"
+import { toBigNumber, toFlowAddress } from "@rarible/types"
 import type { FlowContractAddressName } from "../common/flow-address"
 import type { FlowContractName, FlowFee, FlowNetwork, NonFungibleContract } from "../types"
 
@@ -121,11 +121,19 @@ export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> 
 		features: ["TRANSFER", "BURN"],
 	},
 	HWGaragePackV2: {
-		contractsNames: ["HWGaragePack"] as FlowContractAddressName[],
+		contractsNames: ["HWGaragePackV2"] as FlowContractAddressName[],
 		features: ["TRANSFER", "BURN"],
 	},
 	HWGarageCardV2: {
-		contractsNames: ["HWGarageCard"] as FlowContractAddressName[],
+		contractsNames: ["HWGarageCardV2"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
+	BBxBarbiePack: {
+		contractsNames: ["BBxBarbiePack"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
+	BBxBarbieCard: {
+		contractsNames: ["BBxBarbieCard"] as FlowContractAddressName[],
 		features: ["TRANSFER", "BURN"],
 	},
 }
@@ -181,6 +189,9 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			HWGarageCard: EMULATOR_ADDRESS,
 			HWGaragePackV2: EMULATOR_ADDRESS,
 			HWGarageCardV2: EMULATOR_ADDRESS,
+			BBxBarbiePack: EMULATOR_ADDRESS,
+			BBxBarbieCard: EMULATOR_ADDRESS,
+			BBxBarbieToken: EMULATOR_ADDRESS,
 		},
 	},
 	testnet: {
@@ -224,6 +235,9 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			HWGarageCard: toFlowAddress("0x80102bce1de42dc4"),
 			HWGaragePackV2: toFlowAddress("0x80102bce1de42dc4"),
 			HWGarageCardV2: toFlowAddress("0x80102bce1de42dc4"),
+			BBxBarbiePack: toFlowAddress("eff462cf475a0c02"),
+			BBxBarbieCard: toFlowAddress("eff462cf475a0c02"),
+			BBxBarbieToken: toFlowAddress("eff462cf475a0c02"),
 		},
 	},
 	mainnet: {
@@ -267,6 +281,9 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			HWGarageCard: toFlowAddress("0xd0bcefdf1e67ea85"),
 			HWGaragePackV2: toFlowAddress("0xd0bcefdf1e67ea85"),
 			HWGarageCardV2: toFlowAddress("0xd0bcefdf1e67ea85"),
+			BBxBarbieCard: toFlowAddress("0xd0bcefdf1e67ea85"),
+			BBxBarbiePack: toFlowAddress("0xd0bcefdf1e67ea85"),
+			BBxBarbieToken: toFlowAddress("0xd0bcefdf1e67ea85"),
 		},
 	},
 }
@@ -298,7 +315,9 @@ export enum TestnetCollections {
 	HWGarageCard = "A.80102bce1de42dc4.HWGarageCard",
 	HWGaragePack = "A.80102bce1de42dc4.HWGaragePack",
 	HWGarageCardV2 = "A.80102bce1de42dc4.HWGarageCardV2",
-	HWGaragePackV2 = "A.80102bce1de42dc4.HWGaragePackV2"
+	HWGaragePackV2 = "A.80102bce1de42dc4.HWGaragePackV2",
+	BBxBarbiePack = "A.eff462cf475a0c02.BBxBarbiePack",
+	BBxBarbieCard = "A.eff462cf475a0c02.BBxBarbieCard",
 }
 
 export enum MainnetCollections {
