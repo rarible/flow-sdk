@@ -111,3 +111,15 @@ export const FLOW_TESTNET_ACCOUNT_6: TestAccount = {
 	privKey: "d2d9f47366ff08b3f379ee34fe7b4441868a4b954dc2d893102fa428e103e216",
 	pubKey: "",
 }
+
+export const FLOW_TESTNET_ACCOUNT_7: TestAccount = {
+	address: "0xdbb7924726a33031",
+	privKey: "ccf77c1492eb0ae7abcb0b9e9a325e13b307b6d946dd98a2bd8f78d5b1573f5e",
+	pubKey: "",
+}
+
+export const FLOW_TESTNET_ACCOUNT_8: TestAccount = {
+	address: "0x4ee127ec6f94277f",
+	privKey: "eee491e5c0b7936289af1a13376c944d2fa9764301f247f4164d3edf53dc0210",
+	pubKey: "",
+}

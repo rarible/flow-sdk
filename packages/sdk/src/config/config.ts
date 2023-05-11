@@ -235,9 +235,9 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			HWGarageCard: toFlowAddress("0x80102bce1de42dc4"),
 			HWGaragePackV2: toFlowAddress("0x80102bce1de42dc4"),
 			HWGarageCardV2: toFlowAddress("0x80102bce1de42dc4"),
-			BBxBarbiePack: toFlowAddress("eff462cf475a0c02"),
-			BBxBarbieCard: toFlowAddress("eff462cf475a0c02"),
-			BBxBarbieToken: toFlowAddress("eff462cf475a0c02"),
+			BBxBarbiePack: toFlowAddress("0x80102bce1de42dc4"),
+			BBxBarbieCard: toFlowAddress("0x80102bce1de42dc4"),
+			BBxBarbieToken: toFlowAddress("0x80102bce1de42dc4"),
 		},
 	},
 	mainnet: {
@@ -316,8 +316,8 @@ export enum TestnetCollections {
 	HWGaragePack = "A.80102bce1de42dc4.HWGaragePack",
 	HWGarageCardV2 = "A.80102bce1de42dc4.HWGarageCardV2",
 	HWGaragePackV2 = "A.80102bce1de42dc4.HWGaragePackV2",
-	BBxBarbiePack = "A.eff462cf475a0c02.BBxBarbiePack",
-	BBxBarbieCard = "A.eff462cf475a0c02.BBxBarbieCard",
+	BBxBarbiePack = "A.80102bce1de42dc4.BBxBarbiePack",
+	BBxBarbieCard = "A.80102bce1de42dc4.BBxBarbieCard",
 }
 
 export enum MainnetCollections {

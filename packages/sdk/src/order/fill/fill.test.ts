@@ -6,7 +6,7 @@ import {
 } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
-import { FLOW_TESTNET_ACCOUNT_5, FLOW_TESTNET_ACCOUNT_6 } from "@rarible/flow-test-common/build/config"
+import { FLOW_TESTNET_ACCOUNT_5, FLOW_TESTNET_ACCOUNT_8 } from "@rarible/flow-test-common/build/config"
 import { toBn } from "@rarible/utils"
 import type { FlowSdk } from "../../index"
 import { createFlowSdk, toFlowContractAddress } from "../../index"
@@ -24,7 +24,7 @@ import { delay, retry } from "../../common/retry"
 import { awaitOrder } from "../common/await-order"
 
 describe("Mattel storefront fill testing", () => {
-	const [buyerAddr, buyerPrivKey] = [FLOW_TESTNET_ACCOUNT_6.address, FLOW_TESTNET_ACCOUNT_6.privKey]
+	const [buyerAddr, buyerPrivKey] = [FLOW_TESTNET_ACCOUNT_8.address, FLOW_TESTNET_ACCOUNT_8.privKey]
 	const [sellerAddr, sellerPrivKey] = [FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey]
 	const feeAddr = FLOW_TESTNET_ACCOUNT_4.address
 
@@ -245,7 +245,7 @@ describe("Mattel storefront fill testing", () => {
 		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.BBxBarbiePack)
-		const tokenId = 1
+		const tokenId = 2
 
 		test("BBxBarbiePack item", async () => {
 			const testnetAuth = createTestAuth(fcl, "testnet", sellerAddr, sellerPrivKey)
@@ -258,6 +258,10 @@ describe("Mattel storefront fill testing", () => {
 				currency: "FLOW",
 				itemId,
 				sellItemPrice: "0.0001",
+				originFees: [{
+					account: toFlowAddress(feeAddr),
+					value: toBigNumber("1000"),
+				}],
 			})
 			console.log("sell", sellTx)
 			checkEvent(sellTx, "ListingAvailable", "NFTStorefrontV2")
@@ -282,7 +286,7 @@ describe("Mattel storefront fill testing", () => {
 		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.BBxBarbieCard)
-		const tokenId = 13
+		const tokenId = 16
 
 		test("BBxBarbieCard item", async () => {
 			const testnetAuth = createTestAuth(fcl, "testnet", sellerAddr, sellerPrivKey)
