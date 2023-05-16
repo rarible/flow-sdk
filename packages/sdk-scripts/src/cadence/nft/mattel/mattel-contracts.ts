@@ -49,6 +49,18 @@ export const FlowToken: ContractsAddresses = {
 	testnetAddressRaribleDeployed: "0x7e60df042a9c0868",
 }
 
+export const NFTStorefrontV2: ContractsAddresses & ContractDetails = {
+	name: "NFTStorefrontV2",
+	mainnetAddress: "0x4eb8a10cb9f87357",
+	testnetAddress: "0x2d55b98eb200daef",
+	testnetAddressRaribleDeployed: "0x80102bce1de42dc4",
+	storagePath: "NFTStorefrontV2.StorefrontStoragePath",
+	publicPath: "NFTStorefrontV2.StorefrontPublicPath",
+	publicType: "&NFTStorefrontV2.Storefront{NFTStorefrontV2.StorefrontPublic}",
+	contractType: TypeOfContract.STOREFRONT,
+	nameOfMethodForCreateResource: "createStorefront() as! @NFTStorefrontV2.Storefront",
+}
+
 export const HWGaragePack: ContractsAddresses & ContractDetails & NFTColectionDetails = {
 	name: "HWGaragePack",
 	mainnetAddress: "0xd0bcefdf1e67ea85",

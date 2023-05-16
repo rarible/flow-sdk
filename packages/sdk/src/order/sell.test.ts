@@ -17,6 +17,82 @@ import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/helpers
 import { createFusdTestEnvironment } from "../test/helpers/emulator/setup-fusd-env"
 import { toFlowItemId } from "../common/item"
 import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/helpers/emulator/mugen-art"
+describe("Mattel storefront sell testing", () => {
+
+	test("Should create HWGaragePack sell order on testnet", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePack)
+		const tokenId = "30"
+
+		const orderTx = await testnetSdk.order.sell({
+			collection: testnetCollection,
+			currency: "FLOW",
+			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
+			sellItemPrice: "1",
+		})
+
+		expect(orderTx.orderId).toBeTruthy()
+
+	}, 1000000)
+
+	test("Should create HWGaragePackV2 sell order on testnet", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePackV2)
+		const tokenId = "15"
+
+		const orderTx = await testnetSdk.order.sell({
+			collection: testnetCollection,
+			currency: "FLOW",
+			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
+			sellItemPrice: "1",
+		})
+
+		console.log("or", orderTx)
+		expect(orderTx.orderId).toBeTruthy()
+
+	}, 1000000)
+
+	test("Should create HWGarageCard sell order on testnet", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCard)
+		const tokenId = "155"
+
+		const orderTx = await testnetSdk.order.sell({
+			collection: testnetCollection,
+			currency: "FLOW",
+			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
+			sellItemPrice: "0.0001",
+		})
+
+		console.log("orderTx", orderTx)
+		expect(orderTx.orderId).toBeTruthy()
+
+	}, 1000000)
+
+	test("Should create HWGarageCardV2 sell order on testnet", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)
+		const tokenId = "37"
+
+		const orderTx = await testnetSdk.order.sell({
+			collection: testnetCollection,
+			currency: "FLOW",
+			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
+			sellItemPrice: "0.0001",
+			end: new Date(Date.now() + 1000 * 60 * 60 * 24),
+		})
+
+		console.log("orderTx", JSON.stringify(orderTx, null, "	"))
+		expect(orderTx.orderId).toBeTruthy()
+
+	}, 1000000)
+
+})
+
 
 describe("Test sell on emulator", () => {
 	// let sdk: FlowSdk
@@ -148,81 +224,4 @@ describe("Test sell on emulator", () => {
 		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 	})
-})
-
-
-describe("Mattel storefront sell testing", () => {
-
-	test("Should create HWGaragePack sell order on testnet", async () => {
-		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
-		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
-		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePack)
-		const tokenId = "30"
-
-		const orderTx = await testnetSdk.order.sell({
-			collection: testnetCollection,
-			currency: "FLOW",
-			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
-			sellItemPrice: "1",
-		})
-
-		expect(orderTx.orderId).toBeTruthy()
-
-	}, 1000000)
-
-	test("Should create HWGaragePackV2 sell order on testnet", async () => {
-		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
-		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
-		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePackV2)
-		const tokenId = "15"
-
-		const orderTx = await testnetSdk.order.sell({
-			collection: testnetCollection,
-			currency: "FLOW",
-			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
-			sellItemPrice: "1",
-		})
-
-		console.log("or", orderTx)
-		expect(orderTx.orderId).toBeTruthy()
-
-	}, 1000000)
-
-	test("Should create HWGarageCard sell order on testnet", async () => {
-		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
-		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
-		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCard)
-		const tokenId = "155"
-
-		const orderTx = await testnetSdk.order.sell({
-			collection: testnetCollection,
-			currency: "FLOW",
-			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
-			sellItemPrice: "0.0001",
-		})
-
-		console.log("orderTx", orderTx)
-		expect(orderTx.orderId).toBeTruthy()
-
-	}, 1000000)
-
-	test("Should create HWGarageCardV2 sell order on testnet", async () => {
-		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
-		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
-		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)
-		const tokenId = "37"
-
-		const orderTx = await testnetSdk.order.sell({
-			collection: testnetCollection,
-			currency: "FLOW",
-			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
-			sellItemPrice: "0.0001",
-			end: new Date(Date.now() + 1000 * 60 * 60 * 24),
-		})
-
-		console.log("orderTx", JSON.stringify(orderTx, null, "	"))
-		expect(orderTx.orderId).toBeTruthy()
-
-	}, 1000000)
-
 })
