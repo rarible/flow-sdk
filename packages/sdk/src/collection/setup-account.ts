@@ -5,7 +5,7 @@ import type { FlowContractAddress } from "../common/flow-address"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getNftCode } from "../tx-code-store/nft"
 import { getCollectionConfig } from "../common/collection/get-config"
-import { getMattelOrderCode } from "../tx-code-store/order/mattel-storefront"
+import {getMattelOrderCode, isMattelCollection} from "../tx-code-store/order/mattel-storefront"
 
 export async function setupAccount(
 	fcl: Maybe<Fcl>,
@@ -20,7 +20,7 @@ export async function setupAccount(
 		network,
 		collection,
 	)
-	if (name === "HWGarageCard" || name === "HWGaragePack") {
+	if (isMattelCollection(name)) {
 		const txId = await runTransaction(
 			fcl,
 			map,
