@@ -1,6 +1,6 @@
 {
   "name": "@rarible/flow-sdk",
-  "version": "0.5.62",
+  "version": "0.5.63",
   "description": "SDK for interact with flow blockchain and Rarible protocol",
   "repository": "https://github.com/rarible/flow-sdk",
   "license": "MIT",
