@@ -1,9 +1,12 @@
 import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import {
-	getTxChangePriceStorefrontV2,
-	getTxListItemStorefrontV2,
-	txBuyItemStorefrontV2,
+	barbieBuyTxCode,
+	barbieListTxCode,
+	barbieChangePriceTxCode,
+	garageBuyTxCode,
+	getGarageChangePriceTxCode,
+	getGarageListTxCode,
 	txInitNFTContractsAndStorefrontV2,
 	txUnlistItemStorefrontV2,
 } from "@rarible/flow-sdk-scripts"
@@ -18,23 +21,36 @@ type GenerateCodeMethodResponse = {
 	args: ReturnType<FclArgs>
 }
 
-export type MattelCollection =
-	| "HWGaragePack"
-	| "HWGarageCard"
-	| "HWGarageCardV2"
-	| "HWGaragePackV2"
-	| "BBxBarbiePack"
-	| "BBxBarbieCard"
+export type GarageCollection =
+  | "HWGaragePack"
+  | "HWGarageCard"
+  | "HWGarageCardV2"
+  | "HWGaragePackV2"
 
-export function isMattelCollection(collection: string): collection is MattelCollection {
+export function isGarageCollection(collection: string): collection is MattelCollection {
 	return [
 		"HWGaragePack",
 		"HWGarageCard",
 		"HWGarageCardV2",
 		"HWGaragePackV2",
+	].includes(collection)
+}
+
+export type BarbieCollection =
+  | "BBxBarbiePack"
+  | "BBxBarbieCard"
+
+export function isBarbieCollection(collection: string): collection is BarbieCollection {
+	return [
 		"BBxBarbiePack",
 		"BBxBarbieCard",
 	].includes(collection)
+}
+
+export type MattelCollection = GarageCollection | BarbieCollection
+
+export function isMattelCollection(collection: string): collection is MattelCollection {
+	return isGarageCollection(collection) || isBarbieCollection(collection)
 }
 
 export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract) {
@@ -48,8 +64,16 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 			expiry: number,
 			marketplacesAddress: FlowAddress[]
 		}): GenerateCodeMethodResponse {
+			let code: string
+			if (isGarageCollection(collectionName)) {
+				code = getGarageListTxCode(o.collectionName)
+			} else if (isBarbieCollection(collectionName)) {
+				code = barbieListTxCode(collectionName)
+			} else {
+				throw new Error(`Unknown collection (${collectionName})`)
+			}
 			return {
-				cadence: fillCodeTemplate(getTxListItemStorefrontV2(o.collectionName), getNftCodeConfig(collectionName)),
+				cadence: fillCodeTemplate(code, getNftCodeConfig(collectionName)),
 				args: fcl.args([
 					fcl.arg(o.itemId, t.UInt64),
 					fcl.arg(o.saleItemPrice, t.UFix64),
@@ -70,8 +94,16 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 			expiry: number,
 			marketplacesAddress: FlowAddress[]
 		}): GenerateCodeMethodResponse {
+			let code: string
+			if (isGarageCollection(collectionName)) {
+				code = getGarageChangePriceTxCode(o.collectionName)
+			} else if (isBarbieCollection(collectionName)) {
+				code = barbieChangePriceTxCode(collectionName)
+			} else {
+				throw new Error(`Unknown collection (${collectionName})`)
+			}
 			return {
-				cadence: fillCodeTemplate(getTxChangePriceStorefrontV2(o.collectionName), getNftCodeConfig(collectionName)),
+				cadence: fillCodeTemplate(code, getNftCodeConfig(collectionName)),
 				args: fcl.args([
 					fcl.arg(o.orderId, t.UInt64),
 					fcl.arg(o.itemId, t.UInt64),
@@ -88,8 +120,16 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 			address: string,
 			comissionRecipient?: string
 		}): GenerateCodeMethodResponse {
+			let code: string
+			if (isGarageCollection(collectionName)) {
+				code = garageBuyTxCode
+			} else if (isBarbieCollection(collectionName)) {
+				code = barbieBuyTxCode
+			} else {
+				throw new Error(`Unknown collection (${collectionName})`)
+			}
 			return {
-				cadence: fillCodeTemplate(txBuyItemStorefrontV2, getNftCodeConfig(collectionName)),
+				cadence: fillCodeTemplate(code, getNftCodeConfig(collectionName)),
 				args: fcl.args([
 					fcl.arg(o.orderId, t.UInt64),
 					fcl.arg(o.address, t.Address),

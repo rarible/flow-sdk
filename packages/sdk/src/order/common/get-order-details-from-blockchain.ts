@@ -1,6 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
-import { scriptOrderDetails } from "@rarible/flow-sdk-scripts/build/cadence/nft/mattel-contracts-orders"
-import { openBidCommon, StorefrontCommon } from "@rarible/flow-sdk-scripts"
+import {openBidCommon, scriptOrderDetails, StorefrontCommon} from "@rarible/flow-sdk-scripts"
 import * as t from "@onflow/types"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import { runScript } from "../../common/transaction"
