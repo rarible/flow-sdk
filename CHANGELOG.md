@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.64](https://github.com/rarible/flow-sdk/compare/v0.5.63...v0.5.64) (2023-05-18)
+
+
+### Bug Fixes
+
+* garage card list ([0346193](https://github.com/rarible/flow-sdk/commit/034619369d94674d462dee481d4078b85c8ade72))
+
+
+
+
+
 ## [0.5.63](https://github.com/rarible/flow-sdk/compare/v0.5.62...v0.5.63) (2023-05-16)
 
 
