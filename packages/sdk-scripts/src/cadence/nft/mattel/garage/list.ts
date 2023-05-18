@@ -7,7 +7,7 @@ import {
 	NFTStorefrontV2,
 	NonFungibleToken,
 } from "../mattel-contracts"
-import {garageRawInitPart} from "./init"
+import {garagePreparePartOfInit} from "./init"
 
 export const getGarageListTxCode = (collection: MattelCollection) => {
 	let borrowMethod: string
@@ -39,7 +39,7 @@ transaction(saleItemID: UInt64, saleItemPrice: UFix64, customID: String?, commis
     var marketplacesCapability: [Capability<&AnyResource{${FungibleToken.name}.Receiver}>]
 
     prepare(acct: AuthAccount) {
-${garageRawInitPart}
+${garagePreparePartOfInit}
 
         self.saleCuts = []
         self.marketplacesCapability = []
