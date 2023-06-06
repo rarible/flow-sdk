@@ -9,7 +9,7 @@ describe("Test get balance functions", () => {
 
 	test("Should return flow balance for account 0x324c4173e0175672 on mainnet", async () => {
 		fcl.config()
-			.put("accessNode.api", "https://flow-access-mainnet.portto.io")
+			.put("accessNode.api", "https://access-mainnet-beta.onflow.org")
 			.put("challenge.handshake", "https://flow-wallet.blocto.app/authn")
 		const balFlow = await getFungibleBalance(fcl, "mainnet", address, "FLOW")
 		expect(balFlow.split(".")[1].length).toEqual(8)
