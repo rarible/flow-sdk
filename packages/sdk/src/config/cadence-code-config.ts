@@ -15,6 +15,12 @@ export function getFtCodeConfig(contract: FungibleContracts): FtCodeConfig {
 				"%ftPublicPath%": "/public/fusdReceiver",
 				"%ftStoragePath%": "/storage/fusdVault",
 			}
+		case "FiatToken":
+			return {
+				...knownConf,
+				"%ftPublicPath%": "FiatToken.PublicPath",
+				"%ftStoragePath%": "FiatToken.StoragePath",
+			}
 		case "FlowToken":
 			return {
 				...knownConf,

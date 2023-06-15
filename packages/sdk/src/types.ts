@@ -1,7 +1,7 @@
 import type { CommonFlowTransaction } from "@rarible/fcl-types"
 import type { FlowRoyalty } from "@rarible/flow-api-client"
 
-export type FlowCurrency = "FLOW" | "FUSD"
+export type FlowCurrency = "FLOW" | "FUSD" | "FiatToken"
 export type FlowNetwork = "emulator" | "testnet" | "mainnet"
 
 export interface FlowFee extends FlowRoyalty {
@@ -10,7 +10,7 @@ export interface FlowFee extends FlowRoyalty {
 export type FlowOriginFees = FlowFee[]
 export type FlowPayouts = FlowFee[]
 
-export type FungibleContracts = FUSDType | FlowTokenType
+export type FungibleContracts = FUSDType | FlowTokenType | FiatTokenType
 
 
 export const NON_FUNGIBLE_CONTRACTS = [
@@ -75,6 +75,7 @@ export type NonFungibleTokenType = "NonFungibleToken"
 export type FungibleTokenType = "FungibleToken"
 export type FUSDType = "FUSD"
 export type FlowTokenType = "FlowToken"
+export type FiatTokenType = "FiatToken"
 export type BBxBarbieToken = "BBxBarbieToken"
 export type NFTStorefrontType = "NFTStorefront"
 export type NFTStorefrontV2 = "NFTStorefrontV2"
