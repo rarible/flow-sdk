@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.65](https://github.com/rarible/flow-sdk/compare/v0.5.64...v0.5.65) (2023-06-16)
+
+
+### Features
+
+* mattel testnet addresses ([#99](https://github.com/rarible/flow-sdk/issues/99)) ([11117d9](https://github.com/rarible/flow-sdk/commit/11117d96f09c3cfccb24c3b4547bdd5768c4a2d5))
+
+
+
+
+
 ## [0.5.64](https://github.com/rarible/flow-sdk/compare/v0.5.63...v0.5.64) (2023-05-18)
 
 
