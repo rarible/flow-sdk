@@ -1,7 +1,7 @@
 import type { CommonFlowTransaction } from "@rarible/fcl-types"
 import type { FlowRoyalty } from "@rarible/flow-api-client"
 
-export type FlowCurrency = "FLOW" | "FUSD" | "FiatToken"
+export type FlowCurrency = "FLOW" | "FUSD" | "USDC"
 export type FlowNetwork = "emulator" | "testnet" | "mainnet"
 
 export interface FlowFee extends FlowRoyalty {
