@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.66](https://github.com/rarible/flow-sdk/compare/v0.5.65...v0.5.66) (2023-06-22)
+
+
+### Features
+
+* **MPX-1993:** init collections with ft ([#102](https://github.com/rarible/flow-sdk/issues/102)) ([ba87dc4](https://github.com/rarible/flow-sdk/commit/ba87dc457069593b47af4cf092b607accafc93ce))
+
+
+
+
+
 ## [0.5.61](https://github.com/rarible/flow-sdk/compare/v0.5.60...v0.5.61) (2023-05-11)
 
 
