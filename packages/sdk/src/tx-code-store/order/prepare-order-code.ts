@@ -12,6 +12,9 @@ export function prepareOrderCode(code: string, collectionName: NonFungibleContra
 		case "FUSD":
 			ftData = getFtCodeConfig("FUSD")
 			break
+		case "USDC":
+			ftData = getFtCodeConfig("FiatToken")
+			break
 		default:
 			throw new Error("Unsupported currency")
 	}

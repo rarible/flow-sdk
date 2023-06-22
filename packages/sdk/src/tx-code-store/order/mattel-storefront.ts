@@ -14,7 +14,9 @@ import type { FlowAddress } from "@rarible/types"
 import type { BigNumberValue } from "@rarible/utils"
 import type { NonFungibleContract } from "../../types"
 import { fillCodeTemplate } from "../../common/template-replacer"
-import { getNftCodeConfig } from "../../config/cadence-code-config"
+import {getNftCodeConfig} from "../../config/cadence-code-config"
+import type {FlowCurrency} from "../../types"
+import {prepareOrderCode} from "./prepare-order-code"
 
 type GenerateCodeMethodResponse = {
 	cadence: string,
@@ -63,6 +65,7 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 			commissionAmount: BigNumberValue,
 			expiry: number,
 			marketplacesAddress: FlowAddress[]
+			currency: FlowCurrency
 		}): GenerateCodeMethodResponse {
 			let code: string
 			if (isGarageCollection(collectionName)) {
@@ -73,7 +76,7 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 				throw new Error(`Unknown collection (${collectionName})`)
 			}
 			return {
-				cadence: fillCodeTemplate(code, getNftCodeConfig(collectionName)),
+				cadence: prepareOrderCode(code, collectionName, o.currency),
 				args: fcl.args([
 					fcl.arg(o.itemId, t.UInt64),
 					fcl.arg(o.saleItemPrice, t.UFix64),

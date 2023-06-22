@@ -82,6 +82,7 @@ export async function sell(
 						? Math.floor(request.end.getTime() / 1000)
 						: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 60,
 					marketplacesAddress: fee ? [toFlowAddress(fee.account)] : [],
+					currency: request.currency,
 				}),
 				auth
 			)
