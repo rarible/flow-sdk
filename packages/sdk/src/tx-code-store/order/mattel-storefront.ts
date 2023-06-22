@@ -12,7 +12,7 @@ import {
 } from "@rarible/flow-sdk-scripts"
 import type { FlowAddress } from "@rarible/types"
 import type { BigNumberValue } from "@rarible/utils"
-import {txInitVault} from "@rarible/flow-sdk-scripts/src/cadence/nft/mattel/init-vault"
+import {txInitVault} from "@rarible/flow-sdk-scripts/build/cadence/nft/mattel/init-vault"
 import type { NonFungibleContract } from "../../types"
 import { fillCodeTemplate } from "../../common/template-replacer"
 import {getNftCodeConfig} from "../../config/cadence-code-config"
