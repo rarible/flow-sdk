@@ -12,6 +12,7 @@ import {
 } from "@rarible/flow-sdk-scripts"
 import type { FlowAddress } from "@rarible/types"
 import type { BigNumberValue } from "@rarible/utils"
+import {txInitVault} from "@rarible/flow-sdk-scripts/src/cadence/nft/mattel/init-vault"
 import type { NonFungibleContract } from "../../types"
 import { fillCodeTemplate } from "../../common/template-replacer"
 import {getNftCodeConfig} from "../../config/cadence-code-config"
@@ -95,7 +96,8 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 			customID?: string,
 			commissionAmount: BigNumberValue,
 			expiry: number,
-			marketplacesAddress: FlowAddress[]
+			marketplacesAddress: FlowAddress[],
+			currency: FlowCurrency
 		}): GenerateCodeMethodResponse {
 			let code: string
 			if (isGarageCollection(collectionName)) {
@@ -106,7 +108,7 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 				throw new Error(`Unknown collection (${collectionName})`)
 			}
 			return {
-				cadence: fillCodeTemplate(code, getNftCodeConfig(collectionName)),
+				cadence: prepareOrderCode(code, collectionName, o.currency),
 				args: fcl.args([
 					fcl.arg(o.orderId, t.UInt64),
 					fcl.arg(o.itemId, t.UInt64),
@@ -121,7 +123,8 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 		buy(o: {
 			orderId: number,
 			address: string,
-			comissionRecipient?: string
+			currency: FlowCurrency,
+			comissionRecipient?: string,
 		}): GenerateCodeMethodResponse {
 			let code: string
 			if (isGarageCollection(collectionName)) {
@@ -132,7 +135,7 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 				throw new Error(`Unknown collection (${collectionName})`)
 			}
 			return {
-				cadence: fillCodeTemplate(code, getNftCodeConfig(collectionName)),
+				cadence: prepareOrderCode(code, collectionName, o.currency),
 				args: fcl.args([
 					fcl.arg(o.orderId, t.UInt64),
 					fcl.arg(o.address, t.Address),
@@ -149,6 +152,12 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 		setupAccount(): GenerateCodeMethodResponse {
 			return {
 				cadence: fillCodeTemplate(txInitNFTContractsAndStorefrontV2, getNftCodeConfig(collectionName)),
+				args: fcl.args([]),
+			}
+		},
+		setupVault(): GenerateCodeMethodResponse {
+			return {
+				cadence: fillCodeTemplate(txInitVault, getNftCodeConfig(collectionName)),
 				args: fcl.args([]),
 			}
 		},

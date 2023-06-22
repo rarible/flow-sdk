@@ -1,12 +1,14 @@
 import type {
 	MattelCollection} from "../mattel-contracts"
 import {
-	FlowToken,
-	FungibleToken, HWGarageCard, HWGaragePack,
+	FungibleToken,
+	HWGarageCard,
+	HWGaragePack,
 	MetadataViews,
 	NFTStorefrontV2,
 	NonFungibleToken,
 } from "../mattel-contracts"
+import {getVaultInitTx} from "../init-vault"
 import {garagePreparePartOfInit} from "./init"
 
 export const getGarageListTxCode = (collection: MattelCollection) => {
@@ -21,7 +23,7 @@ export const getGarageListTxCode = (collection: MattelCollection) => {
 		throw new Error(`Unrecognized collection name (${collection}), expected HWGaragePack | HWGarageCard`)
 	}
 	return `
-import ${FlowToken.name} from 0xFlowToken
+import %ftContract% from address
 import ${FungibleToken.name} from 0xFungibleToken
 import ${NonFungibleToken.name} from 0xNonFungibleToken
 import ${MetadataViews.name} from 0xMetadataViews
@@ -39,6 +41,7 @@ transaction(saleItemID: UInt64, saleItemPrice: UFix64, customID: String?, commis
     var marketplacesCapability: [Capability<&AnyResource{${FungibleToken.name}.Receiver}>]
 
     prepare(acct: AuthAccount) {
+${getVaultInitTx()}
 ${garagePreparePartOfInit}
 
         self.saleCuts = []
@@ -48,10 +51,8 @@ ${garagePreparePartOfInit}
         let %nftContract%ProviderPrivatePath = %nftPrivatePath%
 
         // Receiver for the sale cut.
-        self.fiatReceiver = acct.getCapability<&{${FungibleToken.name}.Receiver}>(/public/flowTokenReceiver)
+        self.fiatReceiver = acct.getCapability<&{${FungibleToken.name}.Receiver}>(%ftPublicPath%)
         assert(self.fiatReceiver.borrow() != nil, message: "Missing or mis-typed FiatToken receiver")
-//        self.flowReceiver = acct.getCapability<&{${FungibleToken.name}.Receiver}>(/public/flowTokenReceiver)
-//        assert(self.flowReceiver.borrow() != nil, message: "Missing or mis-typed FlowToken receiver")
 
         // Check if the Provider capability exists or not if then create a new link for the same.
         if !acct.getCapability<&{${NonFungibleToken.name}.Provider, ${NonFungibleToken.name}.CollectionPublic}>(%nftContract%ProviderPrivatePath).check() {
@@ -90,7 +91,7 @@ ${garagePreparePartOfInit}
         for marketplace in marketplacesAddress {
             // Here we are making a fair assumption that all given addresses would have
             // the capability to receive the
-            self.marketplacesCapability.append(getAccount(marketplace).getCapability<&{${FungibleToken.name}.Receiver}>(/public/flowTokenReceiver))
+            self.marketplacesCapability.append(getAccount(marketplace).getCapability<&{${FungibleToken.name}.Receiver}>(%ftPublicPath%))
         }
     }
 
@@ -100,7 +101,7 @@ ${garagePreparePartOfInit}
             nftProviderCapability: self.%nftContract%Provider,
             nftType: Type<@%nftContract%.NFT>(),
             nftID: saleItemID,
-            salePaymentVaultType: Type<@${FlowToken.name}.Vault>(),
+            salePaymentVaultType: Type<@%ftContract%.Vault>(),
             saleCuts: self.saleCuts,
             marketplacesCapability: self.marketplacesCapability.length == 0 ? nil : self.marketplacesCapability,
             customID: customID,

@@ -1,6 +1,6 @@
 import type { FlowContractName, FungibleContracts, NonFungibleContract } from "../types"
 
-export type FtCodeConfig = Record<"%ftPublicPath%" | "%ftPrivateType%" | "%ftPrivatePath%" | "%ftStoragePath%" | "%ftContract%", string>
+export type FtCodeConfig = Record<"%ftPublicPath%" | "%ftPrivateType%" | "%ftPrivatePath%" | "%ftStoragePath%" | "%ftContract%" | "%ftBalancePublicPath%", string>
 
 export function getFtCodeConfig(contract: FungibleContracts): FtCodeConfig {
 	const knownConf = {
@@ -12,18 +12,21 @@ export function getFtCodeConfig(contract: FungibleContracts): FtCodeConfig {
 		case "FUSD":
 			return {
 				...knownConf,
+				"%ftBalancePublicPath%": "/public/fusdBalance",
 				"%ftPublicPath%": "/public/fusdReceiver",
 				"%ftStoragePath%": "/storage/fusdVault",
 			}
 		case "FiatToken":
 			return {
 				...knownConf,
-				"%ftPublicPath%": "FiatToken.PublicPath",
-				"%ftStoragePath%": "FiatToken.StoragePath",
+				"%ftBalancePublicPath%": "FiatToken.VaultBalancePubPath",
+				"%ftPublicPath%": "FiatToken.VaultReceiverPubPath",
+				"%ftStoragePath%": "FiatToken.VaultStoragePath",
 			}
 		case "FlowToken":
 			return {
 				...knownConf,
+				"%ftBalancePublicPath%": "/public/flowTokenBalance",
 				"%ftPublicPath%": "/public/flowTokenReceiver",
 				"%ftStoragePath%": "/storage/flowTokenVault",
 			}

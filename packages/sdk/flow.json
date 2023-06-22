@@ -1,17 +1,18 @@
 {
-  "emulators": {
-    "default": {
-      "port": 3569,
-      "serviceAccount": "emulator-account"
-    }
-  },
-  "networks": {
-    "emulator": "127.0.0.1:3569"
-  },
-  "accounts": {
-    "emulator-account": {
-      "address": "f8d6e0586b0a20c7",
-      "key": "9929788f279238828e7da0592d87f1ada84b6bc373a50639bdff13a483e04fd4"
-    }
-  }
+	"networks": {
+		"emulator": "127.0.0.1:3569"
+	},
+	"accounts": {
+		"emulator-account": {
+			"address": "f8d6e0586b0a20c7",
+			"key": "9929788f279238828e7da0592d87f1ada84b6bc373a50639bdff13a483e04fd4"
+		},
+		"random": {
+			"address": "66175a5250bfdbfc",
+			"key": {
+				"type": "file",
+				"location": "random.pkey"
+			}
+		}
+	}
 }

@@ -8,7 +8,7 @@ import * as fcl from "@onflow/fcl"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import { FLOW_TESTNET_ACCOUNT_5, FLOW_TESTNET_ACCOUNT_8 } from "@rarible/flow-test-common/build/config"
 import { toBn } from "@rarible/utils"
-import type { FlowSdk } from "../../index"
+import type {FlowCurrency, FlowSdk} from "../../index"
 import { createFlowSdk, toFlowContractAddress } from "../../index"
 import { EmulatorCollections, TestnetCollections } from "../../config/config"
 import { createFusdTestEnvironment } from "../../test/helpers/emulator/setup-fusd-env"
@@ -84,7 +84,11 @@ describe("Mattel storefront fill testing", () => {
 		})
 	})
 
-	describe("Should fill Mattel StorefrontV2 sell order with HWGaragePackV2 item", () => {
+	describe.each([
+		"FLOW",
+		"FUSD",
+		"USDC",
+	] as FlowCurrency[])("Should fill Mattel StorefrontV2 sell order with HWGaragePackV2 item", (currency) => {
 		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePackV2)
@@ -98,7 +102,7 @@ describe("Mattel storefront fill testing", () => {
 
 			const sellTx = await testnetSdk.order.sell({
 				collection: testnetCollection,
-				currency: "FLOW",
+				currency: currency,
 				itemId,
 				sellItemPrice: "0.001",
 				originFees: [{
@@ -141,7 +145,7 @@ describe("Mattel storefront fill testing", () => {
 		})
 	})
 
-	describe("Should fill Mattel StorefrontV2 sell order with HWGarageCard item", () => {
+	describe("sell order with HWGarageCard item", () => {
 		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCard)
@@ -175,7 +179,7 @@ describe("Mattel storefront fill testing", () => {
 		})
 	})
 
-	describe("Should fill Mattel StorefrontV2 sell order with HWGarageCardV2 item", () => {
+	describe("sell order with HWGarageCardV2 item", () => {
 		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)
@@ -212,7 +216,7 @@ describe("Mattel storefront fill testing", () => {
 		})
 	})
 
-	describe("Should fail buy Mattel StorefrontV2 order with HWGarageCardV2 item", () => {
+	describe("order with HWGarageCardV2 item", () => {
 		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)
@@ -241,7 +245,11 @@ describe("Mattel storefront fill testing", () => {
 		}, 1000000)
 	})
 
-	describe("Should fail buy Mattel StorefrontV2 order with BBxBarbiePack item", () => {
+	describe.each([
+		"FLOW",
+		"FUSD",
+		"USDC",
+	] as FlowCurrency[])("order with BBxBarbiePack item", (currency) => {
 		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.BBxBarbiePack)
@@ -255,7 +263,7 @@ describe("Mattel storefront fill testing", () => {
 
 			const sellTx = await testnetSdk.order.sell({
 				collection: testnetCollection,
-				currency: "FLOW",
+				currency: currency,
 				itemId,
 				sellItemPrice: "0.0001",
 				originFees: [{

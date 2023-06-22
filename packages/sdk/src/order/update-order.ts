@@ -72,6 +72,7 @@ export async function updateOrder(
 					commissionAmount: fixAmount(comissionAmount.toString()),
 					expiry: parseInt(details.expiry),
 					marketplacesAddress: fee ? [toFlowAddress(fee.account)] : [],
+					currency,
 				}),
 				auth
 			)

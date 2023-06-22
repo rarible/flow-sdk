@@ -1,6 +1,16 @@
 import * as fcl from "@onflow/fcl"
 import { toFlowAddress } from "@rarible/types"
-import { createEmulatorAccount, createFlowEmulator } from "@rarible/flow-test-common"
+import {
+	createEmulatorAccount,
+	createFlowEmulator,
+	createTestAuth,
+	FLOW_TESTNET_ACCOUNT_3,
+} from "@rarible/flow-test-common"
+import {
+	FLOW_TESTNET_ACCOUNT_9,
+} from "@rarible/flow-test-common/build/config"
+import {toBn} from "@rarible/utils"
+import {createFlowSdk} from "../index"
 import { getFungibleBalance } from "./get-fungible-balance"
 import { getFungibleBalanceSimple } from "./get-ft-balance-simple"
 
@@ -35,5 +45,35 @@ describe("Test get balance functions", () => {
 			network: "emulator",
 		})
 		expect(balance).toEqual("10000.10100000")
+	})
+})
+
+describe("Test get balance on testnet", () => {
+	test("get flow token balance", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_3.address, FLOW_TESTNET_ACCOUNT_3.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const recipient = FLOW_TESTNET_ACCOUNT_9.address
+
+		const startBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(recipient), "FLOW")
+		console.log("st", startBalance.toString())
+		expect(toBn(startBalance).gt(0)).toBeTruthy()
+	})
+
+	test("get fusd token balance", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_3.address, FLOW_TESTNET_ACCOUNT_3.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const recipient = FLOW_TESTNET_ACCOUNT_9.address
+
+		const startBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(recipient), "FUSD")
+		expect(startBalance).toBe("0.00000000")
+	})
+
+	test("get usdc token balance", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_3.address, FLOW_TESTNET_ACCOUNT_3.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const recipient = FLOW_TESTNET_ACCOUNT_9.address
+
+		const startBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(recipient), "USDC")
+		expect(toBn(startBalance).gt(0)).toBeTruthy()
 	})
 })

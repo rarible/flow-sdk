@@ -1709,6 +1709,24 @@
     rlp "^3.0.0"
     sha3 "^2.1.4"
 
+"@onflow/flow-js-testing@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@onflow/flow-js-testing/-/flow-js-testing-0.4.0.tgz#f5442fbae8f80de9f340dbc704fc5c26d44b2e4f"
+  integrity sha512-YgmgKCXTN1iWlr2kB83kfEmd9RIXryD2YHW/RnE0CKLmU0eQJJhYjUZ9U3c0hmkXzsRGRruMkDYyO3PSeMrc9w==
+  dependencies:
+    "@onflow/fcl" "^1.3.2"
+    "@onflow/fcl-config" "^0.0.1"
+    "@onflow/flow-cadut" "0.2.0-alpha.9"
+    "@onflow/types" "^1.0.5"
+    elliptic "^6.5.4"
+    esm "^3.2.25"
+    jest-environment-uint8array "^1.0.0"
+    js-sha256 "^0.9.0"
+    js-sha3 "^0.8.0"
+    rimraf "^3.0.2"
+    rlp "^2.2.6"
+    yargs "^17.0.1"
+
 "@onflow/interaction@0.0.11":
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/@onflow/interaction/-/interaction-0.0.11.tgz#4db8f4304039e33d6fc3b14c38b392d724113374"
@@ -1996,6 +2014,13 @@
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.1.tgz#d3357479a0fdfdd5907fe67e17e0a85c906e1301"
   integrity sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==
+
+"@types/onflow__flow-js-testing@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@types/onflow__flow-js-testing/-/onflow__flow-js-testing-0.3.1.tgz#59b2d8b2211cb847dcd3d591ec0cf26531fd806d"
+  integrity sha512-hgZ6noOOb33hQwunbC1GP0xhUNNdl9a7h6pSt0Fnhzi3S7Ynr55IRsQXCdBii9ZtEoIOpqYypBupQTtTFJS+8Q==
+  dependencies:
+    "@types/node" "*"
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
