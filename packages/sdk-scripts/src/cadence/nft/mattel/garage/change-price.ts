@@ -1,5 +1,6 @@
 import type { MattelCollection} from "../mattel-contracts"
 import {HWGarageCard, HWGaragePack} from "../mattel-contracts"
+import {getVaultInitTx} from "../init-vault"
 import {garagePreparePartOfInit} from "./init"
 
 export const getGarageChangePriceTxCode = (collection: MattelCollection) => {
@@ -14,7 +15,7 @@ export const getGarageChangePriceTxCode = (collection: MattelCollection) => {
 		throw new Error(`Unrecognized collection name (${collection}), expected HWGaragePack | HWGarageCard`)
 	}
 	return `
-import FlowToken from 0xFlowToken
+import %ftContract% from address
 import FungibleToken from 0xFungibleToken
 import NonFungibleToken from 0xNonFungibleToken
 import MetadataViews from 0xMetadataViews
@@ -27,7 +28,6 @@ import HWGaragePackV2 from 0xHWGaragePackV2
 transaction(removalListingResourceID: UInt64, saleItemID: UInt64, saleItemPrice: UFix64, customID: String?, commissionAmount: UFix64, expiry: UInt64, marketplacesAddress: [Address]) {
     let storefrontForRemove: &NFTStorefrontV2.Storefront{NFTStorefrontV2.StorefrontManager}
 
-    //let flowReceiver: Capability<&AnyResource{FungibleToken.Receiver}>
     let fiatReceiver: Capability<&AnyResource{FungibleToken.Receiver}>
     let %nftContract%Provider: Capability<&AnyResource{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>
     let storefront: &NFTStorefrontV2.Storefront
@@ -35,6 +35,7 @@ transaction(removalListingResourceID: UInt64, saleItemID: UInt64, saleItemPrice:
     var marketplacesCapability: [Capability<&AnyResource{FungibleToken.Receiver}>]
 
     prepare(acct: AuthAccount) {
+${getVaultInitTx()}
 ${garagePreparePartOfInit}
 
         self.storefrontForRemove = acct.borrow<&NFTStorefrontV2.Storefront{NFTStorefrontV2.StorefrontManager}>(from: NFTStorefrontV2.StorefrontStoragePath)
@@ -47,10 +48,8 @@ ${garagePreparePartOfInit}
         let %nftContract%ProviderPrivatePath = %nftPrivatePath%
 
         // Receiver for the sale cut.
-        self.fiatReceiver = acct.getCapability<&{FungibleToken.Receiver}>(/public/flowTokenReceiver)
+        self.fiatReceiver = acct.getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%)
         assert(self.fiatReceiver.borrow() != nil, message: "Missing or mis-typed FiatToken receiver")
-//        self.flowReceiver = acct.getCapability<&{FungibleToken.Receiver}>(/public/flowTokenReceiver)
-//        assert(self.flowReceiver.borrow() != nil, message: "Missing or mis-typed FlowToken receiver")
 
         // Check if the Provider capability exists or not if \`no\` then create a new link for the same.
         if !acct.getCapability<&{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(%nftContract%ProviderPrivatePath).check() {
@@ -88,7 +87,7 @@ ${garagePreparePartOfInit}
         for marketplace in marketplacesAddress {
             // Here we are making a fair assumption that all given addresses would have
             // the capability to receive the \`FlowToken\`
-            self.marketplacesCapability.append(getAccount(marketplace).getCapability<&{FungibleToken.Receiver}>(/public/flowTokenReceiver))
+            self.marketplacesCapability.append(getAccount(marketplace).getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%))
         }
     }
 
@@ -100,7 +99,7 @@ ${garagePreparePartOfInit}
             nftProviderCapability: self.%nftContract%Provider,
             nftType: Type<@%nftContract%.NFT>(),
             nftID: saleItemID,
-            salePaymentVaultType: Type<@FlowToken.Vault>(),
+            salePaymentVaultType: Type<@%ftContract%.Vault>(),
             saleCuts: self.saleCuts,
             marketplacesCapability: self.marketplacesCapability.length == 0 ? nil : self.marketplacesCapability,
             customID: customID,

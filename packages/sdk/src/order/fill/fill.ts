@@ -59,6 +59,7 @@ export async function fill(
 							orderId: preparedOrder.id,
 							address: owner,
 							comissionRecipient: fee ? toFlowAddress(fee.account) : undefined,
+							currency,
 						}),
 						auth,
 					)

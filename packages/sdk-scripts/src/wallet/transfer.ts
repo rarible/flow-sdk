@@ -1,16 +1,16 @@
-export const transferFlow = `
+export const transfer = `
     import FungibleToken from 0xFungibleToken
-    import FlowToken from 0xFlowToken
+    import %ftContract% from address
 
     transaction(recepient: Address, amount: UFix64){
       prepare(signer: AuthAccount){
-        let sender = signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
+        let sender = signer.borrow<&%ftContract%.Vault>(from: %ftStoragePath%)
           ?? panic("Could not borrow Provider reference to the Vault")
 
         let receiverAccount = getAccount(recepient)
 
-        let receiver = receiverAccount.getCapability(/public/flowTokenReceiver)
-          .borrow<&FlowToken.Vault{FungibleToken.Receiver}>()
+        let receiver = receiverAccount.getCapability(%ftPublicPath%)
+          .borrow<&%ftContract%.Vault{FungibleToken.Receiver}>()
           ?? panic("Could not borrow Receiver reference to the Vault")
 
         let tempVault <- sender.withdraw(amount: amount)

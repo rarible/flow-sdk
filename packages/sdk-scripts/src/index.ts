@@ -9,4 +9,4 @@ export { openBidCommon } from "./cadence/bid/bid-common"
 export { getBalanceScripts } from "./wallet/balance"
 
 export { raribleFee } from "./cadence/rarible-fee/index"
-export { transferFlow } from "./wallet/transfer"
+export { transfer } from "./wallet/transfer"

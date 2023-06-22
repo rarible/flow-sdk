@@ -1,26 +1,16 @@
 import type { FlowCurrency, NonFungibleContract } from "../../types"
-import type { FtCodeConfig } from "../../config/cadence-code-config"
 import { getFtCodeConfig, getNftCodeConfig } from "../../config/cadence-code-config"
 import { fillCodeTemplate } from "../../common/template-replacer"
+import {convertFtCurrencyToContract} from "../common/convert-ft-currency-to-contract"
 
 export function prepareOrderCode(code: string, collectionName: NonFungibleContract, currency: FlowCurrency) {
-	let ftData: FtCodeConfig
-	switch (currency) {
-		case "FLOW":
-			ftData = getFtCodeConfig("FlowToken")
-			break
-		case "FUSD":
-			ftData = getFtCodeConfig("FUSD")
-			break
-		case "USDC":
-			ftData = getFtCodeConfig("FiatToken")
-			break
-		default:
-			throw new Error("Unsupported currency")
-	}
-
 	return fillCodeTemplate(
-		fillCodeTemplate(code, ftData),
+		prepareFtCode(code, currency),
 		getNftCodeConfig(collectionName),
 	)
+}
+
+export function prepareFtCode(code: string, currency: FlowCurrency) {
+	const ftContract = convertFtCurrencyToContract(currency)
+	return fillCodeTemplate(code, getFtCodeConfig(ftContract))
 }

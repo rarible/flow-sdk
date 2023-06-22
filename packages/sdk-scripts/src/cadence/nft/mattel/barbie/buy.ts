@@ -1,5 +1,4 @@
 import {
-	FlowToken,
 	FungibleToken,
 	MetadataViews,
 	NFTStorefrontV2,
@@ -8,7 +7,7 @@ import {
 import {barbiePreparePartOfInit} from "./init"
 
 export const barbieBuyTxCode: string = `
-import ${FlowToken.name} from 0xFlowToken
+import %ftContract% from address
 import ${FungibleToken.name} from 0xFungibleToken
 import ${MetadataViews.name} from 0xMetadataViews
 import ${NonFungibleToken.name} from 0xNonFungibleToken
@@ -27,7 +26,7 @@ transaction(listingResourceID: UInt64, storefrontAddress: Address, commissionRec
     prepare(acct: AuthAccount) {
 ${barbiePreparePartOfInit}
         self.commissionRecipientCap = nil
-        // self.commissionRecipientCap = getAccount(commissionRecipient!).getCapability<&{${FungibleToken.name}.Receiver}>(/public/flowTokenReceiver)
+        // self.commissionRecipientCap = getAccount(commissionRecipient!).getCapability<&{${FungibleToken.name}.Receiver}>(%ftPublicPath%)
         // Access the storefront public resource of the seller to purchase the listing.
         self.storefront = getAccount(storefrontAddress)
             .getCapability<&${NFTStorefrontV2.name}.Storefront{${NFTStorefrontV2.name}.StorefrontPublic}>(
@@ -42,7 +41,7 @@ ${barbiePreparePartOfInit}
         let price = self.listing.getDetails().salePrice
 
         // Access the vault of the buyer to pay the sale price of the listing.
-        let mainFlowVault = acct.borrow<&${FlowToken.name}.Vault>(from: /storage/flowTokenVault)
+        let mainFlowVault = acct.borrow<&%ftContract%.Vault>(from: %ftStoragePath%)
             ?? panic("Cannot borrow FlowToken vault from acct storage")
         self.paymentVault <- mainFlowVault.withdraw(amount: price)
 
@@ -56,7 +55,7 @@ ${barbiePreparePartOfInit}
 
         if commissionRecipient != nil && commissionAmount != 0.0 {
             // Access the capability to receive the commission.
-            let _commissionRecipientCap = getAccount(commissionRecipient!).getCapability<&{${FungibleToken.name}.Receiver}>(/public/flowTokenReceiver)
+            let _commissionRecipientCap = getAccount(commissionRecipient!).getCapability<&{${FungibleToken.name}.Receiver}>(%ftPublicPath%)
             assert(_commissionRecipientCap.check(), message: "Commission Recipient doesn't have FiatToken receiving capability")
             self.commissionRecipientCap = _commissionRecipientCap
         } else if commissionAmount == 0.0 {

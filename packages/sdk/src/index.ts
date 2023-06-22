@@ -16,7 +16,7 @@ import { getFungibleBalance as getFungibleBalanceTemplate } from "./wallet/get-f
 import { bid as bidTemplate } from "./order/bid"
 import { bidUpdate as bidUpdateTemplate } from "./order/bid-update"
 import { cancelBid as cancelBidTmeplate } from "./order/cancel-bid"
-import { setupAccount as setupAccountTemplate } from "./collection/setup-account"
+import {setupAccount as setupAccountTemplate, setupVault} from "./collection/setup-account"
 import type { ProtocolFees } from "./order/get-protocol-fee"
 import { getProtocolFee as getProtocolFeeUpdateTemplate } from "./order/get-protocol-fee"
 import type { AuthWithPrivateKey, FlowCurrency, FlowEnv, FlowOriginFees, FlowTransaction } from "./types"
@@ -136,6 +136,7 @@ export interface FlowOrderSdk {
 export interface FlowWalletSdk {
 	getFungibleBalance(address: FlowAddress, currency: FlowCurrency): Promise<string>
 	transferFunds(request: TransferFlowRequest): Promise<FlowTransaction>
+	setupVault(): Promise<FlowTransaction>
 }
 
 export interface FlowCollectionSdk {
@@ -206,6 +207,7 @@ export function createFlowSdk(
 		wallet: {
 			getFungibleBalance: getFungibleBalanceTemplate.bind(null, fcl, blockchainNetwork),
 			transferFunds: transferFunds.bind(null, fcl, blockchainNetwork, auth),
+			setupVault: setupVault.bind(null, fcl, auth, blockchainNetwork),
 		},
 		collection: {
 			setupAccount: setupAccountTemplate.bind(null, fcl, auth, blockchainNetwork),

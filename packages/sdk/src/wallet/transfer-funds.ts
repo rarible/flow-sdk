@@ -1,13 +1,14 @@
 import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import type { BigNumberValue } from "@rarible/utils"
-import { transferFlow as transferFlowCadence } from "@rarible/flow-sdk-scripts"
+import {transfer} from "@rarible/flow-sdk-scripts"
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { FlowAddress } from "@rarible/types"
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { CONFIGS } from "../config/config"
 import { fixAmount } from "../common/fix-amount"
+import {prepareFtCode} from "../tx-code-store/order/prepare-order-code"
 
 export type TransferFlowRequest = {
 	recipient: FlowAddress
@@ -22,19 +23,11 @@ export async function transferFunds(
 	request: TransferFlowRequest,
 ) {
 	if (fcl) {
-		if (request.currency !== "FLOW") {
-			throw new Error("Transfer is supporting only for FLOW")
-		}
-
-		const map = {
-			FungibleToken: CONFIGS[network].mainAddressMap.FungibleToken,
-			FlowToken: CONFIGS[network].mainAddressMap.FlowToken,
-		}
 		const txId = await runTransaction(
 			fcl,
-			map,
+			CONFIGS[network].mainAddressMap,
 			{
-				cadence: transferFlowCadence,
+				cadence: prepareFtCode(transfer, request.currency),
 				args: fcl.args([
 					fcl.arg(request.recipient, t.Address),
 					fcl.arg(fixAmount(request.amount.toString()), t.UFix64),
