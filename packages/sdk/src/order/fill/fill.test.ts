@@ -28,7 +28,13 @@ describe("Mattel storefront fill testing", () => {
 	const [sellerAddr, sellerPrivKey] = [FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey]
 	const feeAddr = FLOW_TESTNET_ACCOUNT_4.address
 
-	describe("Should fill Mattel StorefrontV2 sell order with HWGaragePack item", () => {
+	//todo garage pack doesn't exist on buyer FLOW_TESTNET_ACCOUNT_8 account
+	describe.skip.each([
+		"FLOW",
+		"FUSD",
+		"USDC",
+	] as FlowCurrency[])
+	("Should fill Mattel StorefrontV2 sell order with HWGaragePack item", (currency) => {
 		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePack)
@@ -42,7 +48,7 @@ describe("Mattel storefront fill testing", () => {
 
 			const sellTx = await testnetSdk.order.sell({
 				collection: testnetCollection,
-				currency: "FLOW",
+				currency,
 				itemId,
 				sellItemPrice: "0.001",
 				originFees: [{
@@ -56,20 +62,20 @@ describe("Mattel storefront fill testing", () => {
 			await awaitOrder(testnetSdk, sellTx.orderId)
 			const updateTx = await testnetSdk.order.updateOrder({
 				collection: testnetCollection,
-				currency: "FLOW",
+				currency,
 				order: sellTx.orderId,
 				sellItemPrice: toBigNumber("0.002"),
 			})
 			checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 
-			const startFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), "FLOW")
+			const startFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), currency)
 
 			const order = await awaitOrder(testnetSdk, updateTx.orderId)
-			const buyTx = await testnetBuyerSdk.order.fill(testnetCollection, "FLOW", order, sellerAddr, [])
+			const buyTx = await testnetBuyerSdk.order.fill(testnetCollection, currency, order, sellerAddr, [])
 
 			checkEvent(buyTx, "ListingCompleted", "NFTStorefrontV2")
 			await retry(10, 2000, async () => {
-				const finishFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), "FLOW")
+				const finishFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), currency)
 				const diffFeeWalletBalance = toBn(finishFeeBalance).minus(startFeeBalance).toString()
 				expect(diffFeeWalletBalance.toString()).toBe("0.0002")
 			})
@@ -84,17 +90,19 @@ describe("Mattel storefront fill testing", () => {
 		})
 	})
 
+	//ok
 	describe.each([
 		"FLOW",
 		"FUSD",
 		"USDC",
-	] as FlowCurrency[])("Should fill Mattel StorefrontV2 sell order with HWGaragePackV2 item", (currency) => {
+	] as FlowCurrency[])
+	("Should fill Mattel StorefrontV2 sell order with HWGaragePackV2 item", (currency) => {
 		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGaragePackV2)
-		const tokenId = 14
+		const tokenId = 36
 
-		test("GaragePackV2 item", async () => {
+		test(`GaragePackV2 <-> ${currency}`, async () => {
 			const testnetAuth = createTestAuth(fcl, "testnet", sellerAddr, sellerPrivKey)
 			const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
 
@@ -111,26 +119,26 @@ describe("Mattel storefront fill testing", () => {
 				}],
 			})
 
-			console.log("selltx", sellTx)
+			console.log("selltx", JSON.stringify(sellTx, null, "  "))
 			checkEvent(sellTx, "ListingAvailable", "NFTStorefrontV2")
 			await delay(5000)
 			const updateTx = await testnetSdk.order.updateOrder({
 				collection: testnetCollection,
-				currency: "FLOW",
+				currency,
 				order: sellTx.orderId,
 				sellItemPrice: toBigNumber("0.002"),
 			})
 			checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 
 			console.log("updateTx", updateTx)
-			const startFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), "FLOW")
+			const startFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), currency)
 
 			const order = await awaitOrder(testnetSdk, updateTx.orderId)
-			const buyTx = await testnetBuyerSdk.order.fill(testnetCollection, "FLOW", order, sellerAddr, [])
+			const buyTx = await testnetBuyerSdk.order.fill(testnetCollection, currency, order, sellerAddr, [])
 
 			checkEvent(buyTx, "ListingCompleted", "NFTStorefrontV2")
 			await retry(10, 2000, async () => {
-				const finishFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), "FLOW")
+				const finishFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), currency)
 				const diffFeeWalletBalance = toBn(finishFeeBalance).minus(startFeeBalance).toString()
 				expect(diffFeeWalletBalance.toString()).toBe("0.0002")
 			})
@@ -145,117 +153,145 @@ describe("Mattel storefront fill testing", () => {
 		})
 	})
 
-	describe("sell order with HWGarageCard item", () => {
-		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
-		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
-		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCard)
-		const tokenId = 155
-
-		test("HWGarageCard item", async () => {
-			const testnetAuth = createTestAuth(fcl, "testnet", sellerAddr, sellerPrivKey)
-			const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
-
-			const itemId = toFlowItemId(`${testnetCollection}:${tokenId}`)
-
-			const sellTx = await testnetSdk.order.sell({
-				collection: testnetCollection,
-				currency: "FLOW",
-				itemId,
-				sellItemPrice: "0.0001",
-			})
-			checkEvent(sellTx, "ListingAvailable", "NFTStorefrontV2")
-
-			const order = await awaitOrder(testnetSdk, sellTx.orderId)
-			const buyTx = await testnetBuyerSdk.order.fill(testnetCollection, "FLOW", order, sellerAddr, [])
-			checkEvent(buyTx, "ListingCompleted", "NFTStorefrontV2")
-		}, 1000000)
-
-		afterAll(async () => {
-			await testnetBuyerSdk.nft.transfer(
-				testnetCollection,
-				tokenId,
-				toFlowAddress(sellerAddr)
-			)
-		})
-	})
-
-	describe("sell order with HWGarageCardV2 item", () => {
-		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
-		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
-		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)
-		const tokenId = 27
-
-		test("HWGarageCardV2 item", async () => {
-			const testnetAuth = createTestAuth(fcl, "testnet", sellerAddr, sellerPrivKey)
-			const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
-
-			const itemId = toFlowItemId(`${testnetCollection}:${tokenId}`)
-
-			const sellTx = await testnetSdk.order.sell({
-				collection: testnetCollection,
-				currency: "FLOW",
-				itemId,
-				sellItemPrice: "0.0001",
-
-			})
-			checkEvent(sellTx, "ListingAvailable", "NFTStorefrontV2")
-
-			console.log("sell", sellTx)
-
-			const order = await awaitOrder(testnetSdk, sellTx.orderId)
-			const buyTx = await testnetBuyerSdk.order.fill(testnetCollection, "FLOW", order, sellerAddr, [])
-			checkEvent(buyTx, "ListingCompleted", "NFTStorefrontV2")
-		}, 1000000)
-
-		afterAll(async () => {
-			await testnetBuyerSdk.nft.transfer(
-				testnetCollection,
-				tokenId,
-				toFlowAddress(sellerAddr)
-			)
-		})
-	})
-
-	describe("order with HWGarageCardV2 item", () => {
-		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
-		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
-		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)
-		const tokenId = 27
-
-		test("HWGarageCardV2 item", async () => {
-			const testnetAuth = createTestAuth(fcl, "testnet", sellerAddr, sellerPrivKey)
-			const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
-
-			const itemId = toFlowItemId(`${testnetCollection}:${tokenId}`)
-
-			const sellTx = await testnetSdk.order.sell({
-				collection: testnetCollection,
-				currency: "FLOW",
-				itemId,
-				sellItemPrice: "0.0001",
-			})
-			console.log("sell", sellTx)
-			checkEvent(sellTx, "ListingAvailable", "NFTStorefrontV2")
-
-			console.log("sell", sellTx)
-
-			const order = await awaitOrder(testnetSdk, sellTx.orderId)
-			const buyTx = await testnetBuyerSdk.order.fill(testnetCollection, "FLOW", order, sellerAddr, [])
-			checkEvent(buyTx, "ListingCompleted", "NFTStorefrontV2")
-		}, 1000000)
-	})
-
+	//ok
 	describe.each([
 		"FLOW",
 		"FUSD",
 		"USDC",
-	] as FlowCurrency[])("order with BBxBarbiePack item", (currency) => {
+	] as FlowCurrency[])
+	("sell order with HWGarageCard item", (currency) => {
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
+		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCard)
+		const tokenId = 160
+
+		test(`HWGarageCard <-> ${currency}`, async () => {
+			const testnetAuth = createTestAuth(fcl, "testnet", sellerAddr, sellerPrivKey)
+			const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+
+			const itemId = toFlowItemId(`${testnetCollection}:${tokenId}`)
+
+			console.log("item", itemId)
+			const sellTx = await testnetSdk.order.sell({
+				collection: testnetCollection,
+				currency: currency,
+				itemId,
+				sellItemPrice: "0.001",
+				originFees: [{
+					account: toFlowAddress(feeAddr),
+					value: toBigNumber("1000"),
+				}],
+			})
+			console.log(sellTx)
+			checkEvent(sellTx, "ListingAvailable", "NFTStorefrontV2")
+
+			await delay(5000)
+			const updateTx = await testnetSdk.order.updateOrder({
+				collection: testnetCollection,
+				currency,
+				order: sellTx.orderId,
+				sellItemPrice: toBigNumber("0.002"),
+			})
+			checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
+
+			const startFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), currency)
+
+			const order = await awaitOrder(testnetSdk, updateTx.orderId)
+			const buyTx = await testnetBuyerSdk.order.fill(testnetCollection, currency, order, sellerAddr, [])
+			checkEvent(buyTx, "ListingCompleted", "NFTStorefrontV2")
+
+			await retry(10, 2000, async () => {
+				const finishFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), currency)
+				const diffFeeWalletBalance = toBn(finishFeeBalance).minus(startFeeBalance).toString()
+				expect(diffFeeWalletBalance.toString()).toBe("0.0002")
+			})
+		}, 1000000)
+
+		afterAll(async () => {
+			await testnetBuyerSdk.nft.transfer(
+				testnetCollection,
+				tokenId,
+				toFlowAddress(sellerAddr)
+			)
+		})
+	})
+
+
+	//ok
+	describe.each([
+		"FLOW",
+		"FUSD",
+		"USDC",
+	] as FlowCurrency[])
+	("sell order with HWGarageCardV2 item", (currency) => {
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
+		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)
+		const tokenId = 302
+
+		test("HWGarageCardV2 item", async () => {
+			const testnetAuth = createTestAuth(fcl, "testnet", sellerAddr, sellerPrivKey)
+			const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+
+			const itemId = toFlowItemId(`${testnetCollection}:${tokenId}`)
+
+			const sellTx = await testnetSdk.order.sell({
+				collection: testnetCollection,
+				currency: currency,
+				itemId,
+				sellItemPrice: "0.001",
+				originFees: [{
+					account: toFlowAddress(feeAddr),
+					value: toBigNumber("1000"),
+				}],
+			})
+			console.log("sell", sellTx)
+			checkEvent(sellTx, "ListingAvailable", "NFTStorefrontV2")
+
+			await delay(5000)
+			const updateTx = await testnetSdk.order.updateOrder({
+				collection: testnetCollection,
+				currency,
+				order: sellTx.orderId,
+				sellItemPrice: toBigNumber("0.002"),
+			})
+			checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
+
+
+			const startFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), currency)
+
+			const order = await awaitOrder(testnetSdk, updateTx.orderId)
+			const buyTx = await testnetBuyerSdk.order.fill(testnetCollection, currency, order, sellerAddr, [])
+			checkEvent(buyTx, "ListingCompleted", "NFTStorefrontV2")
+			await retry(10, 2000, async () => {
+				const finishFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), currency)
+				const diffFeeWalletBalance = toBn(finishFeeBalance).minus(startFeeBalance).toString()
+				expect(diffFeeWalletBalance.toString()).toBe("0.0002")
+			})
+		}, 1000000)
+
+		afterAll(async () => {
+			await testnetBuyerSdk.nft.transfer(
+				testnetCollection,
+				tokenId,
+				toFlowAddress(sellerAddr)
+			)
+		})
+	})
+
+	//ok
+	describe.each([
+		"FLOW",
+		"FUSD",
+		"USDC",
+	] as FlowCurrency[])
+	("order with BBxBarbiePack item", (currency) => {
 		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.BBxBarbiePack)
 		const tokenId = 2
 
-		test("BBxBarbiePack item", async () => {
+		test(`BBxBarbiePack <-> ${currency}`, async () => {
 			const testnetAuth = createTestAuth(fcl, "testnet", sellerAddr, sellerPrivKey)
 			const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
 
@@ -274,11 +310,24 @@ describe("Mattel storefront fill testing", () => {
 			console.log("sell", sellTx)
 			checkEvent(sellTx, "ListingAvailable", "NFTStorefrontV2")
 
-			console.log("sell", sellTx)
+			await delay(5000)
+			const updateTx = await testnetSdk.order.updateOrder({
+				collection: testnetCollection,
+				currency,
+				order: sellTx.orderId,
+				sellItemPrice: toBigNumber("0.0002"),
+			})
+			checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
+			const startFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), currency)
 
-			const order = await awaitOrder(testnetSdk, sellTx.orderId)
-			const buyTx = await testnetBuyerSdk.order.fill(testnetCollection, "FLOW", order, sellerAddr, [])
+			const order = await awaitOrder(testnetSdk, updateTx.orderId)
+			const buyTx = await testnetBuyerSdk.order.fill(testnetCollection, currency, order, sellerAddr, [])
 			checkEvent(buyTx, "ListingCompleted", "NFTStorefrontV2")
+			await retry(10, 2000, async () => {
+				const finishFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), currency)
+				const diffFeeWalletBalance = toBn(finishFeeBalance).minus(startFeeBalance).toString()
+				expect(diffFeeWalletBalance.toString()).toBe("0.00002")
+			})
 		}, 1000000)
 
 		afterAll(async () => {
@@ -290,13 +339,19 @@ describe("Mattel storefront fill testing", () => {
 		})
 	})
 
-	describe("Should fail buy Mattel StorefrontV2 order with BBxBarbieCard item", () => {
+	//ok
+	describe.each([
+		"FLOW",
+		"FUSD",
+		"USDC",
+	] as FlowCurrency[])
+	("Should fail buy Mattel StorefrontV2 order with BBxBarbieCard item", (currency) => {
 		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.BBxBarbieCard)
 		const tokenId = 16
 
-		test("BBxBarbieCard item", async () => {
+		test(`BBxBarbieCard <-> ${currency}`, async () => {
 			const testnetAuth = createTestAuth(fcl, "testnet", sellerAddr, sellerPrivKey)
 			const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
 
@@ -304,7 +359,7 @@ describe("Mattel storefront fill testing", () => {
 
 			const sellTx = await testnetSdk.order.sell({
 				collection: testnetCollection,
-				currency: "FLOW",
+				currency: currency,
 				itemId,
 				sellItemPrice: "0.0001",
 				originFees: [{
@@ -314,10 +369,25 @@ describe("Mattel storefront fill testing", () => {
 			})
 			console.log("sell", sellTx)
 			checkEvent(sellTx, "ListingAvailable", "NFTStorefrontV2")
+			await delay(5000)
+			const updateTx = await testnetSdk.order.updateOrder({
+				collection: testnetCollection,
+				currency,
+				order: sellTx.orderId,
+				sellItemPrice: toBigNumber("0.0002"),
+			})
+			checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 
-			const order = await awaitOrder(testnetSdk, sellTx.orderId)
-			const buyTx = await testnetBuyerSdk.order.fill(testnetCollection, "FLOW", order, sellerAddr, [])
+			const startFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), currency)
+
+			const order = await awaitOrder(testnetSdk, updateTx.orderId)
+			const buyTx = await testnetBuyerSdk.order.fill(testnetCollection, currency, order, sellerAddr, [])
 			checkEvent(buyTx, "ListingCompleted", "NFTStorefrontV2")
+			await retry(10, 2000, async () => {
+				const finishFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), currency)
+				const diffFeeWalletBalance = toBn(finishFeeBalance).minus(startFeeBalance).toString()
+				expect(diffFeeWalletBalance.toString()).toBe("0.00002")
+			})
 		}, 1000000)
 
 		afterAll(async () => {

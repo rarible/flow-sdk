@@ -1,7 +1,7 @@
 import {
 	createEmulatorAccount,
 	createFlowEmulator,
-	createTestAuth,
+	createTestAuth, FLOW_TESTNET_ACCOUNT_4,
 } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
 import type { FlowSdk } from "../index"
@@ -37,6 +37,16 @@ describe("Colelction setup on account", () => {
 	test("setup new account", async () => {
 		const {auth} = await createTestAccount(fcl, "testnet")
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, auth)
+
+		const collection = await testnetBuyerSdk.collection.setupAccount(
+			toFlowContractAddress(TestnetCollections.HWGaragePackV2)
+		)
+		expect(collection.status).toEqual(4)
+	}, 1000000)
+
+	test("setup initialized account", async () => {
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_4.address, FLOW_TESTNET_ACCOUNT_4.privKey)
+		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 
 		const collection = await testnetBuyerSdk.collection.setupAccount(
 			toFlowContractAddress(TestnetCollections.HWGaragePackV2)
