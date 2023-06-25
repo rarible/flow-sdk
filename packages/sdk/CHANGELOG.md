@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.68](https://github.com/rarible/flow-sdk/compare/v0.5.67...v0.5.68) (2023-06-25)
+
+
+### Bug Fixes
+
+* setup mattel collections ([488414b](https://github.com/rarible/flow-sdk/commit/488414bf5da5d64b0774fd0326e0349d8a6421d4))
+
+
+
+
+
 ## [0.5.67](https://github.com/rarible/flow-sdk/compare/v0.5.66...v0.5.67) (2023-06-25)
 
 
