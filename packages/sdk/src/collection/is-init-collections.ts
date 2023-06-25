@@ -1,7 +1,7 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
 import {checkInitMattelContracts} from "@rarible/flow-sdk-scripts/build/cadence/nft/mattel/check-init"
-import t from "@onflow/types"
+import * as t from "@onflow/types"
 import {toFlowAddress} from "@rarible/types"
 import type { AuthWithPrivateKey, FlowNetwork } from "../types"
 import {runScript} from "../common/transaction"
@@ -16,6 +16,9 @@ export async function isInitCollections(
 		throw new Error("Fcl is required for setup collection on account")
 	}
 	const from = auth ? toFlowAddress((await auth()).addr) : toFlowAddress((await fcl.currentUser().snapshot()).addr!)
+	if (!from) {
+		throw new Error("FLOW-SDK: Can't get current user address")
+	}
 	return runScript(
 		fcl,
 		{
