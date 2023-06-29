@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.69](https://github.com/rarible/flow-sdk/compare/v0.5.68...v0.5.69) (2023-06-29)
+
+
+### Features
+
+* **MPX-2103:** error on listing ([#103](https://github.com/rarible/flow-sdk/issues/103)) ([2b4881f](https://github.com/rarible/flow-sdk/commit/2b4881ff148a659788b6fe827240045481815d4e))
+
+
+
+
+
 ## [0.5.66](https://github.com/rarible/flow-sdk/compare/v0.5.65...v0.5.66) (2023-06-22)
 
 
