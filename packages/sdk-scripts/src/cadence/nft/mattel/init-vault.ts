@@ -59,7 +59,6 @@ import FiatToken from 0xFiatToken
 
 transaction() {
     prepare(acct: AuthAccount) {
-${getVaultInitTx(vaultOptions["FUSD"])}
 ${getVaultInitTx(vaultOptions["FiatToken"])}
     }
     execute {

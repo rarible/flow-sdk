@@ -144,3 +144,4 @@ export type MattelCollection =
   | "HWGaragePackV2"
   | "BBxBarbiePack"
   | "BBxBarbieCard"
+  | "BBxBarbieToken"

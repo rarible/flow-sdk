@@ -1,18 +1,25 @@
 import type { MattelCollection} from "../mattel-contracts"
-import {getVaultInitTx} from "../init-vault"
+import type {Currency} from "../common"
+import {getVaultInitTx, vaultOptions} from "../init-vault"
 import {barbiePreparePartOfInit} from "./init"
 
-export const barbieChangePriceTxCode = (collection: MattelCollection) => {
+export const barbieChangePriceTxCode = (collection: MattelCollection, currency: Currency) => {
 	let borrowMethod: string
-	if (["BBxBarbiePack"].includes(collection)) {
-		borrowMethod = "borrowPack"
-	} else if (["BBxBarbieCard"].includes(collection)) {
-		borrowMethod = "borrowCard"
-	} else {
-		throw new Error(`Unrecognized collection name (${collection}), expected BBxBarbiePack | BBxBarbieCard`)
+	switch (collection) {
+		case "BBxBarbiePack":
+			borrowMethod = "borrowPack"
+			break
+		case "BBxBarbieCard":
+			borrowMethod = "borrowCard"
+			break
+		case "BBxBarbieToken":
+			borrowMethod = "borrowToken"
+			break
+		default:
+			throw new Error(`Unrecognized collection name (${collection}), expected BBxBarbiePack | BBxBarbieCard | BBxBarbieToken`)
 	}
 	return `
-import %ftContract% from address
+import %ftContract% from 0x%ftContract%
 import FungibleToken from 0xFungibleToken
 import NonFungibleToken from 0xNonFungibleToken
 import MetadataViews from 0xMetadataViews
@@ -31,7 +38,7 @@ transaction(removalListingResourceID: UInt64, saleItemID: UInt64, saleItemPrice:
     var marketplacesCapability: [Capability<&AnyResource{FungibleToken.Receiver}>]
 
     prepare(acct: AuthAccount) {
-${getVaultInitTx()}
+${currency === "USDC" ? getVaultInitTx(vaultOptions["FiatToken"]): ""}
 ${barbiePreparePartOfInit}
 
         self.storefrontForRemove = acct.borrow<&NFTStorefrontV2.Storefront{NFTStorefrontV2.StorefrontManager}>(from: NFTStorefrontV2.StorefrontStoragePath)

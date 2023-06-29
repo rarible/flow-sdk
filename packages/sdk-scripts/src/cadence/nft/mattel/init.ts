@@ -21,7 +21,6 @@ import NFTStorefrontV2 from 0xNFTStorefrontV2
 
 transaction() {
     prepare(acct: AuthAccount) {
-${getVaultInitTx(vaultOptions["FUSD"])}
 ${getVaultInitTx(vaultOptions["FiatToken"])}
 ${garageRawInitPart}
 ${barbieRawInitPart}

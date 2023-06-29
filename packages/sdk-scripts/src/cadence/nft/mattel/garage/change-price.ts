@@ -1,9 +1,10 @@
 import type { MattelCollection} from "../mattel-contracts"
 import {HWGarageCard, HWGaragePack} from "../mattel-contracts"
-import {getVaultInitTx} from "../init-vault"
+import type {Currency} from "../common"
+import {getVaultInitTx, vaultOptions} from "../init-vault"
 import {garagePreparePartOfInit} from "./init"
 
-export const getGarageChangePriceTxCode = (collection: MattelCollection) => {
+export const getGarageChangePriceTxCode = (collection: MattelCollection, currency: Currency) => {
 	let borrowMethod: string
 	if (["HWGaragePack", "HWGaragePackV2"].includes(collection)) {
 		borrowMethod = "borrowPack"
@@ -15,7 +16,7 @@ export const getGarageChangePriceTxCode = (collection: MattelCollection) => {
 		throw new Error(`Unrecognized collection name (${collection}), expected HWGaragePack | HWGarageCard`)
 	}
 	return `
-import %ftContract% from address
+import %ftContract% from 0x%ftContract%
 import FungibleToken from 0xFungibleToken
 import NonFungibleToken from 0xNonFungibleToken
 import MetadataViews from 0xMetadataViews
@@ -35,7 +36,7 @@ transaction(removalListingResourceID: UInt64, saleItemID: UInt64, saleItemPrice:
     var marketplacesCapability: [Capability<&AnyResource{FungibleToken.Receiver}>]
 
     prepare(acct: AuthAccount) {
-${getVaultInitTx()}
+${currency === "USDC" ? getVaultInitTx(vaultOptions["FiatToken"]): ""}
 ${garagePreparePartOfInit}
 
         self.storefrontForRemove = acct.borrow<&NFTStorefrontV2.Storefront{NFTStorefrontV2.StorefrontManager}>(from: NFTStorefrontV2.StorefrontStoragePath)
@@ -49,7 +50,7 @@ ${garagePreparePartOfInit}
 
         // Receiver for the sale cut.
         self.fiatReceiver = acct.getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%)
-        assert(self.fiatReceiver.borrow() != nil, message: "Missing or mis-typed FiatToken receiver")
+        assert(self.fiatReceiver.borrow() != nil, message: "Missing or mis-typed FT receiver")
 
         // Check if the Provider capability exists or not if \`no\` then create a new link for the same.
         if !acct.getCapability<&{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(%nftContract%ProviderPrivatePath).check() {

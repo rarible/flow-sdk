@@ -7,7 +7,7 @@ import {
 import {barbiePreparePartOfInit} from "./init"
 
 export const barbieBuyTxCode: string = `
-import %ftContract% from address
+import %ftContract% from 0x%ftContract%
 import ${FungibleToken.name} from 0xFungibleToken
 import ${MetadataViews.name} from 0xMetadataViews
 import ${NonFungibleToken.name} from 0xNonFungibleToken
@@ -56,7 +56,7 @@ ${barbiePreparePartOfInit}
         if commissionRecipient != nil && commissionAmount != 0.0 {
             // Access the capability to receive the commission.
             let _commissionRecipientCap = getAccount(commissionRecipient!).getCapability<&{${FungibleToken.name}.Receiver}>(%ftPublicPath%)
-            assert(_commissionRecipientCap.check(), message: "Commission Recipient doesn't have FiatToken receiving capability")
+            assert(_commissionRecipientCap.check(), message: "Commission Recipient doesn't have FT receiving capability")
             self.commissionRecipientCap = _commissionRecipientCap
         } else if commissionAmount == 0.0 {
             self.commissionRecipientCap = nil

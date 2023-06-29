@@ -5,8 +5,8 @@ export const barbieRawInitPart = `
           let collection <- BBxBarbieToken.createEmptyCollection()
           acct.save(<-collection, to: BBxBarbieToken.CollectionStoragePath)
       }
-      if acct.getCapability<&BBxBarbieToken.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, BBxBarbieToken.TokenCollectionPublic, MetadataViews.ResolverCollection}>(BBxBarbieToken.CollectionPublicPath).borrow() == nil {
-          acct.link<&BBxBarbieToken.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, BBxBarbieToken.TokenCollectionPublic, MetadataViews.ResolverCollection}>(BBxBarbieToken.CollectionPublicPath, target: BBxBarbieToken.CollectionStoragePath)
+      if acct.getCapability<&BBxBarbieToken.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, BBxBarbieToken.TokenCollectionPublic, MetadataViews.ResolverCollection}>(BBxBarbieToken.CollectionPublicPath).borrow() == nil {
+          acct.link<&BBxBarbieToken.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, BBxBarbieToken.TokenCollectionPublic, MetadataViews.ResolverCollection}>(BBxBarbieToken.CollectionPublicPath, target: BBxBarbieToken.CollectionStoragePath)
       }
 
 			if acct.borrow<&${BBxBarbiePack.name}.${BBxBarbiePack.contractType}>(from: ${BBxBarbiePack.storagePath}) == nil {
