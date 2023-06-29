@@ -1852,9 +1852,6 @@
   dependencies:
     "@rarible/types" "0.5.3"
 
-"@rarible/flow-sdk-scripts@file:packages/sdk-scripts":
-  version "0.5.66"
-
 "@rarible/types@0.5.3":
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/@rarible/types/-/types-0.5.3.tgz#7d341eba51cb05927b7744cbfb08d7cd68ebcb6e"
