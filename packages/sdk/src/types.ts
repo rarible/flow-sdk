@@ -42,6 +42,7 @@ export const NON_FUNGIBLE_CONTRACTS = [
 	"HWGarageCardV2",
 	"BBxBarbiePack",
 	"BBxBarbieCard",
+	"BBxBarbieToken",
 ] as const
 
 export type NonFungibleContracts = typeof NON_FUNGIBLE_CONTRACTS
@@ -50,7 +51,6 @@ export type NonFungibleContract = NonFungibleContracts[number]
 export type FlowContractName =
 	| NonFungibleTokenType
 	| FungibleTokenType
-	| BBxBarbieToken
 	| NFTStorefrontType
 	| NFTStorefrontV2
 	| RaribleFeeType
@@ -76,7 +76,6 @@ export type FungibleTokenType = "FungibleToken"
 export type FUSDType = "FUSD"
 export type FlowTokenType = "FlowToken"
 export type FiatTokenType = "FiatToken"
-export type BBxBarbieToken = "BBxBarbieToken"
 export type NFTStorefrontType = "NFTStorefront"
 export type NFTStorefrontV2 = "NFTStorefrontV2"
 export type RaribleFeeType = "RaribleFee"

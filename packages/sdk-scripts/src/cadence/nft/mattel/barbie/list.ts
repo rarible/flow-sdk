@@ -7,20 +7,27 @@ import {
 	NFTStorefrontV2,
 	NonFungibleToken,
 } from "../mattel-contracts"
-import {getVaultInitTx} from "../init-vault"
+import type {Currency} from "../common"
+import {getVaultInitTx, vaultOptions} from "../init-vault"
 import {barbiePreparePartOfInit} from "./init"
 
-export const barbieListTxCode = (collection: MattelCollection) => {
+export const barbieListTxCode = (collection: MattelCollection, currency: Currency) => {
 	let borrowMethod: string
-	if (["BBxBarbiePack"].includes(collection)) {
-		borrowMethod = "borrowPack"
-	} else if (["BBxBarbieCard"].includes(collection)) {
-		borrowMethod = "borrowCard"
-	} else {
-		throw new Error(`Unrecognized collection name (${collection}), expected BBxBarbieCard | BBxBarbiePack`)
+	switch (collection) {
+		case "BBxBarbiePack":
+			borrowMethod = "borrowPack"
+			break
+		case "BBxBarbieCard":
+			borrowMethod = "borrowCard"
+			break
+		case "BBxBarbieToken":
+			borrowMethod = "borrowToken"
+			break
+		default:
+			throw new Error(`Unrecognized collection name (${collection}), expected BBxBarbiePack | BBxBarbieCard | BBxBarbieToken`)
 	}
 	return `
-import %ftContract% from address
+import %ftContract% from 0x%ftContract%
 import ${FungibleToken.name} from 0xFungibleToken
 import ${NonFungibleToken.name} from 0xNonFungibleToken
 import ${MetadataViews.name} from 0xMetadataViews
@@ -37,7 +44,7 @@ transaction(saleItemID: UInt64, saleItemPrice: UFix64, customID: String?, commis
     var marketplacesCapability: [Capability<&AnyResource{${FungibleToken.name}.Receiver}>]
 
     prepare(acct: AuthAccount) {
-${getVaultInitTx()}
+${currency === "USDC" ? getVaultInitTx(vaultOptions["FiatToken"]): ""}
 ${barbiePreparePartOfInit}
 
         self.saleCuts = []
@@ -48,7 +55,7 @@ ${barbiePreparePartOfInit}
 
         // Receiver for the sale cut.
         self.fiatReceiver = acct.getCapability<&{${FungibleToken.name}.Receiver}>(%ftPublicPath%)
-        assert(self.fiatReceiver.borrow() != nil, message: "Missing or mis-typed FiatToken receiver")
+        assert(self.fiatReceiver.borrow() != nil, message: "Missing or mis-typed FT receiver")
 
         // Check if the Provider capability exists or not if then create a new link for the same.
         if !acct.getCapability<&{${NonFungibleToken.name}.Provider, ${NonFungibleToken.name}.CollectionPublic}>(%nftContract%ProviderPrivatePath).check() {

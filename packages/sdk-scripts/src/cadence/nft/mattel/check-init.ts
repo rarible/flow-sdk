@@ -12,6 +12,7 @@ import HWGaragePack from 0xHWGaragePack
 import HWGaragePackV2 from 0xHWGaragePackV2
 import BBxBarbieCard from 0xBBxBarbieCard
 import BBxBarbiePack from 0xBBxBarbiePack
+import BBxBarbieToken from 0xBBxBarbieToken
 
 pub fun main(address: Address): {String: Bool} {
     let account = getAccount(address)
@@ -35,6 +36,9 @@ pub fun main(address: Address): {String: Bool} {
 
     let packBBPubPath = BBxBarbiePack.CollectionPublicPath
     let packBBCollection = account.getCapability<&BBxBarbiePack.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, BBxBarbiePack.PackCollectionPublic, MetadataViews.ResolverCollection}>(packBBPubPath).borrow()
+
+    let tokenBBPubPath = BBxBarbieToken.CollectionPublicPath
+    let tokenBBCollection = account.getCapability<&BBxBarbieToken.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, BBxBarbieToken.TokenCollectionPublic, MetadataViews.ResolverCollection}>(tokenBBPubPath).borrow()
 
     let fiatTokenPubPath = FiatToken.VaultReceiverPubPath
     let fiatTokenCollection = account.getCapability<&FiatToken.Vault{FungibleToken.Receiver}>(fiatTokenPubPath).borrow()
@@ -79,6 +83,12 @@ pub fun main(address: Address): {String: Bool} {
         accountStatus.insert(key: "BBxBarbiePack", true)
     } else {
         accountStatus.insert(key: "BBxBarbiePack", false)
+    }
+
+    if tokenBBCollection != nil {
+        accountStatus.insert(key: "BBxBarbieToken", true)
+    } else {
+        accountStatus.insert(key: "BBxBarbieToken", false)
     }
 
     if StorefrontV2 != nil {

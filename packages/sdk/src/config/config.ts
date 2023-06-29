@@ -136,6 +136,10 @@ export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> 
 		contractsNames: ["BBxBarbieCard"] as FlowContractAddressName[],
 		features: ["TRANSFER", "BURN"],
 	},
+	BBxBarbieToken: {
+		contractsNames: ["BBxBarbieToken"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
 }
 
 const MAINNET_RARIBLE_ADDRESS = toFlowAddress("0x01ab36aaf654a13e")
@@ -315,12 +319,13 @@ export enum TestnetCollections {
 	MUGENNFT = "A.ebf4ae01d1284af8.MugenNFT",
 	CNNNFT = "A.ebf4ae01d1284af8.CNN_NFT",
 	MATRIXFEST = "A.e2f1b000e0203c1d.MatrixWorldFlowFestNFT",
-	HWGarageCard = "A.80102bce1de42dc4.HWGarageCard",
-	HWGaragePack = "A.80102bce1de42dc4.HWGaragePack",
-	HWGarageCardV2 = "A.80102bce1de42dc4.HWGarageCardV2",
-	HWGaragePackV2 = "A.80102bce1de42dc4.HWGaragePackV2",
-	BBxBarbiePack = "A.80102bce1de42dc4.BBxBarbiePack",
-	BBxBarbieCard = "A.80102bce1de42dc4.BBxBarbieCard",
+	HWGarageCard = "A.0x6f6702697b205c18.HWGarageCard",
+	HWGaragePack = "A.0x6f6702697b205c18.HWGaragePack",
+	HWGarageCardV2 = "A.0x6f6702697b205c18.HWGarageCardV2",
+	HWGaragePackV2 = "A.0x6f6702697b205c18.HWGaragePackV2",
+	BBxBarbiePack = "A.0x6d0f55821f6b2dbe.BBxBarbiePack",
+	BBxBarbieCard = "A.0x6d0f55821f6b2dbe.BBxBarbieCard",
+	BBxBarbieToken = "A.0x6d0f55821f6b2dbe.BBxBarbieToken",
 }
 
 export enum MainnetCollections {

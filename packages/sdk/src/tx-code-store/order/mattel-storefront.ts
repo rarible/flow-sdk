@@ -42,11 +42,13 @@ export function isGarageCollection(collection: string): collection is MattelColl
 export type BarbieCollection =
   | "BBxBarbiePack"
   | "BBxBarbieCard"
+  | "BBxBarbieToken"
 
 export function isBarbieCollection(collection: string): collection is BarbieCollection {
 	return [
 		"BBxBarbiePack",
 		"BBxBarbieCard",
+		"BBxBarbieToken",
 	].includes(collection)
 }
 
@@ -70,9 +72,9 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 		}): GenerateCodeMethodResponse {
 			let code: string
 			if (isGarageCollection(collectionName)) {
-				code = getGarageListTxCode(o.collectionName)
+				code = getGarageListTxCode(o.collectionName, o.currency)
 			} else if (isBarbieCollection(collectionName)) {
-				code = barbieListTxCode(collectionName)
+				code = barbieListTxCode(collectionName, o.currency)
 			} else {
 				throw new Error(`Unknown collection (${collectionName})`)
 			}
@@ -101,9 +103,9 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 		}): GenerateCodeMethodResponse {
 			let code: string
 			if (isGarageCollection(collectionName)) {
-				code = getGarageChangePriceTxCode(o.collectionName)
+				code = getGarageChangePriceTxCode(o.collectionName, o.currency)
 			} else if (isBarbieCollection(collectionName)) {
-				code = barbieChangePriceTxCode(collectionName)
+				code = barbieChangePriceTxCode(collectionName, o.currency)
 			} else {
 				throw new Error(`Unknown collection (${collectionName})`)
 			}
