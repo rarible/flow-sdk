@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.70](https://github.com/rarible/flow-sdk/compare/v0.5.69...v0.5.70) (2023-06-30)
+
+
+### Bug Fixes
+
+* flow api key ([446fcbf](https://github.com/rarible/flow-sdk/commit/446fcbfbaef3f6fe9c9c53fa3d280dda4af1f96a))
+
+
+
+
+
 ## [0.5.69](https://github.com/rarible/flow-sdk/compare/v0.5.68...v0.5.69) (2023-06-29)
 
 
