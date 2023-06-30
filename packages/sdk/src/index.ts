@@ -162,6 +162,7 @@ export function createFlowApisSdk(
 ): FlowApisSdk {
 	const configuration = new ApiClient.Configuration({
 		basePath: ENV_CONFIG[env].basePath,
+		headers: typeof params.apiKey === "string" ? { "X-API-KEY": params.apiKey } : {},
 		...params,
 	})
 	return {
