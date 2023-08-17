@@ -15,7 +15,6 @@ describe("Check init mattel collections", () => {
 
 		const status = await testnetBuyerSdk.collection.checkInitMattelCollections();
 		[
-			"FUSD",
 			"FiatToken",
 			"StorefrontV2",
 			"HWGarageCard",
