@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.71](https://github.com/rarible/flow-sdk/compare/v0.5.70...v0.5.71) (2023-08-17)
+
+
+### Features
+
+* **MPX-2327,MPX-2305:** safe check balance and removing fusd init ([#104](https://github.com/rarible/flow-sdk/issues/104)) ([b9045f6](https://github.com/rarible/flow-sdk/commit/b9045f6a44843fe584d0dca4bb39fe08475dd977))
+
+
+
+
+
 ## [0.5.69](https://github.com/rarible/flow-sdk/compare/v0.5.68...v0.5.69) (2023-06-29)
 
 
