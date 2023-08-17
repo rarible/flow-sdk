@@ -76,4 +76,13 @@ describe("Test get balance on testnet", () => {
 		const startBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(recipient), "USDC")
 		expect(toBn(startBalance).gt(0)).toBeTruthy()
 	})
+
+	test("get usdc token balance for not init account", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_3.address, FLOW_TESTNET_ACCOUNT_3.privKey)
+		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
+		const recipient = "0xd094add66eaec79c"
+
+		const startBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(recipient), "USDC")
+		expect(startBalance).toBe("0.00000000")
+	})
 })

@@ -9,8 +9,7 @@ export const getBalanceScripts = {
     let vaultRef = account
       .getCapability(%ftBalancePublicPath%)
       .borrow<&%ftContract%.Vault{FungibleToken.Balance}>()
-      ?? panic("Please, setup contract on target account")
 
-    return vaultRef.balance
+    return vaultRef?.balance ?? 0.0
   }`,
 }
