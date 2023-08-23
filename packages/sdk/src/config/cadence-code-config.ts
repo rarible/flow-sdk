@@ -172,6 +172,12 @@ const nftCodeConfig: Record<NonFungibleContract, NftStaticVariables> = {
 		"%nftPrivatePath%": "/private/HWGaragePackV2Collection",
 		"%publicTypeAddon%": "HWGaragePackV2.PackCollectionPublic",
 	},
+	HWGarageTokenV2: {
+		"%nftPublicPath%": "HWGarageTokenV2.CollectionPublicPath",
+		"%nftStoragePath%": "HWGarageTokenV2.CollectionStoragePath",
+		"%nftPrivatePath%": "/private/HWGarageTokenV2Collection",
+		"%publicTypeAddon%": "HWGarageTokenV2.TokenCollectionPublic",
+	},
 	BBxBarbieCard: {
 		"%nftPublicPath%": "BBxBarbieCard.CollectionPublicPath",
 		"%nftStoragePath%": "BBxBarbieCard.CollectionStoragePath",

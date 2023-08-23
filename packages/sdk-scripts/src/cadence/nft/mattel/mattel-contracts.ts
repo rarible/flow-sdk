@@ -111,6 +111,20 @@ export const HWGarageCardV2: ContractsAddresses & ContractDetails & NFTColection
 	nameOfMethodForCreateResource: "createEmptyCollection()",
 	privatePath: "/private/HWGarageCardV2Collection",
 }
+
+export const HWGarageTokenV2: ContractsAddresses & ContractDetails & NFTColectionDetails = {
+	name: "HWGarageTokenV2",
+	mainnetAddress: "",
+	testnetAddress: "",
+	testnetAddressRaribleDeployed: "",
+	storagePath: "HWGarageTokenV2.CollectionStoragePath",
+	publicPath: "HWGarageTokenV2.CollectionPublicPath",
+	publicType: "&HWGarageTokenV2.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, HWGarageTokenV2.TokenCollectionPublic, MetadataViews.ResolverCollection}",
+	contractType: TypeOfContract.COLLECTION,
+	nameOfMethodForCreateResource: "createEmptyCollection()",
+	privatePath: "/private/HWGarageTokenV2Collection",
+}
+
 export const BBxBarbiePack: ContractsAddresses & ContractDetails & NFTColectionDetails = {
 	name: "BBxBarbiePack",
 	mainnetAddress: "",
@@ -138,10 +152,11 @@ export const BBxBarbieCard: ContractsAddresses & ContractDetails & NFTColectionD
 }
 
 export type MattelCollection =
-  | "HWGaragePack"
-  | "HWGarageCard"
-  | "HWGarageCardV2"
-  | "HWGaragePackV2"
-  | "BBxBarbiePack"
-  | "BBxBarbieCard"
-  | "BBxBarbieToken"
+	| "HWGaragePack"
+	| "HWGarageCard"
+	| "HWGarageCardV2"
+	| "HWGaragePackV2"
+	| "HWGarageTokenV2"
+	| "BBxBarbiePack"
+	| "BBxBarbieCard"
+	| "BBxBarbieToken"

@@ -14,6 +14,7 @@ import ${HWGarageCard.name} from 0xHWGarageCard
 import ${HWGaragePack.name} from 0xHWGaragePack
 import HWGarageCardV2 from 0xHWGarageCardV2
 import HWGaragePackV2 from 0xHWGaragePackV2
+import HWGarageTokenV2 from 0xHWGarageTokenV2
 import BBxBarbiePack from 0xBBxBarbiePack
 import BBxBarbieCard from 0xBBxBarbieCard
 import BBxBarbieToken from 0xBBxBarbieToken

@@ -1,4 +1,4 @@
-import {HWGarageCard, HWGarageCardV2, HWGaragePack, HWGaragePackV2, NFTStorefrontV2} from "../mattel-contracts"
+import {HWGarageCard, HWGarageCardV2, HWGaragePack, HWGaragePackV2, HWGarageTokenV2, NFTStorefrontV2} from "../mattel-contracts"
 
 export const garageRawInitPart = `
       if acct.borrow<&${HWGarageCard.name}.${HWGarageCard.contractType}>(from: ${HWGarageCard.storagePath}) == nil {
@@ -31,6 +31,14 @@ export const garageRawInitPart = `
 			}
 			if acct.getCapability<${HWGaragePackV2.publicType}>(${HWGaragePackV2.publicPath}).borrow() == nil {
 					acct.link<${HWGaragePackV2.publicType}>(${HWGaragePackV2.publicPath}, target: ${HWGaragePackV2.storagePath})
+			}
+
+			if acct.borrow<&${HWGarageTokenV2.name}.${HWGarageTokenV2.contractType}>(from: ${HWGarageTokenV2.storagePath}) == nil {
+					let collection <- ${HWGarageTokenV2.name}.${HWGarageTokenV2.nameOfMethodForCreateResource}
+					acct.save(<-collection, to: ${HWGarageTokenV2.storagePath})
+			}
+			if acct.getCapability<${HWGarageTokenV2.publicType}>(${HWGarageTokenV2.publicPath}).borrow() == nil {
+					acct.link<${HWGarageTokenV2.publicType}>(${HWGarageTokenV2.publicPath}, target: ${HWGarageTokenV2.storagePath})
 			}
 `
 export const garagePreparePartOfInit = `

@@ -9,6 +9,7 @@ import HWGarageCard from 0xHWGarageCard
 import HWGarageCardV2 from 0xHWGarageCardV2
 import HWGaragePack from 0xHWGaragePack
 import HWGaragePackV2 from 0xHWGaragePackV2
+import HWGarageTokenV2 from 0xHWGarageTokenV2
 import BBxBarbieCard from 0xBBxBarbieCard
 import BBxBarbiePack from 0xBBxBarbiePack
 import BBxBarbieToken from 0xBBxBarbieToken
@@ -29,6 +30,9 @@ pub fun main(address: Address): {String: Bool} {
 
     let packV2PubPath = HWGaragePackV2.CollectionPublicPath
     let packV2Collection = account.getCapability<&HWGaragePackV2.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, HWGaragePackV2.PackCollectionPublic, MetadataViews.ResolverCollection}>(packV2PubPath).borrow()
+
+    let tokenV2PubPath = HWGarageTokenV2.CollectionPublicPath
+    let tokenV2Collection = account.getCapability<&HWGarageTokenV2.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, HWGarageTokenV2.TokenCollectionPublic, MetadataViews.ResolverCollection}>(tokenV2PubPath).borrow()
 
     let nftBBPubPath = BBxBarbieCard.CollectionPublicPath
     let nftBBCollection = account.getCapability<&BBxBarbieCard.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, BBxBarbieCard.CardCollectionPublic, MetadataViews.ResolverCollection}>(nftBBPubPath).borrow()
@@ -67,6 +71,12 @@ pub fun main(address: Address): {String: Bool} {
         accountStatus.insert(key: "HWGaragePackV2", true)
     } else {
         accountStatus.insert(key: "HWGaragePackV2", false)
+    }
+
+    if tokenV2Collection != nil {
+        accountStatus.insert(key: "HWGarageTokenV2", true)
+    } else {
+        accountStatus.insert(key: "HWGarageTokenV2", false)
     }
 
     if nftBBCollection != nil {
