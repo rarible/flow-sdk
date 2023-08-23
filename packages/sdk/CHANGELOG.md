@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.71-HWGarageTokenV2](https://github.com/rarible/flow-sdk/compare/v0.5.71...v0.5.71-HWGarageTokenV2) (2023-08-23)
+
+
+### Features
+
+* add HWGarageTokenV2 collection ([738cafd](https://github.com/rarible/flow-sdk/commit/738cafd646b0fc688f5ec8c02d4212178ba77114))
+
+
+
+
+
 ## [0.5.71](https://github.com/rarible/flow-sdk/compare/v0.5.70...v0.5.71) (2023-08-17)
 
 
