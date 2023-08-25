@@ -20,6 +20,8 @@ export const getGarageListTxCode = (collection: MattelCollection, currency: Curr
 		borrowMethod = "borrowHWGarageCard"
 	} else if (["HWGarageCardV2"].includes(collection)) {
 		borrowMethod = "borrowCard"
+	} else if (["HWGarageTokenV2"].includes(collection)) {
+		borrowMethod = "borrowToken"
 	} else {
 		throw new Error(`Unrecognized collection name (${collection}), expected HWGaragePack | HWGarageCard`)
 	}
@@ -33,6 +35,7 @@ import ${HWGarageCard.name} from 0xHWGarageCard
 import ${HWGaragePack.name} from 0xHWGaragePack
 import HWGarageCardV2 from 0xHWGarageCardV2
 import HWGaragePackV2 from 0xHWGaragePackV2
+import HWGarageTokenV2 from 0xHWGarageTokenV2
 
 transaction(saleItemID: UInt64, saleItemPrice: UFix64, customID: String?, commissionAmount: UFix64, expiry: UInt64, marketplacesAddress: [Address]) {
     let fiatReceiver: Capability<&AnyResource{${FungibleToken.name}.Receiver}>

@@ -40,6 +40,7 @@ export const NON_FUNGIBLE_CONTRACTS = [
 	"HWGaragePackV2",
 	"HWGarageCard",
 	"HWGarageCardV2",
+	"HWGarageTokenV2",
 	"BBxBarbiePack",
 	"BBxBarbieCard",
 	"BBxBarbieToken",

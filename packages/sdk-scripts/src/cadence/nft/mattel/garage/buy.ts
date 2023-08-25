@@ -17,6 +17,7 @@ import ${HWGarageCard.name} from 0xHWGarageCard
 import ${HWGaragePack.name} from 0xHWGaragePack
 import HWGarageCardV2 from 0xHWGarageCardV2
 import HWGaragePackV2 from 0xHWGaragePackV2
+import HWGarageTokenV2 from 0xHWGarageTokenV2
 
 transaction(listingResourceID: UInt64, storefrontAddress: Address, commissionRecipient: Address?) {
     let paymentVault: @${FungibleToken.name}.Vault

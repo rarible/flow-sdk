@@ -24,11 +24,8 @@ type GenerateCodeMethodResponse = {
 	args: ReturnType<FclArgs>
 }
 
-export type GarageCollection =
-  | "HWGaragePack"
-  | "HWGarageCard"
-  | "HWGarageCardV2"
-  | "HWGaragePackV2"
+export type GarageCollection = "HWGaragePack" | "HWGarageCard" | "HWGarageCardV2" | "HWGaragePackV2" | "HWGarageTokenV2"
+
 
 export function isGarageCollection(collection: string): collection is MattelCollection {
 	return [
@@ -36,6 +33,7 @@ export function isGarageCollection(collection: string): collection is MattelColl
 		"HWGarageCard",
 		"HWGarageCardV2",
 		"HWGaragePackV2",
+		"HWGarageTokenV2",
 	].includes(collection)
 }
 
