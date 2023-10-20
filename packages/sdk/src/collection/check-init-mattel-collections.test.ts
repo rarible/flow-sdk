@@ -29,7 +29,7 @@ describe("Check init mattel collections", () => {
 		})
 	}, 1000000)
 
-	test("collections keys exists are are false for a different initialized wallet", async () => {
+	test("collections keys exists and are false for a different initialized wallet", async () => {
 		const testnetBuyerAuth = createTestAuth(
 			fcl,
 			"testnet",
