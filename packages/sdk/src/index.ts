@@ -143,7 +143,7 @@ export interface FlowWalletSdk {
 export interface FlowCollectionSdk {
 	setupAccount(collection: FlowContractAddress): Promise<FlowTransaction>
 	setupMattelCollections(): Promise<FlowTransaction>
-	checkInitMattelCollections(): Promise<CollectionsInitStatus>
+	checkInitMattelCollections(address?:FlowAddress): Promise<CollectionsInitStatus>
 }
 
 export interface FlowSdk {
