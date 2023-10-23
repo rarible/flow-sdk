@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.72](https://github.com/rarible/flow-sdk/compare/v0.5.71-HWGarageTokenV2...v0.5.72) (2023-10-23)
+
+
+### Features
+
+* **PLTF-43:** check collection init for different address than current ([#106](https://github.com/rarible/flow-sdk/issues/106)) ([14609c8](https://github.com/rarible/flow-sdk/commit/14609c8232446967ab22f3ae7dec4af880d2daf6))
+
+
+
+
+
 ## [0.5.71-HWGarageTokenV2](https://github.com/rarible/flow-sdk/compare/v0.5.71...v0.5.71-HWGarageTokenV2) (2023-08-23)
 
 

@@ -4,7 +4,7 @@
   ],
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "version": "0.5.71-HWGarageTokenV2",
+  "version": "0.5.72",
   "command": {
     "publish": {
       "allowBranch": [
