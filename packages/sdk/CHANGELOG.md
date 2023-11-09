@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.73](https://github.com/rarible/flow-sdk/compare/v0.5.72...v0.5.73) (2023-11-09)
+
+
+### Features
+
+* **PLTF-111:** flow api client update ([a4212c5](https://github.com/rarible/flow-sdk/commit/a4212c56059a72118645fea5a948c1541d6a602b))
+
+
+
+
+
 ## [0.5.72](https://github.com/rarible/flow-sdk/compare/v0.5.71-HWGarageTokenV2...v0.5.72) (2023-10-23)
 
 
