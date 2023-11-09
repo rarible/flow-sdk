@@ -28,7 +28,8 @@ describe("Mattel storefront sell testing", () => {
 		const orderTx = await testnetSdk.order.sell({
 			collection: testnetCollection,
 			currency: "FLOW",
-			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
+			// itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
+			itemId: toFlowItemId("A.d0bcefdf1e67ea85.HWGarageTokenV2:10919"),
 			sellItemPrice: "1",
 		})
 

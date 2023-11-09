@@ -24,7 +24,7 @@ import { calculateUpdateOrderSaleCuts } from "./common/calculate-update-order-sa
 export type FlowUpdateOrderRequest = {
 	collection: FlowContractAddress,
 	currency: FlowCurrency,
-	order: number | FlowOrder,
+	order: string | FlowOrder,
 	sellItemPrice: BigNumber,
 }
 
@@ -80,7 +80,7 @@ export async function updateOrder(
 			const simpleOrderId = parseEvents<string>(tx.events, "ListingAvailable", "listingResourceID")
 			return {
 				...tx,
-				orderId: parseInt(simpleOrderId),
+				orderId: simpleOrderId,
 			}
 		}
 
@@ -103,7 +103,7 @@ export async function updateOrder(
 		const simpleOrderId = parseEvents<string>(tx.events, "ListingAvailable", "listingResourceID")
 		return {
 			...tx,
-			orderId: parseInt(simpleOrderId),
+			orderId: simpleOrderId,
 		}
 	}
 	throw new Error("Fcl is required for updating order")

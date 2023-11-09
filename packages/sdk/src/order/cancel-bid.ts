@@ -11,7 +11,7 @@ export async function cancelBid(
 	auth: AuthWithPrivateKey,
 	network: FlowNetwork,
 	collection: FlowContractAddress,
-	orderId: number,
+	orderId: string,
 ): Promise<FlowTransaction> {
 	if (fcl) {
 		const { name, map } = getCollectionConfig(network, collection)

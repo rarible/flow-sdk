@@ -22,7 +22,7 @@ export async function bidUpdate(
 	orderApi: FlowOrderControllerApi,
 	collection: FlowContractAddress,
 	currency: FlowCurrency,
-	order: number | FlowOrder,
+	order: string | FlowOrder,
 	price: BigNumber,
 ): Promise<FlowSellResponse> {
 	if (fcl) {
@@ -49,7 +49,7 @@ export async function bidUpdate(
 		const simpleOrderId = parseEvents<string>(txResponse.events, "BidAvailable", "bidId")
 		return {
 			...txResponse,
-			orderId: parseInt(simpleOrderId),
+			orderId: simpleOrderId,
 		}
 	}
 	throw new Error("Fcl is required for purchasing")

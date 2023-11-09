@@ -49,13 +49,13 @@ sdk.order.sell({
 sdk.order.updateOrder({
 	collection,
 	currency: "FUSD",
-	order: 123,
+	order: "123",
 	sellItemPrice: toBigNumber("0.1"),
 }).then(response => {
 	console.log("order id: ", response.orderId)
 })
 
-sdk.order.cancelOrder(collection, 123).then(response => {
+sdk.order.cancelOrder(collection, "123").then(response => {
 	console.log("transaction id: ", response.txId)
 })
 
@@ -63,16 +63,16 @@ sdk.order.bid(collection, "FLOW", toFlowItemId("flow item id"), toBigNumber("0.1
 	console.log("bid order id: ", response.orderId)
 })
 
-sdk.order.bidUpdate(collection, "FLOW", 123, toBigNumber("0.1")).then(response => {
+sdk.order.bidUpdate(collection, "FLOW", "123", toBigNumber("0.1")).then(response => {
 	console.log("bid order id: ", response.orderId)
 })
 
-sdk.order.cancelBid(collection, 123).then(response => {
+sdk.order.cancelBid(collection, "123").then(response => {
 	console.log("transaction id: ", response.txId)
 })
 
 // fill order function can close both order types, sell and bid
-sdk.order.fill(collection, "FLOW", 123, FLOW_ZERO_ADDRESS, feesArray).then(response => {
+sdk.order.fill(collection, "FLOW", "123", FLOW_ZERO_ADDRESS, feesArray).then(response => {
 	console.log("transaction id: ", response.txId)
 })
 

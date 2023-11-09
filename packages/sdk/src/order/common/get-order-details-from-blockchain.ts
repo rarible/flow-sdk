@@ -26,7 +26,7 @@ export async function getOrderDetailsFromBlockchain(
 	network: FlowNetwork,
 	orderType: "bid" | "sell" | "sellV2",
 	address: string,
-	orderId: number,
+	orderId: string,
 ): Promise<FlowOrderDetails> {
 	let cadence: string, map: Record<string, string>
 	switch (orderType) {
@@ -108,7 +108,7 @@ export async function getStorefrontV2OrderDetailsFromBlockchain(
 	fcl: Fcl,
 	network: FlowNetwork,
 	address: string,
-	orderId: number,
+	orderId: string,
 ): Promise<FlowOrderV2Details> {
 	return runScript(
 		fcl,

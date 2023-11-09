@@ -13,9 +13,9 @@ type GenerateCodeMethodResponse = {
 
 type GenerateBidCodeResponse = {
 	create: (currency: FlowCurrency, itemId: number, price: string, fees: FlowFee[]) => GenerateCodeMethodResponse
-	close: (currency: FlowCurrency, bidId: number, address: string, fees: FlowFee[]) => GenerateCodeMethodResponse
-	update: (currency: FlowCurrency, bidId: number, price: string, fees: FlowFee[]) => GenerateCodeMethodResponse
-	cancel: (bidId: number) => GenerateCodeMethodResponse
+	close: (currency: FlowCurrency, bidId: string, address: string, fees: FlowFee[]) => GenerateCodeMethodResponse
+	update: (currency: FlowCurrency, bidId: string, price: string, fees: FlowFee[]) => GenerateCodeMethodResponse
+	cancel: (bidId: string) => GenerateCodeMethodResponse
 }
 
 export function getBidCode(fcl: Fcl, collectionName: NonFungibleContract): GenerateBidCodeResponse {
@@ -55,7 +55,7 @@ export function getBidCode(fcl: Fcl, collectionName: NonFungibleContract): Gener
 				]),
 			}
 		},
-		cancel(bidId: number) {
+		cancel(bidId: string) {
 			return {
 				cadence: openBidTransactionCode.cancelBid,
 				args: fcl.args([fcl.arg(bidId, t.UInt64)]),

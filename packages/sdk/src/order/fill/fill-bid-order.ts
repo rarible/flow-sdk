@@ -10,7 +10,7 @@ export async function fillBidOrder(
 	currency: FlowCurrency,
 	name: NonFungibleContract,
 	map: Record<string, string>,
-	orderId: number,
+	orderId: string,
 	owner: FlowAddress,
 	fees: FlowFee[],
 ): Promise<FlowTransaction> {

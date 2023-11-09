@@ -12,9 +12,9 @@ type GenerateCodeMethodResponse = {
 
 type GenerateBidCodeResponse = {
 	create: (currency: FlowCurrency, itemId: number, fees: FlowFee[]) => GenerateCodeMethodResponse
-	update: (currency: FlowCurrency, orderId: number, fees: FlowFee[]) => GenerateCodeMethodResponse
-	buy: (currency: FlowCurrency, orderId: number, address: string, fees: FlowFee[]) => GenerateCodeMethodResponse
-	cancel: (orderId: number) => GenerateCodeMethodResponse
+	update: (currency: FlowCurrency, orderId: string, fees: FlowFee[]) => GenerateCodeMethodResponse
+	buy: (currency: FlowCurrency, orderId: string, address: string, fees: FlowFee[]) => GenerateCodeMethodResponse
+	cancel: (orderId: string) => GenerateCodeMethodResponse
 }
 
 export function getOrderCode(fcl: Fcl, collectionName: NonFungibleContract): GenerateBidCodeResponse {

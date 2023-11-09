@@ -45,7 +45,7 @@ export async function bid(
 		const simpleOrderId = parseEvents<string>(txResponse.events, "BidAvailable", "bidId")
 		return {
 			...txResponse,
-			orderId: parseInt(simpleOrderId),
+			orderId: simpleOrderId,
 		}
 	}
 	throw new Error("Fcl is required for purchasing")

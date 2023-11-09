@@ -36,7 +36,7 @@ export type FlowSellRequest = {
 }
 
 export interface FlowSellResponse extends FlowTransaction {
-	orderId: number
+	orderId: string
 }
 
 export async function sell(
@@ -90,7 +90,7 @@ export async function sell(
 			const simpleOrderId = parseEvents<string>(tx.events, "ListingAvailable", "listingResourceID")
 			return {
 				...tx,
-				orderId: parseInt(simpleOrderId),
+				orderId: simpleOrderId,
 			}
 		}
 
@@ -117,7 +117,7 @@ export async function sell(
 		const simpleOrderId = parseEvents<string>(tx.events, "ListingAvailable", "listingResourceID")
 		return {
 			...tx,
-			orderId: parseInt(simpleOrderId),
+			orderId: simpleOrderId,
 		}
 	}
 	throw new Error("Fcl is required for creating order")

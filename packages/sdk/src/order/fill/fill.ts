@@ -36,7 +36,7 @@ export async function fill(
 	itemApi: FlowNftItemControllerApi,
 	collection: FlowContractAddress,
 	currency: FlowCurrency,
-	order: number | FlowOrder,
+	order: string | FlowOrder,
 	owner: FlowAddress,
 	originFee?: FlowOriginFees,
 ): Promise<FlowTransaction> {
