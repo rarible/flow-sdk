@@ -14,6 +14,7 @@ import { getOrderDetailsFromBlockchain } from "./common/get-order-details-from-b
 import type { FlowSellResponse } from "./sell"
 import { getPreparedOrder } from "./common/get-prepared-order"
 import { calculateUpdateOrderSaleCuts } from "./common/calculate-update-order-sale-cuts"
+import {getOrderId} from "./common/get-order-id"
 
 export async function bidUpdate(
 	fcl: Maybe<Fcl>,
@@ -22,7 +23,7 @@ export async function bidUpdate(
 	orderApi: FlowOrderControllerApi,
 	collection: FlowContractAddress,
 	currency: FlowCurrency,
-	order: string | FlowOrder,
+	order: string | number | FlowOrder,
 	price: BigNumber,
 ): Promise<FlowSellResponse> {
 	if (fcl) {
@@ -32,11 +33,12 @@ export async function bidUpdate(
 		}
 		const preparedOrder = await getPreparedOrder(orderApi, order)
 		const { name, map } = getCollectionConfig(network, collection)
-		const bidSaleCuts = await getOrderDetailsFromBlockchain(fcl, network, "bid", from, preparedOrder.id)
+		const orderId = getOrderId(preparedOrder.id)
+		const bidSaleCuts = await getOrderDetailsFromBlockchain(fcl, network, "bid", from, orderId)
 		const txId = await runTransaction(
 			fcl,
 			map,
-			getBidCode(fcl, name).update(currency, preparedOrder.id, fixAmount(price),
+			getBidCode(fcl, name).update(currency, orderId, fixAmount(price),
 				calculateUpdateOrderSaleCuts(
 					preparedOrder.make.value,
 					price,

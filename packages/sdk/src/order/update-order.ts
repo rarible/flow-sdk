@@ -20,11 +20,12 @@ import {
 import { getPreparedOrder } from "./common/get-prepared-order"
 import type { FlowSellResponse } from "./sell"
 import { calculateUpdateOrderSaleCuts } from "./common/calculate-update-order-sale-cuts"
+import {getOrderId} from "./common/get-order-id"
 
 export type FlowUpdateOrderRequest = {
 	collection: FlowContractAddress,
 	currency: FlowCurrency,
-	order: string | FlowOrder,
+	order: string | number | FlowOrder,
 	sellItemPrice: BigNumber,
 }
 
@@ -42,11 +43,12 @@ export async function updateOrder(
 		if (!from) {
 			throw new Error("FLOW-SDK: Can't get current user address")
 		}
+		const orderId = getOrderId(request.order)
 		const preparedOrder = await getPreparedOrder(orderApi, order)
 		const { name, map } = getCollectionConfig(network, collection)
 
 		if (isMattelCollection(name)) {
-			const details = await getStorefrontV2OrderDetailsFromBlockchain(fcl, network, from, preparedOrder.id)
+			const details = await getStorefrontV2OrderDetailsFromBlockchain(fcl, network, from, orderId)
 			if (details.purchased) {
 				throw new Error("Item was purchased")
 			}
@@ -65,7 +67,7 @@ export async function updateOrder(
 				map,
 				getMattelOrderCode(fcl, name).update({
 					collectionName: name,
-					orderId: preparedOrder.id,
+					orderId,
 					itemId: parseInt(details.nftID),
 					saleItemPrice: fixAmount(request.sellItemPrice),
 					customID: "RARIBLE",
@@ -84,13 +86,13 @@ export async function updateOrder(
 			}
 		}
 
-		const orderSaleCuts = await getOrderDetailsFromBlockchain(fcl, network, "sell", from, preparedOrder.id)
+		const orderSaleCuts = await getOrderDetailsFromBlockchain(fcl, network, "sell", from, orderId)
 		const txId = await runTransaction(
 			fcl,
 			map,
 			getOrderCode(fcl, name).update(
 				currency,
-				preparedOrder.id,
+				orderId,
 				calculateUpdateOrderSaleCuts(
 					preparedOrder.take.value,
 					request.sellItemPrice,

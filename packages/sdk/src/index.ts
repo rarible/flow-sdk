@@ -83,7 +83,7 @@ export interface FlowOrderSdk {
 	fill(
 		collection: FlowContractAddress,
 		currency: FlowCurrency,
-		orderId: string | FlowOrder,
+		orderId: string | number | FlowOrder,
 		owner: string,
 		fees: FlowOriginFees,
 	): Promise<FlowTransaction>
@@ -93,7 +93,7 @@ export interface FlowOrderSdk {
 	 * @param collection
 	 * @param orderId
 	 */
-	cancelOrder(collection: FlowContractAddress, orderId: string): Promise<FlowTransaction>
+	cancelOrder(collection: FlowContractAddress, orderId: string | number): Promise<FlowTransaction>
 
 	/**
 	 * Create bid
@@ -120,7 +120,7 @@ export interface FlowOrderSdk {
 	bidUpdate(
 		collection: FlowContractAddress,
 		currency: FlowCurrency,
-		order: string | FlowOrder,
+		order: string | number | FlowOrder,
 		price: BigNumber,
 	): Promise<FlowSellResponse>
 
@@ -129,7 +129,7 @@ export interface FlowOrderSdk {
 	 * @param collection
 	 * @param orderId
 	 */
-	cancelBid(collection: FlowContractAddress, orderId: string): Promise<FlowTransaction>
+	cancelBid(collection: FlowContractAddress, orderId: number | string): Promise<FlowTransaction>
 
 	getProtocolFee(): ProtocolFees
 }

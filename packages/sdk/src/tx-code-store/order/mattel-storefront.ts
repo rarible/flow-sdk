@@ -90,7 +90,7 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 		},
 		update(o: {
 			collectionName: MattelCollection
-			orderId: string,
+			orderId: number,
 			itemId: number,
 			saleItemPrice: BigNumberValue,
 			customID?: string,
@@ -121,7 +121,7 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 			}
 		},
 		buy(o: {
-			orderId: string,
+			orderId: number,
 			address: string,
 			currency: FlowCurrency,
 			comissionRecipient?: string,
@@ -143,7 +143,7 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 				]),
 			}
 		},
-		cancel(orderId: string): GenerateCodeMethodResponse {
+		cancel(orderId: number): GenerateCodeMethodResponse {
 			return {
 				cadence: fillCodeTemplate(txUnlistItemStorefrontV2, getNftCodeConfig(collectionName)),
 				args: fcl.args([fcl.arg(orderId, t.UInt64)]),

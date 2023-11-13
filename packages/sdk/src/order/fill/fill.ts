@@ -23,6 +23,7 @@ import {
 } from "../common/get-order-details-from-blockchain"
 import { fetchItemRoyalties } from "../common/fetch-item-royalties"
 import {getMattelOrderCode, isMattelCollection} from "../../tx-code-store/order/mattel-storefront"
+import {getOrderId} from "../common/get-order-id"
 import { fillBidOrder } from "./fill-bid-order"
 
 export type FlowOrderType = "LIST" | "BID"
@@ -36,7 +37,7 @@ export async function fill(
 	itemApi: FlowNftItemControllerApi,
 	collection: FlowContractAddress,
 	currency: FlowCurrency,
-	order: string | FlowOrder,
+	order: string | number | FlowOrder,
 	owner: FlowAddress,
 	originFee?: FlowOriginFees,
 ): Promise<FlowTransaction> {
@@ -46,6 +47,7 @@ export async function fill(
 		if (!from) {
 			throw new Error("FLOW-SDK: Can't get current user address")
 		}
+		const orderId = getOrderId(order)
 		const preparedOrder = await getPreparedOrder(orderApi, order)
 		const { name, map } = getCollectionConfig(network, collection)
 		switch (preparedOrder.type) {
@@ -56,7 +58,7 @@ export async function fill(
 						fcl,
 						map,
 						getMattelOrderCode(fcl, name).buy({
-							orderId: preparedOrder.id,
+							orderId,
 							address: owner,
 							comissionRecipient: fee ? toFlowAddress(fee.account) : undefined,
 							currency,
@@ -66,7 +68,7 @@ export async function fill(
 					return waitForSeal(fcl, txId)
 				}
 				const blockChainOrder = await getOrderDetailsFromBlockchain(
-					fcl, network, "sell", owner, preparedOrder.id,
+					fcl, network, "sell", owner, orderId,
 				)
 				let fees: FlowFee[] = []
 				if (!blockChainOrder.isLegacy) {
@@ -80,7 +82,7 @@ export async function fill(
 					map,
 					getOrderCode(fcl, name).buy(
 						currency,
-						preparedOrder.id,
+						orderId,
 						owner,
 						fees,
 					),
@@ -112,7 +114,7 @@ export async function fill(
 					currency,
 					name,
 					map,
-					preparedOrder.id,
+					orderId,
 					owner,
 					calculateFees(preparedOrder.make.value, includedFees),
 				)
