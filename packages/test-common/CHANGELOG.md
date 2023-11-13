@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.73-fix.0](https://github.com/rarible/flow-sdk/compare/v0.5.73...v0.5.73-fix.0) (2023-11-13)
+
+
+### Bug Fixes
+
+* **PLTF-111:** double types of order id update ([d3fb7b3](https://github.com/rarible/flow-sdk/commit/d3fb7b3789f776253291dce0d66e6b47152c385e))
+
+
+
+
+
 ## [0.5.66](https://github.com/rarible/flow-sdk/compare/v0.5.65...v0.5.66) (2023-06-22)
 
 

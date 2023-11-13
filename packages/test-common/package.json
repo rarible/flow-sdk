@@ -1,6 +1,6 @@
 {
   "name": "@rarible/flow-test-common",
-  "version": "0.5.66",
+  "version": "0.5.73-fix.0",
   "repository": "https://github.com/rarible/flow-sdk",
   "license": "MIT",
   "main": "build/index.js",
