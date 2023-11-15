@@ -3,7 +3,10 @@ import {
 	createTestAuth,
 } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
-import { FLOW_TESTNET_ACCOUNT_1, FLOW_TESTNET_ACCOUNT_5 } from "@rarible/flow-test-common/build/config"
+import {
+	FLOW_TESTNET_ACCOUNT_5,
+	FLOW_TESTNET_ACCOUNT_PYTHON,
+} from "@rarible/flow-test-common/build/config"
 import { toFlowAddress } from "@rarible/types"
 import { createFlowSdk } from "../index"
 
@@ -14,7 +17,8 @@ describe("Check init mattel collections", () => {
 		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 
-		const status = await testnetBuyerSdk.collection.checkInitMattelCollections();
+		const status = await testnetBuyerSdk.collection.checkInitCollections()
+		console.log("status", status);
 		[
 			"FiatToken",
 			"StorefrontV2",
@@ -24,6 +28,7 @@ describe("Check init mattel collections", () => {
 			"HWGaragePackV2",
 			"BBxBarbieCard",
 			"BBxBarbiePack",
+			"Gamisodes",
 		].forEach((key: string) => {
 			expect(key in status).toBeTruthy()
 		})
@@ -38,8 +43,9 @@ describe("Check init mattel collections", () => {
 		)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 
-		const address = toFlowAddress(FLOW_TESTNET_ACCOUNT_1.address)
-		const status = await testnetBuyerSdk.collection.checkInitMattelCollections(address);
+		const address = toFlowAddress(FLOW_TESTNET_ACCOUNT_PYTHON.address)
+		const status = await testnetBuyerSdk.collection.checkInitCollections(address)
+		console.log(status);
 		(
 			[
 				"FiatToken",
@@ -50,6 +56,7 @@ describe("Check init mattel collections", () => {
 				"HWGaragePackV2",
 				"BBxBarbieCard",
 				"BBxBarbiePack",
+				"Gamisodes",
 			] as Array<keyof typeof status>
 		).forEach(key => {
 			expect(key in status).toBeTruthy()

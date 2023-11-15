@@ -5,7 +5,7 @@ import type {AuthWithPrivateKey, FlowNetwork, FlowTransaction} from "../types"
 import {runTransaction, waitForSeal} from "../common/transaction"
 import {CONFIGS} from "../config/config"
 
-export async function setupMattelCollections(
+export async function setupCollections(
 	fcl: Maybe<Fcl>,
 	auth: AuthWithPrivateKey,
 	network: FlowNetwork,

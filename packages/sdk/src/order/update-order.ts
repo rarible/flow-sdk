@@ -11,7 +11,7 @@ import { checkPrice } from "../common/check-price"
 import { parseEvents } from "../common/parse-tx-events"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCode } from "../tx-code-store/order/storefront"
-import {getMattelOrderCode, isMattelCollection} from "../tx-code-store/order/mattel-storefront"
+import {getWhitelabelOrderCode, isWhitelabelCollection} from "../tx-code-store/order/whitelabel-storefront"
 import { fixAmount } from "../common/fix-amount"
 import {
 	getOrderDetailsFromBlockchain,
@@ -47,7 +47,7 @@ export async function updateOrder(
 		const preparedOrder = await getPreparedOrder(orderApi, order)
 		const { name, map } = getCollectionConfig(network, collection)
 
-		if (isMattelCollection(name)) {
+		if (isWhitelabelCollection(name)) {
 			const details = await getStorefrontV2OrderDetailsFromBlockchain(fcl, network, from, orderId)
 			if (details.purchased) {
 				throw new Error("Item was purchased")
@@ -65,7 +65,7 @@ export async function updateOrder(
 			const txId = await runTransaction(
 				fcl,
 				map,
-				getMattelOrderCode(fcl, name).update({
+				getWhitelabelOrderCode(fcl, name).update({
 					collectionName: name,
 					orderId,
 					itemId: parseInt(details.nftID),

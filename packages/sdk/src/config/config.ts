@@ -144,6 +144,10 @@ export const flowCollectionsConfig: Record<NonFungibleContract, FlowConfigData> 
 		contractsNames: ["BBxBarbieToken"] as FlowContractAddressName[],
 		features: ["TRANSFER", "BURN"],
 	},
+	Gamisodes: {
+		contractsNames: ["Gamisodes"] as FlowContractAddressName[],
+		features: ["TRANSFER", "BURN"],
+	},
 }
 
 const MAINNET_RARIBLE_ADDRESS = toFlowAddress("0x01ab36aaf654a13e")
@@ -202,6 +206,10 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			BBxBarbiePack: EMULATOR_ADDRESS,
 			BBxBarbieCard: EMULATOR_ADDRESS,
 			BBxBarbieToken: EMULATOR_ADDRESS,
+			Gamisodes: EMULATOR_ADDRESS,
+			TokenForwarding: EMULATOR_ADDRESS,
+			NiftoryNFTRegistry: EMULATOR_ADDRESS,
+			NiftoryNonFungibleToken: EMULATOR_ADDRESS,
 		},
 	},
 	testnet: {
@@ -250,6 +258,10 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			BBxBarbiePack: toFlowAddress("0x6d0f55821f6b2dbe"),
 			BBxBarbieCard: toFlowAddress("0x6d0f55821f6b2dbe"),
 			BBxBarbieToken: toFlowAddress("0x6d0f55821f6b2dbe"),
+			Gamisodes: toFlowAddress("0x371ebe4bc55f8925"),
+			TokenForwarding: toFlowAddress("0x51ea0e37c27a1f1a"),
+			NiftoryNFTRegistry: toFlowAddress("0x04f74f0252479aed"),
+			NiftoryNonFungibleToken: toFlowAddress("0x04f74f0252479aed"),
 		},
 	},
 	mainnet: {
@@ -298,6 +310,10 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			BBxBarbiePack: toFlowAddress("0xe5bf4d436ca23932"),
 			BBxBarbieCard: toFlowAddress("0xe5bf4d436ca23932"),
 			BBxBarbieToken: toFlowAddress("0xe5bf4d436ca23932"),
+			Gamisodes: toFlowAddress("0xe5bf4d436ca23932"),
+			TokenForwarding: toFlowAddress("0xe544175ee0461c4b"),
+			NiftoryNFTRegistry: toFlowAddress("0x7ec1f607f0872a9e"),
+			NiftoryNonFungibleToken: toFlowAddress("0x7ec1f607f0872a9e"),
 		},
 	},
 }
@@ -334,6 +350,7 @@ export enum TestnetCollections {
 	BBxBarbiePack = "A.0x6d0f55821f6b2dbe.BBxBarbiePack",
 	BBxBarbieCard = "A.0x6d0f55821f6b2dbe.BBxBarbieCard",
 	BBxBarbieToken = "A.0x6d0f55821f6b2dbe.BBxBarbieToken",
+	Gamisodes = "A.0x371ebe4bc55f8925.Gamisodes",
 }
 
 export enum MainnetCollections {

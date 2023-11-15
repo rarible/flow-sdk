@@ -8,7 +8,7 @@ import type { AuthWithPrivateKey, FlowNetwork } from "../types"
 import { runScript } from "../common/transaction"
 import { CONFIGS } from "../config/config"
 
-export async function checkInitMattelCollections(
+export async function checkInitCollections(
 	fcl: Maybe<Fcl>,
 	auth: AuthWithPrivateKey,
 	network: FlowNetwork,

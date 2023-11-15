@@ -151,3 +151,15 @@ export const FLOW_TESTNET_ACCOUNT_PANDA: TestAccount = {
 	privKey: "b9e95722cef1c43690d09989c673195c2356f060461e0f9f220b1b09c4c72fb2",
 	pubKey: "",
 }
+
+export const FLOW_TESTNET_ACCOUNT_SNAKE: TestAccount = {
+	address: "0xc6ed293e9d9d6ced",
+	privKey: "ea8c739478ba55421520896b0e706857dd95e01f71217416f2fd12351d8ea4f5",
+	pubKey: "",
+}
+
+export const FLOW_TESTNET_ACCOUNT_WOLF: TestAccount = {
+	address: "0x314bec9cf32234c9",
+	privKey: "9e44d233a17a9499454471118ca0ff9f538d9ccc19dcc754ce07f2aeff83de30",
+	pubKey: "",
+}

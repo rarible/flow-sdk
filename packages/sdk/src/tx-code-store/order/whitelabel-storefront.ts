@@ -9,10 +9,13 @@ import {
 	getGarageListTxCode,
 	txInitNFTContractsAndStorefrontV2,
 	txUnlistItemStorefrontV2,
+	gamisodesListTxCode,
 } from "@rarible/flow-sdk-scripts"
 import type { FlowAddress } from "@rarible/types"
 import type { BigNumberValue } from "@rarible/utils"
-import {txInitVault} from "@rarible/flow-sdk-scripts/build/cadence/nft/mattel/init-vault"
+import {txInitVault} from "@rarible/flow-sdk-scripts"
+import {gamisodesBuyTxCode} from "@rarible/flow-sdk-scripts/build/cadence/nft/gamisodes/buy"
+import {gamisodesChangePriceTxCode} from "@rarible/flow-sdk-scripts/build/cadence/nft/gamisodes/change-price"
 import type { NonFungibleContract } from "../../types"
 import { fillCodeTemplate } from "../../common/template-replacer"
 import {getNftCodeConfig} from "../../config/cadence-code-config"
@@ -27,7 +30,7 @@ type GenerateCodeMethodResponse = {
 export type GarageCollection = "HWGaragePack" | "HWGarageCard" | "HWGarageCardV2" | "HWGaragePackV2" | "HWGarageTokenV2"
 
 
-export function isGarageCollection(collection: string): collection is MattelCollection {
+export function isGarageCollection(collection: string): collection is GarageCollection {
 	return [
 		"HWGaragePack",
 		"HWGarageCard",
@@ -42,6 +45,7 @@ export type BarbieCollection =
   | "BBxBarbieCard"
   | "BBxBarbieToken"
 
+
 export function isBarbieCollection(collection: string): collection is BarbieCollection {
 	return [
 		"BBxBarbiePack",
@@ -50,16 +54,24 @@ export function isBarbieCollection(collection: string): collection is BarbieColl
 	].includes(collection)
 }
 
-export type MattelCollection = GarageCollection | BarbieCollection
-
-export function isMattelCollection(collection: string): collection is MattelCollection {
-	return isGarageCollection(collection) || isBarbieCollection(collection)
+export function isGamisodesCollection(collection: string): collection is GamisodesCollection {
+	return [
+		"Gamisodes",
+	].includes(collection)
 }
 
-export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract) {
+export type GamisodesCollection = "Gamisodes"
+
+export type WhitelabelCollection = GarageCollection | BarbieCollection | GamisodesCollection
+
+export function isWhitelabelCollection(collection: string): collection is WhitelabelCollection {
+	return isGarageCollection(collection) || isBarbieCollection(collection) || isGamisodesCollection(collection)
+}
+
+export function getWhitelabelOrderCode(fcl: Fcl, collectionName: NonFungibleContract) {
 	return {
 		create(o: {
-			collectionName: MattelCollection
+			collectionName: WhitelabelCollection
 			itemId: number,
 			saleItemPrice: BigNumberValue,
 			customID?: string,
@@ -73,6 +85,8 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 				code = getGarageListTxCode(o.collectionName, o.currency)
 			} else if (isBarbieCollection(collectionName)) {
 				code = barbieListTxCode(collectionName, o.currency)
+			} else if (isGamisodesCollection(collectionName)) {
+				code = gamisodesListTxCode(o.currency)
 			} else {
 				throw new Error(`Unknown collection (${collectionName})`)
 			}
@@ -89,7 +103,7 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 			}
 		},
 		update(o: {
-			collectionName: MattelCollection
+			collectionName: WhitelabelCollection
 			orderId: number,
 			itemId: number,
 			saleItemPrice: BigNumberValue,
@@ -104,6 +118,8 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 				code = getGarageChangePriceTxCode(o.collectionName, o.currency)
 			} else if (isBarbieCollection(collectionName)) {
 				code = barbieChangePriceTxCode(collectionName, o.currency)
+			} else if (isGamisodesCollection(collectionName)) {
+				code = gamisodesChangePriceTxCode(o.currency)
 			} else {
 				throw new Error(`Unknown collection (${collectionName})`)
 			}
@@ -131,6 +147,8 @@ export function getMattelOrderCode(fcl: Fcl, collectionName: NonFungibleContract
 				code = garageBuyTxCode
 			} else if (isBarbieCollection(collectionName)) {
 				code = barbieBuyTxCode
+			} else if (isGamisodesCollection(collectionName)) {
+				code = gamisodesBuyTxCode
 			} else {
 				throw new Error(`Unknown collection (${collectionName})`)
 			}

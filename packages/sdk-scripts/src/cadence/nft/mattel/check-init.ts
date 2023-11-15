@@ -13,6 +13,7 @@ import HWGarageTokenV2 from 0xHWGarageTokenV2
 import BBxBarbieCard from 0xBBxBarbieCard
 import BBxBarbiePack from 0xBBxBarbiePack
 import BBxBarbieToken from 0xBBxBarbieToken
+import Gamisodes from 0xGamisodes
 
 pub fun main(address: Address): {String: Bool} {
     let account = getAccount(address)
@@ -48,6 +49,10 @@ pub fun main(address: Address): {String: Bool} {
 
     let NFTStorefrontV2 = NFTStorefrontV2.StorefrontPublicPath
     let StorefrontV2 = account.getCapability(NFTStorefrontV2).borrow<&{NFTStorefrontV2.StorefrontPublic}>()
+
+    let gamisodesCollection = account.getCapability(Gamisodes.COLLECTION_PUBLIC_PATH)
+                        .borrow<&{NonFungibleToken.Receiver}>()
+
 
     if nftCollection != nil {
         accountStatus.insert(key: "HWGarageCard", true)
@@ -107,6 +112,12 @@ pub fun main(address: Address): {String: Bool} {
         accountStatus.insert(key: "FiatToken", true)
     } else {
         accountStatus.insert(key: "FiatToken", false)
+    }
+
+    if gamisodesCollection != nil {
+        accountStatus.insert(key: "Gamisodes", true)
+    } else {
+        accountStatus.insert(key: "Gamisodes", false)
     }
 
     return accountStatus
