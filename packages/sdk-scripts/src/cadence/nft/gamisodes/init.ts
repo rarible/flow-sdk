@@ -2,18 +2,18 @@ import {NFTStorefrontV2} from "../contracts"
 
 export const gamisodesRawInitPart = `
         //Gamisodes INIT PART START
-        if acct.borrow<&Gamisodes.Collection>(from: %nftStoragePath%) == nil {
+        if acct.borrow<&Gamisodes.Collection>(from: Gamisodes.COLLECTION_STORAGE_PATH) == nil {
           let collection <- Gamisodes.createEmptyCollection()
-          acct.save(<-collection, to: %nftStoragePath%)
+          acct.save(<-collection, to: Gamisodes.COLLECTION_STORAGE_PATH)
         }
-        if (acct.getCapability<&Gamisodes.Collection{NiftoryNonFungibleToken.CollectionPublic,NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver,MetadataViews.ResolverCollection}>(%nftPublicPath%).borrow() == nil) {
-          acct.unlink(%nftPublicPath%)
-          acct.link<&Gamisodes.Collection{NiftoryNonFungibleToken.CollectionPublic,NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver,MetadataViews.ResolverCollection}>(%nftPublicPath%, target: %nftStoragePath%)
+        if (acct.getCapability<&Gamisodes.Collection{NiftoryNonFungibleToken.CollectionPublic,NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver,MetadataViews.ResolverCollection}>(Gamisodes.COLLECTION_PUBLIC_PATH).borrow() == nil) {
+          acct.unlink(Gamisodes.COLLECTION_PUBLIC_PATH)
+          acct.link<&Gamisodes.Collection{NiftoryNonFungibleToken.CollectionPublic,NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver,MetadataViews.ResolverCollection}>(Gamisodes.COLLECTION_PUBLIC_PATH, target: Gamisodes.COLLECTION_STORAGE_PATH)
         }
 
-        if (acct.getCapability<&Gamisodes.Collection{NiftoryNonFungibleToken.CollectionPublic,NonFungibleToken.CollectionPublic,NonFungibleToken.Provider,MetadataViews.ResolverCollection}>(%nftPrivatePath%).borrow() == nil) {
-          acct.unlink(%nftPrivatePath%)
-          acct.link<&Gamisodes.Collection{NiftoryNonFungibleToken.CollectionPublic,NonFungibleToken.CollectionPublic,NonFungibleToken.Provider,MetadataViews.ResolverCollection}>(%nftPrivatePath%, target: %nftStoragePath%)
+        if (acct.getCapability<&Gamisodes.Collection{NiftoryNonFungibleToken.CollectionPublic,NonFungibleToken.CollectionPublic,NonFungibleToken.Provider,MetadataViews.ResolverCollection}>(Gamisodes.COLLECTION_PRIVATE_PATH).borrow() == nil) {
+          acct.unlink(Gamisodes.COLLECTION_PRIVATE_PATH)
+          acct.link<&Gamisodes.Collection{NiftoryNonFungibleToken.CollectionPublic,NonFungibleToken.CollectionPublic,NonFungibleToken.Provider,MetadataViews.ResolverCollection}>(Gamisodes.COLLECTION_PRIVATE_PATH, target: Gamisodes.COLLECTION_STORAGE_PATH)
         }
 
         if acct.borrow<&${NFTStorefrontV2.name}.${NFTStorefrontV2.contractType}>(from: ${NFTStorefrontV2.storagePath}) == nil {
