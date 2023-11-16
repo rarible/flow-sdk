@@ -310,7 +310,7 @@ export const CONFIGS: Record<FlowNetwork, Config> = {
 			BBxBarbiePack: toFlowAddress("0xe5bf4d436ca23932"),
 			BBxBarbieCard: toFlowAddress("0xe5bf4d436ca23932"),
 			BBxBarbieToken: toFlowAddress("0xe5bf4d436ca23932"),
-			Gamisodes: toFlowAddress("0xe5bf4d436ca23932"),
+			Gamisodes: toFlowAddress("0x09e04bdbcccde6ca"),
 			TokenForwarding: toFlowAddress("0xe544175ee0461c4b"),
 			NiftoryNFTRegistry: toFlowAddress("0x7ec1f607f0872a9e"),
 			NiftoryNonFungibleToken: toFlowAddress("0x7ec1f607f0872a9e"),

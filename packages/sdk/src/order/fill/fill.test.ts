@@ -7,7 +7,10 @@ import {
 import * as fcl from "@onflow/fcl"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import { toBn } from "@rarible/utils"
-import {FLOW_TESTNET_ACCOUNT_PANDA, FLOW_TESTNET_ACCOUNT_PYTHON} from "@rarible/flow-test-common/build/config"
+import {
+	FLOW_TESTNET_ACCOUNT_BEAR,
+	FLOW_TESTNET_ACCOUNT_PANDA,
+} from "@rarible/flow-test-common/build/config"
 import type {FlowCurrency, FlowSdk} from "../../index"
 import { toFlowContractAddress } from "../../index"
 import { EmulatorCollections, TestnetCollections } from "../../config/config"
@@ -25,7 +28,7 @@ import { awaitOrder } from "../common/await-order"
 import {createTestFlowSdk} from "../../common/test"
 
 describe("Mattel storefront fill testing", () => {
-	const [buyerAddr, buyerPrivKey] = [FLOW_TESTNET_ACCOUNT_PYTHON.address, FLOW_TESTNET_ACCOUNT_PYTHON.privKey]
+	const [buyerAddr, buyerPrivKey] = [FLOW_TESTNET_ACCOUNT_BEAR.address, FLOW_TESTNET_ACCOUNT_BEAR.privKey]
 	const [sellerAddr, sellerPrivKey] = [FLOW_TESTNET_ACCOUNT_PANDA.address, FLOW_TESTNET_ACCOUNT_PANDA.privKey]
 	const feeAddr = FLOW_TESTNET_ACCOUNT_4.address
 
