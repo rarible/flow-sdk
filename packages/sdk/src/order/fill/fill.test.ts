@@ -412,7 +412,7 @@ describe("Mattel storefront fill testing", () => {
 		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
 		const testnetBuyerSdk = createTestFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.Gamisodes)
-		const tokenId = 64205
+		const tokenId = 64204
 
 		test(`Gamisodes <-> ${currency}`, async () => {
 			const testnetAuth = createTestAuth(fcl, "testnet", sellerAddr, sellerPrivKey)

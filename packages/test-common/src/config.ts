@@ -169,3 +169,9 @@ export const FLOW_TESTNET_ACCOUNT_BEAR: TestAccount = {
 	privKey: "f85357ffa1aa48474770fb26eb30bae26b6e006520868ffa079d0154d2638cb4",
 	pubKey: "",
 }
+
+export const FLOW_TESTNET_ACCOUNT_MATRIX: TestAccount = {
+	address: "0x38979f8f2ed89827",
+	privKey: "e0201d86f0f0e7f7fdda9d5fa484f2c23fc9171195aeabc084cf06ff4a7906ad",
+	pubKey: "",
+}

@@ -42,9 +42,10 @@ ${gamisodesRawInitPart}
         assert(self.fiatReceiver.borrow() != nil, message: "Missing or mis-typed FT receiver")
 
         // Check if the Provider capability exists or not if then create a new link for the same.
-        if !acct.getCapability<&{NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic, MetadataViews.ResolverCollection, NiftoryNonFungibleToken.CollectionPublic}>(%nftContract%ProviderPrivatePath).check() {
-            acct.link<&{NonFungibleToken.Provider, NiftoryNonFungibleToken.CollectionPrivate}>(%nftContract%ProviderPrivatePath, target: %nftStoragePath%)
-        }
+        // if !acct.getCapability<&{NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic, MetadataViews.ResolverCollection, NiftoryNonFungibleToken.CollectionPublic}>(%nftContract%ProviderPrivatePath).check() {
+        //     acct.link<&{NonFungibleToken.Provider, NiftoryNonFungibleToken.CollectionPrivate}>(%nftContract%ProviderPrivatePath, target: %nftStoragePath%)
+        // }
+
 
         self.%nftContract%Provider = acct.getCapability<&{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(%nftContract%ProviderPrivatePath)
         let collection = acct

@@ -7,7 +7,8 @@ import {
 import * as fcl from "@onflow/fcl"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 // import type { FlowSdk } from "../index"
-import {FLOW_TESTNET_ACCOUNT_5, FLOW_TESTNET_ACCOUNT_PANDA} from "@rarible/flow-test-common/build/config"
+import {FLOW_TESTNET_ACCOUNT_5} from "@rarible/flow-test-common/build/config"
+import {FLOW_TESTNET_ACCOUNT_MATRIX} from "@rarible/flow-test-common/build/config"
 import { toFlowContractAddress } from "../index"
 import { checkEvent } from "../test/helpers/check-event"
 import { EmulatorCollections, TestnetCollections } from "../config/config"
@@ -94,10 +95,12 @@ describe("Mattel storefront sell testing", () => {
 	}, 1000000)
 
 	test("Should create Gamisodes sell order on testnet", async () => {
-		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_PANDA.address, FLOW_TESTNET_ACCOUNT_PANDA.privKey)
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_MATRIX.address, FLOW_TESTNET_ACCOUNT_MATRIX.privKey)
 		const testnetSdk = createTestFlowSdk(fcl, "testnet", {}, testnetAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.Gamisodes)
-		const tokenId = "64205"
+		// const tokenId = "64205"
+		// const tokenId = "64211"
+		const tokenId = "64204"
 
 		const orderTx = await testnetSdk.order.sell({
 			collection: testnetCollection,
