@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.74](https://github.com/rarible/flow-sdk/compare/v0.5.73-fix.0...v0.5.74) (2023-11-16)
+
+
+### Features
+
+* **PLTF-104:** init gamisodes collections ([#108](https://github.com/rarible/flow-sdk/issues/108)) ([6af9a6f](https://github.com/rarible/flow-sdk/commit/6af9a6f79fc177dea15881330ed2d977ef0b5328))
+
+
+
+
+
 ## [0.5.72](https://github.com/rarible/flow-sdk/compare/v0.5.71-HWGarageTokenV2...v0.5.72) (2023-10-23)
 
 **Note:** Version bump only for package @rarible/flow-sdk-scripts
