@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.74-fix.0](https://github.com/rarible/flow-sdk/compare/v0.5.74...v0.5.74-fix.0) (2023-11-16)
+
+
+### Bug Fixes
+
+* gamisodes sell script ([5584108](https://github.com/rarible/flow-sdk/commit/558410800a62e7ae611d21ca8833bbf48eb74b8d))
+
+
+
+
+
 ## [0.5.74](https://github.com/rarible/flow-sdk/compare/v0.5.73-fix.0...v0.5.74) (2023-11-16)
 
 
