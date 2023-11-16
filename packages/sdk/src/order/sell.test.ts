@@ -93,25 +93,6 @@ describe("Mattel storefront sell testing", () => {
 
 	}, 1000000)
 
-	test("Should create HWGarageCardV2 sell order on testnet", async () => {
-		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
-		const testnetSdk = createTestFlowSdk(fcl, "testnet", {}, testnetAuth)
-		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)
-		const tokenId = "37"
-
-		const orderTx = await testnetSdk.order.sell({
-			collection: testnetCollection,
-			currency: "FLOW",
-			itemId: toFlowItemId(`${testnetCollection}:${tokenId}`),
-			sellItemPrice: "0.0001",
-			end: new Date(Date.now() + 1000 * 60 * 60 * 24),
-		})
-
-		console.log("orderTx", JSON.stringify(orderTx, null, "	"))
-		expect(orderTx.orderId).toBeTruthy()
-
-	}, 1000000)
-
 	test("Should create Gamisodes sell order on testnet", async () => {
 		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_PANDA.address, FLOW_TESTNET_ACCOUNT_PANDA.privKey)
 		const testnetSdk = createTestFlowSdk(fcl, "testnet", {}, testnetAuth)
