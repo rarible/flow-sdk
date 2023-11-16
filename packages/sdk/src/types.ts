@@ -44,6 +44,7 @@ export const NON_FUNGIBLE_CONTRACTS = [
 	"BBxBarbiePack",
 	"BBxBarbieCard",
 	"BBxBarbieToken",
+	"Gamisodes",
 ] as const
 
 export type NonFungibleContracts = typeof NON_FUNGIBLE_CONTRACTS
@@ -62,6 +63,9 @@ export type FlowContractName =
 	| MetadataViews
 	| FungibleContracts
 	| NonFungibleContract
+	| TokenForwarding
+	| NiftoryNFTRegistry
+	| NiftoryNonFungibleToken
 
 
 export type AuthWithPrivateKey = undefined | ((account?: any) => Promise<any>)
@@ -85,3 +89,6 @@ export type LicensedNFTType = "LicensedNFT"
 export type TopShotFeeType = "TopShotFee"
 export type RaribleOpenBid = "RaribleOpenBid"
 export type MetadataViews = "MetadataViews"
+export type NiftoryNFTRegistry = "NiftoryNFTRegistry"
+export type NiftoryNonFungibleToken = "NiftoryNonFungibleToken"
+export type TokenForwarding = "TokenForwarding"

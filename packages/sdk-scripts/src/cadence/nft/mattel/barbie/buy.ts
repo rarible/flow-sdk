@@ -3,7 +3,7 @@ import {
 	MetadataViews,
 	NFTStorefrontV2,
 	NonFungibleToken,
-} from "../mattel-contracts"
+} from "../../contracts"
 import {barbiePreparePartOfInit} from "./init"
 
 export const barbieBuyTxCode: string = `

@@ -22,7 +22,7 @@ import {
 	getOrderDetailsFromBlockchain,
 } from "../common/get-order-details-from-blockchain"
 import { fetchItemRoyalties } from "../common/fetch-item-royalties"
-import {getMattelOrderCode, isMattelCollection} from "../../tx-code-store/order/mattel-storefront"
+import {getWhitelabelOrderCode, isWhitelabelCollection} from "../../tx-code-store/order/whitelabel-storefront"
 import {getOrderId} from "../common/get-order-id"
 import { fillBidOrder } from "./fill-bid-order"
 
@@ -49,15 +49,16 @@ export async function fill(
 		}
 		const orderId = getOrderId(order)
 		const preparedOrder = await getPreparedOrder(orderApi, order)
+		console.log("prepared order", JSON.stringify(preparedOrder, null, " "))
 		const { name, map } = getCollectionConfig(network, collection)
 		switch (preparedOrder.type) {
 			case "LIST": {
-				if (isMattelCollection(name)) {
+				if (isWhitelabelCollection(name)) {
 					const [fee] = preparedOrder.data.originalFees
 					const txId = await runTransaction(
 						fcl,
 						map,
-						getMattelOrderCode(fcl, name).buy({
+						getWhitelabelOrderCode(fcl, name).buy({
 							orderId,
 							address: owner,
 							comissionRecipient: fee ? toFlowAddress(fee.account) : undefined,

@@ -1,9 +1,9 @@
-import type { MattelCollection} from "../mattel-contracts"
-import type {Currency} from "../common"
-import {getVaultInitTx, vaultOptions} from "../init-vault"
+import type { WhitelabelCollection} from "../../contracts"
+import type {Currency} from "../../common"
+import {getVaultInitTx, vaultOptions} from "../../init-vault"
 import {barbiePreparePartOfInit} from "./init"
 
-export const barbieChangePriceTxCode = (collection: MattelCollection, currency: Currency) => {
+export const barbieChangePriceTxCode = (collection: WhitelabelCollection, currency: Currency) => {
 	let borrowMethod: string
 	switch (collection) {
 		case "BBxBarbiePack":

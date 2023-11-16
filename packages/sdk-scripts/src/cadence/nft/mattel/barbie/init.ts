@@ -1,4 +1,4 @@
-import {BBxBarbieCard, BBxBarbiePack, NFTStorefrontV2} from "../mattel-contracts"
+import {BBxBarbieCard, BBxBarbiePack, NFTStorefrontV2} from "../../contracts"
 
 export const barbieRawInitPart = `
       if acct.borrow<&BBxBarbieToken.Collection>(from: BBxBarbieToken.CollectionStoragePath) == nil {

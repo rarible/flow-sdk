@@ -74,3 +74,5 @@ pub fun main(address: Address): Bool {
 }
 	`,
 }
+
+export type Currency = "FLOW" | "FUSD" | "USDC"

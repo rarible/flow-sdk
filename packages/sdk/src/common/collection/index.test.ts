@@ -58,4 +58,5 @@ const collections: NonFungibleContracts = [
 	"BBxBarbiePack",
 	"BBxBarbieCard",
 	"BBxBarbieToken",
+	"Gamisodes",
 ]

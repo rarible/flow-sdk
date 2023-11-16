@@ -28,9 +28,9 @@ import type { FlowEnvConfig } from "./config/env"
 import { ENV_CONFIG } from "./config/env"
 import type { TransferFlowRequest } from "./wallet/transfer-funds"
 import { transferFunds } from "./wallet/transfer-funds"
-import type {CollectionsInitStatus} from "./collection/check-init-mattel-collections"
-import {setupMattelCollections} from "./collection/setup-mattel-collections"
-import {checkInitMattelCollections} from "./collection/check-init-mattel-collections"
+import type {CollectionsInitStatus} from "./collection/check-init-collections"
+import {setupCollections} from "./collection/setup-collections"
+import {checkInitCollections} from "./collection/check-init-collections"
 
 export interface FlowApisSdk {
 	order: ApiClient.FlowOrderControllerApi
@@ -142,8 +142,8 @@ export interface FlowWalletSdk {
 
 export interface FlowCollectionSdk {
 	setupAccount(collection: FlowContractAddress): Promise<FlowTransaction>
-	setupMattelCollections(): Promise<FlowTransaction>
-	checkInitMattelCollections(address?: FlowAddress): Promise<CollectionsInitStatus>
+	setupCollections(): Promise<FlowTransaction>
+	checkInitCollections(address?: FlowAddress): Promise<CollectionsInitStatus>
 }
 
 export interface FlowSdk {
@@ -214,8 +214,8 @@ export function createFlowSdk(
 		},
 		collection: {
 			setupAccount: setupAccountTemplate.bind(null, fcl, auth, blockchainNetwork),
-			setupMattelCollections: setupMattelCollections.bind(null, fcl, auth, blockchainNetwork),
-			checkInitMattelCollections: checkInitMattelCollections.bind(null, fcl, auth, blockchainNetwork),
+			setupCollections: setupCollections.bind(null, fcl, auth, blockchainNetwork),
+			checkInitCollections: checkInitCollections.bind(null, fcl, auth, blockchainNetwork),
 		},
 		signUserMessage: signUserMessageTemplate.bind(null, fcl),
 	}

@@ -1,23 +1,21 @@
 import {
 	FungibleToken,
-	HWGarageCard, HWGaragePack,
 	MetadataViews,
 	NFTStorefrontV2,
 	NonFungibleToken,
-} from "../../contracts"
-import {garagePreparePartOfInit} from "./init"
+} from "../contracts"
+import {gamisodesRawInitPart} from "./init"
 
-export const garageBuyTxCode: string = `
+export const gamisodesBuyTxCode: string = `
 import %ftContract% from 0x%ftContract%
 import ${FungibleToken.name} from 0xFungibleToken
 import ${MetadataViews.name} from 0xMetadataViews
 import ${NonFungibleToken.name} from 0xNonFungibleToken
 import ${NFTStorefrontV2.name} from 0xNFTStorefrontV2
-import ${HWGarageCard.name} from 0xHWGarageCard
-import ${HWGaragePack.name} from 0xHWGaragePack
-import HWGarageCardV2 from 0xHWGarageCardV2
-import HWGaragePackV2 from 0xHWGaragePackV2
-import HWGarageTokenV2 from 0xHWGarageTokenV2
+import TokenForwarding from 0xTokenForwarding
+import Gamisodes from 0xGamisodes
+import NiftoryNFTRegistry from 0xNiftoryNFTRegistry
+import NiftoryNonFungibleToken from 0xNiftoryNonFungibleToken
 
 transaction(listingResourceID: UInt64, storefrontAddress: Address, commissionRecipient: Address?) {
     let paymentVault: @${FungibleToken.name}.Vault
@@ -27,9 +25,8 @@ transaction(listingResourceID: UInt64, storefrontAddress: Address, commissionRec
     var commissionRecipientCap: Capability<&{${FungibleToken.name}.Receiver}>?
 
     prepare(acct: AuthAccount) {
-${garagePreparePartOfInit}
+${gamisodesRawInitPart}
         self.commissionRecipientCap = nil
-        // self.commissionRecipientCap = getAccount(commissionRecipient!).getCapability<&{${FungibleToken.name}.Receiver}>(%ftPublicPath%)
         // Access the storefront public resource of the seller to purchase the listing.
         self.storefront = getAccount(storefrontAddress)
             .getCapability<&${NFTStorefrontV2.name}.Storefront{${NFTStorefrontV2.name}.StorefrontPublic}>(
@@ -50,7 +47,7 @@ ${garagePreparePartOfInit}
 
         // Access the buyer's NFT collection to store the purchased NFT.
         self.%nftContract%Collection = acct.borrow<&%nftContract%.Collection{${NonFungibleToken.name}.Receiver}>(
-            from: %nftContract%.CollectionStoragePath
+            from: %nftStoragePath%
         ) ?? panic("Cannot borrow buyers Pack collection receiver")
 
         // Fetch the commission amt.

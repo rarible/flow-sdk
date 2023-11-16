@@ -20,7 +20,7 @@ import { extractTokenId } from "../common/item"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCode } from "../tx-code-store/order/storefront"
 import { fixAmount } from "../common/fix-amount"
-import {getMattelOrderCode, isMattelCollection} from "../tx-code-store/order/mattel-storefront"
+import {getWhitelabelOrderCode, isWhitelabelCollection} from "../tx-code-store/order/whitelabel-storefront"
 import { getProtocolFee } from "./get-protocol-fee"
 import { calculateSaleCuts } from "./common/calculate-sale-cuts"
 import { fetchItemRoyalties } from "./common/fetch-item-royalties"
@@ -58,7 +58,7 @@ export async function sell(
 
 		const { name, map } = getCollectionConfig(network, collection)
 
-		if (isMattelCollection(name)) {
+		if (isWhitelabelCollection(name)) {
 			const [fee] = originFees || []
 			let comissionAmount = toBn(fee?.value || 0)
 				.div(10000)
@@ -72,7 +72,7 @@ export async function sell(
 			const txId = await runTransaction(
 				fcl,
 				map,
-				getMattelOrderCode(fcl, name).create({
+				getWhitelabelOrderCode(fcl, name).create({
 					collectionName: name,
 					itemId: extractTokenId(itemId),
 					saleItemPrice: fixAmount(sellItemPrice),

@@ -7,7 +7,10 @@ import {
 import * as fcl from "@onflow/fcl"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import { toBn } from "@rarible/utils"
-import {FLOW_TESTNET_ACCOUNT_PANDA, FLOW_TESTNET_ACCOUNT_PYTHON} from "@rarible/flow-test-common/build/config"
+import {
+	FLOW_TESTNET_ACCOUNT_BEAR,
+	FLOW_TESTNET_ACCOUNT_PANDA,
+} from "@rarible/flow-test-common/build/config"
 import type {FlowCurrency, FlowSdk} from "../../index"
 import { toFlowContractAddress } from "../../index"
 import { EmulatorCollections, TestnetCollections } from "../../config/config"
@@ -25,8 +28,8 @@ import { awaitOrder } from "../common/await-order"
 import {createTestFlowSdk} from "../../common/test"
 
 describe("Mattel storefront fill testing", () => {
-	const [buyerAddr, buyerPrivKey] = [FLOW_TESTNET_ACCOUNT_PANDA.address, FLOW_TESTNET_ACCOUNT_PANDA.privKey]
-	const [sellerAddr, sellerPrivKey] = [FLOW_TESTNET_ACCOUNT_PYTHON.address, FLOW_TESTNET_ACCOUNT_PYTHON.privKey]
+	const [buyerAddr, buyerPrivKey] = [FLOW_TESTNET_ACCOUNT_BEAR.address, FLOW_TESTNET_ACCOUNT_BEAR.privKey]
+	const [sellerAddr, sellerPrivKey] = [FLOW_TESTNET_ACCOUNT_PANDA.address, FLOW_TESTNET_ACCOUNT_PANDA.privKey]
 	const feeAddr = FLOW_TESTNET_ACCOUNT_4.address
 
 	//todo garage pack doesn't exist on buyer FLOW_TESTNET_ACCOUNT_8 account
@@ -353,6 +356,65 @@ describe("Mattel storefront fill testing", () => {
 		const tokenId = 16
 
 		test(`BBxBarbieCard <-> ${currency}`, async () => {
+			const testnetAuth = createTestAuth(fcl, "testnet", sellerAddr, sellerPrivKey)
+			const testnetSdk = createTestFlowSdk(fcl, "testnet", {}, testnetAuth)
+
+			const itemId = toFlowItemId(`${testnetCollection}:${tokenId}`)
+
+			const sellTx = await testnetSdk.order.sell({
+				collection: testnetCollection,
+				currency: currency,
+				itemId,
+				sellItemPrice: "0.0001",
+				originFees: [{
+					account: toFlowAddress(feeAddr),
+					value: toBigNumber("1000"),
+				}],
+			})
+			console.log("sell", sellTx)
+			checkEvent(sellTx, "ListingAvailable", "NFTStorefrontV2")
+			await delay(5000)
+			const updateTx = await testnetSdk.order.updateOrder({
+				collection: testnetCollection,
+				currency,
+				order: sellTx.orderId,
+				sellItemPrice: toBigNumber("0.0002"),
+			})
+			checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
+
+			const startFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), currency)
+
+			const order = await awaitOrder(testnetSdk, updateTx.orderId)
+			const buyTx = await testnetBuyerSdk.order.fill(testnetCollection, currency, order, sellerAddr, [])
+			checkEvent(buyTx, "ListingCompleted", "NFTStorefrontV2")
+			await retry(10, 2000, async () => {
+				const finishFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), currency)
+				const diffFeeWalletBalance = toBn(finishFeeBalance).minus(startFeeBalance).toString()
+				expect(diffFeeWalletBalance.toString()).toBe("0.00002")
+			})
+		}, 1000000)
+
+		afterAll(async () => {
+			await testnetBuyerSdk.nft.transfer(
+				testnetCollection,
+				tokenId,
+				toFlowAddress(sellerAddr)
+			)
+		})
+	})
+
+	//ok
+	describe.each([
+		"FLOW",
+		"USDC",
+	] as FlowCurrency[])
+	("Should fail buy Mattel StorefrontV2 order with Gamisodes item", (currency) => {
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
+		const testnetBuyerSdk = createTestFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
+		const testnetCollection = toFlowContractAddress(TestnetCollections.Gamisodes)
+		const tokenId = 64205
+
+		test(`Gamisodes <-> ${currency}`, async () => {
 			const testnetAuth = createTestAuth(fcl, "testnet", sellerAddr, sellerPrivKey)
 			const testnetSdk = createTestFlowSdk(fcl, "testnet", {}, testnetAuth)
 

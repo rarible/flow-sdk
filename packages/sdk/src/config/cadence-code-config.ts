@@ -196,6 +196,11 @@ const nftCodeConfig: Record<NonFungibleContract, NftStaticVariables> = {
 		"%nftPrivatePath%": "/private/BBxBarbieTokenCollection",
 		"%publicTypeAddon%": "BBxBarbieToken.TokenCollectionPublic",
 	},
+	Gamisodes: {
+		"%nftPublicPath%": "Gamisodes.COLLECTION_PUBLIC_PATH",
+		"%nftStoragePath%": "Gamisodes.COLLECTION_STORAGE_PATH",
+		"%nftPrivatePath%": "Gamisodes.COLLECTION_PRIVATE_PATH",
+	},
 }
 
 export type NftCodeConfig = NftStaticVariables & {

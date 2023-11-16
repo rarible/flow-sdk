@@ -1,5 +1,5 @@
 import type {
-	MattelCollection} from "../mattel-contracts"
+	WhitelabelCollection} from "../../contracts"
 import {
 	FungibleToken,
 	HWGarageCard,
@@ -7,12 +7,12 @@ import {
 	MetadataViews,
 	NFTStorefrontV2,
 	NonFungibleToken,
-} from "../mattel-contracts"
-import type {Currency} from "../common"
-import {getVaultInitTx, vaultOptions} from "../init-vault"
+} from "../../contracts"
+import type {Currency} from "../../common"
+import {getVaultInitTx, vaultOptions} from "../../init-vault"
 import {garagePreparePartOfInit} from "./init"
 
-export const getGarageListTxCode = (collection: MattelCollection, currency: Currency) => {
+export const getGarageListTxCode = (collection: WhitelabelCollection, currency: Currency) => {
 	let borrowMethod: string
 	if (["HWGaragePack", "HWGaragePackV2"].includes(collection)) {
 		borrowMethod = "borrowPack"

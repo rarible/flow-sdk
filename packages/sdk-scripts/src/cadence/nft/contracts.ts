@@ -151,7 +151,7 @@ export const BBxBarbieCard: ContractsAddresses & ContractDetails & NFTColectionD
 	privatePath: "/private/BBxBarbieCardCollection",
 }
 
-export type MattelCollection =
+export type WhitelabelCollection =
 	| "HWGaragePack"
 	| "HWGarageCard"
 	| "HWGarageCardV2"
@@ -160,3 +160,4 @@ export type MattelCollection =
 	| "BBxBarbiePack"
 	| "BBxBarbieCard"
 	| "BBxBarbieToken"
+	| "Gamisodes"

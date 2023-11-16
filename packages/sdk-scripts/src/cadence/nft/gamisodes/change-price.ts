@@ -1,33 +1,18 @@
-import type { WhitelabelCollection} from "../../contracts"
-import {HWGarageCard, HWGaragePack} from "../../contracts"
-import type {Currency} from "../../common"
-import {getVaultInitTx, vaultOptions} from "../../init-vault"
-import {garagePreparePartOfInit} from "./init"
+import type {Currency} from "../common"
+import {getVaultInitTx, vaultOptions} from "../init-vault"
+import {gamisodesRawInitPart} from "./init"
 
-export const getGarageChangePriceTxCode = (collection: WhitelabelCollection, currency: Currency) => {
-	let borrowMethod: string
-	if (["HWGaragePack", "HWGaragePackV2"].includes(collection)) {
-		borrowMethod = "borrowPack"
-	} else if (collection === "HWGarageCard") {
-		borrowMethod = "borrowHWGarageCard"
-	} else if (["HWGarageCardV2"].includes(collection)) {
-		borrowMethod = "borrowCard"
-	} else if (["HWGarageTokenV2"].includes(collection)) {
-		borrowMethod = "borrowToken"
-	} else {
-		throw new Error(`Unrecognized collection name (${collection}), expected HWGaragePack | HWGarageCard`)
-	}
+export const gamisodesChangePriceTxCode = (currency: Currency) => {
 	return `
 import %ftContract% from 0x%ftContract%
 import FungibleToken from 0xFungibleToken
 import NonFungibleToken from 0xNonFungibleToken
 import MetadataViews from 0xMetadataViews
 import NFTStorefrontV2 from 0xNFTStorefrontV2
-import ${HWGarageCard.name} from 0xHWGarageCard
-import ${HWGaragePack.name} from 0xHWGaragePack
-import HWGarageCardV2 from 0xHWGarageCardV2
-import HWGaragePackV2 from 0xHWGaragePackV2
-import HWGarageTokenV2 from 0xHWGarageTokenV2
+import TokenForwarding from 0xTokenForwarding
+import Gamisodes from 0xGamisodes
+import NiftoryNFTRegistry from 0xNiftoryNFTRegistry
+import NiftoryNonFungibleToken from 0xNiftoryNonFungibleToken
 
 transaction(removalListingResourceID: UInt64, saleItemID: UInt64, saleItemPrice: UFix64, customID: String?, commissionAmount: UFix64, expiry: UInt64, marketplacesAddress: [Address]) {
     let storefrontForRemove: &NFTStorefrontV2.Storefront{NFTStorefrontV2.StorefrontManager}
@@ -40,7 +25,7 @@ transaction(removalListingResourceID: UInt64, saleItemID: UInt64, saleItemPrice:
 
     prepare(acct: AuthAccount) {
 ${currency === "USDC" ? getVaultInitTx(vaultOptions["FiatToken"]): ""}
-${garagePreparePartOfInit}
+${gamisodesRawInitPart}
 
         self.storefrontForRemove = acct.borrow<&NFTStorefrontV2.Storefront{NFTStorefrontV2.StorefrontManager}>(from: NFTStorefrontV2.StorefrontStoragePath)
             ?? panic("Missing or mis-typed NFTStorefrontV2.Storefront")
@@ -53,21 +38,21 @@ ${garagePreparePartOfInit}
 
         // Receiver for the sale cut.
         self.fiatReceiver = acct.getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%)
-        assert(self.fiatReceiver.borrow() != nil, message: "Missing or mis-typed FT receiver")
+        assert(self.fiatReceiver.borrow() != nil, message: "Missing or mis-typed FiatToken receiver")
 
         // Check if the Provider capability exists or not if \`no\` then create a new link for the same.
-        if !acct.getCapability<&{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(%nftContract%ProviderPrivatePath).check() {
-            acct.link<&{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(%nftContract%ProviderPrivatePath, target: %nftStoragePath%)
+        if !acct.getCapability<&{NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic, MetadataViews.ResolverCollection, NiftoryNonFungibleToken.CollectionPublic}>(%nftContract%ProviderPrivatePath).check() {
+            acct.link<&{NonFungibleToken.Provider, NiftoryNonFungibleToken.CollectionPrivate}>(%nftContract%ProviderPrivatePath, target: %nftStoragePath%)
         }
 
         self.%nftContract%Provider = acct.getCapability<&{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(%nftContract%ProviderPrivatePath)
         let collection = acct
-            .getCapability(%nftContract%.CollectionPublicPath)
+            .getCapability(%nftPublicPath%)
             .borrow<&{%nftPublicTypeMin%}>()
             ?? panic("Could not borrow a reference to the collection")
         var totalRoyaltyCut = 0.0
         let effectiveSaleItemPrice = saleItemPrice - commissionAmount
-        let nft = collection.${borrowMethod}(id: saleItemID)!
+        let nft = collection.borrowNFT(id: saleItemID)!
         // Check whether the NFT implements the MetadataResolver or not.
         if nft.getViews().contains(Type<MetadataViews.Royalties>()) {
             let royaltiesRef = nft.resolveView(Type<MetadataViews.Royalties>())?? panic("Unable to retrieve the royalties")

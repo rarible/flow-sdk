@@ -5,7 +5,7 @@ import { runTransaction, waitForSeal } from "../common/transaction"
 import { getCollectionConfig } from "../common/collection/get-config"
 import type { FlowContractAddress } from "../common/flow-address"
 import { getOrderCode } from "../tx-code-store/order/storefront"
-import {getMattelOrderCode, isMattelCollection} from "../tx-code-store/order/mattel-storefront"
+import {getWhitelabelOrderCode, isWhitelabelCollection} from "../tx-code-store/order/whitelabel-storefront"
 import {getOrderId} from "./common/get-order-id"
 
 export async function cancelOrder(
@@ -19,11 +19,11 @@ export async function cancelOrder(
 		const { name, map } = getCollectionConfig(network, collection)
 
 		const preparedOrderId = getOrderId(orderId)
-		if (isMattelCollection(name)) {
+		if (isWhitelabelCollection(name)) {
 			const txId = await runTransaction(
 				fcl,
 				map,
-				getMattelOrderCode(fcl, name).cancel(preparedOrderId),
+				getWhitelabelOrderCode(fcl, name).cancel(preparedOrderId),
 				auth
 			)
 			return waitForSeal(fcl, txId)
