@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.75](https://github.com/rarible/flow-sdk/compare/v0.5.74-fix.1...v0.5.75) (2023-11-23)
+
+
+### Features
+
+* **PLTF-110:** update on transfer event ([2e72d50](https://github.com/rarible/flow-sdk/commit/2e72d50f3c693a651a90fdb5f5963ad44bfc05a4))
+
+
+
+
+
 ## [0.5.74-fix.1](https://github.com/rarible/flow-sdk/compare/v0.5.74-fix.0...v0.5.74-fix.1) (2023-11-16)
 
 
