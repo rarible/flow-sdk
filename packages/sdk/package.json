@@ -1,6 +1,6 @@
 {
   "name": "@rarible/flow-sdk",
-  "version": "0.5.75",
+  "version": "0.5.75-fix.0",
   "description": "SDK for interact with flow blockchain and Rarible protocol",
   "repository": "https://github.com/rarible/flow-sdk",
   "license": "MIT",
@@ -19,7 +19,7 @@
   "dependencies": {
     "@onflow/fcl": "~1.3.2",
     "@onflow/types": "~0.0.5",
-    "@rarible/fcl-types": "^0.5.56",
+    "@rarible/fcl-types": "^0.5.75-fix.0",
     "@rarible/flow-api-client": "~0.0.5-fix.2",
     "@rarible/flow-sdk-scripts": "^0.5.74-fix.1",
     "@rarible/types": "~0.9.3",
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@onflow/flow-js-testing": "^0.4.0",
-    "@rarible/flow-test-common": "^0.5.75",
+    "@rarible/flow-test-common": "^0.5.75-fix.0",
     "@types/jest": "^27.0.2",
     "@types/onflow__flow-js-testing": "^0.3.1",
     "google-protobuf": "^3.19.1",
