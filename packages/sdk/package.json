@@ -21,7 +21,6 @@
     "@onflow/types": "~0.0.5",
     "@rarible/fcl-types": "^0.5.75-fix.0",
     "@rarible/flow-api-client": "~0.0.5-fix.2",
-    "@rarible/flow-sdk-scripts": "^0.5.74-fix.1",
     "@rarible/types": "~0.9.3",
     "@rarible/utils": "~0.5.0"
   },
