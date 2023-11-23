@@ -1,7 +1,6 @@
 import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import type { BigNumberValue } from "@rarible/utils"
-import {transfer} from "@rarible/flow-sdk-scripts"
 import type { Maybe } from "@rarible/types/build/maybe"
 import type { FlowAddress } from "@rarible/types"
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork } from "../types"
@@ -9,6 +8,7 @@ import { runTransaction, waitForSeal } from "../common/transaction"
 import { CONFIGS } from "../config/config"
 import { fixAmount } from "../common/fix-amount"
 import {prepareFtCode} from "../tx-code-store/order/prepare-order-code"
+import {transfer} from "../scripts/wallet/transfer"
 
 export type TransferFlowRequest = {
 	recipient: FlowAddress

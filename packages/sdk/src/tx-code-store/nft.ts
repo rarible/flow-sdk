@@ -1,12 +1,18 @@
 import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
-import { commonNft, RaribleNFT } from "@rarible/flow-sdk-scripts"
 import type { FlowRoyalty } from "@rarible/flow-api-client"
 import { convertRoyalties } from "../common/convert-royalties"
 import { getNftCodeConfig } from "../config/cadence-code-config"
 import type { FlowContractName, NonFungibleContract } from "../types"
 import { NON_FUNGIBLE_CONTRACTS } from "../types"
 import { fillCodeTemplate } from "../common/template-replacer"
+import {commonNft, RaribleNFT} from "../scripts/nft"
+import {transferGarageCardV1, transferGaragePackV1} from "../scripts/nft/mattel/garage/transfer-v1"
+import {
+	transferGarageCardV2,
+	transferGaragePackV2,
+	transferGarageTokenV2,
+} from "../scripts/nft/mattel/garage/transfer-v2"
 
 type NftCodeReturnData = {
 	cadence: string
@@ -37,8 +43,27 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 			},
 
 			transfer: (fcl: Fcl, tokenId: number, to: string) => {
+				let transferCdc
+				switch (name) {
+					case "HWGaragePack":
+						transferCdc = transferGaragePackV1
+						break
+					case "HWGarageCard":
+						transferCdc = transferGarageCardV1
+						break
+					case "HWGarageCardV2":
+						transferCdc = transferGarageCardV2
+						break
+					case "HWGaragePackV2":
+						transferCdc = transferGaragePackV2
+						break
+					case "HWGarageTokenV2":
+						transferCdc = transferGarageTokenV2
+						break
+					default: transferCdc = commonNft.transfer
+				}
 				return {
-					cadence: fillCodeTemplate(commonNft.transfer, map),
+					cadence: fillCodeTemplate(transferCdc, map),
 					args: fcl.args([fcl.arg(tokenId, t.UInt64), fcl.arg(to, t.Address)]),
 				}
 			},

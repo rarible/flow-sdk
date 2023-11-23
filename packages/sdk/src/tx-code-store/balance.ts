@@ -1,7 +1,7 @@
 import type { Fcl, FclArgs } from "@rarible/fcl-types"
-import { getBalanceScripts } from "@rarible/flow-sdk-scripts"
 import * as t from "@onflow/types"
 import type { FlowCurrency } from "../types"
+import {getBalanceScripts} from "../scripts/wallet/balance"
 import {prepareFtCode} from "./order/prepare-order-code"
 
 type GetBalanceCode = {

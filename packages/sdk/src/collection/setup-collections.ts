@@ -1,9 +1,9 @@
 import type {Maybe} from "@rarible/types/build/maybe"
 import type {Fcl} from "@rarible/fcl-types"
-import {txInitNFTContractsAndStorefrontV2} from "@rarible/flow-sdk-scripts"
 import type {AuthWithPrivateKey, FlowNetwork, FlowTransaction} from "../types"
 import {runTransaction, waitForSeal} from "../common/transaction"
 import {CONFIGS} from "../config/config"
+import {txInitNFTContractsAndStorefrontV2} from "../scripts/nft"
 
 export async function setupCollections(
 	fcl: Maybe<Fcl>,

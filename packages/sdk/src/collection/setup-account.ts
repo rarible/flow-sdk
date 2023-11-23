@@ -1,6 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
-import {txInitVault} from "@rarible/flow-sdk-scripts"
 import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../types"
 import type { FlowContractAddress } from "../common/flow-address"
 import { runTransaction, waitForSeal } from "../common/transaction"
@@ -8,6 +7,7 @@ import { getNftCode } from "../tx-code-store/nft"
 import { getCollectionConfig } from "../common/collection/get-config"
 import {getWhitelabelOrderCode, isWhitelabelCollection} from "../tx-code-store/order/whitelabel-storefront"
 import {CONFIGS} from "../config/config"
+import {txInitVault} from "../scripts/nft"
 
 export async function setupAccount(
 	fcl: Maybe<Fcl>,

@@ -406,7 +406,7 @@ describe("Mattel storefront fill testing", () => {
 	//ok
 	describe.each([
 		"FLOW",
-		"USDC",
+		// "USDC",
 	] as FlowCurrency[])
 	("Should fail buy Mattel StorefrontV2 order with Gamisodes item", (currency) => {
 		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)

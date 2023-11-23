@@ -1,7 +1,11 @@
 import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
 import { toFlowAddress } from "@rarible/types"
-import { FLOW_TESTNET_ACCOUNT_5, FLOW_TESTNET_ACCOUNT_6 } from "@rarible/flow-test-common/build/config"
+import {
+	FLOW_TESTNET_ACCOUNT_5,
+	FLOW_TESTNET_ACCOUNT_6,
+	FLOW_TESTNET_ACCOUNT_WOLF,
+} from "@rarible/flow-test-common/build/config"
 import { createFlowSdk, toFlowContractAddress } from "../index"
 import { checkEvent } from "../test/helpers/check-event"
 import { EmulatorCollections, TestnetCollections } from "../config/config"
@@ -106,15 +110,15 @@ describe("Test transfer on emulator", () => {
 	}, 1000000)
 
 	test("should transfer HWGarageCardV2", async () => {
-		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_6.address, FLOW_TESTNET_ACCOUNT_6.privKey)
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_WOLF.address, FLOW_TESTNET_ACCOUNT_WOLF.privKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)
-		const tokenId = 27
+		const tokenId = 2597
 		const transferTx = await testnetBuyerSdk.nft.transfer(
 			testnetCollection,
 			tokenId,
-			toFlowAddress("0x5391ccade6ea6e8b")
+			toFlowAddress("0x6c647ba9519d091e")
 		)
 		checkEvent(transferTx, "Withdraw", "HWGarageCardV2")
 		checkEvent(transferTx, "Deposit", "HWGarageCardV2")

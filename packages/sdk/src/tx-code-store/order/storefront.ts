@@ -1,8 +1,8 @@
 import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
-import { Storefront } from "@rarible/flow-sdk-scripts"
 import type { FlowCurrency, FlowFee, NonFungibleContract } from "../../types"
 import { prepareFees } from "../common/conver-fee-to-cadence"
+import {Storefront} from "../../scripts/storefront/storefront"
 import { prepareOrderCode } from "./prepare-order-code"
 
 type GenerateCodeMethodResponse = {

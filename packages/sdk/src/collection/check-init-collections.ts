@@ -1,12 +1,12 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types/build/maybe"
-import { checkInitMattelContracts } from "@rarible/flow-sdk-scripts/build/cadence/nft/mattel/check-init"
 import * as t from "@onflow/types"
 import type { FlowAddress } from "@rarible/types"
 import { toFlowAddress } from "@rarible/types"
 import type { AuthWithPrivateKey, FlowNetwork } from "../types"
 import { runScript } from "../common/transaction"
 import { CONFIGS } from "../config/config"
+import {checkInitMattelContracts} from "../scripts/nft/mattel/check-init"
 
 export async function checkInitCollections(
 	fcl: Maybe<Fcl>,

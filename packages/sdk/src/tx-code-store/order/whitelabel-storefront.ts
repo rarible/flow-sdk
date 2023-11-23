@@ -1,5 +1,7 @@
 import type { Fcl, FclArgs } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
+import type { FlowAddress } from "@rarible/types"
+import type { BigNumberValue } from "@rarible/utils"
 import {
 	barbieBuyTxCode,
 	barbieListTxCode,
@@ -10,16 +12,14 @@ import {
 	txInitNFTContractsAndStorefrontV2,
 	txUnlistItemStorefrontV2,
 	gamisodesListTxCode,
-} from "@rarible/flow-sdk-scripts"
-import type { FlowAddress } from "@rarible/types"
-import type { BigNumberValue } from "@rarible/utils"
-import {txInitVault} from "@rarible/flow-sdk-scripts"
-import {gamisodesBuyTxCode} from "@rarible/flow-sdk-scripts/build/cadence/nft/gamisodes/buy"
-import {gamisodesChangePriceTxCode} from "@rarible/flow-sdk-scripts/build/cadence/nft/gamisodes/change-price"
+	txInitVault,
+} from "../../scripts/nft"
 import type { NonFungibleContract } from "../../types"
 import { fillCodeTemplate } from "../../common/template-replacer"
 import {getNftCodeConfig} from "../../config/cadence-code-config"
 import type {FlowCurrency} from "../../types"
+import {gamisodesChangePriceTxCode} from "../../scripts/nft/gamisodes/change-price"
+import {gamisodesBuyTxCode} from "../../scripts/nft/gamisodes/buy"
 import {prepareOrderCode} from "./prepare-order-code"
 
 type GenerateCodeMethodResponse = {
