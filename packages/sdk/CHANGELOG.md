@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.76](https://github.com/rarible/flow-sdk/compare/v0.5.75-fix.1...v0.5.76) (2023-12-05)
+
+
+### Bug Fixes
+
+* **PLTF-157:** update royalty cut formula ([3a9a89b](https://github.com/rarible/flow-sdk/commit/3a9a89b875003d637941a33082fdb1127d8267c0))
+
+
+
+
+
 ## [0.5.75-fix.1](https://github.com/rarible/flow-sdk/compare/v0.5.75-fix.0...v0.5.75-fix.1) (2023-11-23)
 
 **Note:** Version bump only for package @rarible/flow-sdk
