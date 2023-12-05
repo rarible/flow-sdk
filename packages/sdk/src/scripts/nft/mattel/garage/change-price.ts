@@ -74,8 +74,9 @@ ${garagePreparePartOfInit}
             let royalties = (royaltiesRef as! MetadataViews.Royalties).getRoyalties()
             for royalty in royalties {
                 // TODO - Verify the type of the vault and it should exists
-                self.saleCuts.append(NFTStorefrontV2.SaleCut(receiver: royalty.receiver, amount: royalty.cut * effectiveSaleItemPrice))
-                totalRoyaltyCut = totalRoyaltyCut + royalty.cut * effectiveSaleItemPrice
+                let royaltyValue = royalty.cut * saleItemPrice
+                self.saleCuts.append(NFTStorefrontV2.SaleCut(receiver: royalty.receiver, amount: royalty.cut * royaltyValue))
+                totalRoyaltyCut = totalRoyaltyCut + royaltyValue
             }
         }
         // Append the cut for the seller.
