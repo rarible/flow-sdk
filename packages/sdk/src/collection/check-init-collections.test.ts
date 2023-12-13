@@ -6,7 +6,7 @@ import * as fcl from "@onflow/fcl"
 import {
 	FLOW_TESTNET_ACCOUNT_5,
 	FLOW_TESTNET_ACCOUNT_PYTHON,
-} from "@rarible/flow-test-common/build/config"
+} from "@rarible/flow-test-common"
 import { toFlowAddress } from "@rarible/types"
 import { createFlowSdk } from "../index"
 

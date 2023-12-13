@@ -5,7 +5,7 @@ import {
 	FLOW_TESTNET_ACCOUNT_5,
 	FLOW_TESTNET_ACCOUNT_6,
 	FLOW_TESTNET_ACCOUNT_WOLF,
-} from "@rarible/flow-test-common/build/config"
+} from "@rarible/flow-test-common"
 import { createFlowSdk, toFlowContractAddress } from "../index"
 import { checkEvent } from "../test/helpers/check-event"
 import { EmulatorCollections, TestnetCollections } from "../config/config"

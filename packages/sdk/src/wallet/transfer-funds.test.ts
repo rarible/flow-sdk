@@ -6,7 +6,7 @@ import {
 import * as fcl from "@onflow/fcl"
 import { toFlowAddress } from "@rarible/types"
 import { toBn } from "@rarible/utils"
-import {FLOW_TESTNET_ACCOUNT_11, FLOW_TESTNET_ACCOUNT_8} from "@rarible/flow-test-common/build/config"
+import {FLOW_TESTNET_ACCOUNT_11, FLOW_TESTNET_ACCOUNT_8} from "@rarible/flow-test-common"
 import {createFlowSdk} from "../index"
 import { checkEvent } from "../test/helpers/check-event"
 import {createTestSdk} from "../test/helpers/create-test-sdk"

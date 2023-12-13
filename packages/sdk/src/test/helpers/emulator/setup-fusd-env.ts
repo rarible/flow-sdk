@@ -6,7 +6,7 @@ import {
 } from "@rarible/flow-test-common"
 import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
-import { testScripts } from "@rarible/flow-test-common/build/common/scripts"
+import { testScripts } from "@rarible/flow-test-common"
 import { runScript, runTransaction, waitForSeal } from "../../../common/transaction"
 import type { AuthWithPrivateKey, FlowNetwork } from "../../../types"
 import type { FlowSdk } from "../../../index"

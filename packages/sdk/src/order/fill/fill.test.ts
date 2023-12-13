@@ -10,7 +10,7 @@ import { toBn } from "@rarible/utils"
 import {
 	FLOW_TESTNET_ACCOUNT_BEAR,
 	FLOW_TESTNET_ACCOUNT_PANDA,
-} from "@rarible/flow-test-common/build/config"
+} from "@rarible/flow-test-common"
 import type {FlowCurrency, FlowSdk} from "../../index"
 import { toFlowContractAddress } from "../../index"
 import { EmulatorCollections, TestnetCollections } from "../../config/config"

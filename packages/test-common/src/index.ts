@@ -7,12 +7,7 @@ export { createFlowEmulator } from "./common/create-emulator"
 export { createTestAuth } from "./common/test-auth"
 export const createFlowAuth = createTestAuth
 
-export {
-	FLOW_TESTNET_ACCOUNT_1,
-	FLOW_TESTNET_ACCOUNT_2,
-	FLOW_TESTNET_ACCOUNT_3,
-	FLOW_TESTNET_ACCOUNT_4,
-} from "./config"
+export * from "./config"
 export { testTransactions } from "./common/transactions"
 export { testScripts } from "./common/scripts"
 

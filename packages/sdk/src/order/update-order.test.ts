@@ -7,7 +7,7 @@ import {
 } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
-import { FLOW_TESTNET_ACCOUNT_5 } from "@rarible/flow-test-common/build/config"
+import { FLOW_TESTNET_ACCOUNT_5 } from "@rarible/flow-test-common"
 import { EmulatorCollections, TestnetCollections } from "../config/config"
 import { checkEvent } from "../test/helpers/check-event"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/helpers/emulator/evolution"

@@ -8,7 +8,7 @@ import {
 } from "@rarible/flow-test-common"
 import {
 	FLOW_TESTNET_ACCOUNT_9,
-} from "@rarible/flow-test-common/build/config"
+} from "@rarible/flow-test-common"
 import {toBn} from "@rarible/utils"
 import {createFlowSdk} from "../index"
 import { getFungibleBalance } from "./get-fungible-balance"

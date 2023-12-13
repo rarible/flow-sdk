@@ -1,6 +1,6 @@
 import * as fcl from "@onflow/fcl"
 import { createTestAuth } from "@rarible/flow-test-common"
-import {FLOW_TESTNET_ACCOUNT_WOLF} from "@rarible/flow-test-common/build/config"
+import {FLOW_TESTNET_ACCOUNT_WOLF} from "@rarible/flow-test-common"
 import { createFlowSdk } from "../index"
 
 describe("Collection setup on account", () => {

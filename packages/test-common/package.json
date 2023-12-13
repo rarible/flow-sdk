@@ -3,14 +3,15 @@
   "version": "0.5.76",
   "repository": "https://github.com/rarible/flow-sdk",
   "license": "MIT",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "build/cjs/index.js",
+  "module": "build/esm/index.js",
+  "types": "build/esm/index.d.ts",
   "files": [
     "build",
     "src/typings.d.ts"
   ],
   "scripts": {
-    "build": "tsc --project tsconfig-build.json",
+    "build": "tsc -b tsconfig-build-cjs.json tsconfig-build-esm.json",
     "clean": "rimraf ./build",
     "test": "jest --passWithNoTests --maxWorkers=1 --testTimeout=30000",
     "verify": "tsc --noEmit"
