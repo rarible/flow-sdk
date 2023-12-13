@@ -1,5 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
-import type { Maybe } from "@rarible/types/build/maybe"
+import type { Maybe } from "@rarible/types"
 import type { ConfigurationParameters, FlowOrder, FlowRoyalty } from "@rarible/flow-api-client"
 import * as ApiClient from "@rarible/flow-api-client"
 import type { BigNumber, FlowAddress } from "@rarible/types"

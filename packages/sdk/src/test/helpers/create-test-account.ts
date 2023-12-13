@@ -1,4 +1,4 @@
-import type {Maybe} from "@rarible/types/build/maybe"
+import type {Maybe} from "@rarible/types"
 import type {Fcl} from "@rarible/fcl-types"
 import {randomWord} from "@rarible/types"
 import * as rlp from "rlp"

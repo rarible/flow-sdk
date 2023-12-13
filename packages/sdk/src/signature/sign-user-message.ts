@@ -1,5 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
-import type { Maybe } from "@rarible/types/build/maybe"
+import type { Maybe } from "@rarible/types"
 
 export async function signUserMessage(fcl: Maybe<Fcl>, message: string): Promise<string> {
 	if (fcl) {

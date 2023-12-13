@@ -1,5 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
-import type { Maybe } from "@rarible/types/build/maybe"
+import type { Maybe } from "@rarible/types"
 import type { FlowAddress } from "@rarible/types"
 import type { FlowCurrency, FlowNetwork } from "../types"
 import { runScript } from "../common/transaction"

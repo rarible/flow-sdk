@@ -1,7 +1,7 @@
 import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
 import type { BigNumberValue } from "@rarible/utils"
-import type { Maybe } from "@rarible/types/build/maybe"
+import type { Maybe } from "@rarible/types"
 import type { FlowAddress } from "@rarible/types"
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"

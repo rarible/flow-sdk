@@ -15,9 +15,6 @@
     "test": "jest --passWithNoTests --maxWorkers=1",
     "verify": "tsc --noEmit"
   },
-  "devDependencies": {
-    "typescript": "^4.4.4"
-  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"

@@ -1,4 +1,4 @@
-import type {Maybe} from "@rarible/types/build/maybe"
+import type {Maybe} from "@rarible/types"
 import type {Fcl} from "@rarible/fcl-types"
 import type {ConfigurationParameters} from "@rarible/flow-api-client"
 import type {FlowEnv} from "../../config/env"
