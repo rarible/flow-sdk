@@ -78,10 +78,10 @@ const sdk = createFlowSdk(fcl, "testnet")
 Mint response represents transaction result extended with `txId` and minted `tokenId`
 
 ```typescript
-import { toBigNumber, toFlowAddress } from "@rarible/types"
+import { toBigNumberLike, toFlowAddress } from "@rarible/types"
 
 // royalties - array of objects: {account: FlowAddress, value: BigNumber}, value must be a number between 0 and 1
-const yourRoyalties = [{ account: toFlowAddress("0x1234567890abcdef"), value: toBigNumber("0.1") }]
+const yourRoyalties = [{ account: toFlowAddress("0x1234567890abcdef"), value: toBigNumberLike("0.1") }]
 
 const {
   txId, // transaction id

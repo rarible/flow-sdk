@@ -5,7 +5,7 @@ import {
 	FLOW_TESTNET_ACCOUNT_4,
 } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
-import { toBigNumber, toFlowAddress } from "@rarible/types"
+import { toBigNumberLike, toFlowAddress } from "@rarible/types"
 import { toBn } from "@rarible/utils"
 import {
 	FLOW_TESTNET_ACCOUNT_BEAR,
@@ -57,7 +57,7 @@ describe("Mattel storefront fill testing", () => {
 				sellItemPrice: "0.001",
 				originFees: [{
 					account: toFlowAddress(feeAddr),
-					value: toBigNumber("1000"),
+					value: toBigNumberLike("1000"),
 				}],
 			})
 
@@ -68,7 +68,7 @@ describe("Mattel storefront fill testing", () => {
 				collection: testnetCollection,
 				currency,
 				order: sellTx.orderId,
-				sellItemPrice: toBigNumber("0.002"),
+				sellItemPrice: toBigNumberLike("0.002"),
 			})
 			checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 
@@ -119,7 +119,7 @@ describe("Mattel storefront fill testing", () => {
 				sellItemPrice: "0.001",
 				originFees: [{
 					account: toFlowAddress(feeAddr),
-					value: toBigNumber("1000"),
+					value: toBigNumberLike("1000"),
 				}],
 			})
 
@@ -130,7 +130,7 @@ describe("Mattel storefront fill testing", () => {
 				collection: testnetCollection,
 				currency,
 				order: parseInt(sellTx.orderId),
-				sellItemPrice: toBigNumber("0.002"),
+				sellItemPrice: toBigNumberLike("0.002"),
 			})
 			checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 
@@ -183,7 +183,7 @@ describe("Mattel storefront fill testing", () => {
 				sellItemPrice: "0.001",
 				originFees: [{
 					account: toFlowAddress(feeAddr),
-					value: toBigNumber("1000"),
+					value: toBigNumberLike("1000"),
 				}],
 			})
 			console.log(sellTx)
@@ -194,7 +194,7 @@ describe("Mattel storefront fill testing", () => {
 				collection: testnetCollection,
 				currency,
 				order: sellTx.orderId,
-				sellItemPrice: toBigNumber("0.002"),
+				sellItemPrice: toBigNumberLike("0.002"),
 			})
 			checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 
@@ -246,7 +246,7 @@ describe("Mattel storefront fill testing", () => {
 				sellItemPrice: "0.001",
 				originFees: [{
 					account: toFlowAddress(feeAddr),
-					value: toBigNumber("1000"),
+					value: toBigNumberLike("1000"),
 				}],
 			})
 			console.log("sell", sellTx)
@@ -257,7 +257,7 @@ describe("Mattel storefront fill testing", () => {
 				collection: testnetCollection,
 				currency,
 				order: sellTx.orderId,
-				sellItemPrice: toBigNumber("0.002"),
+				sellItemPrice: toBigNumberLike("0.002"),
 			})
 			checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 
@@ -308,7 +308,7 @@ describe("Mattel storefront fill testing", () => {
 				sellItemPrice: "0.0001",
 				originFees: [{
 					account: toFlowAddress(feeAddr),
-					value: toBigNumber("1000"),
+					value: toBigNumberLike("1000"),
 				}],
 			})
 			console.log("sell", sellTx)
@@ -319,7 +319,7 @@ describe("Mattel storefront fill testing", () => {
 				collection: testnetCollection,
 				currency,
 				order: sellTx.orderId,
-				sellItemPrice: toBigNumber("0.0002"),
+				sellItemPrice: toBigNumberLike("0.0002"),
 			})
 			checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 			const startFeeBalance = await testnetSdk.wallet.getFungibleBalance(toFlowAddress(feeAddr), currency)
@@ -368,7 +368,7 @@ describe("Mattel storefront fill testing", () => {
 				sellItemPrice: "0.0001",
 				originFees: [{
 					account: toFlowAddress(feeAddr),
-					value: toBigNumber("1000"),
+					value: toBigNumberLike("1000"),
 				}],
 			})
 			console.log("sell", sellTx)
@@ -378,7 +378,7 @@ describe("Mattel storefront fill testing", () => {
 				collection: testnetCollection,
 				currency,
 				order: sellTx.orderId,
-				sellItemPrice: toBigNumber("0.0002"),
+				sellItemPrice: toBigNumberLike("0.0002"),
 			})
 			checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 
@@ -427,7 +427,7 @@ describe("Mattel storefront fill testing", () => {
 				sellItemPrice: "0.0001",
 				originFees: [{
 					account: toFlowAddress(feeAddr),
-					value: toBigNumber("1000"),
+					value: toBigNumberLike("1000"),
 				}],
 			})
 			console.log("sell", sellTx)
@@ -437,7 +437,7 @@ describe("Mattel storefront fill testing", () => {
 				collection: testnetCollection,
 				currency,
 				order: sellTx.orderId,
-				sellItemPrice: toBigNumber("0.0002"),
+				sellItemPrice: toBigNumberLike("0.0002"),
 			})
 			checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 
@@ -481,11 +481,11 @@ describe("Test fill on emulator", () => {
 			currency: "FLOW",
 			itemId: mintTx.tokenId,
 			sellItemPrice: "0.001",
-			originFees: [{ account: toFlowAddress(address2), value: toBigNumber("0.1") }],
+			originFees: [{ account: toFlowAddress(address2), value: toBigNumberLike("0.1") }],
 		})
 		// const { orderId } = tx.events[2].data
 		expect(tx.orderId).toBeGreaterThan(0)
-		const order = getTestOrderTmplate("sell", tx.orderId, mintTx.tokenId, toBigNumber("0.001"))
+		const order = getTestOrderTmplate("sell", tx.orderId, mintTx.tokenId, toBigNumberLike("0.001"))
 		const blockchainBidDetails = await getOrderDetailsFromBlockchain(fcl, "emulator", "sell", address, parseInt(tx.orderId))
 
 		const buyTx = await sdk.order.fill(collection, blockchainBidDetails.currency, order, address, [])
@@ -500,21 +500,21 @@ describe("Test fill on emulator", () => {
 		const mintTx = await sdk.nft.mint(
 			collection,
 			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
-			[{ account: toFlowAddress(address0), value: toBigNumber("0.2") }],
+			[{ account: toFlowAddress(address0), value: toBigNumberLike("0.2") }],
 		)
 		expect(mintTx.status).toEqual(4)
 		const tx = await sdk.order.bid(
 			collection,
 			"FLOW",
 			mintTx.tokenId,
-			toBigNumber("0.0001"),
-			[{ account: toFlowAddress(address0), value: toBigNumber("0.1") }],
+			toBigNumberLike("0.0001"),
+			[{ account: toFlowAddress(address0), value: toBigNumberLike("0.1") }],
 		)
-		const order = getTestOrderTmplate("bid", tx.orderId, mintTx.tokenId, toBigNumber("0.0001"))
+		const order = getTestOrderTmplate("bid", tx.orderId, mintTx.tokenId, toBigNumberLike("0.0001"))
 		const blockchainBidDetails = await getOrderDetailsFromBlockchain(fcl, "emulator", "bid", address, parseInt(tx.orderId))
 		const buyTx = await sdk.order.fill(collection, blockchainBidDetails.currency, order, address, [{
 			account: toFlowAddress(address0),
-			value: toBigNumber("0.2"),
+			value: toBigNumberLike("0.2"),
 		}])
 		expect(buyTx.status).toEqual(4)
 	})
@@ -532,7 +532,7 @@ describe("Test fill on emulator", () => {
 			originFees: [],
 		})
 
-		const order = getTestOrderTmplate("sell", tx.orderId, mintTx.tokenId, toBigNumber("0.0001"))
+		const order = getTestOrderTmplate("sell", tx.orderId, mintTx.tokenId, toBigNumberLike("0.0001"))
 		const buyTx = await acc2.sdk.order.fill(collection, "FUSD", order, acc1.address, [])
 		checkEvent(buyTx, "ListingCompleted", "NFTStorefront")
 	})
@@ -555,7 +555,7 @@ describe("Test fill on emulator", () => {
 			},
 		)
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
-		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.0001"))
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumberLike("0.0001"))
 		const buyTx = await acc2.sdk.order.fill(evolutionCollection, "FLOW", order, acc1.address, [])
 		checkEvent(buyTx, "ListingCompleted", "NFTStorefront")
 		const checkNft = await getEvolutionIds(fcl, serviceAcc.address, acc2.address, acc1.tokenId)
@@ -581,7 +581,7 @@ describe("Test fill on emulator", () => {
 		)
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 
-		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.0001"))
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumberLike("0.0001"))
 		const buyTx = await acc2.sdk.order.fill(topShotColletion, "FLOW", order, acc1.address, [])
 		checkEvent(buyTx, "ListingCompleted", "NFTStorefront")
 		const [checkNft] = await getTopShotIds(fcl, serviceAcc.address, acc2.address)
@@ -605,7 +605,7 @@ describe("Test fill on emulator", () => {
 		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 
-		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.0001"))
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumberLike("0.0001"))
 		const buyTx = await acc2.sdk.order.fill(motoGpColletion, "FLOW", order, acc1.address, [])
 		checkEvent(buyTx, "ListingCompleted", "NFTStorefront")
 		const buyResult = await borrowMotoGpCardId(fcl, serviceAcc.address, acc2.address, 1)
@@ -629,7 +629,7 @@ describe("Test fill on emulator", () => {
 		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 
-		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.0001"))
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumberLike("0.0001"))
 		const buyTx = await acc2.sdk.order.fill(mugenArtCollection, "FLOW", order, acc1.address, [])
 		checkEvent(buyTx, "ListingCompleted", "NFTStorefront")
 		const [buyItemId] = await getMugenArtIds(fcl, serviceAcc.address, acc2.address)

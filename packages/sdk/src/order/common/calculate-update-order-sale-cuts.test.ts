@@ -1,4 +1,4 @@
-import { FLOW_ZERO_ADDRESS, toBigNumber, toFlowAddress } from "@rarible/types"
+import { FLOW_ZERO_ADDRESS, toBigNumberLike, toFlowAddress } from "@rarible/types"
 import { calculateUpdateOrderSaleCuts } from "./calculate-update-order-sale-cuts"
 
 describe("Calculate sale cuts values for new price", () => {
@@ -10,7 +10,7 @@ describe("Calculate sale cuts values for new price", () => {
 		const saleCutsNew = calculateUpdateOrderSaleCuts(
 			"3600",
 			"7200",
-			[{ account: FLOW_ZERO_ADDRESS, value: toBigNumber("156.7") }],
+			[{ account: FLOW_ZERO_ADDRESS, value: toBigNumberLike("156.7") }],
 		)
 		expect(saleCutsNew[0].value).toEqual("313.4")
 	})
@@ -19,10 +19,10 @@ describe("Calculate sale cuts values for new price", () => {
 			"100",
 			"200",
 			[
-				{ account: address1, value: toBigNumber("50.0") },
-				{ account: address2, value: toBigNumber("0.5") },
-				{ account: address3, value: toBigNumber("3.0") },
-				{ account: address4, value: toBigNumber("46.5") },
+				{ account: address1, value: toBigNumberLike("50.0") },
+				{ account: address2, value: toBigNumberLike("0.5") },
+				{ account: address3, value: toBigNumberLike("3.0") },
+				{ account: address4, value: toBigNumberLike("46.5") },
 			],
 		)
 		expect(saleCutsNew[0].value).toEqual("100")

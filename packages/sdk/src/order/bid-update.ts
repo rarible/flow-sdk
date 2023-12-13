@@ -1,6 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
-import type { Maybe } from "@rarible/types"
-import type { BigNumber } from "@rarible/types"
+import type { BigNumberLike, Maybe } from "@rarible/types"
 import { toFlowAddress } from "@rarible/types"
 import type { FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
 import type { AuthWithPrivateKey, FlowCurrency, FlowNetwork } from "../types"
@@ -24,7 +23,7 @@ export async function bidUpdate(
 	collection: FlowContractAddress,
 	currency: FlowCurrency,
 	order: string | number | FlowOrder,
-	price: BigNumber,
+	price: BigNumberLike,
 ): Promise<FlowSellResponse> {
 	if (fcl) {
 		const from = auth ? toFlowAddress((await auth()).addr) : toFlowAddress((await fcl.currentUser().snapshot()).addr!)

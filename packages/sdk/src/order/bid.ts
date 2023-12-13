@@ -1,6 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
-import type { Maybe } from "@rarible/types"
-import type { BigNumber } from "@rarible/types"
+import type { BigNumberLike, Maybe } from "@rarible/types"
 import type { AuthWithPrivateKey, FlowCurrency, FlowFee, FlowNetwork, FlowOriginFees } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getCollectionConfig } from "../common/collection/get-config"
@@ -21,7 +20,7 @@ export async function bid(
 	collection: FlowContractAddress,
 	currency: FlowCurrency,
 	itemId: FlowItemId,
-	price: BigNumber,
+	price: BigNumberLike,
 	originFee?: FlowOriginFees,
 ): Promise<FlowSellResponse> {
 	if (fcl) {

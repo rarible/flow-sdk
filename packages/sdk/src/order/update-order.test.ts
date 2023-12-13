@@ -6,7 +6,7 @@ import {
 	FLOW_TESTNET_ACCOUNT_3,
 } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
-import { toBigNumber, toFlowAddress } from "@rarible/types"
+import { toBigNumberLike, toFlowAddress } from "@rarible/types"
 import { FLOW_TESTNET_ACCOUNT_5 } from "@rarible/flow-test-common"
 import { EmulatorCollections, TestnetCollections } from "../config/config"
 import { checkEvent } from "../test/helpers/check-event"
@@ -31,18 +31,18 @@ describe("Test update sell order on emulator", () => {
 		const mintTx = await testnetSdk.nft.mint(
 			testnetCollection,
 			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
-			[{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_3.address), value: toBigNumber("0.1") }],
+			[{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_3.address), value: toBigNumberLike("0.1") }],
 		)
 		const orderTx = await testnetSdk.order.sell({
 			collection: testnetCollection,
 			currency: "FLOW",
 			itemId: mintTx.tokenId,
 			sellItemPrice: "1",
-			originFees: [{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_2.address), value: toBigNumber("0.05") }],
+			originFees: [{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_2.address), value: toBigNumberLike("0.05") }],
 		})
 
 		const updateTx = await testnetSdk.order.updateOrder({
-			collection, currency: "FLOW", order: orderTx.orderId, sellItemPrice: toBigNumber("0.2"),
+			collection, currency: "FLOW", order: orderTx.orderId, sellItemPrice: toBigNumberLike("0.2"),
 		})
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefront")
 	}, 1000000)
@@ -63,9 +63,9 @@ describe("Test update sell order on emulator", () => {
 			sellItemPrice: "0.1",
 		})
 		checkEvent(tx, "ListingAvailable", "NFTStorefront")
-		const order = getTestOrderTmplate("sell", tx.orderId, mintTx.tokenId, toBigNumber("0.1"))
+		const order = getTestOrderTmplate("sell", tx.orderId, mintTx.tokenId, toBigNumberLike("0.1"))
 		const updateTx = await sdk.order.updateOrder({
-			collection, currency: "FLOW", order, sellItemPrice: toBigNumber("0.2"),
+			collection, currency: "FLOW", order, sellItemPrice: toBigNumberLike("0.2"),
 		})
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefront")
 	})
@@ -84,9 +84,9 @@ describe("Test update sell order on emulator", () => {
 			sellItemPrice: "0.1",
 		})
 		checkEvent(tx, "ListingAvailable", "NFTStorefront")
-		const order = getTestOrderTmplate("sell", tx.orderId, mintTx.tokenId, toBigNumber("0.1"))
+		const order = getTestOrderTmplate("sell", tx.orderId, mintTx.tokenId, toBigNumberLike("0.1"))
 		const updateTx = await acc1.sdk.order.updateOrder({
-			collection, currency: "FLOW", order, sellItemPrice: toBigNumber("0.2"),
+			collection, currency: "FLOW", order, sellItemPrice: toBigNumberLike("0.2"),
 		})
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefront")
 	})
@@ -107,9 +107,9 @@ describe("Test update sell order on emulator", () => {
 			sellItemPrice: "0.0001",
 		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
-		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.0001"))
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumberLike("0.0001"))
 		const updateTx = await acc1.sdk.order.updateOrder({
-			collection: evolutionCollection, currency: "FLOW", order, sellItemPrice: toBigNumber("0.0002"),
+			collection: evolutionCollection, currency: "FLOW", order, sellItemPrice: toBigNumberLike("0.0002"),
 		})
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefront")
 	})
@@ -131,12 +131,12 @@ describe("Test update sell order on emulator", () => {
 		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 
-		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.0001"))
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumberLike("0.0001"))
 		const updateTx = await acc1.sdk.order.updateOrder({
 			collection: topShotColletion,
 			currency: "FLOW",
 			order,
-			sellItemPrice: toBigNumber("0.0002"),
+			sellItemPrice: toBigNumberLike("0.0002"),
 		})
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefront")
 	})
@@ -158,12 +158,12 @@ describe("Test update sell order on emulator", () => {
 		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 
-		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.0001"))
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumberLike("0.0001"))
 		const updateTx = await acc1.sdk.order.updateOrder({
 			collection: motoGpColletion,
 			currency: "FLOW",
 			order,
-			sellItemPrice: toBigNumber("0.001"),
+			sellItemPrice: toBigNumberLike("0.001"),
 		})
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefront")
 	})
@@ -185,12 +185,12 @@ describe("Test update sell order on emulator", () => {
 		})
 		checkEvent(sellTx, "ListingAvailable", "NFTStorefront")
 
-		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumber("0.0001"))
+		const order = getTestOrderTmplate("sell", sellTx.orderId, itemId, toBigNumberLike("0.0001"))
 		const updateTx = await acc1.sdk.order.updateOrder({
 			collection: mugenArtCollection,
 			currency: "FLOW",
 			order,
-			sellItemPrice: toBigNumber("0.001"),
+			sellItemPrice: toBigNumberLike("0.001"),
 		})
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefront")
 	})
@@ -219,7 +219,7 @@ describe("Mattel storefront order change testing", () => {
 			collection: testnetCollection,
 			currency: "FLOW",
 			order,
-			sellItemPrice: toBigNumber("0.001"),
+			sellItemPrice: toBigNumberLike("0.001"),
 		})
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 	}, 1000000)
@@ -244,7 +244,7 @@ describe("Mattel storefront order change testing", () => {
 			collection: testnetCollection,
 			currency: "FLOW",
 			order,
-			sellItemPrice: toBigNumber("0.001"),
+			sellItemPrice: toBigNumberLike("0.001"),
 		})
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 	}, 1000000)
@@ -269,7 +269,7 @@ describe("Mattel storefront order change testing", () => {
 			collection: testnetCollection,
 			currency: "FLOW",
 			order,
-			sellItemPrice: toBigNumber("0.001"),
+			sellItemPrice: toBigNumberLike("0.001"),
 		})
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 	}, 1000000)
@@ -294,7 +294,7 @@ describe("Mattel storefront order change testing", () => {
 			collection: testnetCollection,
 			currency: "FLOW",
 			order,
-			sellItemPrice: toBigNumber("0.001"),
+			sellItemPrice: toBigNumberLike("0.001"),
 		})
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 	}, 1000000)
@@ -319,7 +319,7 @@ describe("Mattel storefront order change testing", () => {
 			collection: testnetCollection,
 			currency: "FLOW",
 			order,
-			sellItemPrice: toBigNumber("0.001"),
+			sellItemPrice: toBigNumberLike("0.001"),
 		})
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 	}, 1000000)
@@ -344,7 +344,7 @@ describe("Mattel storefront order change testing", () => {
 			collection: testnetCollection,
 			currency: "FLOW",
 			order,
-			sellItemPrice: toBigNumber("0.001"),
+			sellItemPrice: toBigNumberLike("0.001"),
 		})
 		checkEvent(updateTx, "ListingAvailable", "NFTStorefrontV2")
 	}, 1000000)

@@ -1,4 +1,4 @@
-import { toBigNumber, toFlowContractAddress } from "@rarible/types"
+import { toBigNumberLike, toFlowContractAddress } from "@rarible/types"
 import { TestnetCollections } from "../../../config/config"
 import { createFlowTestTestnetSdk } from "../../helpers/testnet/create-flow-test-testnet-sdk"
 import { getTestOrderTmplate } from "../../helpers/order-template"
@@ -18,11 +18,11 @@ describe.skip("Bid update", () => {
 			collection,
 			"FLOW",
 			mintTx.tokenId,
-			toBigNumber("0.01"),
+			toBigNumberLike("0.01"),
 		)
-		const order = getTestOrderTmplate("bid", tx.orderId, mintTx.tokenId, toBigNumber("0.01"))
+		const order = getTestOrderTmplate("bid", tx.orderId, mintTx.tokenId, toBigNumberLike("0.01"))
 		const updateTx = await sdk1.order.bidUpdate(
-			collection, "FLOW", order, toBigNumber("0.02"),
+			collection, "FLOW", order, toBigNumberLike("0.02"),
 		)
 		checkEvent(updateTx, "BidAvailable", "RaribleOpenBid")
 	}, 1000000)

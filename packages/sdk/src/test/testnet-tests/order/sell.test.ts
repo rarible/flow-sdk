@@ -1,5 +1,5 @@
 import { FLOW_TESTNET_ACCOUNT_4 } from "@rarible/flow-test-common"
-import { toBigNumber, toFlowAddress, toFlowContractAddress } from "@rarible/types"
+import { toBigNumberLike, toFlowAddress, toFlowContractAddress } from "@rarible/types"
 import { TestnetCollections } from "../../../config/config"
 import { createFlowTestTestnetSdk } from "../../helpers/testnet/create-flow-test-testnet-sdk"
 
@@ -11,7 +11,7 @@ describe.skip("Test sell on testnet", () => {
 		const mintTx = await sdk.nft.mint(
 			collection,
 			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
-			[{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_4.address), value: toBigNumber("0.1") }],
+			[{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_4.address), value: toBigNumberLike("0.1") }],
 		)
 
 		const orderTx = await sdk.order.sell({
@@ -19,7 +19,7 @@ describe.skip("Test sell on testnet", () => {
 			currency: "FLOW",
 			itemId: mintTx.tokenId,
 			sellItemPrice: "1",
-			originFees: [{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_4.address), value: toBigNumber("0.2") }],
+			originFees: [{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_4.address), value: toBigNumberLike("0.2") }],
 		})
 
 		expect(orderTx.orderId).toBeTruthy()

@@ -1,5 +1,5 @@
 import { createFlowEmulator } from "@rarible/flow-test-common"
-import { toBigNumber, toFlowAddress } from "@rarible/types"
+import { toBigNumberLike, toFlowAddress } from "@rarible/types"
 import { toFlowContractAddress } from "../index"
 import { EmulatorCollections } from "../config/config"
 import { createFlowTestEmulatorSdk } from "../test/helpers/emulator/create-flow-test-sdk"
@@ -23,8 +23,8 @@ describe("Test cancel order on emulator", () => {
 			collection,
 			"FLOW",
 			mintTx.tokenId,
-			toBigNumber("1"),
-			[{ account: toFlowAddress(address2), value: toBigNumber("0.03") }],
+			toBigNumberLike("1"),
+			[{ account: toFlowAddress(address2), value: toBigNumberLike("0.03") }],
 		)
 		expect(tx.status).toEqual(4)
 

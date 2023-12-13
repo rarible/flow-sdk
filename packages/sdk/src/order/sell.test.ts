@@ -5,7 +5,7 @@ import {
 	FLOW_TESTNET_ACCOUNT_4,
 } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
-import { toBigNumber, toFlowAddress } from "@rarible/types"
+import { toBigNumberLike, toFlowAddress } from "@rarible/types"
 // import type { FlowSdk } from "../index"
 import {FLOW_TESTNET_ACCOUNT_5} from "@rarible/flow-test-common"
 import {FLOW_TESTNET_ACCOUNT_MATRIX} from "@rarible/flow-test-common"
@@ -136,7 +136,7 @@ describe("Test sell on emulator", () => {
 		const mintTx = await testnetSdk.nft.mint(
 			testnetCollection,
 			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
-			[{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_4.address), value: toBigNumber("0.1") }],
+			[{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_4.address), value: toBigNumberLike("0.1") }],
 		)
 
 		const orderTx = await testnetSdk.order.sell({
@@ -144,7 +144,7 @@ describe("Test sell on emulator", () => {
 			currency: "FLOW",
 			itemId: mintTx.tokenId,
 			sellItemPrice: "1",
-			originFees: [{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_4.address), value: toBigNumber("0.2") }],
+			originFees: [{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_4.address), value: toBigNumberLike("0.2") }],
 		})
 
 		expect(orderTx.orderId).toBeTruthy()

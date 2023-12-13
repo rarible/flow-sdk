@@ -1,5 +1,5 @@
 import * as fcl from "@onflow/fcl"
-import { FLOW_ZERO_ADDRESS, toBigNumber, toFlowAddress } from "@rarible/types"
+import { FLOW_ZERO_ADDRESS, toBigNumberLike, toFlowAddress } from "@rarible/types"
 import { createFlowSdk, toFlowContractAddress, toFlowItemId } from "../index"
 import { TestnetCollections } from "../config/config"
 import type { FlowFee } from "../types"
@@ -10,7 +10,7 @@ fcl.config()
 	.put("accessNode.api", "https://access-mainnet-beta.onflow.org")
 	.put("challenge.handshake", "https://flow-wallet.blocto.app/authn")
 
-const feesArray: FlowFee[] = [{ account: FLOW_ZERO_ADDRESS, value: toBigNumber("0.1") }]
+const feesArray: FlowFee[] = [{ account: FLOW_ZERO_ADDRESS, value: toBigNumberLike("0.1") }]
 
 /** Create SDK */
 const sdk = createFlowSdk(fcl, "mainnet")
@@ -40,7 +40,7 @@ sdk.order.sell({
 	collection,
 	itemId: toFlowItemId(`A.${FLOW_ZERO_ADDRESS}.RaribleNFT:123`),
 	originFees: feesArray,
-	sellItemPrice: toBigNumber("0.3"),
+	sellItemPrice: toBigNumberLike("0.3"),
 	currency: "FLOW",
 }).then(response => {
 	console.log("order id: ", response.orderId)
@@ -50,7 +50,7 @@ sdk.order.updateOrder({
 	collection,
 	currency: "FUSD",
 	order: "123",
-	sellItemPrice: toBigNumber("0.1"),
+	sellItemPrice: toBigNumberLike("0.1"),
 }).then(response => {
 	console.log("order id: ", response.orderId)
 })
@@ -59,11 +59,11 @@ sdk.order.cancelOrder(collection, "123").then(response => {
 	console.log("transaction id: ", response.txId)
 })
 
-sdk.order.bid(collection, "FLOW", toFlowItemId("flow item id"), toBigNumber("0.1")).then(response => {
+sdk.order.bid(collection, "FLOW", toFlowItemId("flow item id"), toBigNumberLike("0.1")).then(response => {
 	console.log("bid order id: ", response.orderId)
 })
 
-sdk.order.bidUpdate(collection, "FLOW", "123", toBigNumber("0.1")).then(response => {
+sdk.order.bidUpdate(collection, "FLOW", "123", toBigNumberLike("0.1")).then(response => {
 	console.log("bid order id: ", response.orderId)
 })
 

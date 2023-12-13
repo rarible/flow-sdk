@@ -1,5 +1,5 @@
-import type { BigNumber, FlowAddress } from "@rarible/types"
-import { toBigNumber, toFlowAddress } from "@rarible/types"
+import type { BigNumberLike, FlowAddress } from "@rarible/types"
+import { toBigNumberLike, toFlowAddress } from "@rarible/types"
 import type { FlowContractAddressName } from "../common/flow-address"
 import type { FlowContractName, FlowFee, FlowNetwork, NonFungibleContract } from "../types"
 
@@ -155,7 +155,7 @@ const TESTNET_RARIBLE_ADDRESS = toFlowAddress("0xebf4ae01d1284af8")
 const EMULATOR_ADDRESS = toFlowAddress("0xf8d6e0586b0a20c7")
 
 // protocol fee in base points
-const PROTOCOL_FEE: BigNumber = toBigNumber("0")
+const PROTOCOL_FEE: BigNumberLike = toBigNumberLike("0")
 
 
 // todo move contracts address to fcl.config aliases  if it's possible

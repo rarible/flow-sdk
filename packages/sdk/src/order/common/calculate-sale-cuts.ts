@@ -1,6 +1,6 @@
 import { toBn } from "@rarible/utils"
 import type { FlowAddress } from "@rarible/types"
-import { toBigNumber, toFlowAddress } from "@rarible/types"
+import { toBigNumberLike, toFlowAddress } from "@rarible/types"
 import type { FlowFee } from "../../types"
 import { withPrefix } from "../../common/prefix"
 
@@ -25,7 +25,7 @@ export function calculateSaleCuts(
 		leftAfterFees = leftAfterFees.minus(value)
 		return {
 			...fee,
-			value: toBigNumber(value.decimalPlaces(8).toString()),
+			value: toBigNumberLike(value.decimalPlaces(8).toString()),
 		}
 	})
 	let leftAfterPayouts = toBn(leftAfterFees)
@@ -34,13 +34,13 @@ export function calculateSaleCuts(
 		leftAfterPayouts = leftAfterPayouts.minus(value)
 		return {
 			...fee,
-			value: toBigNumber(value.decimalPlaces(8).toString()),
+			value: toBigNumberLike(value.decimalPlaces(8).toString()),
 		}
 	})
 	if (leftAfterPayouts.gt(0)) {
 		resultPayoutSaleCuts.push({
 			account: mainPayoutAddress,
-			value: toBigNumber(leftAfterPayouts.decimalPlaces(8).toString()),
+			value: toBigNumberLike(leftAfterPayouts.decimalPlaces(8).toString()),
 		})
 	} else if (leftAfterPayouts.lt(0)) {
 		throw new Error("Sum of payouts greater than price")
@@ -58,5 +58,5 @@ export function concatNonUniqueFees(fees: FlowFee[]): FlowFee[] {
 			unique[account] = f.value
 		}
 	})
-	return Object.keys(unique).map(k => ({ account: toFlowAddress(k), value: toBigNumber(unique[k]) }))
+	return Object.keys(unique).map(k => ({ account: toFlowAddress(k), value: toBigNumberLike(unique[k]) }))
 }

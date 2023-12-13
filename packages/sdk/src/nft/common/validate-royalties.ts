@@ -1,5 +1,5 @@
 import type { FlowRoyalty } from "@rarible/flow-api-client"
-import { toBigNumber, toFlowAddress } from "@rarible/types"
+import { toBigNumberLike, toFlowAddress } from "@rarible/types"
 
 export function validateRoyalties(royalties: FlowRoyalty[]): FlowRoyalty[] {
 	if (royalties.length) {
@@ -8,7 +8,7 @@ export function validateRoyalties(royalties: FlowRoyalty[]): FlowRoyalty[] {
 			if (r.account && r.value) {
 				result.push({
 					account: toFlowAddress(r.account),
-					value: toBigNumber(r.value),
+					value: toBigNumberLike(r.value),
 				})
 			} else if (!r.account && !r.value) {
 				return

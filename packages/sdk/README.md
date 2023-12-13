@@ -53,7 +53,7 @@ import { toFlowAddress } from "@rarible/types"
 // collection = Contact address A.[contactAddress].[contractName]
 const collection = toFlowContractAddress("A.0x1234567890abcdef.RaribleNFT")
 // royalties - array of objects: {account: FlowAddress, value: BigNumber}, value must be a number between 0 and 1
-const royalties = [{ account: toFlowAddress("0x1234567890abcdef"), value: toBigNumber("0.1") }]
+const royalties = [{ account: toFlowAddress("0x1234567890abcdef"), value: toBigNumberLike("0.1") }]
 const metaData = "your meta info" // usually ipfs url
 
 const { tokenId } = await sdk.nft.mint(collection, metaData, royalties)

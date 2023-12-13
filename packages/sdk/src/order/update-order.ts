@@ -1,6 +1,6 @@
 import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types"
-import type { BigNumber } from "@rarible/types"
+import type { BigNumberLike } from "@rarible/types"
 import { toBn } from "@rarible/utils"
 import { toFlowAddress } from "@rarible/types"
 import type { FlowOrder, FlowOrderControllerApi } from "@rarible/flow-api-client"
@@ -26,7 +26,7 @@ export type FlowUpdateOrderRequest = {
 	collection: FlowContractAddress,
 	currency: FlowCurrency,
 	order: string | number | FlowOrder,
-	sellItemPrice: BigNumber,
+	sellItemPrice: BigNumberLike,
 }
 
 export async function updateOrder(

@@ -1,6 +1,6 @@
 import type { Fcl } from "@rarible/fcl-types"
 import * as t from "@onflow/types"
-import { toBigNumber, toFlowAddress } from "@rarible/types"
+import { toBigNumberLike, toFlowAddress } from "@rarible/types"
 import { runScript } from "../../common/transaction"
 import type { FlowCurrency, FlowFee, FlowNetwork } from "../../types"
 import { CONFIGS } from "../../config/config"
@@ -75,7 +75,7 @@ export async function getOrderDetailsFromBlockchain(
 		...details,
 		saleCuts: ("saleCuts" in details ? details.saleCuts : details.cuts).map((s: FlowSaleCuts) => ({
 			account: toFlowAddress(s.receiver.address),
-			value: toBigNumber(s.amount),
+			value: toBigNumberLike(s.amount),
 		})),
 	}
 	data.isLegacy = data.saleCuts.filter(

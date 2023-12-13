@@ -1,4 +1,4 @@
-import { toBigNumber } from "@rarible/types"
+import { toBigNumberLike } from "@rarible/types"
 import { toBn } from "@rarible/utils"
 import type { FlowFee, FlowNetwork } from "../types"
 import { CONFIGS } from "../config/config"
@@ -25,7 +25,7 @@ export function getProtocolFee(network: FlowNetwork): ProtocolFees {
  */
 getProtocolFee.percents = (network: FlowNetwork): ProtocolFees => {
 	const { account, value } = CONFIGS[network].protocolFee
-	const percentsValue = toBigNumber(toBn(value).div(10000).toString())
+	const percentsValue = toBigNumberLike(toBn(value).div(10000).toString())
 	return {
 		buyerFee: { account, value: percentsValue },
 		sellerFee: { account, value: percentsValue },

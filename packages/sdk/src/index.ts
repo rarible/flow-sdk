@@ -2,7 +2,7 @@ import type { Fcl } from "@rarible/fcl-types"
 import type { Maybe } from "@rarible/types"
 import type { ConfigurationParameters, FlowOrder, FlowRoyalty } from "@rarible/flow-api-client"
 import * as ApiClient from "@rarible/flow-api-client"
-import type { BigNumber, FlowAddress } from "@rarible/types"
+import type { BigNumberLike, FlowAddress } from "@rarible/types"
 import type { FlowMintResponse } from "./nft/mint"
 import { mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
@@ -107,7 +107,7 @@ export interface FlowOrderSdk {
 		collection: FlowContractAddress,
 		currency: FlowCurrency,
 		itemId: FlowItemId,
-		price: BigNumber,
+		price: BigNumberLike,
 		originFee?: FlowOriginFees,
 	): Promise<FlowSellResponse>
 
@@ -121,7 +121,7 @@ export interface FlowOrderSdk {
 		collection: FlowContractAddress,
 		currency: FlowCurrency,
 		order: string | number | FlowOrder,
-		price: BigNumber,
+		price: BigNumberLike,
 	): Promise<FlowSellResponse>
 
 	/**

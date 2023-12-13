@@ -1,4 +1,4 @@
-import { toBigNumber, toFlowAddress, toFlowContractAddress } from "@rarible/types"
+import { toBigNumberLike, toFlowAddress, toFlowContractAddress } from "@rarible/types"
 import { TestnetCollections } from "../../../config/config"
 import { createFlowTestTestnetSdk } from "../../helpers/testnet/create-flow-test-testnet-sdk"
 import { checkEvent } from "../../helpers/check-event"
@@ -18,8 +18,8 @@ describe.skip("Test cancel order on testnet", () => {
 			collection,
 			"FLOW",
 			mintTx.tokenId,
-			toBigNumber("1"),
-			[{ account: toFlowAddress(address2), value: toBigNumber("0.03") }],
+			toBigNumberLike("1"),
+			[{ account: toFlowAddress(address2), value: toBigNumberLike("0.03") }],
 		)
 		expect(tx.status).toEqual(4)
 

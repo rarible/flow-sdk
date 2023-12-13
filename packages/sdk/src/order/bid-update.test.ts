@@ -1,6 +1,6 @@
 import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
 import fcl from "@onflow/fcl"
-import { toBigNumber } from "@rarible/types"
+import { toBigNumberLike } from "@rarible/types"
 import { createFlowSdk, toFlowContractAddress } from "../index"
 import { getTestOrderTmplate } from "../test/helpers/order-template"
 import { checkEvent } from "../test/helpers/check-event"
@@ -26,11 +26,11 @@ describe("Bid update", () => {
 			collection,
 			"FLOW",
 			mintTx.tokenId,
-			toBigNumber("0.01"),
+			toBigNumberLike("0.01"),
 		)
-		const order = getTestOrderTmplate("bid", tx.orderId, mintTx.tokenId, toBigNumber("0.01"))
+		const order = getTestOrderTmplate("bid", tx.orderId, mintTx.tokenId, toBigNumberLike("0.01"))
 		const updateTx = await sdk1.order.bidUpdate(
-			collection, "FLOW", order, toBigNumber("0.02"),
+			collection, "FLOW", order, toBigNumberLike("0.02"),
 		)
 		checkEvent(updateTx, "BidAvailable", "RaribleOpenBid")
 	})
