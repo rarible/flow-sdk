@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@rarible/fcl-types": ["./packages/fcl-types/src"],
+      "@rarible/flow-test-common": ["./packages/test-common/src"],
+      "@rarible/flow-sdk": ["./packages/sdk/src"]
+    }
+  }
+}
