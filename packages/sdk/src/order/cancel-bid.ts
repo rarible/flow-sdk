@@ -1,10 +1,9 @@
 import type { Fcl } from "@rarible/fcl-types"
-import type { Maybe } from "@rarible/types"
+import type { FlowContractAddress, Maybe } from "@rarible/types"
 import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getCollectionConfig } from "../common/collection/get-config"
 import { getBidCode } from "../tx-code-store/order/rarible-open-bid"
-import type { FlowContractAddress } from "../common/flow-address"
 
 export async function cancelBid(
 	fcl: Maybe<Fcl>,

@@ -6,7 +6,7 @@ import {
 	FLOW_TESTNET_ACCOUNT_3,
 } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
-import { toBigNumberLike, toFlowAddress } from "@rarible/types"
+import { toBigNumberLike, toFlowAddress, toFlowContractAddress } from "@rarible/types"
 import { FLOW_TESTNET_ACCOUNT_5 } from "@rarible/flow-test-common"
 import { EmulatorCollections, TestnetCollections } from "../config/config"
 import { checkEvent } from "../test/helpers/check-event"
@@ -16,7 +16,7 @@ import { borrowMotoGpCardId, createMotoGpTestEnvironment } from "../test/helpers
 import { createFusdTestEnvironment } from "../test/helpers/emulator/setup-fusd-env"
 import { toFlowItemId } from "../common/item"
 import { getTestOrderTmplate } from "../test/helpers/order-template"
-import { createFlowSdk, toFlowContractAddress } from "../index"
+import { createFlowSdk } from "../index"
 import { createMugenArtTestEnvironment, getMugenArtIds } from "../test/helpers/emulator/mugen-art"
 import { awaitOrder } from "./common/await-order"
 

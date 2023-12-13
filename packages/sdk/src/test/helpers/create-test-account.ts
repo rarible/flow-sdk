@@ -1,6 +1,6 @@
 import type {Maybe} from "@rarible/types"
 import type {Fcl} from "@rarible/fcl-types"
-import {randomWord} from "@rarible/types"
+import { randomWord, toFlowContractAddress } from "@rarible/types"
 import * as rlp from "rlp"
 import {pubFlowKey} from "@onflow/flow-js-testing"
 import {createTestAuth} from "@rarible/flow-test-common"
@@ -9,7 +9,6 @@ import {runTransaction, waitForSeal} from "../../common/transaction"
 import {CONFIGS, TestnetCollections} from "../../config/config"
 import type {FlowNetwork} from "../../types"
 import {setupAccount} from "../../collection/setup-account"
-import {toFlowContractAddress} from "../../common/flow-address"
 
 export async function createTestAccount(
 	fcl: Maybe<Fcl>,

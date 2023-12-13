@@ -1,10 +1,9 @@
 import type { FlowAsset, FlowOrder } from "@rarible/flow-api-client"
 import type { BigNumberLike } from "@rarible/types"
-import { FLOW_ZERO_ADDRESS, toBigNumberLike } from "@rarible/types"
+import { FLOW_ZERO_ADDRESS, toBigNumberLike, toFlowContractAddress } from "@rarible/types"
 import {FlowOrderStatus} from "@rarible/flow-api-client"
 import type { FlowItemId } from "../../common/item"
 import { extractTokenId } from "../../common/item"
-import { toFlowContractAddress } from "../../common/flow-address"
 
 export function getTestOrderTmplate(type: "sell" | "bid", orderId: string, itemId: FlowItemId, price: BigNumberLike): FlowOrder {
 	const left: FlowAsset = {

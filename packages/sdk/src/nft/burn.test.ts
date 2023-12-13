@@ -1,8 +1,13 @@
-import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
-import { FLOW_TESTNET_ACCOUNT_5 } from "@rarible/flow-test-common"
+import {
+	createEmulatorAccount,
+	createFlowEmulator,
+	createTestAuth,
+	FLOW_TESTNET_ACCOUNT_5,
+} from "@rarible/flow-test-common"
+import { toFlowContractAddress } from "@rarible/types"
 import * as fcl from "@onflow/fcl"
 import type { FlowSdk } from "../index"
-import { createFlowSdk, toFlowContractAddress } from "../index"
+import { createFlowSdk } from "../index"
 import { checkEvent } from "../test/helpers/check-event"
 import { EmulatorCollections, TestnetCollections } from "../config/config"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/helpers/emulator/evolution"

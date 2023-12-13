@@ -1,5 +1,5 @@
+import { toFlowContractAddress } from "@rarible/types"
 import { TestnetCollections } from "../../../config/config"
-import { toFlowContractAddress } from "../../../index"
 import { extractTokenId } from "../../../common/item"
 import { checkEvent } from "../../helpers/check-event"
 import { createFlowTestTestnetSdk } from "../../helpers/testnet/create-flow-test-testnet-sdk"

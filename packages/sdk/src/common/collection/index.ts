@@ -1,5 +1,5 @@
-import type { FlowAddress } from "@rarible/types"
-import type { FlowContractAddress, FlowContractAddressName } from "../flow-address"
+import type { FlowAddress, FlowContractAddress } from "@rarible/types"
+import type { FlowContractAddressName } from "../flow-address"
 import { parseContractAddress } from "../flow-address"
 import type { NonFungibleContract } from "../../types"
 import { NON_FUNGIBLE_CONTRACTS } from "../../types"

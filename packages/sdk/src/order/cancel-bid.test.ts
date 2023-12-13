@@ -1,6 +1,5 @@
 import { createFlowEmulator } from "@rarible/flow-test-common"
-import { toBigNumberLike, toFlowAddress } from "@rarible/types"
-import { toFlowContractAddress } from "../index"
+import { toBigNumberLike, toFlowAddress, toFlowContractAddress } from "@rarible/types"
 import { EmulatorCollections } from "../config/config"
 import { createFlowTestEmulatorSdk } from "../test/helpers/emulator/create-flow-test-sdk"
 import { checkEvent } from "../test/helpers/check-event"

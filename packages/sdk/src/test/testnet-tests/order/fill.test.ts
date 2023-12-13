@@ -1,7 +1,6 @@
 import { FLOW_TESTNET_ACCOUNT_2, FLOW_TESTNET_ACCOUNT_3, FLOW_TESTNET_ACCOUNT_4 } from "@rarible/flow-test-common"
-import { toBigNumberLike, toFlowAddress } from "@rarible/types"
+import { toBigNumberLike, toFlowAddress, toFlowContractAddress } from "@rarible/types"
 import { toBn } from "@rarible/utils"
-import { toFlowContractAddress } from "../../../index"
 import { TestnetCollections } from "../../../config/config"
 import { createFlowTestTestnetSdk } from "../../helpers/testnet/create-flow-test-testnet-sdk"
 

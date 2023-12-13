@@ -1,5 +1,5 @@
 import type { Fcl } from "@rarible/fcl-types"
-import type { Maybe } from "@rarible/types"
+import type { FlowContractAddress, Maybe } from "@rarible/types"
 import type { FlowRoyalty } from "@rarible/flow-api-client"
 import type { AuthWithPrivateKey, FlowNetwork, FlowTransaction } from "../types"
 import { runTransaction, waitForSeal } from "../common/transaction"
@@ -7,7 +7,6 @@ import { getNftCode } from "../tx-code-store/nft"
 import { getCollectionConfig } from "../common/collection/get-config"
 import type { FlowItemId } from "../common/item"
 import { toFlowItemId } from "../common/item"
-import type { FlowContractAddress } from "../common/flow-address"
 import { validateRoyalties } from "./common/validate-royalties"
 
 export interface FlowMintResponse extends FlowTransaction {

@@ -1,5 +1,5 @@
+import { toFlowContractAddress } from "@rarible/types"
 import { TestnetCollections } from "../../../config/config"
-import { toFlowContractAddress } from "../../../index"
 import { createFlowTestTestnetSdk } from "../../helpers/testnet/create-flow-test-testnet-sdk"
 
 describe.skip("Minting on testnet", () => {

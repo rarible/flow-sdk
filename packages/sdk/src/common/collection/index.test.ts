@@ -1,4 +1,4 @@
-import { toFlowContractAddress } from "../flow-address"
+import { toFlowContractAddress } from "@rarible/types"
 import type { NonFungibleContracts } from "../../types"
 import { getCollectionData, isFlowCollection } from "."
 

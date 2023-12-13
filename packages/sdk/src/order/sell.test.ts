@@ -5,11 +5,10 @@ import {
 	FLOW_TESTNET_ACCOUNT_4,
 } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
-import { toBigNumberLike, toFlowAddress } from "@rarible/types"
+import { toBigNumberLike, toFlowAddress, toFlowContractAddress } from "@rarible/types"
 // import type { FlowSdk } from "../index"
 import {FLOW_TESTNET_ACCOUNT_5} from "@rarible/flow-test-common"
 import {FLOW_TESTNET_ACCOUNT_MATRIX} from "@rarible/flow-test-common"
-import { toFlowContractAddress } from "../index"
 import { checkEvent } from "../test/helpers/check-event"
 import { EmulatorCollections, TestnetCollections } from "../config/config"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/helpers/emulator/evolution"

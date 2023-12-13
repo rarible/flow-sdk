@@ -1,13 +1,15 @@
 import {
 	createEmulatorAccount,
 	createFlowEmulator,
-	createTestAuth, FLOW_TESTNET_ACCOUNT_4,
+	createTestAuth,
+	FLOW_TESTNET_ACCOUNT_4,
 } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
+import { toFlowContractAddress } from "@rarible/types"
 import type { FlowSdk } from "../index"
-import { createFlowSdk, toFlowContractAddress } from "../index"
+import { createFlowSdk } from "../index"
 import { EmulatorCollections, TestnetCollections } from "../config/config"
-import {createTestAccount} from "../test/helpers/create-test-account"
+import { createTestAccount } from "../test/helpers/create-test-account"
 
 describe("Colelction setup on account", () => {
 	let sdk: FlowSdk

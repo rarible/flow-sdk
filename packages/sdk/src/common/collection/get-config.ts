@@ -1,8 +1,7 @@
-import type { FlowAddress } from "@rarible/types"
+import type { FlowAddress, FlowContractAddress } from "@rarible/types"
 import type { FlowConfigData } from "../../config/config"
 import { CONFIGS, flowCollectionsConfig } from "../../config/config"
 import type { FlowNetwork, NonFungibleContract } from "../../types"
-import type { FlowContractAddress } from "../flow-address"
 import { getCollectionData } from "./index"
 
 export type CollectionConfig = {

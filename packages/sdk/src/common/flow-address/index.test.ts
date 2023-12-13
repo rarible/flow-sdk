@@ -1,5 +1,5 @@
-import { toFlowAddress } from "@rarible/types"
-import { parseContractAddress, toFlowContractAddress } from "."
+import { toFlowAddress, toFlowContractAddress } from "@rarible/types"
+import { parseContractAddress } from "."
 
 describe("to-flow-address", () => {
 	it("should correctly parse flow address", () => {

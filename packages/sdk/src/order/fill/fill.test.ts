@@ -5,14 +5,13 @@ import {
 	FLOW_TESTNET_ACCOUNT_4,
 } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
-import { toBigNumberLike, toFlowAddress } from "@rarible/types"
+import { toBigNumberLike, toFlowAddress, toFlowContractAddress } from "@rarible/types"
 import { toBn } from "@rarible/utils"
 import {
 	FLOW_TESTNET_ACCOUNT_BEAR,
 	FLOW_TESTNET_ACCOUNT_PANDA,
 } from "@rarible/flow-test-common"
 import type {FlowCurrency, FlowSdk} from "../../index"
-import { toFlowContractAddress } from "../../index"
 import { EmulatorCollections, TestnetCollections } from "../../config/config"
 import { createFusdTestEnvironment } from "../../test/helpers/emulator/setup-fusd-env"
 import { checkEvent } from "../../test/helpers/check-event"
