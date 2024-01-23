@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.77](https://github.com/rarible/flow-sdk/compare/v0.5.76...v0.5.77) (2024-01-23)
+
+
+### Features
+
+* bundle both cjs and esm versions at the same time ([9a72500](https://github.com/rarible/flow-sdk/commit/9a72500fd0b043590c93a10eadf0a9477142bb91))
+* optimise tsconfig, improve dx for monorepo project ([da0ca57](https://github.com/rarible/flow-sdk/commit/da0ca5771927f6b290e6e02a253a9d042faa9032))
+* upgraded @rarible/types, @rarible/flow-api-client ([cc7e0f7](https://github.com/rarible/flow-sdk/commit/cc7e0f75d0a0853fb39d5a64990b676a54cfda76))
+
+
+
+
+
 ## [0.5.76](https://github.com/rarible/flow-sdk/compare/v0.5.75-fix.1...v0.5.76) (2023-12-05)
 
 **Note:** Version bump only for package @rarible/fcl-types
