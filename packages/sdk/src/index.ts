@@ -29,7 +29,7 @@ import { ENV_CONFIG } from "./config/env"
 import type { TransferFlowRequest } from "./wallet/transfer-funds"
 import { transferFunds } from "./wallet/transfer-funds"
 import type {CollectionsInitStatus} from "./collection/check-init-collections"
-import {setupCollections} from "./collection/setup-collections"
+import {setupGamisodesCollections, setupMattelCollections} from "./collection/setup-collections"
 import {checkInitCollections} from "./collection/check-init-collections"
 
 export interface FlowApisSdk {
@@ -142,7 +142,8 @@ export interface FlowWalletSdk {
 
 export interface FlowCollectionSdk {
 	setupAccount(collection: FlowContractAddress): Promise<FlowTransaction>
-	setupCollections(): Promise<FlowTransaction>
+	setupMattelCollections(): Promise<FlowTransaction>
+	setupGamisodesCollections(): Promise<FlowTransaction>
 	checkInitCollections(address?: FlowAddress): Promise<CollectionsInitStatus>
 }
 
@@ -214,7 +215,8 @@ export function createFlowSdk(
 		},
 		collection: {
 			setupAccount: setupAccountTemplate.bind(null, fcl, auth, blockchainNetwork),
-			setupCollections: setupCollections.bind(null, fcl, auth, blockchainNetwork),
+			setupMattelCollections: setupMattelCollections.bind(null, fcl, auth, blockchainNetwork),
+			setupGamisodesCollections: setupGamisodesCollections.bind(null, fcl, auth, blockchainNetwork),
 			checkInitCollections: checkInitCollections.bind(null, fcl, auth, blockchainNetwork),
 		},
 		signUserMessage: signUserMessageTemplate.bind(null, fcl),
