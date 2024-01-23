@@ -222,7 +222,7 @@ export function createFlowSdk(
 	}
 }
 
-export type { FlowNetwork, FlowCurrency, FlowTransaction, AuthWithPrivateKey } from "./types"
+export type { FlowNetwork, FlowCurrency, FlowTransaction, AuthWithPrivateKey, FlowFee } from "./types"
 export type { FlowRoyalty } from "@rarible/flow-api-client"
 export { toFlowItemId, isFlowItemId } from "./common/item/index"
 export type { FlowItemId } from "./common/item/index"
@@ -230,4 +230,5 @@ export type { FlowEnv } from "./config/env"
 export const FLOW_ENV_CONFIG: FlowEnvConfig = ENV_CONFIG
 export { FlowOrder } from "@rarible/flow-api-client"
 export { getFungibleBalanceSimple } from "./wallet/get-ft-balance-simple"
+export { CollectionsInitStatus } from "./collection/check-init-collections"
 export const getFlowFungibleBalance = getFungibleBalanceTemplate
