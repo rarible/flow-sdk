@@ -9,7 +9,6 @@ import {
 	garageBuyTxCode,
 	getGarageChangePriceTxCode,
 	getGarageListTxCode,
-	txInitNFTContractsAndStorefrontV2,
 	txUnlistItemStorefrontV2,
 	gamisodesListTxCode,
 	txInitVault,
@@ -165,12 +164,6 @@ export function getWhitelabelOrderCode(fcl: Fcl, collectionName: NonFungibleCont
 			return {
 				cadence: fillCodeTemplate(txUnlistItemStorefrontV2, getNftCodeConfig(collectionName)),
 				args: fcl.args([fcl.arg(orderId, t.UInt64)]),
-			}
-		},
-		setupAccount(): GenerateCodeMethodResponse {
-			return {
-				cadence: fillCodeTemplate(txInitNFTContractsAndStorefrontV2, getNftCodeConfig(collectionName)),
-				args: fcl.args([]),
 			}
 		},
 		setupVault(): GenerateCodeMethodResponse {
