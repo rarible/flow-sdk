@@ -30,6 +30,7 @@ import { transferFunds } from "./wallet/transfer-funds"
 import type {CollectionsInitStatus} from "./collection/check-init-collections"
 import {setupGamisodesCollections, setupMattelCollections} from "./collection/setup-collections"
 import {checkInitCollections} from "./collection/check-init-collections"
+import {CONFIGS} from "./config/config"
 
 export interface FlowApisSdk {
 	order: ApiClient.FlowOrderControllerApi
@@ -225,10 +226,13 @@ export function createFlowSdk(
 export type { FlowNetwork, FlowCurrency, FlowTransaction, AuthWithPrivateKey, FlowFee } from "./types"
 export type { FlowRoyalty } from "@rarible/flow-api-client"
 export { toFlowItemId, isFlowItemId } from "./common/item/index"
+export { replaceImportAddresses } from "./common/template-replacer"
+export { waitForSeal } from "./common/transaction"
 export type { FlowItemId } from "./common/item/index"
 export type { FlowEnv } from "./config/env"
 export const FLOW_ENV_CONFIG: FlowEnvConfig = ENV_CONFIG
 export { FlowOrder } from "@rarible/flow-api-client"
 export { getFungibleBalanceSimple } from "./wallet/get-ft-balance-simple"
 export { CollectionsInitStatus } from "./collection/check-init-collections"
+export { CONFIGS } from "./config/config"
 export const getFlowFungibleBalance = getFungibleBalanceTemplate
