@@ -30,7 +30,6 @@ import { transferFunds } from "./wallet/transfer-funds"
 import type {CollectionsInitStatus} from "./collection/check-init-collections"
 import {setupGamisodesCollections, setupMattelCollections} from "./collection/setup-collections"
 import {checkInitCollections} from "./collection/check-init-collections"
-import {CONFIGS} from "./config/config"
 
 export interface FlowApisSdk {
 	order: ApiClient.FlowOrderControllerApi
