@@ -5,9 +5,18 @@ import type { FlowContractAddress } from "../common/flow-address"
 import { runTransaction, waitForSeal } from "../common/transaction"
 import { getNftCode } from "../tx-code-store/nft"
 import { getCollectionConfig } from "../common/collection/get-config"
-import {getWhitelabelOrderCode, isWhitelabelCollection} from "../tx-code-store/order/whitelabel-storefront"
+import {
+	isGamisodesCollection,
+	isWhitelabelCollection,
+} from "../tx-code-store/order/whitelabel-storefront"
 import {CONFIGS} from "../config/config"
-import {txInitVault} from "../scripts/nft"
+import {
+	txInitGamisodesContractsAndStorefrontV2,
+	txInitMattelContractsAndStorefrontV2,
+	txInitVault,
+} from "../scripts/nft"
+import {fillCodeTemplate} from "../common/template-replacer"
+import {getNftCodeConfig} from "../config/cadence-code-config"
 
 export async function setupAccount(
 	fcl: Maybe<Fcl>,
@@ -26,7 +35,15 @@ export async function setupAccount(
 		const txId = await runTransaction(
 			fcl,
 			map,
-			getWhitelabelOrderCode(fcl, name).setupAccount(),
+			{
+				cadence: fillCodeTemplate(
+					isGamisodesCollection(name)
+						? txInitGamisodesContractsAndStorefrontV2
+						: txInitMattelContractsAndStorefrontV2,
+					getNftCodeConfig(name)
+				),
+				args: fcl.args([]),
+			},
 			auth,
 		)
 		return waitForSeal(fcl, txId)

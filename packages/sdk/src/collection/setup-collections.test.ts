@@ -8,7 +8,9 @@ describe("Collection setup on account", () => {
 		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_WOLF.address, FLOW_TESTNET_ACCOUNT_WOLF.privKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
 
-		const collection = await testnetBuyerSdk.collection.setupCollections()
-		expect(collection.status).toEqual(4)
+		const mattelCollection = await testnetBuyerSdk.collection.setupMattelCollections()
+		expect(mattelCollection.status).toEqual(4)
+		const gamisodesCollection = await testnetBuyerSdk.collection.setupGamisodesCollections()
+		expect(gamisodesCollection.status).toEqual(4)
 	}, 1000000)
 })

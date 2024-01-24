@@ -29,7 +29,7 @@ import { ENV_CONFIG } from "./config/env"
 import type { TransferFlowRequest } from "./wallet/transfer-funds"
 import { transferFunds } from "./wallet/transfer-funds"
 import type {CollectionsInitStatus} from "./collection/check-init-collections"
-import {setupCollections} from "./collection/setup-collections"
+import {setupGamisodesCollections, setupMattelCollections} from "./collection/setup-collections"
 import {checkInitCollections} from "./collection/check-init-collections"
 
 export interface FlowApisSdk {
@@ -142,7 +142,8 @@ export interface FlowWalletSdk {
 
 export interface FlowCollectionSdk {
 	setupAccount(collection: FlowContractAddress): Promise<FlowTransaction>
-	setupCollections(): Promise<FlowTransaction>
+	setupMattelCollections(): Promise<FlowTransaction>
+	setupGamisodesCollections(): Promise<FlowTransaction>
 	checkInitCollections(address?: FlowAddress): Promise<CollectionsInitStatus>
 }
 
@@ -214,16 +215,19 @@ export function createFlowSdk(
 		},
 		collection: {
 			setupAccount: setupAccountTemplate.bind(null, fcl, auth, blockchainNetwork),
-			setupCollections: setupCollections.bind(null, fcl, auth, blockchainNetwork),
+			setupMattelCollections: setupMattelCollections.bind(null, fcl, auth, blockchainNetwork),
+			setupGamisodesCollections: setupGamisodesCollections.bind(null, fcl, auth, blockchainNetwork),
 			checkInitCollections: checkInitCollections.bind(null, fcl, auth, blockchainNetwork),
 		},
 		signUserMessage: signUserMessageTemplate.bind(null, fcl),
 	}
 }
 
-export type { FlowNetwork, FlowCurrency, FlowTransaction, AuthWithPrivateKey } from "./types"
+export type { FlowNetwork, FlowCurrency, FlowTransaction, AuthWithPrivateKey, FlowFee } from "./types"
 export type { FlowRoyalty } from "@rarible/flow-api-client"
 export { toFlowItemId, isFlowItemId } from "./common/item/index"
+export { replaceImportAddresses } from "./common/template-replacer"
+export { waitForSeal } from "./common/transaction"
 export type { FlowItemId } from "./common/item/index"
 export type { FlowContractAddress } from "./common/flow-address/index"
 export { toFlowContractAddress, isFlowContractAddress } from "./common/flow-address/index"
@@ -231,4 +235,6 @@ export type { FlowEnv } from "./config/env"
 export const FLOW_ENV_CONFIG: FlowEnvConfig = ENV_CONFIG
 export { FlowOrder } from "@rarible/flow-api-client"
 export { getFungibleBalanceSimple } from "./wallet/get-ft-balance-simple"
+export { CollectionsInitStatus } from "./collection/check-init-collections"
+export { CONFIGS } from "./config/config"
 export const getFlowFungibleBalance = getFungibleBalanceTemplate

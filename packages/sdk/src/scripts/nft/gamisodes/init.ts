@@ -1,4 +1,5 @@
-import {NFTStorefrontV2} from "../contracts"
+import { NFTStorefrontV2 } from "../contracts"
+import {getVaultInitTx, vaultOptions} from "../init-vault"
 
 export const gamisodesRawInitPart = `
         //Gamisodes INIT PART START
@@ -25,3 +26,35 @@ export const gamisodesRawInitPart = `
         }
         //Gamisodes INIT PART START
 `
+
+
+export const txInitGamisodesContractsAndStorefrontV2: string = `
+import NonFungibleToken from 0xNonFungibleToken
+import MetadataViews from 0xMetadataViews
+import FungibleToken from 0xFungibleToken
+import FlowToken from 0xFlowToken
+import FUSD from 0xFUSD
+import FiatToken from 0xFiatToken
+import NFTStorefrontV2 from 0xNFTStorefrontV2
+//Gamisodes
+import TokenForwarding from 0xTokenForwarding
+import Gamisodes from 0xGamisodes
+import NiftoryNFTRegistry from 0xNiftoryNFTRegistry
+import NiftoryNonFungibleToken from 0xNiftoryNonFungibleToken
+
+transaction() {
+    prepare(acct: AuthAccount) {
+${getVaultInitTx(vaultOptions["FiatToken"])}
+${gamisodesRawInitPart}
+
+			if acct.borrow<&${NFTStorefrontV2.name}.${NFTStorefrontV2.contractType}>(from: ${NFTStorefrontV2.storagePath}) == nil {
+					let collection <- ${NFTStorefrontV2.name}.${NFTStorefrontV2.nameOfMethodForCreateResource}
+					acct.save(<-collection, to: ${NFTStorefrontV2.storagePath})
+			}
+			if acct.getCapability<${NFTStorefrontV2.publicType}>(${NFTStorefrontV2.publicPath}).borrow() == nil {
+					acct.link<${NFTStorefrontV2.publicType}>(${NFTStorefrontV2.publicPath}, target: ${NFTStorefrontV2.storagePath})
+			}
+    }
+    execute {
+    }
+}`

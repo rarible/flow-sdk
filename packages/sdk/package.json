@@ -21,12 +21,12 @@
     "@onflow/types": "~0.0.5",
     "@rarible/fcl-types": "^0.5.76",
     "@rarible/flow-api-client": "~0.0.5-fix.2",
-    "@rarible/types": "~0.9.3",
     "@rarible/utils": "~0.5.0"
   },
   "devDependencies": {
     "@onflow/flow-js-testing": "^0.4.0",
     "@rarible/flow-test-common": "^0.5.76",
+    "@rarible/types": "~0.9.3",
     "@types/jest": "^27.0.2",
     "@types/onflow__flow-js-testing": "^0.3.1",
     "google-protobuf": "^3.19.1",
