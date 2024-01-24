@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.76-beta.0](https://github.com/rarible/flow-sdk/compare/v0.5.76...v0.5.76-beta.0) (2024-01-24)
+
+
+### Features
+
+* **PLTF-229:** split setup collections ([e53206d](https://github.com/rarible/flow-sdk/commit/e53206d8f36ae5f58d8fc7c0183feb3daad79154))
+
+
+
+
+
 ## [0.5.76](https://github.com/rarible/flow-sdk/compare/v0.5.75-fix.1...v0.5.76) (2023-12-05)
 
 **Note:** Version bump only for package @rarible/flow-test-common
