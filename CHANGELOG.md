@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.78-fix.0](https://github.com/rarible/flow-sdk/compare/v0.5.78...v0.5.78-fix.0) (2024-02-01)
+
+
+### Bug Fixes
+
+* garage change price formula ([3929392](https://github.com/rarible/flow-sdk/commit/3929392d4ec5dde874aafea499764c62c7495c51))
+
+
+
+
+
 ## [0.5.78](https://github.com/rarible/flow-sdk/compare/v0.5.76-beta.0...v0.5.78) (2024-01-30)
 
 **Note:** Version bump only for package root
