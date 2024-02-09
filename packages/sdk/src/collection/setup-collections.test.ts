@@ -12,5 +12,7 @@ describe("Collection setup on account", () => {
 		expect(mattelCollection.status).toEqual(4)
 		const gamisodesCollection = await testnetBuyerSdk.collection.setupGamisodesCollections()
 		expect(gamisodesCollection.status).toEqual(4)
+		const legacySetupCollections = await testnetBuyerSdk.collection.setupCollections()
+		expect(legacySetupCollections.status).toEqual(4)
 	}, 1000000)
 })

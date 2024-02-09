@@ -6,6 +6,7 @@ import {CONFIGS} from "../config/config"
 import {
 	txInitGamisodesContractsAndStorefrontV2,
 	txInitMattelContractsAndStorefrontV2,
+	txInitNFTContractsAndStorefrontV2,
 } from "../scripts/nft"
 
 export async function setupMattelCollections(
@@ -41,6 +42,26 @@ export async function setupGamisodesCollections(
 		CONFIGS[network].mainAddressMap,
 		{
 			cadence: txInitGamisodesContractsAndStorefrontV2,
+			args: fcl.args([]),
+		},
+		auth,
+	)
+	return waitForSeal(fcl, txId)
+}
+
+export async function setupCollections(
+	fcl: Maybe<Fcl>,
+	auth: AuthWithPrivateKey,
+	network: FlowNetwork,
+): Promise<FlowTransaction> {
+	if (!fcl) {
+		throw new Error("Fcl is required for setup collection on account")
+	}
+	const txId = await runTransaction(
+		fcl,
+		CONFIGS[network].mainAddressMap,
+		{
+			cadence: txInitNFTContractsAndStorefrontV2,
 			args: fcl.args([]),
 		},
 		auth,
