@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.78-fix.1](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.0...v0.5.78-fix.1) (2024-02-09)
+
+
+### Bug Fixes
+
+* revert legacy setup collections method ([7bc65ec](https://github.com/rarible/flow-sdk/commit/7bc65ecfe16bcf37fa343ecd44c99bc4ed08d751))
+
+
+
+
+
 ## [0.5.78-fix.0](https://github.com/rarible/flow-sdk/compare/v0.5.78...v0.5.78-fix.0) (2024-02-01)
 
 
