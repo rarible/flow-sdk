@@ -28,9 +28,13 @@ import type { FlowEnvConfig } from "./config/env"
 import { ENV_CONFIG } from "./config/env"
 import type { TransferFlowRequest } from "./wallet/transfer-funds"
 import { transferFunds } from "./wallet/transfer-funds"
-import type {CollectionsInitStatus} from "./collection/check-init-collections"
+import type {CollectionsInitStatus,
+	GamisodesInitStatus} from "./collection/check-init-collections"
 import {setupGamisodesCollections, setupMattelCollections, setupCollections} from "./collection/setup-collections"
-import {checkInitCollections} from "./collection/check-init-collections"
+import {
+	checkInitCollections,
+	checkInitGamisodesCollections,
+} from "./collection/check-init-collections"
 
 export interface FlowApisSdk {
 	order: ApiClient.FlowOrderControllerApi
@@ -146,6 +150,7 @@ export interface FlowCollectionSdk {
 	setupMattelCollections(): Promise<FlowTransaction>
 	setupGamisodesCollections(): Promise<FlowTransaction>
 	checkInitCollections(address?: FlowAddress): Promise<CollectionsInitStatus>
+	checkInitGamisodesCollections(address?: FlowAddress): Promise<GamisodesInitStatus>
 }
 
 export interface FlowSdk {
@@ -220,6 +225,7 @@ export function createFlowSdk(
 			setupMattelCollections: setupMattelCollections.bind(null, fcl, auth, blockchainNetwork),
 			setupGamisodesCollections: setupGamisodesCollections.bind(null, fcl, auth, blockchainNetwork),
 			checkInitCollections: checkInitCollections.bind(null, fcl, auth, blockchainNetwork),
+			checkInitGamisodesCollections: checkInitGamisodesCollections.bind(null, fcl, auth, blockchainNetwork),
 		},
 		signUserMessage: signUserMessageTemplate.bind(null, fcl),
 	}

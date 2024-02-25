@@ -63,4 +63,28 @@ describe("Check init mattel collections", () => {
 			expect(status[key]).toBeFalsy()
 		})
 	})
+
+	test("gamisodes collection keys are exists", async () => {
+		const testnetBuyerAuth = createTestAuth(
+			fcl,
+			"testnet",
+			FLOW_TESTNET_ACCOUNT_5.address,
+			FLOW_TESTNET_ACCOUNT_5.privKey
+		)
+		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
+
+		const address = toFlowAddress(FLOW_TESTNET_ACCOUNT_PYTHON.address)
+		const status = await testnetBuyerSdk.collection.checkInitGamisodesCollections(address)
+		console.log(status);
+		(
+			[
+				"FiatToken",
+				"StorefrontV2",
+				"Gamisodes",
+			] as Array<keyof typeof status>
+		).forEach(key => {
+			expect(key in status).toBeTruthy()
+			expect(status[key]).toBeTruthy()
+		})
+	})
 })

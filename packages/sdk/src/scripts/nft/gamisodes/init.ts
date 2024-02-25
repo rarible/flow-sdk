@@ -24,7 +24,7 @@ export const gamisodesRawInitPart = `
         if acct.getCapability<${NFTStorefrontV2.publicType}>(${NFTStorefrontV2.publicPath}).borrow() == nil {
             acct.link<${NFTStorefrontV2.publicType}>(${NFTStorefrontV2.publicPath}, target: ${NFTStorefrontV2.storagePath})
         }
-        //Gamisodes INIT PART START
+        //Gamisodes INIT PART END
 `
 
 
