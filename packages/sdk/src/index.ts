@@ -28,8 +28,10 @@ import type { FlowEnvConfig } from "./config/env"
 import { ENV_CONFIG } from "./config/env"
 import type { TransferFlowRequest } from "./wallet/transfer-funds"
 import { transferFunds } from "./wallet/transfer-funds"
-import type {CollectionsInitStatus,
-	GamisodesInitStatus} from "./collection/check-init-collections"
+import type {
+	CollectionsInitStatus,
+	GamisodesInitStatus,
+} from "./collection/check-init-collections"
 import {setupGamisodesCollections, setupMattelCollections, setupCollections} from "./collection/setup-collections"
 import {
 	checkInitCollections,
@@ -243,6 +245,6 @@ export type { FlowEnv } from "./config/env"
 export const FLOW_ENV_CONFIG: FlowEnvConfig = ENV_CONFIG
 export { FlowOrder } from "@rarible/flow-api-client"
 export { getFungibleBalanceSimple } from "./wallet/get-ft-balance-simple"
-export { CollectionsInitStatus } from "./collection/check-init-collections"
+export { CollectionsInitStatus, GamisodesInitStatus } from "./collection/check-init-collections"
 export { CONFIGS } from "./config/config"
 export const getFlowFungibleBalance = getFungibleBalanceTemplate
