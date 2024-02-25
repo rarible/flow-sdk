@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.78-fix.2](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.1...v0.5.78-fix.2) (2024-02-25)
+
+
+### Features
+
+* **PLTF-341:** check gamisodes method ([bf7e1cd](https://github.com/rarible/flow-sdk/commit/bf7e1cd9f02463535f3289fc76878488d1bf297d))
+
+
+
+
+
 ## [0.5.78-fix.1](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.0...v0.5.78-fix.1) (2024-02-09)
 
 
