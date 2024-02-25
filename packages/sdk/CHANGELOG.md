@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.78-fix.3](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.2...v0.5.78-fix.3) (2024-02-25)
+
+
+### Bug Fixes
+
+* gamisodes init status ([bfb482f](https://github.com/rarible/flow-sdk/commit/bfb482fe9cc612a6933f7960c949dc875f47215a))
+
+
+
+
+
 ## [0.5.78-fix.2](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.1...v0.5.78-fix.2) (2024-02-25)
 
 
