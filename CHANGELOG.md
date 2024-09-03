@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.78-fix.4](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.3...v0.5.78-fix.4) (2024-09-03)
+
+
+### Bug Fixes
+
+* cadence 1.0 scripts ([254e409](https://github.com/rarible/flow-sdk/commit/254e409406f83d06822344d7e52b543a5ec132c0))
+
+
+
+
+
 ## [0.5.78-fix.3](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.2...v0.5.78-fix.3) (2024-02-25)
 
 
