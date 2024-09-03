@@ -4,7 +4,7 @@ import { toFlowAddress } from "@rarible/types"
 import {
 	FLOW_TESTNET_ACCOUNT_5,
 	FLOW_TESTNET_ACCOUNT_6,
-	FLOW_TESTNET_ACCOUNT_WOLF,
+	FLOW_TESTNET_ACCOUNT_ZEBRA,
 } from "@rarible/flow-test-common/build/config"
 import { createFlowSdk, toFlowContractAddress } from "../index"
 import { checkEvent } from "../test/helpers/check-event"
@@ -110,7 +110,7 @@ describe("Test transfer on emulator", () => {
 	}, 1000000)
 
 	test("should transfer HWGarageCardV2", async () => {
-		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_WOLF.address, FLOW_TESTNET_ACCOUNT_WOLF.privKey)
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_ZEBRA.address, FLOW_TESTNET_ACCOUNT_ZEBRA.privKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)

@@ -7,7 +7,7 @@ import {
 import * as fcl from "@onflow/fcl"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 // import type { FlowSdk } from "../index"
-import {FLOW_TESTNET_ACCOUNT_5} from "@rarible/flow-test-common/build/config"
+import {FLOW_TESTNET_ACCOUNT_5, FLOW_TESTNET_ACCOUNT_EAGLE} from "@rarible/flow-test-common/build/config"
 import {FLOW_TESTNET_ACCOUNT_MATRIX} from "@rarible/flow-test-common/build/config"
 import { toFlowContractAddress } from "../index"
 import { checkEvent } from "../test/helpers/check-event"
@@ -76,10 +76,10 @@ describe("Mattel storefront sell testing", () => {
 	}, 1000000)
 
 	test("Should create HWGarageCardV2 sell order on testnet", async () => {
-		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_EAGLE.address, FLOW_TESTNET_ACCOUNT_EAGLE.privKey)
 		const testnetSdk = createTestFlowSdk(fcl, "testnet", {}, testnetAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)
-		const tokenId = "37"
+		const tokenId = "179"
 
 		const orderTx = await testnetSdk.order.sell({
 			collection: testnetCollection,

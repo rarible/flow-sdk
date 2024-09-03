@@ -69,6 +69,18 @@ export async function sell(
 				comissionAmount = toBn(0)
 			}
 
+			console.log("order sell", getWhitelabelOrderCode(fcl, name).create({
+				collectionName: name,
+				itemId: extractTokenId(itemId),
+				saleItemPrice: fixAmount(sellItemPrice),
+				customID: "RARIBLE",
+				commissionAmount: fixAmount(comissionAmount.toString()),
+				expiry: request.end instanceof Date
+					? Math.floor(request.end.getTime() / 1000)
+					: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 60,
+				marketplacesAddress: fee ? [toFlowAddress(fee.account)] : [],
+				currency: request.currency,
+			}).cadence)
 			const txId = await runTransaction(
 				fcl,
 				map,

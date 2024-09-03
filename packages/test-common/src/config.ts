@@ -175,3 +175,27 @@ export const FLOW_TESTNET_ACCOUNT_MATRIX: TestAccount = {
 	privKey: "e0201d86f0f0e7f7fdda9d5fa484f2c23fc9171195aeabc084cf06ff4a7906ad",
 	pubKey: "",
 }
+
+export const FLOW_TESTNET_ACCOUNT_ZEBRA: TestAccount = {
+	address: "0x97c6e3c2ce0dc2a0",
+	privKey: "c621bcb254683ed4414811be108c8cd5e305548f1dbd41089e2e797d0b15e26e",
+	pubKey: "",
+}
+
+export const FLOW_TESTNET_ACCOUNT_EAGLE: TestAccount = {
+	address: "0x30909b096eb82407",
+	privKey: "5c2ae059b5968dee692a328d059e27321e2b4737cb29702caa11b2b2229ee9fa",
+	pubKey: "",
+}
+
+export const FLOW_TESTNET_ACCOUNT_MOUSE: TestAccount = {
+	address: "0xa9f56101b645fd64",
+	privKey: "8edab4b27540dc637e6d83a84626e1b64bd18d8dbb09b0db68afc26dfe2d4455",
+	pubKey: "",
+}
+
+export const FLOW_TESTNET_ACCOUNT_CLEAN: TestAccount = {
+	address: "0x522603d0811a4d5f",
+	privKey: "bde21b4717375656fd20f6e481546b163a02af20c4706143ec8a99075c3e6e15",
+	pubKey: "",
+}

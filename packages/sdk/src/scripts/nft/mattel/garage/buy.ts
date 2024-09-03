@@ -5,6 +5,7 @@ import {
 	NFTStorefrontV2,
 	NonFungibleToken,
 } from "../../contracts"
+import {storefrontInit} from "../../storefront-init"
 import {garagePreparePartOfInit} from "./init"
 
 export const garageBuyTxCode: string = `
@@ -20,45 +21,45 @@ import HWGaragePackV2 from 0xHWGaragePackV2
 import HWGarageTokenV2 from 0xHWGarageTokenV2
 
 transaction(listingResourceID: UInt64, storefrontAddress: Address, commissionRecipient: Address?) {
-    let paymentVault: @${FungibleToken.name}.Vault
-    let %nftContract%Collection: &%nftContract%.Collection{${NonFungibleToken.name}.Receiver}
-    let storefront: &${NFTStorefrontV2.name}.Storefront{${NFTStorefrontV2.name}.StorefrontPublic}
-    let listing: &${NFTStorefrontV2.name}.Listing{${NFTStorefrontV2.name}.ListingPublic}
+    let paymentVault: @{${FungibleToken.name}.Vault}
+    let %nftContract%Collection: &{NonFungibleToken.Receiver}
+    let storefront: &{NFTStorefrontV2.StorefrontPublic}
+    let listing: &{NFTStorefrontV2.ListingPublic}
     var commissionRecipientCap: Capability<&{${FungibleToken.name}.Receiver}>?
 
-    prepare(acct: AuthAccount) {
+    prepare(acct: auth(BorrowValue, IssueStorageCapabilityController, PublishCapability, SaveValue, UnpublishCapability, Storage) &Account) {
 ${garagePreparePartOfInit}
+${storefrontInit}
         self.commissionRecipientCap = nil
-        // self.commissionRecipientCap = getAccount(commissionRecipient!).getCapability<&{${FungibleToken.name}.Receiver}>(%ftPublicPath%)
-        // Access the storefront public resource of the seller to purchase the listing.
-        self.storefront = getAccount(storefrontAddress)
-            .getCapability<&${NFTStorefrontV2.name}.Storefront{${NFTStorefrontV2.name}.StorefrontPublic}>(
-                ${NFTStorefrontV2.name}.StorefrontPublicPath
-            )
-            .borrow()
-            ?? panic("Could not borrow Storefront from provided address")
+        self.storefront = getAccount(storefrontAddress).capabilities.borrow<&{NFTStorefrontV2.StorefrontPublic}>(
+                NFTStorefrontV2.StorefrontPublicPath
+            ) ?? panic("Could not borrow Storefront from provided address")
 
         // Borrow the listing
         self.listing = self.storefront.borrowListing(listingResourceID: listingResourceID)
                     ?? panic("No Offer with that ID in Storefront")
         let price = self.listing.getDetails().salePrice
 
-        // Access the vault of the buyer to pay the sale price of the listing.
-        let mainFlowVault = acct.borrow<&%ftContract%.Vault>(from: %ftStoragePath%)
+        let mainFlowVault = acct.storage.borrow<auth(FungibleToken.Withdraw) &%ftContract%.Vault>(from: %ftStoragePath%)
             ?? panic("Cannot borrow FlowToken vault from acct storage")
+        // Access the vault of the buyer to pay the sale price of the listing.
         self.paymentVault <- mainFlowVault.withdraw(amount: price)
 
+        let collectionData = %nftContract%.resolveContractView(resourceType: nil, viewType: Type<MetadataViews.NFTCollectionData>()) as! MetadataViews.NFTCollectionData?
+            ?? panic("ViewResolver does not resolve NFTCollectionData view")
+
         // Access the buyer's NFT collection to store the purchased NFT.
-        self.%nftContract%Collection = acct.borrow<&%nftContract%.Collection{${NonFungibleToken.name}.Receiver}>(
-            from: %nftContract%.CollectionStoragePath
-        ) ?? panic("Cannot borrow buyers Pack collection receiver")
+        self.%nftContract%Collection = acct.capabilities.borrow<&{NonFungibleToken.Receiver}>(collectionData.publicPath)
+            ?? panic("Cannot borrow buyers Pack collection receiver")
 
         // Fetch the commission amt.
         let commissionAmount = self.listing.getDetails().commissionAmount
 
         if commissionRecipient != nil && commissionAmount != 0.0 {
+            let _commissionRecipientCap = getAccount(commissionRecipient!).capabilities.get<&{FungibleToken.Receiver}>(
+               %ftPublicPath%
+            )
             // Access the capability to receive the commission.
-            let _commissionRecipientCap = getAccount(commissionRecipient!).getCapability<&{${FungibleToken.name}.Receiver}>(%ftPublicPath%)
             assert(_commissionRecipientCap.check(), message: "Commission Recipient doesn't have FT receiving capability")
             self.commissionRecipientCap = _commissionRecipientCap
         } else if commissionAmount == 0.0 {

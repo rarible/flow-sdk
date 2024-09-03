@@ -1,6 +1,6 @@
 import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
-import { FLOW_TESTNET_ACCOUNT_5 } from "@rarible/flow-test-common/build/config"
+import {FLOW_TESTNET_ACCOUNT_5, FLOW_TESTNET_ACCOUNT_EAGLE} from "@rarible/flow-test-common/build/config"
 import {FLOW_TESTNET_ACCOUNT_PYTHON} from "@rarible/flow-test-common/build/config"
 import type { FlowSdk } from "../index"
 import { toFlowContractAddress } from "../index"
@@ -208,11 +208,11 @@ describe("Mattel storefront order cancel testing", () => {
 	}, 1000000)
 
 	test("Should cancel sell GarageCardV2 Storefront Mattel order", async () => {
-		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_EAGLE.address, FLOW_TESTNET_ACCOUNT_EAGLE.privKey)
 		const testnetSdk = createTestFlowSdk(fcl, "testnet", {}, testnetAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)
 
-		const tokenId = 27
+		const tokenId = 179
 
 		const orderTx = await testnetSdk.order.sell({
 			collection: testnetCollection,
@@ -222,11 +222,13 @@ describe("Mattel storefront order cancel testing", () => {
 		})
 		console.log("orderTx", orderTx)
 
+
 		const cancelOrderTx = await testnetSdk.order.cancelOrder(
 			testnetCollection,
 			orderTx.orderId
 		)
 
-		checkEvent(cancelOrderTx, "ListingCompleted", "NFTStorefrontV2")
+		console.log("cancel order tx", JSON.stringify(cancelOrderTx, null, "  "))
+		checkEvent(cancelOrderTx, "ResourceDestroyed", "NFTStorefrontV2")
 	}, 1000000)
 })

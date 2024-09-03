@@ -3,18 +3,27 @@ export const transfer = `
     import %ftContract% from address
 
     transaction(recepient: Address, amount: UFix64){
-      prepare(signer: AuthAccount){
-        let sender = signer.borrow<&%ftContract%.Vault>(from: %ftStoragePath%)
-          ?? panic("Could not borrow Provider reference to the Vault")
+    let sentVault: @{FungibleToken.Vault}
 
-        let receiverAccount = getAccount(recepient)
+      prepare(signer: auth(BorrowValue) &Account){
 
-        let receiver = receiverAccount.getCapability(%ftPublicPath%)
-          .borrow<&%ftContract%.Vault{FungibleToken.Receiver}>()
-          ?? panic("Could not borrow Receiver reference to the Vault")
+        let vaultRef = signer.storage.borrow<auth(FungibleToken.Withdraw) &%ftContract%.Vault>(from: %ftStoragePath%)
+          ?? panic("Could not borrow reference to the owner's Vault!")
 
-        let tempVault <- sender.withdraw(amount: amount)
-        receiver.deposit(from: <- tempVault)
+        // Withdraw tokens from the signer's stored vault
+        self.sentVault <- vaultRef.withdraw(amount: amount)
+
+      }
+
+      execute {
+
+          // Get a reference to the recipient's Receiver
+          let receiverRef =  getAccount(recepient)
+              .capabilities.borrow<&{FungibleToken.Receiver}>(/public/flowTokenReceiver)
+                  ?? panic("Could not borrow receiver reference to the recipient's Vault")
+
+          // Deposit the withdrawn tokens in the recipient's receiver
+          receiverRef.deposit(from: <-self.sentVault)
       }
     }
   `

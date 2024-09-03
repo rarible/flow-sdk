@@ -8,13 +8,14 @@ import {
 	FLOW_TESTNET_ACCOUNT_PYTHON,
 } from "@rarible/flow-test-common/build/config"
 import { toFlowAddress } from "@rarible/types"
+import {FLOW_TESTNET_ACCOUNT_ZEBRA} from "@rarible/flow-test-common/src/config"
 import { createFlowSdk } from "../index"
 
 describe("Check init mattel collections", () => {
 	createFlowEmulator({})
 
 	test("collections keys are exists", async () => {
-		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_ZEBRA.address, FLOW_TESTNET_ACCOUNT_ZEBRA.privKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 
 		const status = await testnetBuyerSdk.collection.checkInitCollections()

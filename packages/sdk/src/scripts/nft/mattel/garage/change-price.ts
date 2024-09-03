@@ -1,22 +1,12 @@
 import type { WhitelabelCollection} from "../../contracts"
-import {HWGarageCard, HWGaragePack} from "../../contracts"
+import {FungibleToken, HWGarageCard, HWGaragePack} from "../../contracts"
 import type {Currency} from "../../common"
 import {getVaultInitTx, vaultOptions} from "../../init-vault"
+import {storefrontInit} from "../../storefront-init"
 import {garagePreparePartOfInit} from "./init"
 
 export const getGarageChangePriceTxCode = (collection: WhitelabelCollection, currency: Currency) => {
-	let borrowMethod: string
-	if (["HWGaragePack", "HWGaragePackV2"].includes(collection)) {
-		borrowMethod = "borrowPack"
-	} else if (collection === "HWGarageCard") {
-		borrowMethod = "borrowHWGarageCard"
-	} else if (["HWGarageCardV2"].includes(collection)) {
-		borrowMethod = "borrowCard"
-	} else if (["HWGarageTokenV2"].includes(collection)) {
-		borrowMethod = "borrowToken"
-	} else {
-		throw new Error(`Unrecognized collection name (${collection}), expected HWGaragePack | HWGarageCard`)
-	}
+	let borrowMethod: string = "borrowNFT"
 	return `
 import %ftContract% from 0x%ftContract%
 import FungibleToken from 0xFungibleToken
@@ -30,44 +20,36 @@ import HWGaragePackV2 from 0xHWGaragePackV2
 import HWGarageTokenV2 from 0xHWGarageTokenV2
 
 transaction(removalListingResourceID: UInt64, saleItemID: UInt64, saleItemPrice: UFix64, customID: String?, commissionAmount: UFix64, expiry: UInt64, marketplacesAddress: [Address]) {
-    let storefrontForRemove: &NFTStorefrontV2.Storefront{NFTStorefrontV2.StorefrontManager}
-
-    let fiatReceiver: Capability<&AnyResource{FungibleToken.Receiver}>
-    let %nftContract%Provider: Capability<&AnyResource{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>
-    let storefront: &NFTStorefrontV2.Storefront
+    let tokenReceiver: Capability<&{${FungibleToken.name}.Receiver}>
+    let %nftContract%Provider: Capability<auth(NonFungibleToken.Withdraw) &{NonFungibleToken.Collection}>
+    let storefront: auth(NFTStorefrontV2.CreateListing, NFTStorefrontV2.RemoveListing) &NFTStorefrontV2.Storefront
     var saleCuts: [NFTStorefrontV2.SaleCut]
-    var marketplacesCapability: [Capability<&AnyResource{FungibleToken.Receiver}>]
+    var marketplacesCapability: [Capability<&{FungibleToken.Receiver}>]
 
-    prepare(acct: AuthAccount) {
-${currency === "USDC" ? getVaultInitTx(vaultOptions["FiatToken"]): ""}
+    prepare(acct: auth(BorrowValue, IssueStorageCapabilityController, PublishCapability, SaveValue, UnpublishCapability, Storage) &Account) {
 ${garagePreparePartOfInit}
-
-        self.storefrontForRemove = acct.borrow<&NFTStorefrontV2.Storefront{NFTStorefrontV2.StorefrontManager}>(from: NFTStorefrontV2.StorefrontStoragePath)
-            ?? panic("Missing or mis-typed NFTStorefrontV2.Storefront")
-
+${storefrontInit}
         self.saleCuts = []
         self.marketplacesCapability = []
 
-        // We need a provider capability, but one is not provided by default so we create one if needed.
-        let %nftContract%ProviderPrivatePath = %nftPrivatePath%
+        let collectionData = ${collection}.resolveContractView(resourceType: nil, viewType: Type<MetadataViews.NFTCollectionData>()) as! MetadataViews.NFTCollectionData?
+            ?? panic("ViewResolver does not resolve NFTCollectionData view")
 
         // Receiver for the sale cut.
-        self.fiatReceiver = acct.getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%)
-        assert(self.fiatReceiver.borrow() != nil, message: "Missing or mis-typed FT receiver")
+        self.tokenReceiver = acct.capabilities.get<&{FungibleToken.Receiver}>(%ftPublicPath%)
+        assert(self.tokenReceiver.borrow() != nil, message: "Missing or mis-typed FT receiver")
 
-        // Check if the Provider capability exists or not if \`no\` then create a new link for the same.
-        if !acct.getCapability<&{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(%nftContract%ProviderPrivatePath).check() {
-            acct.link<&{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(%nftContract%ProviderPrivatePath, target: %nftStoragePath%)
-        }
+        self.%nftContract%Provider = acct.capabilities.storage.issue<auth(NonFungibleToken.Withdraw) &{NonFungibleToken.Collection}>(
+                collectionData.storagePath
+        )
+        assert(self.%nftContract%Provider.check(), message: "Missing or mis-typed HWGaragePackV2 provider")
 
-        self.%nftContract%Provider = acct.getCapability<&{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(%nftContract%ProviderPrivatePath)
-        let collection = acct
-            .getCapability(%nftContract%.CollectionPublicPath)
-            .borrow<&{%nftPublicTypeMin%}>()
-            ?? panic("Could not borrow a reference to the collection")
+        let collection = acct.capabilities.borrow<&{NonFungibleToken.Collection}>(collectionData.publicPath)
+          ?? panic("Could not borrow a reference to the signer's collection")
+
         var totalRoyaltyCut = 0.0
         let effectiveSaleItemPrice = saleItemPrice - commissionAmount
-        let nft = collection.${borrowMethod}(id: saleItemID)!
+        let nft = collection.${borrowMethod}(saleItemID)!
         // Check whether the NFT implements the MetadataResolver or not.
         if nft.getViews().contains(Type<MetadataViews.Royalties>()) {
             let royaltiesRef = nft.resolveView(Type<MetadataViews.Royalties>())?? panic("Unable to retrieve the royalties")
@@ -80,25 +62,36 @@ ${garagePreparePartOfInit}
             }
         }
         // Append the cut for the seller.
-        self.saleCuts.append(NFTStorefrontV2.SaleCut(
-            receiver: self.fiatReceiver,
-            amount: effectiveSaleItemPrice - totalRoyaltyCut
-        ))
-        assert(self.%nftContract%Provider.borrow() != nil, message: "Missing or mis-typed %nftContract%.Collection provider")
+        self.saleCuts.append(
+            NFTStorefrontV2.SaleCut(
+                receiver: self.tokenReceiver,
+                amount: effectiveSaleItemPrice - totalRoyaltyCut
+            )
+        )
+        assert(self.%nftContract%Provider.borrow() != nil, message: "Missing or mis-typed Collection provider")
 
-        self.storefront = acct.borrow<&NFTStorefrontV2.Storefront>(from: NFTStorefrontV2.StorefrontStoragePath)
-            ?? panic("Missing or mis-typed NFTStorefront Storefront")
+        self.storefront = acct.storage.borrow<auth(NFTStorefrontV2.CreateListing, NFTStorefrontV2.RemoveListing) &NFTStorefrontV2.Storefront>(
+                from: NFTStorefrontV2.StorefrontStoragePath
+            ) ?? panic("Missing or mis-typed NFTStorefront Storefront")
 
         for marketplace in marketplacesAddress {
             // Here we are making a fair assumption that all given addresses would have
-            // the capability to receive the \`FlowToken\`
-            self.marketplacesCapability.append(getAccount(marketplace).getCapability<&{FungibleToken.Receiver}>(%ftPublicPath%))
+            // the capability to receive the \`ExampleToken\`
+            self.marketplacesCapability.append(
+                getAccount(marketplace).capabilities.get<&{FungibleToken.Receiver}>(%ftPublicPath%)
+            )
         }
     }
 
     execute {
-        self.storefrontForRemove.removeListing(listingResourceID: removalListingResourceID)
-
+        var existingListingIDs = self.storefront.getExistingListingIDs(
+            nftType: Type<@%nftContract%.NFT>(),
+            nftID: saleItemID
+        )
+        // remove existing listings
+        for listingID in existingListingIDs {
+            self.storefront.removeListing(listingResourceID: listingID)
+        }
         // Create listing
         self.storefront.createListing(
             nftProviderCapability: self.%nftContract%Provider,

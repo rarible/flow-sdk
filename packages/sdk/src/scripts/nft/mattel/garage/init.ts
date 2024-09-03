@@ -1,54 +1,95 @@
 import {HWGarageCard, HWGarageCardV2, HWGaragePack, HWGaragePackV2, HWGarageTokenV2, NFTStorefrontV2} from "../../contracts"
 
 export const garageRawInitPart = `
-      if acct.borrow<&${HWGarageCard.name}.${HWGarageCard.contractType}>(from: ${HWGarageCard.storagePath}) == nil {
-			    let collection <- ${HWGarageCard.name}.${HWGarageCard.nameOfMethodForCreateResource}
-					acct.save(<-collection, to: ${HWGarageCard.storagePath})
-			}
-			if acct.getCapability<${HWGarageCard.publicType}>(${HWGarageCard.publicPath}).borrow() == nil {
-					acct.link<${HWGarageCard.publicType}>(${HWGarageCard.publicPath}, target: ${HWGarageCard.storagePath})
-			}
+        // HWGaragePack
+   let packCollectionData: MetadataViews.NFTCollectionData = HWGaragePack.resolveContractView(resourceType: nil, viewType: Type<MetadataViews.NFTCollectionData>()) as! MetadataViews.NFTCollectionData?
+     ?? panic("ViewResolver does not resolve NFTCollectionData view")
 
-			if acct.borrow<&${HWGarageCardV2.name}.${HWGarageCardV2.contractType}>(from: ${HWGarageCardV2.storagePath}) == nil {
-					let collection <- ${HWGarageCardV2.name}.${HWGarageCardV2.nameOfMethodForCreateResource}
-					acct.save(<-collection, to: ${HWGarageCardV2.storagePath})
-			}
-			if acct.getCapability<${HWGarageCardV2.publicType}>(${HWGarageCardV2.publicPath}).borrow() == nil {
-					acct.link<${HWGarageCardV2.publicType}>(${HWGarageCardV2.publicPath}, target: ${HWGarageCardV2.storagePath})
-			}
+   // exit if packCollection exists
+   if acct.storage.borrow<&HWGaragePack.Collection>(from: packCollectionData.storagePath) == nil {
+     // create a new empty packCollection for HWGaragePack
+     let packCollection: @{NonFungibleToken.Collection} <- HWGaragePack.createEmptyCollection(nftType: Type<@HWGaragePack.NFT>())
 
-			if acct.borrow<&${HWGaragePack.name}.${HWGarageCard.contractType}>(from: ${HWGaragePack.storagePath}) == nil {
-					let collection <- ${HWGaragePack.name}.${HWGaragePack.nameOfMethodForCreateResource}
-					acct.save(<-collection, to: ${HWGaragePack.storagePath})
-			}
-			if acct.getCapability<${HWGaragePack.publicType}>(${HWGaragePack.publicPath}).borrow() == nil {
-					acct.link<${HWGaragePack.publicType}>(${HWGaragePack.publicPath}, target: ${HWGaragePack.storagePath})
-			}
+     // save HWGaragePack packCollection to the account
+     acct.storage.save(<-packCollection, to: packCollectionData.storagePath)
 
-			if acct.borrow<&${HWGaragePackV2.name}.${HWGaragePackV2.contractType}>(from: ${HWGaragePackV2.storagePath}) == nil {
-					let collection <- ${HWGaragePackV2.name}.${HWGaragePackV2.nameOfMethodForCreateResource}
-					acct.save(<-collection, to: ${HWGaragePackV2.storagePath})
-			}
-			if acct.getCapability<${HWGaragePackV2.publicType}>(${HWGaragePackV2.publicPath}).borrow() == nil {
-					acct.link<${HWGaragePackV2.publicType}>(${HWGaragePackV2.publicPath}, target: ${HWGaragePackV2.storagePath})
-			}
+     // create a public capability for the HWGaragePack packCollection
+     acct.capabilities.unpublish(packCollectionData.publicPath) // remove any current pubCap
+     let packCollectionCap: Capability<&HWGaragePack.Collection> = acct.capabilities.storage.issue<&HWGaragePack.Collection>(packCollectionData.storagePath)
+     acct.capabilities.publish(packCollectionCap, at: packCollectionData.publicPath)
+   }
 
-			if acct.borrow<&${HWGarageTokenV2.name}.${HWGarageTokenV2.contractType}>(from: ${HWGarageTokenV2.storagePath}) == nil {
-					let collection <- ${HWGarageTokenV2.name}.${HWGarageTokenV2.nameOfMethodForCreateResource}
-					acct.save(<-collection, to: ${HWGarageTokenV2.storagePath})
-			}
-			if acct.getCapability<${HWGarageTokenV2.publicType}>(${HWGarageTokenV2.publicPath}).borrow() == nil {
-					acct.link<${HWGarageTokenV2.publicType}>(${HWGarageTokenV2.publicPath}, target: ${HWGarageTokenV2.storagePath})
-			}
+   // HWGarageCard
+   let cardCollectionData: MetadataViews.NFTCollectionData = HWGarageCard.resolveContractView(resourceType: nil, viewType: Type<MetadataViews.NFTCollectionData>()) as! MetadataViews.NFTCollectionData?
+     ?? panic("ViewResolver does not resolve NFTCollectionData view")
+
+   // exit if cardCollection exists
+   if acct.storage.borrow<&HWGarageCard.Collection>(from: cardCollectionData.storagePath) == nil {
+     // create a new empty cardCollection for HWGarageCard
+     let cardCollection: @{NonFungibleToken.Collection} <- HWGarageCard.createEmptyCollection(nftType: Type<@HWGarageCard.NFT>())
+
+     // save HWGarageCard cardCollection to the account
+     acct.storage.save(<-cardCollection, to: cardCollectionData.storagePath)
+
+     // create a public capability for the HWGarageCard cardCollection
+     acct.capabilities.unpublish(cardCollectionData.publicPath) // remove any current pubCap
+     let cardCollectionCap: Capability<&HWGarageCard.Collection> = acct.capabilities.storage.issue<&HWGarageCard.Collection>(cardCollectionData.storagePath)
+     acct.capabilities.publish(cardCollectionCap, at: cardCollectionData.publicPath)
+   }
+
+   // HWGarageTokenV2
+   let tokenCollectionDataV2: MetadataViews.NFTCollectionData = HWGarageTokenV2.resolveContractView(resourceType: nil, viewType: Type<MetadataViews.NFTCollectionData>()) as! MetadataViews.NFTCollectionData?
+     ?? panic("ViewResolver does not resolve NFTCollectionData view")
+
+   if acct.storage.borrow<&HWGarageTokenV2.Collection>(from: tokenCollectionDataV2.storagePath) == nil {
+     // create a new empty tokenCollection for HWGarageTokenV2
+     let tokenCollection: @{NonFungibleToken.Collection} <- HWGarageTokenV2.createEmptyCollection(nftType: Type<@HWGarageTokenV2.NFT>())
+
+     // save HWGarageTokenV2 tokenCollection to the account
+     acct.storage.save(<-tokenCollection, to: tokenCollectionDataV2.storagePath)
+
+     // create a public capability for the HWGarageTokenV2 tokenCollection
+     acct.capabilities.unpublish(tokenCollectionDataV2.publicPath) // remove any current pubCap
+     let tokenCollectionCap = acct.capabilities.storage.issue<&HWGarageTokenV2.Collection>(tokenCollectionDataV2.storagePath)
+     acct.capabilities.publish(tokenCollectionCap, at: tokenCollectionDataV2.publicPath)
+   }
+
+   // HWGarageCardV2
+   let cardCollectionDataV2: MetadataViews.NFTCollectionData = HWGarageCardV2.resolveContractView(resourceType: nil, viewType: Type<MetadataViews.NFTCollectionData>()) as! MetadataViews.NFTCollectionData?
+     ?? panic("ViewResolver does not resolve NFTCollectionData view")
+
+   // exit if cardCollection exists
+   if acct.storage.borrow<&HWGarageCardV2.Collection>(from: cardCollectionDataV2.storagePath) == nil {
+     // create a new empty cardCollection for HWGarageCardV2
+     let cardCollection: @{NonFungibleToken.Collection} <- HWGarageCardV2.createEmptyCollection(nftType: Type<@HWGarageCardV2.NFT>())
+
+     // save HWGarageCardV2 cardCollection to the account
+     acct.storage.save(<-cardCollection, to: cardCollectionDataV2.storagePath)
+
+     // create a public capability for the HWGarageCardV2 cardCollection
+     acct.capabilities.unpublish(cardCollectionDataV2.publicPath) // remove any current pubCap
+     let cardCollectionCap = acct.capabilities.storage.issue<&HWGarageCardV2.Collection>(cardCollectionDataV2.storagePath)
+     acct.capabilities.publish(cardCollectionCap, at: cardCollectionDataV2.publicPath)
+   }
+
+   // HWGaragePackV2
+   let garagePackCollectionDataV2: MetadataViews.NFTCollectionData = HWGaragePackV2.resolveContractView(resourceType: nil, viewType: Type<MetadataViews.NFTCollectionData>()) as! MetadataViews.NFTCollectionData?
+     ?? panic("ViewResolver does not resolve NFTCollectionData view")
+
+   // exit if packCollection exists
+   if acct.storage.borrow<&HWGaragePackV2.Collection>(from: garagePackCollectionDataV2.storagePath) == nil {
+     // create a new empty packCollection for HWGaragePackV2
+     let packCollection: @{NonFungibleToken.Collection} <- HWGaragePackV2.createEmptyCollection(nftType: Type<@HWGaragePackV2.NFT>())
+
+     // save HWGaragePackV2 packCollection to the account
+     acct.storage.save(<-packCollection, to: garagePackCollectionDataV2.storagePath)
+
+     // create a public capability for the HWGaragePackV2 packCollection
+     acct.capabilities.unpublish(garagePackCollectionDataV2.publicPath) // remove any current pubCap
+     let packCollectionCap = acct.capabilities.storage.issue<&HWGaragePackV2.Collection>(garagePackCollectionDataV2.storagePath)
+     acct.capabilities.publish(packCollectionCap, at: garagePackCollectionDataV2.publicPath)
+   }
 `
 export const garagePreparePartOfInit = `
 ${garageRawInitPart}
-
-			if acct.borrow<&${NFTStorefrontV2.name}.${NFTStorefrontV2.contractType}>(from: ${NFTStorefrontV2.storagePath}) == nil {
-					let collection <- ${NFTStorefrontV2.name}.${NFTStorefrontV2.nameOfMethodForCreateResource}
-					acct.save(<-collection, to: ${NFTStorefrontV2.storagePath})
-			}
-			if acct.getCapability<${NFTStorefrontV2.publicType}>(${NFTStorefrontV2.publicPath}).borrow() == nil {
-					acct.link<${NFTStorefrontV2.publicType}>(${NFTStorefrontV2.publicPath}, target: ${NFTStorefrontV2.storagePath})
-			}
 `

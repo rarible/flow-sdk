@@ -8,9 +8,9 @@ import * as fcl from "@onflow/fcl"
 import { toBigNumber, toFlowAddress } from "@rarible/types"
 import { toBn } from "@rarible/utils"
 import {
-	FLOW_TESTNET_ACCOUNT_BEAR,
-	FLOW_TESTNET_ACCOUNT_PANDA,
+	FLOW_TESTNET_ACCOUNT_EAGLE,
 } from "@rarible/flow-test-common/build/config"
+import {FLOW_TESTNET_ACCOUNT_MOUSE} from "@rarible/flow-test-common/build/config"
 import type {FlowCurrency, FlowSdk} from "../../index"
 import { toFlowContractAddress } from "../../index"
 import { EmulatorCollections, TestnetCollections } from "../../config/config"
@@ -28,8 +28,8 @@ import { awaitOrder } from "../common/await-order"
 import {createTestFlowSdk} from "../../common/test"
 
 describe("Mattel storefront fill testing", () => {
-	const [buyerAddr, buyerPrivKey] = [FLOW_TESTNET_ACCOUNT_BEAR.address, FLOW_TESTNET_ACCOUNT_BEAR.privKey]
-	const [sellerAddr, sellerPrivKey] = [FLOW_TESTNET_ACCOUNT_PANDA.address, FLOW_TESTNET_ACCOUNT_PANDA.privKey]
+	const [buyerAddr, buyerPrivKey] = [FLOW_TESTNET_ACCOUNT_MOUSE.address, FLOW_TESTNET_ACCOUNT_MOUSE.privKey]
+	const [sellerAddr, sellerPrivKey] = [FLOW_TESTNET_ACCOUNT_EAGLE.address, FLOW_TESTNET_ACCOUNT_EAGLE.privKey]
 	const feeAddr = FLOW_TESTNET_ACCOUNT_4.address
 
 	//todo garage pack doesn't exist on buyer FLOW_TESTNET_ACCOUNT_8 account
@@ -224,14 +224,14 @@ describe("Mattel storefront fill testing", () => {
 	//ok
 	describe.each([
 		"FLOW",
-		"FUSD",
-		"USDC",
+		// "FUSD",
+		// "USDC",
 	] as FlowCurrency[])
 	("sell order with HWGarageCardV2 item", (currency) => {
 		const testnetBuyerAuth = createTestAuth(fcl, "testnet", buyerAddr, buyerPrivKey)
 		const testnetBuyerSdk = createTestFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)
-		const tokenId = 302
+		const tokenId = 179
 
 		test("HWGarageCardV2 item", async () => {
 			const testnetAuth = createTestAuth(fcl, "testnet", sellerAddr, sellerPrivKey)

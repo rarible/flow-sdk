@@ -66,10 +66,10 @@ import NonFungibleToken from address
 import %nftContract% from address
 
 // check %nftContract% collection is available on given address
-//
-pub fun main(address: Address): Bool {
+access(all)
+fun main(address: Address): Bool {
     return getAccount(address)
-        .getCapability<&{%nftPublicTypeMin%}>(%nftPublicPath%)
+        .capabilities.get<&{%nftPublicTypeMin%}>(%nftPublicPath%)
         .check()
 }
 	`,
