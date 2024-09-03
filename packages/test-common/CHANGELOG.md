@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.78-fix.5](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.4...v0.5.78-fix.5) (2024-09-03)
+
+**Note:** Version bump only for package @rarible/flow-test-common
+
+
+
+
+
 ## [0.5.78-fix.4](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.3...v0.5.78-fix.4) (2024-09-03)
 
 

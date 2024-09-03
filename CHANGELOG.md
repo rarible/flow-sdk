@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.78-fix.5](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.4...v0.5.78-fix.5) (2024-09-03)
+
+
+### Bug Fixes
+
+* dependency node requirement ([5ac9440](https://github.com/rarible/flow-sdk/commit/5ac944077fa282380069b01a6585bad47366a1e1))
+
+
+
+
+
 ## [0.5.78-fix.4](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.3...v0.5.78-fix.4) (2024-09-03)
 
 
