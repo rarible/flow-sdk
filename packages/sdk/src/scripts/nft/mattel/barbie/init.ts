@@ -1,5 +1,3 @@
-import {BBxBarbieCard, BBxBarbiePack, NFTStorefrontV2} from "../../contracts"
-
 export const barbieRawInitPart = `
 // Setup Token Collection
 

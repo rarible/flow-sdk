@@ -1,7 +1,6 @@
 import type { WhitelabelCollection} from "../../contracts"
 import {FungibleToken, HWGarageCard, HWGaragePack} from "../../contracts"
 import type {Currency} from "../../common"
-import {getVaultInitTx, vaultOptions} from "../../init-vault"
 import {storefrontInit} from "../../storefront-init"
 import {garagePreparePartOfInit} from "./init"
 

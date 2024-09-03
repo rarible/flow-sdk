@@ -1,4 +1,3 @@
-import { NFTStorefrontV2 } from "../contracts"
 import {getVaultInitTx, vaultOptions} from "../init-vault"
 
 export const gamisodesRawInitPart = `

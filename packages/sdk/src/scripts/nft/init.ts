@@ -1,4 +1,4 @@
-import {HWGarageCard, HWGaragePack, NFTStorefrontV2} from "./contracts"
+import {HWGarageCard, HWGaragePack} from "./contracts"
 import {barbieRawInitPart} from "./mattel/barbie"
 import {garageRawInitPart} from "./mattel/garage"
 import {getUSDCVaultInitTx, getVaultInitTx, vaultOptions} from "./init-vault"

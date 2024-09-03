@@ -1,5 +1,3 @@
-import {HWGarageCard, HWGarageCardV2, HWGaragePack, HWGaragePackV2, HWGarageTokenV2, NFTStorefrontV2} from "../../contracts"
-
 export const garageRawInitPart = `
         // HWGaragePack
    let packCollectionData: MetadataViews.NFTCollectionData = HWGaragePack.resolveContractView(resourceType: nil, viewType: Type<MetadataViews.NFTCollectionData>()) as! MetadataViews.NFTCollectionData?
