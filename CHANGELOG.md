@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.78-fix.7](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.6...v0.5.78-fix.7) (2024-09-04)
+
+
+### Bug Fixes
+
+* barbie collection cadence 1.0 support ([271aea4](https://github.com/rarible/flow-sdk/commit/271aea43664c9148bbea27b9345b9137513841cd))
+
+
+
+
+
 ## [0.5.78-fix.6](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.5...v0.5.78-fix.6) (2024-09-03)
 
 
