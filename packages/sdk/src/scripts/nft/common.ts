@@ -31,10 +31,10 @@ import %nftContract% from address
 // Burn %nftContract% on signer account by tokenId
 //
 transaction(tokenId: UInt64) {
-    prepare(account: AuthAccount) {
-        let collection = account.borrow<&%nftStorageType%>(from: %nftStoragePath%)
-            ?? panic("could not borrow %nftContract% collection from account")
-        destroy collection.withdraw(withdrawID: tokenId)
+    prepare(account: auth(BorrowValue) &Account) {
+        let card: @%nftContract%.NFT <-account.storage.borrow<auth(NonFungibleToken.Withdraw) &{NonFungibleToken.Provider}>(from: %nftContract%.CollectionStoragePath)!.withdraw(withdrawID: tokenId) as! @%nftContract%.NFT
+
+        destroy card
     }
 }
 

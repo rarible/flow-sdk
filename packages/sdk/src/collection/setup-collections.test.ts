@@ -1,13 +1,11 @@
 import * as fcl from "@onflow/fcl"
 import { createTestAuth } from "@rarible/flow-test-common"
-import {
-	FLOW_TESTNET_ACCOUNT_CLEAN,
-} from "@rarible/flow-test-common/build/config"
+import {FLOW_TESTNET_ACCOUNT_MAN} from "@rarible/flow-test-common/src/config"
 import { createFlowSdk } from "../index"
 
 describe("Collection setup on account", () => {
 	test("setup initialized account", async () => {
-		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_CLEAN.address, FLOW_TESTNET_ACCOUNT_CLEAN.privKey)
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_MAN.address, FLOW_TESTNET_ACCOUNT_MAN.privKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
 
 		const mattelCollection = await testnetBuyerSdk.collection.setupMattelCollections()

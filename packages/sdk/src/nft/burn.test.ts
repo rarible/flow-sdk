@@ -1,6 +1,7 @@
 import { createEmulatorAccount, createFlowEmulator, createTestAuth } from "@rarible/flow-test-common"
 import { FLOW_TESTNET_ACCOUNT_5 } from "@rarible/flow-test-common/build/config"
 import * as fcl from "@onflow/fcl"
+import {FLOW_TESTNET_ACCOUNT_CLEAN} from "@rarible/flow-test-common/src/config"
 import type { FlowSdk } from "../index"
 import { createFlowSdk, toFlowContractAddress } from "../index"
 import { checkEvent } from "../test/helpers/check-event"
@@ -66,11 +67,11 @@ describe.skip("Test burn on emulator", () => {
 		checkEvent(burnTx, "Burn", "MotoGPCard")
 	})
 
-	test.skip("should burn HWGarageCard nft", async () => {
-		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+	test("should burn barbie nft", async () => {
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_CLEAN.address, FLOW_TESTNET_ACCOUNT_CLEAN.privKey)
 		const testnetSdk = createFlowSdk(fcl, "testnet", {}, testnetAuth)
-		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCard)
-		const tokenId = 161
+		const testnetCollection = toFlowContractAddress(TestnetCollections.BBxBarbieCard)
+		const tokenId = 2
 
 		const burnTx = await testnetSdk.nft.burn(testnetCollection, tokenId)
 		checkEvent(burnTx, "Withdraw", "HWGarageCard")

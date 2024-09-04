@@ -74,3 +74,9 @@ ${barbieRawInitPart}
     acct.capabilities.publish(storefrontPublicCap, at: NFTStorefrontV2.StorefrontPublicPath)
       }
 `
+
+export const barbieImports = `
+import BBxBarbiePack from 0xBBxBarbiePack
+import BBxBarbieCard from 0xBBxBarbieCard
+import BBxBarbieToken from 0xBBxBarbieToken
+`

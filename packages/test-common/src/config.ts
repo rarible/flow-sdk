@@ -199,3 +199,9 @@ export const FLOW_TESTNET_ACCOUNT_CLEAN: TestAccount = {
 	privKey: "bde21b4717375656fd20f6e481546b163a02af20c4706143ec8a99075c3e6e15",
 	pubKey: "",
 }
+
+export const FLOW_TESTNET_ACCOUNT_MAN: TestAccount = {
+	address: "0xfc911af6a96f3a63",
+	privKey: "dd7e9707e38d012bb82c3bf4667b79fac4cc15b8580b7c1d14b24915a0ff5d0e",
+	pubKey: "",
+}

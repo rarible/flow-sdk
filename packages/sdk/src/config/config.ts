@@ -346,10 +346,10 @@ export enum TestnetCollections {
 	HWGaragePack = "A.0x1c3aa9059373c4ed.HWGaragePack",
 	HWGarageCardV2 = "A.0x1c3aa9059373c4ed.HWGarageCardV2",
 	HWGaragePackV2 = "A.0x1c3aa9059373c4ed.HWGaragePackV2",
-	HWGarageTokenV2 = "A.0x6f6702697b205c18.HWGarageTokenV2",
-	BBxBarbiePack = "A.0x6d0f55821f6b2dbe.BBxBarbiePack",
-	BBxBarbieCard = "A.0x6d0f55821f6b2dbe.BBxBarbieCard",
-	BBxBarbieToken = "A.0x6d0f55821f6b2dbe.BBxBarbieToken",
+	HWGarageTokenV2 = "A.0x1c3aa9059373c4ed.HWGarageTokenV2",
+	BBxBarbiePack = "A.0x6b3176ca674d7fec.BBxBarbiePack",
+	BBxBarbieCard = "A.0x6b3176ca674d7fec.BBxBarbieCard",
+	BBxBarbieToken = "A.0x6b3176ca674d7fec.BBxBarbieToken",
 	Gamisodes = "A.0x371ebe4bc55f8925.Gamisodes",
 }
 

@@ -91,3 +91,11 @@ export const garageRawInitPart = `
 export const garagePreparePartOfInit = `
 ${garageRawInitPart}
 `
+
+export const garageImports = `
+    import HWGarageCard from 0xHWGarageCard
+    import HWGaragePack from 0xHWGaragePack
+    import HWGarageCardV2 from 0xHWGarageCardV2
+    import HWGaragePackV2 from 0xHWGaragePackV2
+    import HWGarageTokenV2 from 0xHWGarageTokenV2
+  `

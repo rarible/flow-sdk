@@ -7,12 +7,7 @@ import type { FlowContractName, NonFungibleContract } from "../types"
 import { NON_FUNGIBLE_CONTRACTS } from "../types"
 import { fillCodeTemplate } from "../common/template-replacer"
 import {commonNft, RaribleNFT} from "../scripts/nft"
-import {transferGarageCardV1, transferGaragePackV1} from "../scripts/nft/mattel/garage/transfer-v1"
-import {
-	transferGarageCardV2,
-	transferGaragePackV2,
-	transferGarageTokenV2,
-} from "../scripts/nft/mattel/garage/transfer-v2"
+import {getTransferCode} from "../scripts/nft/mattel/transfer"
 
 type NftCodeReturnData = {
 	cadence: string
@@ -46,19 +41,14 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 				let transferCdc
 				switch (name) {
 					case "HWGaragePack":
-						transferCdc = transferGaragePackV1
-						break
 					case "HWGarageCard":
-						transferCdc = transferGarageCardV1
-						break
 					case "HWGarageCardV2":
-						transferCdc = transferGarageCardV2
-						break
 					case "HWGaragePackV2":
-						transferCdc = transferGaragePackV2
-						break
 					case "HWGarageTokenV2":
-						transferCdc = transferGarageTokenV2
+					case "BBxBarbieCard":
+					case "BBxBarbiePack":
+					case "BBxBarbieToken":
+						transferCdc = getTransferCode(name)
 						break
 					default: transferCdc = commonNft.transfer
 				}

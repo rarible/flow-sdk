@@ -3,9 +3,9 @@ import * as fcl from "@onflow/fcl"
 import { toFlowAddress } from "@rarible/types"
 import {
 	FLOW_TESTNET_ACCOUNT_5,
-	FLOW_TESTNET_ACCOUNT_6,
-	FLOW_TESTNET_ACCOUNT_ZEBRA,
+	FLOW_TESTNET_ACCOUNT_6, FLOW_TESTNET_ACCOUNT_CLEAN,
 } from "@rarible/flow-test-common/build/config"
+import {FLOW_TESTNET_ACCOUNT_MAN} from "@rarible/flow-test-common/src/config"
 import { createFlowSdk, toFlowContractAddress } from "../index"
 import { checkEvent } from "../test/helpers/check-event"
 import { EmulatorCollections, TestnetCollections } from "../config/config"
@@ -110,16 +110,17 @@ describe("Test transfer on emulator", () => {
 	}, 1000000)
 
 	test("should transfer HWGarageCardV2", async () => {
-		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_ZEBRA.address, FLOW_TESTNET_ACCOUNT_ZEBRA.privKey)
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_CLEAN.address, FLOW_TESTNET_ACCOUNT_CLEAN.privKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)
-		const tokenId = 2597
+		const tokenId = 180
 		const transferTx = await testnetBuyerSdk.nft.transfer(
 			testnetCollection,
 			tokenId,
-			toFlowAddress("0x6c647ba9519d091e")
+			toFlowAddress("0xdeb8561e8a516057")
 		)
+		console.log("tra", transferTx)
 		checkEvent(transferTx, "Withdraw", "HWGarageCardV2")
 		checkEvent(transferTx, "Deposit", "HWGarageCardV2")
 	}, 1000000)
@@ -140,16 +141,17 @@ describe("Test transfer on emulator", () => {
 	}, 1000000)
 
 	test("should transfer BarbieCard", async () => {
-		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetBuyerAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_CLEAN.address, FLOW_TESTNET_ACCOUNT_CLEAN.privKey)
 		const testnetBuyerSdk = createFlowSdk(fcl, "testnet", {}, testnetBuyerAuth)
 
 		const testnetCollection = toFlowContractAddress(TestnetCollections.BBxBarbieCard)
-		const tokenId = 14
+		const tokenId = 1
 		const transferTx = await testnetBuyerSdk.nft.transfer(
 			testnetCollection,
 			tokenId,
-			toFlowAddress("0x9d23622aa6ea2728")
+			toFlowAddress(FLOW_TESTNET_ACCOUNT_MAN.address)
 		)
+		console.log("tx", transferTx)
 		checkEvent(transferTx, "Withdraw", "BBxBarbieCard")
 		checkEvent(transferTx, "Deposit", "BBxBarbieCard")
 	}, 1000000)
