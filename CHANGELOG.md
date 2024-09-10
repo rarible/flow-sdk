@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.78-fix.9](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.8...v0.5.78-fix.9) (2024-09-10)
+
+
+### Bug Fixes
+
+* hw transfer scripts ([f66cb8d](https://github.com/rarible/flow-sdk/commit/f66cb8d054e33ae967c660329f7c29a3f1907c84))
+
+
+
+
+
 ## [0.5.78-fix.8](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.7...v0.5.78-fix.8) (2024-09-10)
 
 
