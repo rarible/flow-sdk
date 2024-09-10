@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.78-fix.8](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.7...v0.5.78-fix.8) (2024-09-10)
+
+
+### Bug Fixes
+
+* mattel transfer ([300bbe4](https://github.com/rarible/flow-sdk/commit/300bbe4e95bd238db5b81350922527475467a1a5))
+
+
+
+
+
 ## [0.5.78-fix.7](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.6...v0.5.78-fix.7) (2024-09-04)
 
 
