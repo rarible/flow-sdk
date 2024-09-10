@@ -118,7 +118,7 @@ describe("Test transfer on emulator", () => {
 		const transferTx = await testnetBuyerSdk.nft.transfer(
 			testnetCollection,
 			tokenId,
-			toFlowAddress("0xdeb8561e8a516057")
+			toFlowAddress(FLOW_TESTNET_ACCOUNT_MAN.address)
 		)
 		console.log("tra", transferTx)
 		checkEvent(transferTx, "Withdraw", "HWGarageCardV2")

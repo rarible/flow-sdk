@@ -35,6 +35,17 @@ export const CONTRACTS: Record<Contracts, string> = {
 	FanfareNFTContract: "FanfareNFTContract",
 	Kicks: "Kicks",
 	NFTLX: "NFTLX",
+	BBxBarbieCard: "BBxBarbieCard",
+	BBxBarbiePack: "BBxBarbiePack",
+	BBxBarbiePM: "BBxBarbiePM",
+	BBxBarbieToken: "BBxBarbieToken",
+	HWGarageCard: "HWGarageCard",
+	HWGarageCardV2: "HWGarageCardV2",
+	HWGaragePack: "HWGaragePack",
+	HWGaragePackV2: "HWGaragePackV2",
+	HWGaragePM: "HWGaragePM",
+	HWGaragePMV2: "HWGaragePMV2",
+	HWGarageTokenV2: "HWGarageTokenV2",
 
 }
 type Contracts =
@@ -71,7 +82,18 @@ type Contracts =
 	"Moments" |
 	"FanfareNFTContract" |
 	"Kicks" |
-	"NFTLX"
+	"NFTLX" |
+	"BBxBarbieCard" |
+	"BBxBarbiePack" |
+	"BBxBarbiePM" |
+	"BBxBarbieToken" |
+	"HWGarageCard" |
+	"HWGarageCardV2" |
+	"HWGaragePack" |
+	"HWGaragePackV2" |
+	"HWGaragePM" |
+	"HWGaragePMV2" |
+	"HWGarageTokenV2"
 
 type TestAccount = {
 	address: string

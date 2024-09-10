@@ -8,6 +8,10 @@ import { NON_FUNGIBLE_CONTRACTS } from "../types"
 import { fillCodeTemplate } from "../common/template-replacer"
 import {commonNft, RaribleNFT} from "../scripts/nft"
 import {getTransferCode} from "../scripts/nft/mattel/transfer"
+import {hwV1CardTransfer} from "../scripts/nft/mattel/garage/transfer/hw-v1-card"
+import {hwV2CardTransfer} from "../scripts/nft/mattel/garage/transfer/hw-v2-card"
+import {hwV2PackTransfer} from "../scripts/nft/mattel/garage/transfer/hw-v2-pack"
+import {hwV2TokenTransfer} from "../scripts/nft/mattel/garage/transfer/hw-v2-token"
 
 type NftCodeReturnData = {
 	cadence: string
@@ -40,11 +44,19 @@ export function getNftCode(name: NonFungibleContract): GetNftCode {
 			transfer: (fcl: Fcl, tokenId: number, to: string) => {
 				let transferCdc
 				switch (name) {
-					case "HWGaragePack":
 					case "HWGarageCard":
+						transferCdc = hwV1CardTransfer
+						break
 					case "HWGarageCardV2":
+						transferCdc = hwV2CardTransfer
+						break
 					case "HWGaragePackV2":
+						transferCdc = hwV2PackTransfer
+						break
 					case "HWGarageTokenV2":
+						transferCdc = hwV2TokenTransfer
+						break
+					case "HWGaragePack":
 					case "BBxBarbieCard":
 					case "BBxBarbiePack":
 					case "BBxBarbieToken":

@@ -251,4 +251,129 @@ export async function deployAll(address: string) {
 			NonFungibleToken: address,
 		},
 	})
+
+	/*
+    Mattel Barbie collections
+   */
+	await deployContractByName({
+		name: CONTRACTS.BBxBarbieCard,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			FungibleToken: address,
+			MetadataViews: address,
+			ViewResolver: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.BBxBarbiePack,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			FungibleToken: address,
+			MetadataViews: address,
+			ViewResolver: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.BBxBarbieToken,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			FungibleToken: address,
+			MetadataViews: address,
+			ViewResolver: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.BBxBarbiePM,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			FungibleToken: address,
+			MetadataViews: address,
+			ViewResolver: address,
+			BBxBarbieToken: address,
+			BBxBarbieCard: address,
+			BBxBarbiePack: address,
+			FlowToken: address,
+		},
+	})
+
+	/*
+    Mattel Garage collections
+   */
+	await deployContractByName({
+		name: CONTRACTS.HWGarageCard,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			FungibleToken: address,
+			MetadataViews: address,
+			ViewResolver: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.HWGarageCardV2,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			FungibleToken: address,
+			MetadataViews: address,
+			ViewResolver: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.HWGaragePack,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			FungibleToken: address,
+			MetadataViews: address,
+			ViewResolver: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.HWGaragePackV2,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			FungibleToken: address,
+			MetadataViews: address,
+			ViewResolver: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.HWGarageTokenV2,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			FungibleToken: address,
+			MetadataViews: address,
+			ViewResolver: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.HWGaragePM,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			FungibleToken: address,
+			FlowToken: address,
+			HWGarageCard: address,
+			HWGaragePack: address,
+		},
+	})
+	await deployContractByName({
+		name: CONTRACTS.HWGaragePMV2,
+		to: address,
+		addressMap: {
+			NonFungibleToken: address,
+			FungibleToken: address,
+			FlowToken: address,
+			HWGarageTokenV2: address,
+			HWGarageCardV2: address,
+			HWGaragePackV2: address,
+		},
+	})
 }
