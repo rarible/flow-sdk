@@ -1,8 +1,7 @@
 export const hwV2CardTransfer = `
-import "NonFungibleToken"
-import "MetadataViews"
-import "HWGarageCardV2"
-import "HWGaragePMV2"
+import NonFungibleToken from 0xNonFungibleToken
+import MetadataViews from 0xMetadataViews
+import HWGarageCardV2 from 0xHWGarageCardV2
 
 transaction(
     cardEditionID: UInt64
