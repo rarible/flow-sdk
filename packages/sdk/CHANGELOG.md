@@ -3,6 +3,43 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.79](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.9...v0.5.79) (2024-09-27)
+
+
+### Features
+
+* esm build and types with latest version ([20ec168](https://github.com/rarible/flow-sdk/commit/20ec168a4563126a7397f36dc495a9bfbb9a28da))
+
+
+
+## [0.5.77-fix.1](https://github.com/rarible/flow-sdk/compare/v0.5.77-fix.0...v0.5.77-fix.1) (2024-01-23)
+
+
+
+## [0.5.77-fix.0](https://github.com/rarible/flow-sdk/compare/v0.5.77...v0.5.77-fix.0) (2024-01-23)
+
+
+
+## [0.5.77](https://github.com/rarible/flow-sdk/compare/v0.5.76...v0.5.77) (2024-01-23)
+
+
+### Bug Fixes
+
+* got rid of deprecated function usages ([f44b99a](https://github.com/rarible/flow-sdk/commit/f44b99ab20e06d90a3812d2c2c0a9983b4aaf8c5))
+* got rid of FlowContractAddress, use it from @rarible/types ([18492ba](https://github.com/rarible/flow-sdk/commit/18492bae9cd0f510347b365489c5a3ba8425caeb))
+
+
+### Features
+
+* bundle both cjs and esm versions at the same time ([9a72500](https://github.com/rarible/flow-sdk/commit/9a72500fd0b043590c93a10eadf0a9477142bb91))
+* optimise tsconfig, improve dx for monorepo project ([da0ca57](https://github.com/rarible/flow-sdk/commit/da0ca5771927f6b290e6e02a253a9d042faa9032))
+* **PLTF-229:** split init of gamisodes and mattel collections ([#109](https://github.com/rarible/flow-sdk/issues/109)) ([bd59465](https://github.com/rarible/flow-sdk/commit/bd594652c4bbcd07fe65cf15263d9a70cf5e2d48))
+* upgraded @rarible/types, @rarible/flow-api-client ([cc7e0f7](https://github.com/rarible/flow-sdk/commit/cc7e0f75d0a0853fb39d5a64990b676a54cfda76))
+
+
+
+
+
 ## [0.5.78-fix.9](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.8...v0.5.78-fix.9) (2024-09-10)
 
 
