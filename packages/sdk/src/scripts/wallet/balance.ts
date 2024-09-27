@@ -3,12 +3,11 @@ export const getBalanceScripts = {
   import FungibleToken from address
   import %ftContract% from address
 
-  pub fun main(address: Address): UFix64 {
+  access(all)
+  fun main(address: Address): UFix64 {
     let account = getAccount(address)
 
-    let vaultRef = account
-      .getCapability(%ftBalancePublicPath%)
-      .borrow<&%ftContract%.Vault{FungibleToken.Balance}>()
+    let vaultRef = account.capabilities.borrow<&{FungibleToken.Balance}>(%ftBalancePublicPath%)
 
     return vaultRef?.balance ?? 0.0
   }`,

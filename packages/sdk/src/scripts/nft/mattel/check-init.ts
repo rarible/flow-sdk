@@ -15,43 +15,47 @@ import BBxBarbiePack from 0xBBxBarbiePack
 import BBxBarbieToken from 0xBBxBarbieToken
 import Gamisodes from 0xGamisodes
 
-pub fun main(address: Address): {String: Bool} {
+access(all)
+fun main(address: Address): {String: Bool} {
     let account = getAccount(address)
 
     let accountStatus: {String: Bool} = {}
 
     let nftPubPath = HWGarageCard.CollectionPublicPath
-    let nftCollection = account.getCapability<&HWGarageCard.Collection{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver,HWGarageCard.HWGarageCardCollectionPublic,MetadataViews.ResolverCollection}>(nftPubPath).borrow()
+    let nftCollection = account.capabilities.get<&{NonFungibleToken.Receiver}>(nftPubPath).borrow()
 
     let packPubPath = HWGaragePack.CollectionPublicPath
-    let packCollection = account.getCapability<&HWGaragePack.Collection{NonFungibleToken.CollectionPublic,NonFungibleToken.Receiver,HWGaragePack.PackCollectionPublic,MetadataViews.ResolverCollection}>(packPubPath).borrow()
+    let packCollection = account.capabilities.get<&{NonFungibleToken.Receiver}>(packPubPath).borrow()
 
     let nftV2PubPath = HWGarageCardV2.CollectionPublicPath
-    let nftV2Collection = account.getCapability<&HWGarageCardV2.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, HWGarageCardV2.CardCollectionPublic, MetadataViews.ResolverCollection}>(nftV2PubPath).borrow()
+    let nftV2Collection = account.capabilities.get<&{NonFungibleToken.Receiver}>(nftV2PubPath).borrow()
 
     let packV2PubPath = HWGaragePackV2.CollectionPublicPath
-    let packV2Collection = account.getCapability<&HWGaragePackV2.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, HWGaragePackV2.PackCollectionPublic, MetadataViews.ResolverCollection}>(packV2PubPath).borrow()
+    let packV2Collection = account.capabilities.get<&{NonFungibleToken.Receiver}>(packV2PubPath).borrow()
 
     let tokenV2PubPath = HWGarageTokenV2.CollectionPublicPath
-    let tokenV2Collection = account.getCapability<&HWGarageTokenV2.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, HWGarageTokenV2.TokenCollectionPublic, MetadataViews.ResolverCollection}>(tokenV2PubPath).borrow()
+    let tokenV2Collection = account.capabilities.get<&{NonFungibleToken.Receiver}>(tokenV2PubPath).borrow()
 
     let nftBBPubPath = BBxBarbieCard.CollectionPublicPath
-    let nftBBCollection = account.getCapability<&BBxBarbieCard.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, BBxBarbieCard.CardCollectionPublic, MetadataViews.ResolverCollection}>(nftBBPubPath).borrow()
+    let nftBBCollection = account.capabilities.get<&{NonFungibleToken.Receiver}>(nftBBPubPath).borrow()
 
     let packBBPubPath = BBxBarbiePack.CollectionPublicPath
-    let packBBCollection = account.getCapability<&BBxBarbiePack.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, BBxBarbiePack.PackCollectionPublic, MetadataViews.ResolverCollection}>(packBBPubPath).borrow()
+    let packBBCollection = account.capabilities.get<&{NonFungibleToken.Receiver}>(packBBPubPath).borrow()
 
     let tokenBBPubPath = BBxBarbieToken.CollectionPublicPath
-    let tokenBBCollection = account.getCapability<&BBxBarbieToken.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, BBxBarbieToken.TokenCollectionPublic, MetadataViews.ResolverCollection}>(tokenBBPubPath).borrow()
+    let tokenBBCollection = account.capabilities.get<&{NonFungibleToken.Receiver}>(tokenBBPubPath).borrow()
 
-    let fiatTokenPubPath = FiatToken.VaultReceiverPubPath
-    let fiatTokenCollection = account.getCapability<&FiatToken.Vault{FungibleToken.Receiver}>(fiatTokenPubPath).borrow()
+    //todo enable later
+    //let fiatTokenPubPath = FiatToken.VaultReceiverPubPath
+    //let fiatTokenCollection = account.capabilities.get<&FiatToken.Vault{FungibleToken.Receiver}>(fiatTokenPubPath).borrow()
 
-    let NFTStorefrontV2 = NFTStorefrontV2.StorefrontPublicPath
-    let StorefrontV2 = account.getCapability(NFTStorefrontV2).borrow<&{NFTStorefrontV2.StorefrontPublic}>()
+    //let NFTStorefrontV2 = NFTStorefrontV2.StorefrontPublicPath
+    let StorefrontV2 = account.capabilities.borrow<&{NFTStorefrontV2.StorefrontPublic}>(
+            NFTStorefrontV2.StorefrontPublicPath
+        )
 
-    let gamisodesCollection = account.getCapability(Gamisodes.COLLECTION_PUBLIC_PATH)
-                        .borrow<&{NonFungibleToken.Receiver}>()
+    //let gamisodesCollection = account.capabilities.get<&{NonFungibleToken.Receiver}>(Gamisodes.COLLECTION_PUBLIC_PATH)
+                        //.borrow()
 
 
     if nftCollection != nil {
@@ -108,17 +112,18 @@ pub fun main(address: Address): {String: Bool} {
         accountStatus.insert(key: "StorefrontV2", false)
     }
 
-    if fiatTokenCollection != nil {
-        accountStatus.insert(key: "FiatToken", true)
-    } else {
-        accountStatus.insert(key: "FiatToken", false)
-    }
+    //todo enable later
+    //if fiatTokenCollection != nil {
+    //    accountStatus.insert(key: "FiatToken", true)
+    //} else {
+    //    accountStatus.insert(key: "FiatToken", false)
+    //}
 
-    if gamisodesCollection != nil {
-        accountStatus.insert(key: "Gamisodes", true)
-    } else {
-        accountStatus.insert(key: "Gamisodes", false)
-    }
+    //if gamisodesCollection != nil {
+    //    accountStatus.insert(key: "Gamisodes", true)
+    //} else {
+    //    accountStatus.insert(key: "Gamisodes", false)
+    //}
 
     return accountStatus
 }

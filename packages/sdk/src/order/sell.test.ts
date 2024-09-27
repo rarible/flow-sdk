@@ -5,10 +5,10 @@ import {
 	FLOW_TESTNET_ACCOUNT_4,
 } from "@rarible/flow-test-common"
 import * as fcl from "@onflow/fcl"
-import { toBigNumberLike, toFlowAddress, toFlowContractAddress } from "@rarible/types"
+import { toBigNumber, toFlowAddress } from "@rarible/types"
 // import type { FlowSdk } from "../index"
-import {FLOW_TESTNET_ACCOUNT_5} from "@rarible/flow-test-common"
-import {FLOW_TESTNET_ACCOUNT_MATRIX} from "@rarible/flow-test-common"
+import {FLOW_TESTNET_ACCOUNT_5, FLOW_TESTNET_ACCOUNT_EAGLE, FLOW_TESTNET_ACCOUNT_MATRIX} from "@rarible/flow-test-common"
+import { toFlowContractAddress } from "../index"
 import { checkEvent } from "../test/helpers/check-event"
 import { EmulatorCollections, TestnetCollections } from "../config/config"
 import { createEvolutionTestEnvironment, getEvolutionIds } from "../test/helpers/emulator/evolution"
@@ -75,10 +75,10 @@ describe("Mattel storefront sell testing", () => {
 	}, 1000000)
 
 	test("Should create HWGarageCardV2 sell order on testnet", async () => {
-		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_5.address, FLOW_TESTNET_ACCOUNT_5.privKey)
+		const testnetAuth = createTestAuth(fcl, "testnet", FLOW_TESTNET_ACCOUNT_EAGLE.address, FLOW_TESTNET_ACCOUNT_EAGLE.privKey)
 		const testnetSdk = createTestFlowSdk(fcl, "testnet", {}, testnetAuth)
 		const testnetCollection = toFlowContractAddress(TestnetCollections.HWGarageCardV2)
-		const tokenId = "37"
+		const tokenId = "179"
 
 		const orderTx = await testnetSdk.order.sell({
 			collection: testnetCollection,
@@ -135,7 +135,7 @@ describe("Test sell on emulator", () => {
 		const mintTx = await testnetSdk.nft.mint(
 			testnetCollection,
 			"ipfs://ipfs/QmNe7Hd9xiqm1MXPtQQjVtksvWX6ieq9Wr6kgtqFo9D4CU",
-			[{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_4.address), value: toBigNumberLike("0.1") }],
+			[{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_4.address), value: toBigNumber("0.1") }],
 		)
 
 		const orderTx = await testnetSdk.order.sell({
@@ -143,7 +143,7 @@ describe("Test sell on emulator", () => {
 			currency: "FLOW",
 			itemId: mintTx.tokenId,
 			sellItemPrice: "1",
-			originFees: [{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_4.address), value: toBigNumberLike("0.2") }],
+			originFees: [{ account: toFlowAddress(FLOW_TESTNET_ACCOUNT_4.address), value: toBigNumber("0.2") }],
 		})
 
 		expect(orderTx.orderId).toBeTruthy()

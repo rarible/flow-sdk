@@ -3,6 +3,7 @@ import type { Maybe } from "@rarible/types"
 import type { ConfigurationParameters, FlowOrder, FlowRoyalty } from "@rarible/flow-api-client"
 import * as ApiClient from "@rarible/flow-api-client"
 import type { BigNumberLike, FlowAddress, FlowContractAddress } from "@rarible/types"
+import { toFlowContractAddress, isFlowContractAddress } from "@rarible/types"
 import type { FlowMintResponse } from "./nft/mint"
 import { mint as mintTemplate } from "./nft/mint"
 import { burn as burnTemplate } from "./nft/burn"
@@ -27,9 +28,15 @@ import type { FlowEnvConfig } from "./config/env"
 import { ENV_CONFIG } from "./config/env"
 import type { TransferFlowRequest } from "./wallet/transfer-funds"
 import { transferFunds } from "./wallet/transfer-funds"
-import type {CollectionsInitStatus} from "./collection/check-init-collections"
-import {setupGamisodesCollections, setupMattelCollections} from "./collection/setup-collections"
-import {checkInitCollections} from "./collection/check-init-collections"
+import type {
+	CollectionsInitStatus,
+	GamisodesInitStatus,
+} from "./collection/check-init-collections"
+import {setupGamisodesCollections, setupMattelCollections, setupCollections} from "./collection/setup-collections"
+import {
+	checkInitCollections,
+	checkInitGamisodesCollections,
+} from "./collection/check-init-collections"
 
 export interface FlowApisSdk {
 	order: ApiClient.FlowOrderControllerApi
@@ -141,9 +148,11 @@ export interface FlowWalletSdk {
 
 export interface FlowCollectionSdk {
 	setupAccount(collection: FlowContractAddress): Promise<FlowTransaction>
+	setupCollections(): Promise<FlowTransaction>
 	setupMattelCollections(): Promise<FlowTransaction>
 	setupGamisodesCollections(): Promise<FlowTransaction>
 	checkInitCollections(address?: FlowAddress): Promise<CollectionsInitStatus>
+	checkInitGamisodesCollections(address?: FlowAddress): Promise<GamisodesInitStatus>
 }
 
 export interface FlowSdk {
@@ -214,9 +223,11 @@ export function createFlowSdk(
 		},
 		collection: {
 			setupAccount: setupAccountTemplate.bind(null, fcl, auth, blockchainNetwork),
+			setupCollections: setupCollections.bind(null, fcl, auth, blockchainNetwork),
 			setupMattelCollections: setupMattelCollections.bind(null, fcl, auth, blockchainNetwork),
 			setupGamisodesCollections: setupGamisodesCollections.bind(null, fcl, auth, blockchainNetwork),
 			checkInitCollections: checkInitCollections.bind(null, fcl, auth, blockchainNetwork),
+			checkInitGamisodesCollections: checkInitGamisodesCollections.bind(null, fcl, auth, blockchainNetwork),
 		},
 		signUserMessage: signUserMessageTemplate.bind(null, fcl),
 	}
@@ -228,10 +239,11 @@ export { toFlowItemId, isFlowItemId } from "./common/item/index"
 export { replaceImportAddresses } from "./common/template-replacer"
 export { waitForSeal } from "./common/transaction"
 export type { FlowItemId } from "./common/item/index"
+export { toFlowContractAddress, isFlowContractAddress, FlowContractAddress }
 export type { FlowEnv } from "./config/env"
 export const FLOW_ENV_CONFIG: FlowEnvConfig = ENV_CONFIG
 export { FlowOrder } from "@rarible/flow-api-client"
 export { getFungibleBalanceSimple } from "./wallet/get-ft-balance-simple"
-export { CollectionsInitStatus } from "./collection/check-init-collections"
+export { CollectionsInitStatus, GamisodesInitStatus } from "./collection/check-init-collections"
 export { CONFIGS } from "./config/config"
 export const getFlowFungibleBalance = getFungibleBalanceTemplate

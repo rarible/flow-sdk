@@ -3,6 +3,83 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.78-fix.9](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.8...v0.5.78-fix.9) (2024-09-10)
+
+**Note:** Version bump only for package @rarible/flow-test-common
+
+
+
+
+
+## [0.5.78-fix.8](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.7...v0.5.78-fix.8) (2024-09-10)
+
+
+### Bug Fixes
+
+* mattel transfer ([300bbe4](https://github.com/rarible/flow-sdk/commit/300bbe4e95bd238db5b81350922527475467a1a5))
+
+
+
+
+
+## [0.5.78-fix.7](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.6...v0.5.78-fix.7) (2024-09-04)
+
+
+### Bug Fixes
+
+* barbie collection cadence 1.0 support ([271aea4](https://github.com/rarible/flow-sdk/commit/271aea43664c9148bbea27b9345b9137513841cd))
+
+
+
+
+
+## [0.5.78-fix.6](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.5...v0.5.78-fix.6) (2024-09-03)
+
+
+### Bug Fixes
+
+* revert fcl dep ([4cf5a7d](https://github.com/rarible/flow-sdk/commit/4cf5a7d9cd94cf9434398ecf46c9b4d33ad85156))
+
+
+
+
+
+## [0.5.78-fix.5](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.4...v0.5.78-fix.5) (2024-09-03)
+
+**Note:** Version bump only for package @rarible/flow-test-common
+
+
+
+
+
+## [0.5.78-fix.4](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.3...v0.5.78-fix.4) (2024-09-03)
+
+
+### Bug Fixes
+
+* cadence 1.0 scripts ([254e409](https://github.com/rarible/flow-sdk/commit/254e409406f83d06822344d7e52b543a5ec132c0))
+
+
+
+
+
+## [0.5.78](https://github.com/rarible/flow-sdk/compare/v0.5.76-beta.0...v0.5.78) (2024-01-30)
+
+**Note:** Version bump only for package @rarible/flow-test-common
+
+
+
+
+
+## [0.5.76-beta.0](https://github.com/rarible/flow-sdk/compare/v0.5.76...v0.5.76-beta.0) (2024-01-24)
+
+
+### Features
+
+* **PLTF-229:** split setup collections ([e53206d](https://github.com/rarible/flow-sdk/commit/e53206d8f36ae5f58d8fc7c0183feb3daad79154))
+
+
+
 ## [0.5.77](https://github.com/rarible/flow-sdk/compare/v0.5.76...v0.5.77) (2024-01-23)
 
 

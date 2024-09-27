@@ -28,6 +28,38 @@ export const getVaultInitTx = (o: VaultTokenOptions = defaultVaultOptions) => `
           )
       }
 `
+
+export const getUSDCVaultInitTx = () => `
+      // ******
+			// IMPORTANT UNCOMMENT WHEN USDCFLOW IS READY FOR CRESCENDO
+			// ******
+			// if signer.storage.borrow<&USDCFlow.Vault>(from: /storage/usdcFlowVault) == nil {
+			// 		// Create a new flowToken Vault and put it in storage
+			// 		signer.storage.save(<-USDCFlow.createEmptyVault(), to: /storage/usdcFlowVault)
+
+			// 		// Create a public capability to the Vault that only exposes
+			// 		// the deposit function through the Receiver interface
+			// 		let vaultCap = signer.capabilities.storage.issue<&USDCFlow.Vault>(
+			// 				/storage/usdcFlowVault
+			// 		)
+
+			// 		signer.capabilities.publish(
+			// 				vaultCap,
+			// 				at: /public/usdcFlowReceiver
+			// 		)
+
+			// 		// Create a public capability to the Vault that only exposes
+			// 		// the balance field through the Balance interface
+			// 		let balanceCap = signer.capabilities.storage.issue<&USDCFlow.Vault>(
+			// 				/storage/usdcFlowVault
+			// 		)
+
+			// 		signer.capabilities.publish(
+			// 				balanceCap,
+			// 				at: /public/usdcFlowMetadata
+			// 		)
+			// }
+`
 export const defaultVaultOptions: VaultTokenOptions = {
 	contractName: "%ftContract%",
 	storagePath: "%ftStoragePath%",

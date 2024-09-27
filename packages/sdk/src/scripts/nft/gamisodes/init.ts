@@ -1,4 +1,3 @@
-import { NFTStorefrontV2 } from "../contracts"
 import {getVaultInitTx, vaultOptions} from "../init-vault"
 
 export const gamisodesRawInitPart = `
@@ -17,14 +16,20 @@ export const gamisodesRawInitPart = `
           acct.link<&Gamisodes.Collection{NiftoryNonFungibleToken.CollectionPublic,NonFungibleToken.CollectionPublic,NonFungibleToken.Provider,MetadataViews.ResolverCollection}>(Gamisodes.COLLECTION_PRIVATE_PATH, target: Gamisodes.COLLECTION_STORAGE_PATH)
         }
 
-        if acct.borrow<&${NFTStorefrontV2.name}.${NFTStorefrontV2.contractType}>(from: ${NFTStorefrontV2.storagePath}) == nil {
-				  	let collection <- ${NFTStorefrontV2.name}.${NFTStorefrontV2.nameOfMethodForCreateResource}
-  					acct.save(<-collection, to: ${NFTStorefrontV2.storagePath})
-			  }
-        if acct.getCapability<${NFTStorefrontV2.publicType}>(${NFTStorefrontV2.publicPath}).borrow() == nil {
-            acct.link<${NFTStorefrontV2.publicType}>(${NFTStorefrontV2.publicPath}, target: ${NFTStorefrontV2.storagePath})
-        }
-        //Gamisodes INIT PART START
+        if acct.storage.borrow<&NFTStorefrontV2.Storefront>(from: NFTStorefrontV2.StorefrontStoragePath) == nil {
+        // Create a new empty Storefront
+        let storefront: @NFTStorefrontV2.Storefront <- NFTStorefrontV2.createStorefront()
+
+        // save it to the account
+        acct.storage.save(<-storefront, to: NFTStorefrontV2.StorefrontStoragePath)
+
+        // create a public capability for the Storefront
+        let storefrontPublicCap: Capability<&{NFTStorefrontV2.StorefrontPublic}> = acct.capabilities.storage.issue<&{NFTStorefrontV2.StorefrontPublic}>(
+            NFTStorefrontV2.StorefrontStoragePath
+          )
+        acct.capabilities.publish(storefrontPublicCap, at: NFTStorefrontV2.StorefrontPublicPath)
+          }
+        //Gamisodes INIT PART END
 `
 
 
@@ -47,13 +52,19 @@ transaction() {
 ${getVaultInitTx(vaultOptions["FiatToken"])}
 ${gamisodesRawInitPart}
 
-			if acct.borrow<&${NFTStorefrontV2.name}.${NFTStorefrontV2.contractType}>(from: ${NFTStorefrontV2.storagePath}) == nil {
-					let collection <- ${NFTStorefrontV2.name}.${NFTStorefrontV2.nameOfMethodForCreateResource}
-					acct.save(<-collection, to: ${NFTStorefrontV2.storagePath})
-			}
-			if acct.getCapability<${NFTStorefrontV2.publicType}>(${NFTStorefrontV2.publicPath}).borrow() == nil {
-					acct.link<${NFTStorefrontV2.publicType}>(${NFTStorefrontV2.publicPath}, target: ${NFTStorefrontV2.storagePath})
-			}
+      if acct.storage.borrow<&NFTStorefrontV2.Storefront>(from: NFTStorefrontV2.StorefrontStoragePath) == nil {
+      // Create a new empty Storefront
+      let storefront: @NFTStorefrontV2.Storefront <- NFTStorefrontV2.createStorefront()
+
+      // save it to the account
+      acct.storage.save(<-storefront, to: NFTStorefrontV2.StorefrontStoragePath)
+
+      // create a public capability for the Storefront
+      let storefrontPublicCap: Capability<&{NFTStorefrontV2.StorefrontPublic}> = acct.capabilities.storage.issue<&{NFTStorefrontV2.StorefrontPublic}>(
+          NFTStorefrontV2.StorefrontStoragePath
+        )
+      acct.capabilities.publish(storefrontPublicCap, at: NFTStorefrontV2.StorefrontPublicPath)
+        }
     }
     execute {
     }

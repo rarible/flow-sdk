@@ -3,6 +3,115 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.78-fix.9](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.8...v0.5.78-fix.9) (2024-09-10)
+
+
+### Bug Fixes
+
+* hw transfer scripts ([f66cb8d](https://github.com/rarible/flow-sdk/commit/f66cb8d054e33ae967c660329f7c29a3f1907c84))
+
+
+
+
+
+## [0.5.78-fix.8](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.7...v0.5.78-fix.8) (2024-09-10)
+
+
+### Bug Fixes
+
+* mattel transfer ([300bbe4](https://github.com/rarible/flow-sdk/commit/300bbe4e95bd238db5b81350922527475467a1a5))
+
+
+
+
+
+## [0.5.78-fix.7](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.6...v0.5.78-fix.7) (2024-09-04)
+
+
+### Bug Fixes
+
+* barbie collection cadence 1.0 support ([271aea4](https://github.com/rarible/flow-sdk/commit/271aea43664c9148bbea27b9345b9137513841cd))
+
+
+
+
+
+## [0.5.78-fix.6](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.5...v0.5.78-fix.6) (2024-09-03)
+
+**Note:** Version bump only for package @rarible/flow-sdk
+
+
+
+
+
+## [0.5.78-fix.5](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.4...v0.5.78-fix.5) (2024-09-03)
+
+**Note:** Version bump only for package @rarible/flow-sdk
+
+
+
+
+
+## [0.5.78-fix.4](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.3...v0.5.78-fix.4) (2024-09-03)
+
+
+### Bug Fixes
+
+* cadence 1.0 scripts ([254e409](https://github.com/rarible/flow-sdk/commit/254e409406f83d06822344d7e52b543a5ec132c0))
+
+
+
+
+
+## [0.5.78-fix.3](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.2...v0.5.78-fix.3) (2024-02-25)
+
+
+### Bug Fixes
+
+* gamisodes init status ([bfb482f](https://github.com/rarible/flow-sdk/commit/bfb482fe9cc612a6933f7960c949dc875f47215a))
+
+
+
+
+
+## [0.5.78-fix.2](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.1...v0.5.78-fix.2) (2024-02-25)
+
+
+### Features
+
+* **PLTF-341:** check gamisodes method ([bf7e1cd](https://github.com/rarible/flow-sdk/commit/bf7e1cd9f02463535f3289fc76878488d1bf297d))
+
+
+
+
+
+## [0.5.78-fix.1](https://github.com/rarible/flow-sdk/compare/v0.5.78-fix.0...v0.5.78-fix.1) (2024-02-09)
+
+
+### Bug Fixes
+
+* revert legacy setup collections method ([7bc65ec](https://github.com/rarible/flow-sdk/commit/7bc65ecfe16bcf37fa343ecd44c99bc4ed08d751))
+
+
+
+
+
+## [0.5.78-fix.0](https://github.com/rarible/flow-sdk/compare/v0.5.78...v0.5.78-fix.0) (2024-02-01)
+
+
+### Bug Fixes
+
+* garage change price formula ([3929392](https://github.com/rarible/flow-sdk/commit/3929392d4ec5dde874aafea499764c62c7495c51))
+
+
+
+
+
+## [0.5.78](https://github.com/rarible/flow-sdk/compare/v0.5.76-beta.0...v0.5.78) (2024-01-30)
+
+**Note:** Version bump only for package @rarible/flow-sdk
+
+
 ## [0.5.77-fix.1](https://github.com/rarible/flow-sdk/compare/v0.5.77-fix.0...v0.5.77-fix.1) (2024-01-23)
 
 **Note:** Version bump only for package @rarible/flow-sdk
@@ -34,6 +143,19 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * optimise tsconfig, improve dx for monorepo project ([da0ca57](https://github.com/rarible/flow-sdk/commit/da0ca5771927f6b290e6e02a253a9d042faa9032))
 * **PLTF-229:** split init of gamisodes and mattel collections ([#109](https://github.com/rarible/flow-sdk/issues/109)) ([bd59465](https://github.com/rarible/flow-sdk/commit/bd594652c4bbcd07fe65cf15263d9a70cf5e2d48))
 * upgraded @rarible/types, @rarible/flow-api-client ([cc7e0f7](https://github.com/rarible/flow-sdk/commit/cc7e0f75d0a0853fb39d5a64990b676a54cfda76))
+
+
+
+
+
+
+
+## [0.5.76-beta.0](https://github.com/rarible/flow-sdk/compare/v0.5.76...v0.5.76-beta.0) (2024-01-24)
+
+
+### Features
+
+* **PLTF-229:** split setup collections ([e53206d](https://github.com/rarible/flow-sdk/commit/e53206d8f36ae5f58d8fc7c0183feb3daad79154))
 
 
 
