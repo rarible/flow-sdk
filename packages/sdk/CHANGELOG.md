@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0-beta.1](https://github.com/rarible/flow-sdk/compare/v0.6.0-beta.0...v0.6.0-beta.1) (2024-11-08)
+
+
+### Features
+
+* types update ([fb9b2e6](https://github.com/rarible/flow-sdk/commit/fb9b2e6f226de74866e536b1008ec6ef341e2eb1))
+
+
+
+
+
 # [0.6.0-beta.0](https://github.com/rarible/flow-sdk/compare/v0.5.79...v0.6.0-beta.0) (2024-10-01)
 
 **Note:** Version bump only for package @rarible/flow-sdk
