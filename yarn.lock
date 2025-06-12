@@ -2297,7 +2297,7 @@
   dependencies:
     "@rarible/utils" "^0.10.1"
 
-"@rarible/utils@^0.10.1", "@rarible/utils@^0.10.5":
+"@rarible/utils@^0.10.1":
   version "0.10.1"
   resolved "https://registry.yarnpkg.com/@rarible/utils/-/utils-0.10.1.tgz#7e1193b837d2a13639e63fda6dbfc6719fe4c39f"
   integrity sha512-vboCELvFcQ2OjQMHMz7W/Ou958SgBizR5wAPuaM+cRqa2zYCoRgyxqV8HwF7DXxSiYohIFwi+tTLqGgzQtZqvA==
