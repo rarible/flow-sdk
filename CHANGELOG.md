@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0-beta.3](https://github.com/rarible/flow-sdk/compare/v0.6.0-beta.2...v0.6.0-beta.3) (2025-06-12)
+
+### Features
+
+- **RX-1705:** Update types version ([585d6b5](https://github.com/rarible/flow-sdk/commit/585d6b58b52c62b7e783b21f41783f2cf30b9512))
+
 # [0.6.0-beta.2](https://github.com/rarible/flow-sdk/compare/v0.6.0-beta.1...v0.6.0-beta.2) (2025-06-12)
 
 ### Features
