@@ -1,23 +1,23 @@
 {
-  "name": "@rarible/fcl-types",
-  "version": "0.6.0-beta.1",
-  "description": "",
-  "license": "MIT",
-  "main": "build/cjs/index.js",
-  "module": "build/esm/index.js",
-  "types": "build/esm/index.d.ts",
-  "files": [
-    "build",
-    "typings.d.ts"
-  ],
-  "scripts": {
-    "build": "tsc -b tsconfig-build-cjs.json tsconfig-build-esm.json",
-    "clean": "rimraf ./build",
-    "test": "jest --passWithNoTests --maxWorkers=1",
-    "verify": "tsc --noEmit"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org"
-  }
+	"name": "@rarible/fcl-types",
+	"version": "0.6.0-beta.2",
+	"description": "",
+	"license": "MIT",
+	"main": "build/cjs/index.js",
+	"module": "build/esm/index.js",
+	"types": "build/esm/index.d.ts",
+	"files": [
+		"build",
+		"typings.d.ts"
+	],
+	"scripts": {
+		"build": "tsc -b tsconfig-build-cjs.json tsconfig-build-esm.json",
+		"clean": "rimraf ./build",
+		"test": "jest --passWithNoTests --maxWorkers=1",
+		"verify": "tsc --noEmit"
+	},
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org"
+	}
 }
