@@ -2290,17 +2290,17 @@
   resolved "https://registry.yarnpkg.com/@rarible/flow-api-client/-/flow-api-client-0.1.0-alpha.4.tgz#41280bbe7b3255cbb865b8552034a4a2795ac8c9"
   integrity sha512-u4njScMm1Og0E8ccBAsAjeV7hTB3rxJrHCcujeIXUkztJEYzj2X6YAOERqIVvV9bRtRARnb2mTxGoc6G50cYYg==
 
-"@rarible/types@^0.10.0-beta.2":
-  version "0.10.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@rarible/types/-/types-0.10.0-beta.2.tgz#19d36899ea826d200f41032640b1706997706f56"
-  integrity sha512-lywiqWjkY5VBscIMPMMj65+kog/dkrfUoDX3V+788MZE86Yd9WGWixyceBCuqf0zFJKkeAoEOFuAJganjgtJPg==
+"@rarible/types@^0.10.5":
+  version "0.10.5"
+  resolved "https://registry.yarnpkg.com/@rarible/types/-/types-0.10.5.tgz#649ecf250e0e73443f5008775037a6ec7c061a1f"
+  integrity sha512-k2y/tvo1TcrOwxJyzY2qvmnLTpW6KZqJ4L4zlC363jPW5HwFax1kK1w/pXEgebqhfdCbo1+y6uDKJ6S3Rp4A8g==
   dependencies:
-    "@rarible/utils" "^0.10.0-beta.2"
+    "@rarible/utils" "^0.10.1"
 
-"@rarible/utils@^0.10.0-beta.2":
-  version "0.10.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@rarible/utils/-/utils-0.10.0-beta.2.tgz#3f4887f90f3bf44c2d325d8ee79f0d7145e89a34"
-  integrity sha512-Tgz8vQg+wUK98j3ty58/BvucX1dNViq1ZB/XTpn0YWqPf6kM8V5ZGveizNxeRacUzZ9h9B4cdERpuVXRDNTw/A==
+"@rarible/utils@^0.10.1", "@rarible/utils@^0.10.5":
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/@rarible/utils/-/utils-0.10.1.tgz#7e1193b837d2a13639e63fda6dbfc6719fe4c39f"
+  integrity sha512-vboCELvFcQ2OjQMHMz7W/Ou958SgBizR5wAPuaM+cRqa2zYCoRgyxqV8HwF7DXxSiYohIFwi+tTLqGgzQtZqvA==
   dependencies:
     bignumber.js "^9.0.0"
     generic-type-guard "^3.7.2"
